@@ -112,7 +112,7 @@ nomeAppHome:{
   fontSize: 26
 },
 textTipoEstabelecimento:{
-  marginLeft: 5,
+  marginLeft: 10,
   fontSize: 20,
   color: cores.corPrincipal
   },

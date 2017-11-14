@@ -9,7 +9,6 @@ import _ from 'lodash'
 
 export class ProdutosScreen extends Component{
 
-
   static navigationOptions = {
     header: null,
   }
