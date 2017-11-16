@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 
 const cores = {
     corPrincipal: '#8b0000',
-    cinzaDetalhes:'#B22222',
+    textDetalhes:'#2F4F4F',
 };
 
 export const styles = StyleSheet.create({
@@ -135,6 +135,6 @@ textEstabelecimento:{
 textDetalhesEstabelecimento:{
   marginLeft: 5,
   fontSize: 14,
-  color: cores.cinzaDetalhes
+  color: cores.textDetalhes
 },
 });

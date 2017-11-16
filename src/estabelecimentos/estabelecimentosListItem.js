@@ -24,8 +24,7 @@ export default class EstabelecimentosListItem extends Component {
           />
         <View>
           <Text style={styles.textEstabelecimento}>{this.props.estabelecimento}</Text>
-          <Text style={styles.textDetalhesEstabelecimento}>{this.props.valorDelivery}</Text>
-          <Text style={styles.textDetalhesEstabelecimento}>{this.props.tempoEntrega}</Text>
+          <Text style={styles.textDetalhesEstabelecimento}>{this.props.valorDelivery} | {this.props.tempoEntrega}</Text>
         </View>
       </TouchableOpacity>
 

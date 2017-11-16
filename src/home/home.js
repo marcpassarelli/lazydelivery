@@ -6,6 +6,7 @@ import { checkUserDetails, getUserDetails, atualizarProfilePicture } from '../fi
 import * as firebase from 'firebase';
 import HomeListItem from './homeListItem'
 import {dadosTipoEstabelecimento} from './dadosTipoEstabelecimento'
+import { SearchBar } from 'react-native-elements'
 
 import _ from 'lodash'
 
@@ -126,6 +127,8 @@ export class HomeScreen extends Component {
 
     <View style={{flex:1}}>
     <View style={{flexDirection: 'row'}}>
+      <SearchBar
+        placeholder='Digite o nome do estabelecimento...'/>
       <Text style={styles.textEndHome}>{_.upperFirst(this.state.endereco)}, {this.state.numeroEnd} - </Text>
       <Text
         style={styles.textUpdateEnd}
