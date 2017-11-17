@@ -35,6 +35,20 @@ export const styles = StyleSheet.create({
   labelCadastro: {
     opacity: 1,
   },
+  searchBar:{
+    height:40,
+    color: 'rgba(0,0,0,0.5)',
+  },
+  searchBarContainer:{
+    marginLeft:10,
+    marginRight:10,
+    borderRadius:6,
+    backgroundColor:'rgba(139,0,0,0.1)'
+  },
+  searchBarInput:{
+    backgroundColor: 'rgba(0,0,0,0.1)',
+    color:'rgba(139,0,0,1)'
+  },
   textInputs:{
     borderColor: '#8b0000',
   },
@@ -78,13 +92,13 @@ textProfileDetails:{
 },
 textEndHome:{
   fontSize: 15,
+  marginTop:5,
   color: cores.corPrincipal,
-  marginLeft: 5
 },
 textUpdateEnd:{
   fontSize: 15,
+  marginTop:5,
   color:'#0000FF',
-  marginRight: 20,
 },
 containerListItem:{
   flexDirection:'row',
@@ -109,11 +123,11 @@ nomeAppHome:{
   color: cores.corPrincipal,
   marginTop: 15,
   marginBottom: 15,
-  fontSize: 26
+  fontSize: 20
 },
 textTipoEstabelecimento:{
   marginLeft: 10,
-  fontSize: 20,
+  fontSize: 17,
   color: cores.corPrincipal
   },
 activityIndicator:{
@@ -129,12 +143,12 @@ containerIndicator:{
 },
 textEstabelecimento:{
   marginLeft: 5,
-  fontSize: 20,
+  fontSize: 17,
   color: cores.corPrincipal
 },
 textDetalhesEstabelecimento:{
   marginLeft: 5,
-  fontSize: 14,
+  fontSize: 13,
   color: cores.textDetalhes
 },
 });

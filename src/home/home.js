@@ -126,9 +126,7 @@ export class HomeScreen extends Component {
     </View> :
 
     <View style={{flex:1}}>
-    <View style={{flexDirection: 'row'}}>
-      <SearchBar
-        placeholder='Digite o nome do estabelecimento...'/>
+    <View style={{flexDirection: 'row',alignItems: 'center', justifyContent: 'center'}}>
       <Text style={styles.textEndHome}>{_.upperFirst(this.state.endereco)}, {this.state.numeroEnd} - </Text>
       <Text
         style={styles.textUpdateEnd}
@@ -136,6 +134,14 @@ export class HomeScreen extends Component {
       Trocar Endereço
       </Text>
     </View>
+    <View style={styles.separator}></View>
+      <SearchBar
+        containerStyle={styles.searchBarContainer}
+        style={styles.searchBar}
+        inputStyle={styles.searchBarInput}
+        placeholder='Procurar estabelecimento...'
+        placeholderTextColor='#8b0000'
+        returnKeyType="search"/>
 
     <View>
       <Text style={styles.nomeAppHome}>Opções Delivery</Text>
