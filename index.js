@@ -12,7 +12,8 @@ import { AtualizaCadastroScreen } from './src/cadastro/atualizaCadastro'
 import { AtualizaEnderecoScreen } from './src/cadastro/atualizaEndereco'
 import { ProfileScreen } from './src/home/profile'
 import { EstabelecimentosScreen } from './src/estabelecimentos/estabelecimentos'
-import { ProdutosScreen } from './src/produtos/produtos'
+import { ProdutosCardapioScreen } from './src/produtos/produtosCardapio'
+import { ProdutosInformacoesScreen } from './src/produtos/produtosCardapio'
 import * as firebase from 'firebase';
 
 const MyApp = TabNavigator({
@@ -52,7 +53,8 @@ const DeliveryPassa = StackNavigator({
   AtualizaCadastro: { screen: AtualizaCadastroScreen },
   AtualizaEndereco: { screen: AtualizaEnderecoScreen },
   Estabelecimentos: { screen: EstabelecimentosScreen},
-  Produtos: { screen: ProdutosScreen}
+  ProdutosCardapio: { screen: ProdutosCardapioScreen},
+  ProdutosCardapio: { screen: ProdutosCardapioScreen},
 },
   { headerMode: 'screen' }
 );
