@@ -3,7 +3,8 @@ console.ignoredYellowBox = [
 ]
 import * as firebase from 'firebase';
 
-export var estabelecimentos = []
+export var listaEstabelecimentos = []
+export var estabelecimentoInfo = []
 
 var todoCounter = 1;
 
@@ -187,9 +188,9 @@ export async function checkUserDetails(userExiste, userNaoExiste){
 
 }
 
-export async function getEstabelecimentos(tipoEstabelecimento){
+export async function getListaEstabelecimentos(tipoEstabelecimento){
   try{
-    estabelecimentos = []
+    listaEstabelecimentos = []
     firebase.database().ref("/tiposEstabelecimentos/"+tipoEstabelecimento).once('value').then(function(snapshot){
       var estabelecimentoData = snapshot.val()
       if(estabelecimentoData){
@@ -210,6 +211,25 @@ export async function getEstabelecimentos(tipoEstabelecimento){
   }
 }
 
-export async function getProdutos(idEstabelecimento){
-
+export async function getEstabelecimentoInfo(nomeEstabelecimento){
+  try{
+    estabelecimentoInfo = []
+    firebase.database().ref("/estabelecimentos/"+nomeEstabelecimento).once('value').then(function(snapshot){
+      var estabelecimentoData = snapshot.val()
+      if(estabelecimentoData){
+        snapshot.forEach((child) =>{
+          estabelecimentoInfo.push({
+            logo: child.val().logo,
+            nome: child.val().nome,
+            precoDelivery: child.val().precoDelivery,
+            tempoEntrega: child.val().tempoEntrega,
+            _id:todoCounter++
+          });
+        });
+      }
+      console.log("DATABASE estabelecimentos:"+JSON.stringify(estabelecimentoInfo))
+    })
+  } catch(error){
+    console.log(error)
+  }
 }

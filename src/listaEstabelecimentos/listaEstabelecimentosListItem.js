@@ -16,7 +16,7 @@ export default class EstabelecimentosListItem extends Component {
       <TouchableOpacity
         style={styles.containerListItem}
         onPress = {() => {
-          this.props.navigation.navigate('Produtos',{estabelecimento: this.props.estabelecimento})
+          this.props.navigation.navigate('Estabelecimento',{estabelecimento: this.props.estabelecimento})
         }}>
         <Image
           source={{uri:this.props.imglogoEstabelecimento}}

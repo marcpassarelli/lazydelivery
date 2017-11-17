@@ -146,8 +146,6 @@ export class LoginRegisterScreen extends Component {
       console.log('Login fail with error:  '+error);
     })
   }
-
-
   render(){
     return (
       <Image
@@ -164,5 +162,4 @@ export class LoginRegisterScreen extends Component {
       </Image>
     )
   }
-
 }

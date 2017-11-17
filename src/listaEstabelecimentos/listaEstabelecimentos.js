@@ -3,13 +3,12 @@ import React, { Component } from 'react';
 import { Image, Alert, View, Text, Button, ActivityIndicator, FlatList } from 'react-native'
 import { styles } from '../constants/constants'
 import * as firebase from 'firebase';
-import EstabelecimentosListItem from './estabelecimentosListItem'
-import {infoEstabelecimentos} from './infoEstabelecimentos'
-import {getEstabelecimentos, estabelecimentos} from '../firebase/database'
+import ListaEstabelecimentosListItem from './listaEstabelecimentosListItem'
+import {getListaEstabelecimentos, listaEstabelecimentos} from '../firebase/database'
 
 import _ from 'lodash'
 
-export class EstabelecimentosScreen extends Component{
+export class ListaEstabelecimentosScreen extends Component{
 
 
   static navigationOptions = {
@@ -19,7 +18,7 @@ constructor(props){
   super(props);
   this.state = {
     tipoEstabelecimento:'',
-    estabelecimentosUp:'',
+    listaEstabelecimentosUp:'',
     loading: false,
 
   }
@@ -66,8 +65,8 @@ componentDidMount(){
 
   console.log("antes getEstabelecimentos"+this.state.tipoEstabelecimento)
 
-  getEstabelecimentos(this.state.tipoEstabelecimento)
-  this.setState({estabelecimentosUp: estabelecimentos}, function(){
+  getListaEstabelecimentos(this.state.tipoEstabelecimento)
+  this.setState({listaEstabelecimentosUp: estabelecimentos}, function(){
     this.validateUserName()
   })
   if(estabelecimentos){
@@ -100,17 +99,17 @@ render() {
 
   <FlatList
     ItemSeparatorComponent={this.renderSeparator}
-    data= {this.state.estabelecimentosUp}
+    data= {this.state.listaEstabelecimentosUp}
     extraData={this.state}
     renderItem= {
       ({item}) =>
-      <EstabelecimentosListItem
+      <ListaEstabelecimentosListItem
         estabelecimento = {item.nome}
         imglogoEstabelecimento = {item.logo}
         valorDelivery = {item.precoDelivery}
         tempoEntrega = {item.tempoEntrega}
         navigation={this.props.navigation}>
-      </EstabelecimentosListItem>}
+      </ListaEstabelecimentosListItem>}
     keyExtractor={item => item._id}
     />
   </View>
