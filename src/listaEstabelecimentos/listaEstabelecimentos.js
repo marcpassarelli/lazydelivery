@@ -66,15 +66,14 @@ componentDidMount(){
   console.log("antes getEstabelecimentos"+this.state.tipoEstabelecimento)
 
   getListaEstabelecimentos(this.state.tipoEstabelecimento)
-  this.setState({listaEstabelecimentosUp: estabelecimentos}, function(){
+  this.setState({listaEstabelecimentosUp: listaEstabelecimentos}, function(){
     this.validateUserName()
   })
-  if(estabelecimentos){
+  if(listaEstabelecimentos){
   this.setState({
           loading: false
         });
     }
-  console.log("estabelecimentos"+JSON.stringify(this.state.estabelecimentosUp.logo))
 
 }
 

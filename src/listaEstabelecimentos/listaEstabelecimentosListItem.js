@@ -5,7 +5,7 @@ import { styles } from '../constants/constants'
 
 import _ from 'lodash'
 
-export default class EstabelecimentosListItem extends Component {
+export default class ListaEstabelecimentosListItem extends Component {
 
   render() {
     console.ignoredYellowBox = [

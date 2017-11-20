@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { Image, Alert, View, Text, Button, ActivityIndicator, FlatList } from 'react-native'
 import { styles } from '../constants/constants'
 import * as firebase from 'firebase';
-import ListaEstabelecimentosListItem from './listaEstabelecimentosListItem'
 import {getEstabelecimentoInfo, estabelecimentoInfo} from '../firebase/database'
 
 import _ from 'lodash'
@@ -112,13 +111,13 @@ render() {
     extraData={this.state}
     renderItem= {
       ({item}) =>
-      <ListaEstabelecimentosListItem
+      <EstabelecimentoProdutosListItem
         estabelecimento = {item.nome}
         imglogoEstabelecimento = {item.logo}
         valorDelivery = {item.precoDelivery}
         tempoEntrega = {item.tempoEntrega}
         navigation={this.props.navigation}>
-      </ListaEstabelecimentosListItem>}
+      </EstabelecimentoProdutosListItem>}
     keyExtractor={item => item._id}
     />
   </View>

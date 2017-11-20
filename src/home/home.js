@@ -6,7 +6,7 @@ import { checkUserDetails, getUserDetails, atualizarProfilePicture } from '../fi
 import * as firebase from 'firebase';
 import HomeListItem from './homeListItem'
 import {dadosTipoEstabelecimento} from './dadosTipoEstabelecimento'
-import { SearchBar } from 'react-native-elements'
+import { SearchBarEstabelecimentos } from './searchBarEstabelecimentos'
 
 import _ from 'lodash'
 
@@ -138,7 +138,7 @@ export class HomeScreen extends Component {
 
     <View style={styles.separator}></View>
 
-    <SearchBar
+    <SearchBarEstabelecimentos
       containerStyle={styles.searchBarContainer}
       style={styles.searchBar}
       inputStyle={styles.searchBarInput}

@@ -195,7 +195,7 @@ export async function getListaEstabelecimentos(tipoEstabelecimento){
       var estabelecimentoData = snapshot.val()
       if(estabelecimentoData){
         snapshot.forEach((child) =>{
-          estabelecimentos.push({
+          listaEstabelecimentos.push({
             logo: child.val().Logo,
             nome: child.val().Nome,
             precoDelivery: child.val().PreçoDelivery,
@@ -204,7 +204,7 @@ export async function getListaEstabelecimentos(tipoEstabelecimento){
           });
         });
       }
-      console.log("DATABASE estabelecimentos:"+JSON.stringify(estabelecimentos))
+      console.log("DATABASE estabelecimentos:"+JSON.stringify(estabelecimentoInfo))
     })
   } catch(error){
     console.log(error)
