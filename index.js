@@ -81,7 +81,7 @@ const DeliveryPassa = StackNavigator({
   AtualizaCadastro: { screen: AtualizaCadastroScreen },
   AtualizaEndereco: { screen: AtualizaEnderecoScreen },
   ListaEstabelecimentos: { screen: ListaEstabelecimentosScreen},
-  Estabelecimento: { screen: TabEstabelecimento},
+  Estabelecimento: { screen: EstabelecimentoInformacoesScreen},
 },
   { headerMode: 'screen' }
 );

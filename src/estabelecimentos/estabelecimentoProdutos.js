@@ -60,7 +60,7 @@ componentWillMount(){
   const {state} = this.props.navigation;
   var nomeEstabelecimentoUp = state.params ? state.params.nomeEstabelecimento : ""
 
-  if(tipoEstabelecimentoUp){
+  if(nomeEstabelecimentoUp){
   this.setState({nomeEstabelecimento: nomeEstabelecimentoUp}, function(){
     this.validateUserName()
 

@@ -211,6 +211,30 @@ export async function getListaEstabelecimentos(tipoEstabelecimento){
   }
 }
 
+export async function getEstabelecimentoProd(nomeEstabelecimento){
+  try{
+    estabelecimentoInfo = []
+    firebase.database().ref("/estabelecimentos/"+nomeEstabelecimento).once('value').then(function(snapshot){
+      var estabelecimentoData = snapshot.val()
+      if(estabelecimentoData){
+        snapshot.forEach((child) =>{
+          estabelecimentoInfo.push({
+            logo: child.val().logo,
+            nome: child.val().nome,
+            precoDelivery: child.val().precoDelivery,
+            tempoEntrega: child.val().tempoEntrega,
+            _id:todoCounter++
+          });
+        });
+      }
+      console.log("DATABASE estabelecimentos:"+JSON.stringify(estabelecimentoInfo))
+    })
+  } catch(error){
+    console.log(error)
+  }
+}
+
+
 export async function getEstabelecimentoInfo(nomeEstabelecimento){
   try{
     estabelecimentoInfo = []
@@ -223,6 +247,21 @@ export async function getEstabelecimentoInfo(nomeEstabelecimento){
             nome: child.val().nome,
             precoDelivery: child.val().precoDelivery,
             tempoEntrega: child.val().tempoEntrega,
+            segA:child.val().horarioFuncionamento.segunda.abertura,
+            segF:child.val().horarioFuncionamento.segunda.fechamento,
+            terA:child.val().horarioFuncionamento.terca.abertura,
+            terF:child.val().horarioFuncionamento.terca.fechamento,
+            quaA:child.val().horarioFuncionamento.quarta.abertura,
+            quaF:child.val().horarioFuncionamento.quarta.fechamento,
+            quiA:child.val().horarioFuncionamento.quinta.abertura,
+            quiF:child.val().horarioFuncionamento.quinta.fechamento,
+            sexA:child.val().horarioFuncionamento.sexta.abertura,
+            sexF:child.val().horarioFuncionamento.sexta.fechamento,
+            sabA:child.val().horarioFuncionamento.sabado.abertura,
+            sabF:child.val().horarioFuncionamento.sabado.fechamento,
+            domA:child.val().horarioFuncionamento.domingo.abertura,
+            domF:child.val().horarioFuncionamento.domingo.fechamento,
+
             _id:todoCounter++
           });
         });
