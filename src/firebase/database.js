@@ -204,7 +204,7 @@ export async function getListaEstabelecimentos(tipoEstabelecimento){
           });
         });
       }
-      console.log("DATABASE estabelecimentos:"+JSON.stringify(estabelecimentoInfo))
+      console.log("DATABASE estabelecimentos:"+JSON.stringify(listaEstabelecimentos.nome))
     })
   } catch(error){
     console.log(error)
@@ -241,32 +241,36 @@ export async function getEstabelecimentoInfo(nomeEstabelecimento){
     firebase.database().ref("/estabelecimentos/"+nomeEstabelecimento).once('value').then(function(snapshot){
       var estabelecimentoData = snapshot.val()
       if(estabelecimentoData){
-        snapshot.forEach((child) =>{
+        snapshot.forEach((childSnapshot) =>{
           estabelecimentoInfo.push({
-            logo: child.val().logo,
-            nome: child.val().nome,
-            precoDelivery: child.val().precoDelivery,
-            tempoEntrega: child.val().tempoEntrega,
-            segA:child.val().horarioFuncionamento.segunda.abertura,
-            segF:child.val().horarioFuncionamento.segunda.fechamento,
-            terA:child.val().horarioFuncionamento.terca.abertura,
-            terF:child.val().horarioFuncionamento.terca.fechamento,
-            quaA:child.val().horarioFuncionamento.quarta.abertura,
-            quaF:child.val().horarioFuncionamento.quarta.fechamento,
-            quiA:child.val().horarioFuncionamento.quinta.abertura,
-            quiF:child.val().horarioFuncionamento.quinta.fechamento,
-            sexA:child.val().horarioFuncionamento.sexta.abertura,
-            sexF:child.val().horarioFuncionamento.sexta.fechamento,
-            sabA:child.val().horarioFuncionamento.sabado.abertura,
-            sabF:child.val().horarioFuncionamento.sabado.fechamento,
-            domA:child.val().horarioFuncionamento.domingo.abertura,
-            domF:child.val().horarioFuncionamento.domingo.fechamento,
+            logo: childSnapshot.val(),
+            nome: estabelecimentoData.nome,
+            precoDelivery: estabelecimentoData.precoDelivery,
+            tempoEntrega: estabelecimentoData.tempoEntrega,
+            segA:estabelecimentoData.horarioFuncionamento.segunda.abertura,
+            // segF:child.val().horarioFuncionamento.segunda.fechamento,
+            // terA:child.val().horarioFuncionamento.terca.abertura,
+            // terF:child.val().horarioFuncionamento.terca.fechamento,
+            // quaA:child.val().horarioFuncionamento.quarta.abertura,
+            // quaF:child.val().horarioFuncionamento.quarta.fechamento,
+            // quiA:child.val().horarioFuncionamento.quinta.abertura,
+            // quiF:child.val().horarioFuncionamento.quinta.fechamento,
+            // sexA:child.val().horarioFuncionamento.sexta.abertura,
+            // sexF:child.val().horarioFuncionamento.sexta.fechamento,
+            // sabA:child.val().horarioFuncionamento.sabado.abertura,
+            // sabF:child.val().horarioFuncionamento.sabado.fechamento,
+            // domA:child.val().horarioFuncionamento.domingo.abertura,
+            // domF:child.val().horarioFuncionamento.domingo.fechamento,
 
             _id:todoCounter++
           });
         });
       }
-      console.log("DATABASE estabelecimentos:"+JSON.stringify(estabelecimentoInfo))
+      console.log("DATABASE Info Logo:"+JSON.stringify(estabelecimentoInfo))
+      console.log("DATABASE Info Nome:"+JSON.stringify(estabelecimentoInfo.nome))
+      console.log("DATABASE Info Preço Delivery:"+JSON.stringify(estabelecimentoInfo.precoDelivery))
+      console.log("DATABASE Info Tempo Entrega:"+JSON.stringify(estabelecimentoInfo.tempoEntrega))
+
     })
   } catch(error){
     console.log(error)

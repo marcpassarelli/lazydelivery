@@ -41,7 +41,7 @@ export class EstabelecimentoInformacoesScreen extends Component {
 
     const {state} = this.props.navigation;
     var nomeEstabelecimentoUp = state.params ? state.params.nomeEstabelecimento : ""
-
+    console.log("nomeEstabelecimentoUp"+nomeEstabelecimentoUp)
     if(nomeEstabelecimentoUp){
     this.setState({nomeEstabelecimento: nomeEstabelecimentoUp}, function(){
       this.validateUserName()
