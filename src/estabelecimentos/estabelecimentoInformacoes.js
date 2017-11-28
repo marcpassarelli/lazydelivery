@@ -12,25 +12,35 @@ import * as firebase from 'firebase';
 
 export class EstabelecimentoInformacoesScreen extends Component {
 
-  static navigationOptions = {
-    header: null,
-    tabBarLabel: 'Informações',
-    // Note: By default the icon is only shown on iOS. Search the showIcon option below.
-    tabBarIcon: ({ tintColor }) => (
-      <Image
-        source={require('../../img/shop-building.png')}
-        style={[styles.icon, {tintColor: tintColor}]}
-        />
-    ),
-  };
+  static navigationOptions = ({navigation}) => ({
+    title: navigation.state.params.nomeEstabelecimento,
+
+  });
 
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
       estabInfo:"",
-      nomeEstabelecimento:""
-
+      nomeEstabelecimento:"",
+      logo: "",
+      nome: "",
+      precoDelivery: "",
+      tempoEntrega: "",
+      segA: "",
+      segF: "",
+      terA: "",
+      terF: "",
+      quaA: "",
+      quaF: "",
+      quiA: "",
+      quiF: "",
+      sexA: "",
+      sexF: "",
+      sabA: "",
+      sabF: "",
+      domA: "",
+      domF: ""
     };
   }
 
@@ -44,32 +54,49 @@ export class EstabelecimentoInformacoesScreen extends Component {
     console.log("nomeEstabelecimentoUp"+nomeEstabelecimentoUp)
     if(nomeEstabelecimentoUp){
     this.setState({nomeEstabelecimento: nomeEstabelecimentoUp}, function(){
-      this.validateUserName()
+      this._callback()
 
     })
     }
 
   }
 
-  validateUserName(){
-    console.log("setState:"+this.state.estabInfo)
+  _callback(){
+    if(this.state.estabInfo){
+      console.log("setState:"+this.state.estabInfo)
+    }
     return this.state.estabInfo+""
   }
 
   componentDidMount(){
 
-    console.log("antes getEstabelecimentos"+this.state.tipoEstabelecimento)
-
-    getEstabelecimentoInfo(this.state.nomeEstabelecimento)
-    this.setState({estabInfo: estabelecimentoInfo}, function(){
-      this.validateUserName()
-    })
-    if(estabelecimentoInfo){
-    this.setState({
+    getEstabelecimentoInfo(this.state.nomeEstabelecimento, (logoUp, nomeUp, precoDeliveryUp, tempoEntregaUp, segAUp, segFUp, terAUp, terFUp, quaAUp, quaFUp, quiAUp, quiFUp, sexAUp, sexFUp, sabAUp, sabFUp, domAUp, domFUp)=>{
+      this.setState({
+          logo: logoUp,
+          nome: nomeUp,
+          precoDelivery: precoDeliveryUp,
+          tempoEntrega: tempoEntregaUp,
+          segA: segAUp,
+          segF: segFUp,
+          terA: terAUp,
+          terF: terFUp,
+          quaA: quaAUp,
+          quaF: quaFUp,
+          quiA: quiAUp,
+          quiF: quiFUp,
+          sexA: sexAUp,
+          sexF: sexFUp,
+          sabA: sabAUp,
+          sabF: sabFUp,
+          domA: domAUp,
+          domF: domFUp
+      })
+      this.setState({
             loading: false
           });
-      }
-    console.log("info"+JSON.stringify(this.state.estabInfo.logo))
+    })
+
+    console.log("nome"+this.state.logo)
 
   }
 
@@ -77,7 +104,7 @@ export class EstabelecimentoInformacoesScreen extends Component {
    render() {
 
      let imageProfile = {
-       uri: this.state.profilePicURL ? this.state.profilePicURL : 'require(../../img/makefg.png)'
+       uri: this.state.logo ? this.state.logo : 'require(../../img/makefg.png)'
      }
 
      const content = this.state.loading ?
@@ -90,23 +117,31 @@ export class EstabelecimentoInformacoesScreen extends Component {
      </View> :
 
      <View style={{flex:1}}>
+       <Text style={styles.nomeAppHome}>{this.state.nomeEstabelecimento}</Text>
+
        <Image
-         style={styles.imagemTipoEstabelecimento}
+         style={styles.imagemEstabInfo}
          source={{uri:imageProfile.uri}}/>
 
-       <Text style={styles.textProfileDetails}>Taxa Delivery: {this.state.nome} </Text>
-       <Text style={styles.textProfileDetails}>Tempo Estimado de Entrega: {this.state.telefone} </Text>
+       <View style={styles.separator}></View>
 
-       <Text style={styles.textProfileDetails}>Horários de Funcionamento</Text>
-       <Text style={styles.textProfileDetails}>Segunda-Feira: {this.state.estabInfo.segA} às {this.state.estabInfo.segF}</Text>
-       <Text style={styles.textProfileDetails}>Terça-Feira: {this.state.estabInfo.terA} às {this.state.estabInfo.terF}</Text>
-       <Text style={styles.textProfileDetails}>Quarta-Feira: {this.state.estabInfo.quaA} às {this.state.estabInfo.quaF}</Text>
-       <Text style={styles.textProfileDetails}>Quinta-Feira: {this.state.estabInfo.quiA} às {this.state.estabInfo.quiF}</Text>
-       <Text style={styles.textProfileDetails}>Sexta-Feira: {this.state.estabInfo.sexA} às {this.state.estabInfo.sexF}</Text>
-       <Text style={styles.textProfileDetails}>Sábado: {this.state.estabInfo.sabA} às {this.state.estabInfo.sabF}</Text>
-       <Text style={styles.textProfileDetails}>Domingo: {this.state.estabInfo.domA} às {this.state.estabInfo.domF}</Text>
+       <Text style={styles.textInformacoesD}>Taxa Delivery: {this.state.precoDelivery} </Text>
+       <Text style={styles.textInformacoesD}>Tempo Estimado de Entrega: {this.state.tempoEntrega} </Text>
 
-       <Text>Formas de Pagamento</Text>
+       <View style={styles.separator}></View>
+
+       <Text style={styles.textInformacoes}>Horários de Funcionamento</Text>
+       <Text style={styles.textInformacoesD}>Segunda-Feira: {this.state.segA} às {this.state.segF}</Text>
+       <Text style={styles.textInformacoesD}>Terça-Feira: {this.state.terA} às {this.state.terF}</Text>
+       <Text style={styles.textInformacoesD}>Quarta-Feira: {this.state.quaA} às {this.state.quaF}</Text>
+       <Text style={styles.textInformacoesD}>Quinta-Feira: {this.state.quiA} às {this.state.quiF}</Text>
+       <Text style={styles.textInformacoesD}>Sexta-Feira: {this.state.sexA} às {this.state.sexF}</Text>
+       <Text style={styles.textInformacoesD}>Sábado: {this.state.sabA} às {this.state.sabF}</Text>
+       <Text style={styles.textInformacoesD}>Domingo: {this.state.domA} às {this.state.domF}</Text>
+
+       <View style={styles.separator}></View>
+
+       <Text style={styles.textInformacoes}>Formas de Pagamento</Text>
 
        <View style={styles.separator}></View>
 
@@ -121,5 +156,3 @@ export class EstabelecimentoInformacoesScreen extends Component {
      );
      }
 }
-
-//export default Home

@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
-import { Image, Alert, View, Text, Button, ActivityIndicator, FlatList } from 'react-native'
-import { styles } from '../constants/constants'
+import { Image, Alert, View, Text, Button, ActivityIndicator, FlatList, Icon } from 'react-native'
+import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import ListaEstabelecimentosListItem from './listaEstabelecimentosListItem'
 import {getListaEstabelecimentos, listaEstabelecimentos} from '../firebase/database'
@@ -11,9 +11,12 @@ import _ from 'lodash'
 export class ListaEstabelecimentosScreen extends Component{
 
 
-  static navigationOptions = {
-    header: null,
-  }
+  static navigationOptions = ({navigation}) => ({
+    title: navigation.state.params.tipoEstabelecimento,
+    headerTitleStyle: { color: cores.corPrincipal, textAlign: 'center', alignSelf:'center' },
+    headerRight: (<View></View>)
+  });
+
 constructor(props){
   super(props);
   this.state = {
@@ -81,7 +84,7 @@ render() {
   console.ignoredYellowBox = [
     'Setting a timer'
   ]
-
+  const { goBack } = this.props.navigation;
   const content = this.state.loading ?
 
   <View style={styles.containerIndicator}>
@@ -92,9 +95,6 @@ render() {
   </View> :
 
   <View style={{flex:1}}>
-  <View>
-    <Text style={styles.nomeAppHome}>{this.state.tipoEstabelecimento}</Text>
-  </View>
 
   <FlatList
     ItemSeparatorComponent={this.renderSeparator}
@@ -114,9 +114,11 @@ render() {
   </View>
 
   return (
+
     <Image
       source={require('../../img/alimentos-fundo2.jpg')}
       style={styles.backgroundImage}>
+      <View style={styles.separator}></View>
       {content}
     </Image>
 );

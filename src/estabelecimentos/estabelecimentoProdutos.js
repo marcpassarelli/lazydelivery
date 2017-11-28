@@ -3,24 +3,18 @@ import React, { Component } from 'react';
 import { Image, Alert, View, Text, Button, ActivityIndicator, FlatList } from 'react-native'
 import { styles } from '../constants/constants'
 import * as firebase from 'firebase';
-import {getEstabelecimentoInfo, estabelecimentoInfo} from '../firebase/database'
+import {getEstabelecimentoProd, estabelecimentoProd} from '../firebase/database'
 
 import _ from 'lodash'
 
 export class EstabelecimentoProdutosScreen extends Component{
 
 
-  static navigationOptions = {
-    header: null,
-    tabBarLabel: 'Produtos',
-    // Note: By default the icon is only shown on iOS. Search the showIcon option below.
-    tabBarIcon: ({ tintColor }) => (
-      <Image
-        source={require('../../img/shop-building.png')}
-        style={[styles.icon, {tintColor: tintColor}]}
-        />
-    ),
-  };
+  static navigationOptions = ({navigation}) => ({
+    title: navigation.state.params.nomeEstabelecimento,
+    headerTitleStyle: { color: cores.corPrincipal, textAlign: 'center', alignSelf:'center' },
+    headerRight: (<View></View>)
+  });
 
 constructor(props){
   super(props);
@@ -73,7 +67,7 @@ componentDidMount(){
 
   console.log("antes getEstabelecimentos"+this.state.tipoEstabelecimento)
 
-  getEstabelecimentos(this.state.nomeEstabelecimento)
+  getEstabelecimentoProd(this.state.nomeEstabelecimento)
   this.setState({estabelecimentoUp: estabelecimentoInfo}, function(){
     this.validateUserName()
   })

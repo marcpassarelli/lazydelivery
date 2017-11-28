@@ -19,8 +19,8 @@ export default class EstabelecimentoProdutosListItem extends Component {
           this.props.navigation.navigate('Produtos',{estabelecimento: this.props.estabelecimento})
         }}>
         <Image
-          source={{uri:this.props.imglogoEstabelecimento}}
-          style={styles.imagemTipoEstabelecimento}
+          source={{uri:this.props.imgProduto}}
+          style={styles.imgProduto}
           />
         <View>
           <Text style={styles.textEstabelecimento}>{this.props.estabelecimento}</Text>

@@ -4,7 +4,7 @@ console.ignoredYellowBox = [
 import { StyleSheet, Alert, Navigator } from 'react-native';
 import React, { Component } from 'react';
 
-const cores = {
+export const cores = {
     corPrincipal: '#8b0000',
     textDetalhes:'#2F4F4F',
 };
@@ -79,7 +79,7 @@ export const styles = StyleSheet.create({
    fontWeight:'bold'
  },
  separator:{
-   height:10
+   height:15
  },
  icon: {
   width: 20,
@@ -104,7 +104,7 @@ containerListItem:{
   flexDirection:'row',
   height:60,
   alignItems:'center',
-  marginLeft:5,
+  marginLeft:15,
   marginRight:5,
   marginBottom:10,
   flex:1
@@ -150,5 +150,24 @@ textDetalhesEstabelecimento:{
   marginLeft: 5,
   fontSize: 13,
   color: cores.textDetalhes
+},
+textInformacoes:{
+  marginLeft:15,
+  fontSize: 17,
+  color:cores.corPrincipal
+},
+textInformacoesD: {
+  marginLeft:15,
+  fontSize: 16,
+  color:cores.textDetalhes
+},
+imagemEstabInfo:{
+  height: 85,
+  width: 85,
+  alignSelf: 'center',
+  borderRadius: 60,
+  borderWidth: 1,
+  borderColor:cores.corPrincipal,
+  resizeMode:'cover'
 },
 });

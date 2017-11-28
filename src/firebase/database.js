@@ -204,7 +204,7 @@ export async function getListaEstabelecimentos(tipoEstabelecimento){
           });
         });
       }
-      console.log("DATABASE estabelecimentos:"+JSON.stringify(listaEstabelecimentos.nome))
+      console.log("DATABASE estabelecimentos:"+JSON.stringify(listaEstabelecimentos))
     })
   } catch(error){
     console.log(error)
@@ -235,41 +235,37 @@ export async function getEstabelecimentoProd(nomeEstabelecimento){
 }
 
 
-export async function getEstabelecimentoInfo(nomeEstabelecimento){
+export async function getEstabelecimentoInfo(nomeEstabelecimento, callback){
   try{
     estabelecimentoInfo = []
     firebase.database().ref("/estabelecimentos/"+nomeEstabelecimento).once('value').then(function(snapshot){
       var estabelecimentoData = snapshot.val()
+      var logo, nome, precoDelivery, tempoEntrega, segA, segF, terA, terF, quaA, quaF, quiA, quiF, sexA, sexF, sabA, sabF, domA, domF, cre, deb, din  = "";
       if(estabelecimentoData){
-        snapshot.forEach((childSnapshot) =>{
-          estabelecimentoInfo.push({
-            logo: childSnapshot.val(),
-            nome: estabelecimentoData.nome,
-            precoDelivery: estabelecimentoData.precoDelivery,
-            tempoEntrega: estabelecimentoData.tempoEntrega,
-            segA:estabelecimentoData.horarioFuncionamento.segunda.abertura,
-            // segF:child.val().horarioFuncionamento.segunda.fechamento,
-            // terA:child.val().horarioFuncionamento.terca.abertura,
-            // terF:child.val().horarioFuncionamento.terca.fechamento,
-            // quaA:child.val().horarioFuncionamento.quarta.abertura,
-            // quaF:child.val().horarioFuncionamento.quarta.fechamento,
-            // quiA:child.val().horarioFuncionamento.quinta.abertura,
-            // quiF:child.val().horarioFuncionamento.quinta.fechamento,
-            // sexA:child.val().horarioFuncionamento.sexta.abertura,
-            // sexF:child.val().horarioFuncionamento.sexta.fechamento,
-            // sabA:child.val().horarioFuncionamento.sabado.abertura,
-            // sabF:child.val().horarioFuncionamento.sabado.fechamento,
-            // domA:child.val().horarioFuncionamento.domingo.abertura,
-            // domF:child.val().horarioFuncionamento.domingo.fechamento,
+            logo = estabelecimentoData.logo
+            nome = estabelecimentoData.nome
+            precoDelivery = estabelecimentoData.precoDelivery
+            tempoEntrega = estabelecimentoData.tempoEntrega
+            segA = estabelecimentoData.horarioFuncionamento.segunda.abertura
+            segF = estabelecimentoData.horarioFuncionamento.segunda.fechamento
+            terA = estabelecimentoData.horarioFuncionamento.terca.abertura
+            terF = estabelecimentoData.horarioFuncionamento.terca.fechamento
+            quaA = estabelecimentoData.horarioFuncionamento.quarta.abertura
+            quaF = estabelecimentoData.horarioFuncionamento.quarta.fechamento
+            quiA = estabelecimentoData.horarioFuncionamento.quinta.abertura
+            quiF = estabelecimentoData.horarioFuncionamento.quinta.fechamento
+            sexA = estabelecimentoData.horarioFuncionamento.sexta.abertura
+            sexF = estabelecimentoData.horarioFuncionamento.sexta.fechamento
+            sabA = estabelecimentoData.horarioFuncionamento.sabado.abertura
+            sabF = estabelecimentoData.horarioFuncionamento.sabado.fechamento
+            domA = estabelecimentoData.horarioFuncionamento.domingo.abertura
+            domF = estabelecimentoData.horarioFuncionamento.domingo.fechamento
+            cre = estabelecimentoData.formaPagamento.credito
+            deb = estabelecimentoData.formaPagamento.debito
+            din = estabelecimentoData.formaPagamento.dinheiro
+          }
+      callback(logo, nome, precoDelivery, tempoEntrega, segA, segF, terA, terF, quaA, quaF, quiA, quiF, sexA, sexF, sabA, sabF, domA, domF, cre, deb, din)
 
-            _id:todoCounter++
-          });
-        });
-      }
-      console.log("DATABASE Info Logo:"+JSON.stringify(estabelecimentoInfo))
-      console.log("DATABASE Info Nome:"+JSON.stringify(estabelecimentoInfo.nome))
-      console.log("DATABASE Info Preço Delivery:"+JSON.stringify(estabelecimentoInfo.precoDelivery))
-      console.log("DATABASE Info Tempo Entrega:"+JSON.stringify(estabelecimentoInfo.tempoEntrega))
 
     })
   } catch(error){
