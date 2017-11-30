@@ -162,12 +162,21 @@ textInformacoesD: {
   color:cores.textDetalhes
 },
 imagemEstabInfo:{
-  height: 85,
-  width: 85,
+  height: 100,
+  width: 100,
   alignSelf: 'center',
-  borderRadius: 60,
+  borderRadius: 20,
   borderWidth: 1,
   borderColor:cores.corPrincipal,
   resizeMode:'cover'
 },
+imgProduto:{
+  alignSelf: 'center',
+  resizeMode: 'cover',
+  flex: 1,
+  backgroundColor: 'rgba(0,0,0,0.7)',
+ // resizeMode: 'cover', // or 'stretch'
+  height: null,
+  width: null,
+}
 });

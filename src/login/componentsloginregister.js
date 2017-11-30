@@ -18,6 +18,7 @@ export default ComponentsLoginRegister = (props) => {
             onChangeText = {props.updateEmail}
             labelStyle={{ color: '#8b0000' }}
             borderColor={'#8b0000'}
+            returnKeyType="next"
            />
           <Hoshi
             style={styles.labelCadastro}
@@ -26,6 +27,7 @@ export default ComponentsLoginRegister = (props) => {
             onChangeText = {props.updateSenha}
             secureTextEntry = {true}
             borderColor={'#8b0000'}
+            returnKeyType="done"
           />
         <View style={styles.separator} />
           <TouchableOpacity

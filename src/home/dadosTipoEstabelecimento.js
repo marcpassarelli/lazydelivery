@@ -25,6 +25,6 @@ export const dadosTipoEstabelecimento = [
   },
   {
     tipoEstabelecimento: "Bebidas",
-    logo: "https://firebasestorage.googleapis.com/v0/b/deliveryaltamira.appspot.com/o/tipoEstabelecimento%2Fbebidas.jpg?alt=media&token=ac394dac-4601-4005-a011-1cea7aa85c5b",
+    logo: "https://firebasestorage.googleapis.com/v0/b/deliveryaltamira.appspot.com/o/tipoEstabelecimento%2Fbebidas.jpg?alt=media&token=340b991b-2084-4ee4-aa42-d024214ee24c",
   }
 ];

@@ -240,7 +240,8 @@ export async function getEstabelecimentoInfo(nomeEstabelecimento, callback){
     estabelecimentoInfo = []
     firebase.database().ref("/estabelecimentos/"+nomeEstabelecimento).once('value').then(function(snapshot){
       var estabelecimentoData = snapshot.val()
-      var logo, nome, precoDelivery, tempoEntrega, segA, segF, terA, terF, quaA, quaF, quiA, quiF, sexA, sexF, sabA, sabF, domA, domF, cre, deb, din  = "";
+      var logo, nome, precoDelivery, tempoEntrega, segA, segF, terA, terF,
+      quaA, quaF, quiA, quiF, sexA, sexF, sabA, sabF, domA, domF, cre, deb, din  = "";
       if(estabelecimentoData){
             logo = estabelecimentoData.logo
             nome = estabelecimentoData.nome
@@ -264,6 +265,10 @@ export async function getEstabelecimentoInfo(nomeEstabelecimento, callback){
             deb = estabelecimentoData.formaPagamento.debito
             din = estabelecimentoData.formaPagamento.dinheiro
           }
+          console.log("credito: "+JSON.stringify(cre))
+          console.log("debito: "+JSON.stringify(deb))
+          console.log("dinheiro: "+din)
+
       callback(logo, nome, precoDelivery, tempoEntrega, segA, segF, terA, terF, quaA, quaF, quiA, quiF, sexA, sexF, sabA, sabF, domA, domF, cre, deb, din)
 
 

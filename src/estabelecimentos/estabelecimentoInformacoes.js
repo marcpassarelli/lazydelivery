@@ -4,7 +4,7 @@ console.ignoredYellowBox = [
 
 import React, { Component } from 'react';
 import { Image, Alert, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'
-import { styles } from '../constants/constants'
+import { styles,cores } from '../constants/constants'
 import { getEstabelecimentoInfo, estabelecimentoInfo } from '../firebase/database'
 import * as firebase from 'firebase';
 
@@ -14,7 +14,8 @@ export class EstabelecimentoInformacoesScreen extends Component {
 
   static navigationOptions = ({navigation}) => ({
     title: navigation.state.params.nomeEstabelecimento,
-
+    headerTitleStyle: { color: cores.corPrincipal, textAlign: 'center', alignSelf:'center', fontSize:24 },
+    headerRight: (<View></View>)
   });
 
   constructor(props) {
@@ -40,7 +41,10 @@ export class EstabelecimentoInformacoesScreen extends Component {
       sabA: "",
       sabF: "",
       domA: "",
-      domF: ""
+      domF: "",
+      deb: "",
+      cre: "",
+      din: ""
     };
   }
 
@@ -70,7 +74,9 @@ export class EstabelecimentoInformacoesScreen extends Component {
 
   componentDidMount(){
 
-    getEstabelecimentoInfo(this.state.nomeEstabelecimento, (logoUp, nomeUp, precoDeliveryUp, tempoEntregaUp, segAUp, segFUp, terAUp, terFUp, quaAUp, quaFUp, quiAUp, quiFUp, sexAUp, sexFUp, sabAUp, sabFUp, domAUp, domFUp)=>{
+    getEstabelecimentoInfo(this.state.nomeEstabelecimento, (logoUp, nomeUp, precoDeliveryUp,
+      tempoEntregaUp, segAUp, segFUp, terAUp, terFUp, quaAUp, quaFUp, quiAUp, quiFUp, sexAUp,
+      sexFUp, sabAUp, sabFUp, domAUp, domFUp, creUp, debUp, dinUp)=>{
       this.setState({
           logo: logoUp,
           nome: nomeUp,
@@ -89,7 +95,10 @@ export class EstabelecimentoInformacoesScreen extends Component {
           sabA: sabAUp,
           sabF: sabFUp,
           domA: domAUp,
-          domF: domFUp
+          domF: domFUp,
+          cre: creUp,
+          deb: debUp,
+          din: dinUp
       })
       this.setState({
             loading: false
@@ -117,8 +126,7 @@ export class EstabelecimentoInformacoesScreen extends Component {
      </View> :
 
      <View style={{flex:1}}>
-       <Text style={styles.nomeAppHome}>{this.state.nomeEstabelecimento}</Text>
-
+       <View style={styles.separator}></View>
        <Image
          style={styles.imagemEstabInfo}
          source={{uri:imageProfile.uri}}/>

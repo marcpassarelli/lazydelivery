@@ -13,7 +13,7 @@ export class ListaEstabelecimentosScreen extends Component{
 
   static navigationOptions = ({navigation}) => ({
     title: navigation.state.params.tipoEstabelecimento,
-    headerTitleStyle: { color: cores.corPrincipal, textAlign: 'center', alignSelf:'center' },
+    headerTitleStyle: { color: cores.corPrincipal, textAlign: 'center', alignSelf:'center', fontSize:24 },
     headerRight: (<View></View>)
   });
 
@@ -41,7 +41,7 @@ renderSeparator = () => {
  );
 };
 
-validateUserName(){
+_callback(){
   console.log("setState:"+this.state.tipoEstabelecimento)
   return this.state.tipoEstabelecimento+""
 }
@@ -57,8 +57,7 @@ componentWillMount(){
 
   if(tipoEstabelecimentoUp){
   this.setState({tipoEstabelecimento: tipoEstabelecimentoUp}, function(){
-    this.validateUserName()
-
+    this._callback()
   })
   }
 
@@ -70,13 +69,11 @@ componentDidMount(){
 
   getListaEstabelecimentos(this.state.tipoEstabelecimento)
   this.setState({listaEstabelecimentosUp: listaEstabelecimentos}, function(){
-    this.validateUserName()
+    this._callback,
+    this.setState({
+        loading: false
+      });
   })
-  if(listaEstabelecimentos){
-  this.setState({
-          loading: false
-        });
-    }
 
 }
 
@@ -84,6 +81,8 @@ render() {
   console.ignoredYellowBox = [
     'Setting a timer'
   ]
+
+
   const { goBack } = this.props.navigation;
   const content = this.state.loading ?
 
