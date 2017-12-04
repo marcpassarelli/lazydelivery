@@ -5,9 +5,6 @@ import * as firebase from "firebase";
 
 export class Firebase {
 
-    /**
-     * Initialises Firebase
-     */
     static initialize() {
         firebase.initializeApp({
               apiKey: "AIzaSyDEg_vdMB9UiCpBv2mVnksveSI___aNP5I",
@@ -18,5 +15,4 @@ export class Firebase {
               messagingSenderId: "752201168315"
         });
     }
-
 }

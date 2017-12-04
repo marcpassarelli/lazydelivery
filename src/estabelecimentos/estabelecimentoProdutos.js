@@ -106,10 +106,10 @@ render() {
     renderItem= {
       ({item}) =>
       <EstabelecimentoProdutosListItem
-        estabelecimento = {item.nome}
-        imglogoEstabelecimento = {item.logo}
-        valorDelivery = {item.precoDelivery}
-        tempoEntrega = {item.tempoEntrega}
+        imgProduto = {item.imgProduto}
+        nomeProduto = {item.nomeProduto}
+        preco = {item.preco}
+        detalhes = {item.detalhes}
         navigation={this.props.navigation}>
       </EstabelecimentoProdutosListItem>}
     keyExtractor={item => item._id}
