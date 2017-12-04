@@ -153,11 +153,16 @@ textDetalhesEstabelecimento:{
 },
 textInformacoes:{
   marginLeft:15,
-  fontSize: 17,
+  fontSize: 18,
   color:cores.corPrincipal
 },
+textInformacoes2:{
+  marginLeft:20,
+  fontSize:17,
+  color:cores.textDetalhes
+},
 textInformacoesD: {
-  marginLeft:15,
+  marginLeft:30,
   fontSize: 16,
   color:cores.textDetalhes
 },

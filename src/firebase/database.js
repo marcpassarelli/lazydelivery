@@ -4,7 +4,7 @@ console.ignoredYellowBox = [
 import * as firebase from 'firebase';
 
 export var listaEstabelecimentos = []
-export var estabelecimentoInfo = []
+export var estabelecimentoProd = []
 
 var todoCounter = 1;
 
@@ -213,16 +213,16 @@ export async function getListaEstabelecimentos(tipoEstabelecimento){
 
 export async function getEstabelecimentoProd(nomeEstabelecimento){
   try{
-    estabelecimentoInfo = []
-    firebase.database().ref("/estabelecimentos/"+nomeEstabelecimento).once('value').then(function(snapshot){
+    estabelecimentoProd = []
+    firebase.database().ref("/produtos/"+nomeEstabelecimento).once('value').then(function(snapshot){
       var estabelecimentoData = snapshot.val()
       if(estabelecimentoData){
         snapshot.forEach((child) =>{
-          estabelecimentoInfo.push({
-            logo: child.val().logo,
-            nome: child.val().nome,
-            precoDelivery: child.val().precoDelivery,
-            tempoEntrega: child.val().tempoEntrega,
+          estabelecimentoProd.push({
+            imgProduto: child.val().imgProduto,
+            nomeProduto: child.val().nomeProduto,
+            preco: child.val().preco,
+            detalhes: child.val().detalhes,
             _id:todoCounter++
           });
         });
@@ -240,38 +240,79 @@ export async function getEstabelecimentoInfo(nomeEstabelecimento, callback){
     estabelecimentoInfo = []
     firebase.database().ref("/estabelecimentos/"+nomeEstabelecimento).once('value').then(function(snapshot){
       var estabelecimentoData = snapshot.val()
-      var logo, nome, precoDelivery, tempoEntrega, segA, segF, terA, terF,
-      quaA, quaF, quiA, quiF, sexA, sexF, sabA, sabF, domA, domF, cre, deb, din  = "";
-      var cre, deb = []
+      var logo, nome, precoDelivery, tempoEntrega, seg, ter, qua, qui, sex, sab, dom, cre, deb, din  = "";
       if(estabelecimentoData){
             logo = estabelecimentoData.logo
             nome = estabelecimentoData.nome
             precoDelivery = estabelecimentoData.precoDelivery
             tempoEntrega = estabelecimentoData.tempoEntrega
-            segA = estabelecimentoData.horarioFuncionamento.segunda.abertura
-            segF = estabelecimentoData.horarioFuncionamento.segunda.fechamento
-            terA = estabelecimentoData.horarioFuncionamento.terca.abertura
-            terF = estabelecimentoData.horarioFuncionamento.terca.fechamento
-            quaA = estabelecimentoData.horarioFuncionamento.quarta.abertura
-            quaF = estabelecimentoData.horarioFuncionamento.quarta.fechamento
-            quiA = estabelecimentoData.horarioFuncionamento.quinta.abertura
-            quiF = estabelecimentoData.horarioFuncionamento.quinta.fechamento
-            sexA = estabelecimentoData.horarioFuncionamento.sexta.abertura
-            sexF = estabelecimentoData.horarioFuncionamento.sexta.fechamento
-            sabA = estabelecimentoData.horarioFuncionamento.sabado.abertura
-            sabF = estabelecimentoData.horarioFuncionamento.sabado.fechamento
-            domA = estabelecimentoData.horarioFuncionamento.domingo.abertura
-            domF = estabelecimentoData.horarioFuncionamento.domingo.fechamento
+
+            if(estabelecimentoData.horarioFuncionamento.segunda.abertura=="fechado"){
+              seg = "Fechado"
+            }else{
+              seg = estabelecimentoData.horarioFuncionamento.segunda.abertura+" às "+
+              estabelecimentoData.horarioFuncionamento.segunda.fechamento
+            }
+
+            if(estabelecimentoData.horarioFuncionamento.terca.abertura=="fechado"){
+              ter = "Fechado"
+            }else{
+              ter = estabelecimentoData.horarioFuncionamento.terca.abertura+" às "+
+              estabelecimentoData.horarioFuncionamento.terca.fechamento
+            }
+
+            if(estabelecimentoData.horarioFuncionamento.quarta.abertura=="fechado"){
+              qua = "Fechado"
+            }else{
+              qua = estabelecimentoData.horarioFuncionamento.quarta.abertura+" às "+
+              estabelecimentoData.horarioFuncionamento.quarta.fechamento
+            }
+
+            if(estabelecimentoData.horarioFuncionamento.quinta.abertura=="fechado"){
+              qui = "Fechado"
+            }else{
+              qui = estabelecimentoData.horarioFuncionamento.quinta.abertura+" às "+
+              estabelecimentoData.horarioFuncionamento.quinta.fechamento
+            }
+
+            if(estabelecimentoData.horarioFuncionamento.sexta.abertura=="fechado"){
+              sex = "Fechado"
+            }else{
+              sex = estabelecimentoData.horarioFuncionamento.sexta.abertura+" às "+
+              estabelecimentoData.horarioFuncionamento.sexta.fechamento
+            }
+
+            if(estabelecimentoData.horarioFuncionamento.sabado.abertura=="fechado"){
+              sab = "Fechado"
+            }else{
+              sab = estabelecimentoData.horarioFuncionamento.sabado.abertura+" às "+
+              estabelecimentoData.horarioFuncionamento.sabado.fechamento
+            }
+
+            if(estabelecimentoData.horarioFuncionamento.domingo.abertura=="fechado"){
+              dom = "Fechado"
+            }else{
+              dom = estabelecimentoData.horarioFuncionamento.domingo.abertura+" às "+
+              estabelecimentoData.horarioFuncionamento.domingo.fechamento
+            }
+
+
             cre = estabelecimentoData.formaPagamento.credito
             deb = estabelecimentoData.formaPagamento.debito
-            din = estabelecimentoData.formaPagamento.dinheiro
+
+            if(estabelecimentoData.formaPagamento.dinheiro=="s"){
+                din = "Dinheiro"
+            }else{
+              din = ""
+            }
+
           }
           console.log("credito: "+JSON.stringify(cre))
           console.log("debito: "+JSON.stringify(deb))
           console.log("dinheiro: "+din)
 
-      callback(logo, nome, precoDelivery, tempoEntrega, segA, segF, terA, terF,
-        quaA, quaF, quiA, quiF, sexA, sexF, sabA, sabF, domA, domF, cre, deb, din)
+      callback(logo, nome, precoDelivery, tempoEntrega, seg, ter,
+        qua, qui, sex, sab, dom, cre, deb, din)
 
 
     })

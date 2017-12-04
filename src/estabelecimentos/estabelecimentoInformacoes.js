@@ -28,20 +28,13 @@ export class EstabelecimentoInformacoesScreen extends Component {
       nome: "",
       precoDelivery: "",
       tempoEntrega: "",
-      segA: "",
-      segF: "",
-      terA: "",
-      terF: "",
-      quaA: "",
-      quaF: "",
-      quiA: "",
-      quiF: "",
-      sexA: "",
-      sexF: "",
-      sabA: "",
-      sabF: "",
-      domA: "",
-      domF: "",
+      seg: "",
+      ter: "",
+      qua: "",
+      qui: "",
+      sex: "",
+      sab: "",
+      dom: "",
       deb: "",
       cre: "",
       din: ""
@@ -73,45 +66,22 @@ export class EstabelecimentoInformacoesScreen extends Component {
     return this.state.estabInfo+""
   }
 
-
-  getFormasPgto(){
-    if(this.state.din == "s"){
-      formasPgto.push("Dinheiro")
-    }
-
-    if(this.state.cre){
-      
-    }
-
-    if(this.state.deb){
-
-    }
-  }
-
   componentDidMount(){
 
     getEstabelecimentoInfo(this.state.nomeEstabelecimento, (logoUp, nomeUp, precoDeliveryUp,
-      tempoEntregaUp, segAUp, segFUp, terAUp, terFUp, quaAUp, quaFUp, quiAUp, quiFUp, sexAUp,
-      sexFUp, sabAUp, sabFUp, domAUp, domFUp, creUp, debUp, dinUp)=>{
+      tempoEntregaUp, segUp, terUp, quaUp, quiUp, sexUp, sabUp, domUp, creUp, debUp, dinUp)=>{
       this.setState({
           logo: logoUp,
           nome: nomeUp,
           precoDelivery: precoDeliveryUp,
           tempoEntrega: tempoEntregaUp,
-          segA: segAUp,
-          segF: segFUp,
-          terA: terAUp,
-          terF: terFUp,
-          quaA: quaAUp,
-          quaF: quaFUp,
-          quiA: quiAUp,
-          quiF: quiFUp,
-          sexA: sexAUp,
-          sexF: sexFUp,
-          sabA: sabAUp,
-          sabF: sabFUp,
-          domA: domAUp,
-          domF: domFUp,
+          seg: segUp,
+          ter: terUp,
+          qua: quaUp,
+          qui: quiUp,
+          sex: sexUp,
+          sab: sabUp,
+          dom: domUp,
           cre: creUp,
           deb: debUp,
           din: dinUp
@@ -149,26 +119,28 @@ export class EstabelecimentoInformacoesScreen extends Component {
 
        <View style={styles.separator}></View>
 
-       <Text style={styles.textInformacoesD}>Taxa Delivery: {this.state.precoDelivery} </Text>
-       <Text style={styles.textInformacoesD}>Tempo Estimado de Entrega: {this.state.tempoEntrega} </Text>
+       <Text style={styles.textInformacoes}>Taxa Delivery: {this.state.precoDelivery} </Text>
+       <Text style={styles.textInformacoes}>Tempo Estimado de Entrega: {this.state.tempoEntrega} </Text>
 
        <View style={styles.separator}></View>
 
        <Text style={styles.textInformacoes}>Horários de Funcionamento</Text>
-       <Text style={styles.textInformacoesD}>Segunda-Feira: {this.state.segA} às {this.state.segF}</Text>
-       <Text style={styles.textInformacoesD}>Terça-Feira: {this.state.terA} às {this.state.terF}</Text>
-       <Text style={styles.textInformacoesD}>Quarta-Feira: {this.state.quaA} às {this.state.quaF}</Text>
-       <Text style={styles.textInformacoesD}>Quinta-Feira: {this.state.quiA} às {this.state.quiF}</Text>
-       <Text style={styles.textInformacoesD}>Sexta-Feira: {this.state.sexA} às {this.state.sexF}</Text>
-       <Text style={styles.textInformacoesD}>Sábado: {this.state.sabA} às {this.state.sabF}</Text>
-       <Text style={styles.textInformacoesD}>Domingo: {this.state.domA} às {this.state.domF}</Text>
+       <Text style={styles.textInformacoesD}>Segunda-Feira: {this.state.seg}</Text>
+       <Text style={styles.textInformacoesD}>Terça-Feira: {this.state.ter}</Text>
+       <Text style={styles.textInformacoesD}>Quarta-Feira: {this.state.qua}</Text>
+       <Text style={styles.textInformacoesD}>Quinta-Feira: {this.state.qui}</Text>
+       <Text style={styles.textInformacoesD}>Sexta-Feira: {this.state.sex}</Text>
+       <Text style={styles.textInformacoesD}>Sábado: {this.state.sab}</Text>
+       <Text style={styles.textInformacoesD}>Domingo: {this.state.dom}</Text>
 
        <View style={styles.separator}></View>
 
        <Text style={styles.textInformacoes}>Formas de Pagamento</Text>
-       <Text style={styles.textInformacoesD}>Crédito: {}</Text>
-       <Text style={styles.textInformacoesD}>Débito: {}</Text>
-       <Text style={styles.textInformacoesD}>Dinheiro: {}</Text>
+       <Text style={styles.textInformacoes2}>Crédito:</Text>
+       <Text style={styles.textInformacoesD}>{this.state.cre}</Text>
+       <Text style={styles.textInformacoes2}>Débito:</Text>
+       <Text style={styles.textInformacoesD}>{this.state.deb}</Text>
+       <Text style={styles.textInformacoes2}>{this.state.din}</Text>
 
        <View style={styles.separator}></View>
 
