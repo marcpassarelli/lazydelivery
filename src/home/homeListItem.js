@@ -20,7 +20,7 @@ export default class HomeListItem extends Component {
           this.props.navigation.navigate('ListaEstabelecimentos',{tipoEstabelecimento: this.props.tipoEstabelecimento})
         }}>
         <Image
-          source={{uri:this.props.imglogo}}
+          source={this.props.imglogo}
           style={styles.imagemTipoEstabelecimento}
           />
         <View>

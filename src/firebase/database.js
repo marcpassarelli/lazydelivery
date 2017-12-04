@@ -242,6 +242,7 @@ export async function getEstabelecimentoInfo(nomeEstabelecimento, callback){
       var estabelecimentoData = snapshot.val()
       var logo, nome, precoDelivery, tempoEntrega, segA, segF, terA, terF,
       quaA, quaF, quiA, quiF, sexA, sexF, sabA, sabF, domA, domF, cre, deb, din  = "";
+      var cre, deb = []
       if(estabelecimentoData){
             logo = estabelecimentoData.logo
             nome = estabelecimentoData.nome
@@ -269,7 +270,8 @@ export async function getEstabelecimentoInfo(nomeEstabelecimento, callback){
           console.log("debito: "+JSON.stringify(deb))
           console.log("dinheiro: "+din)
 
-      callback(logo, nome, precoDelivery, tempoEntrega, segA, segF, terA, terF, quaA, quaF, quiA, quiF, sexA, sexF, sabA, sabF, domA, domF, cre, deb, din)
+      callback(logo, nome, precoDelivery, tempoEntrega, segA, segF, terA, terF,
+        quaA, quaF, quiA, quiF, sexA, sexF, sabA, sabF, domA, domF, cre, deb, din)
 
 
     })

@@ -1,30 +1,30 @@
 export const dadosTipoEstabelecimento = [
   {
     tipoEstabelecimento: "Restaurantes",
-    logo: "https://firebasestorage.googleapis.com/v0/b/deliveryaltamira.appspot.com/o/tipoEstabelecimento%2Frestaurantes.png?alt=media&token=e7cf7f35-4023-4380-8749-33247d171b7e",
+    logo: require("../../img/restaurantes.png"),
   },
   {
     tipoEstabelecimento: "Lanches",
-    logo: "https://firebasestorage.googleapis.com/v0/b/deliveryaltamira.appspot.com/o/tipoEstabelecimento%2Flanches.png?alt=media&token=c8bfd1d2-7f1d-434e-bee0-04af9a8113d0",
+    logo: require("../../img/lanches.png"),
   },
   {
     tipoEstabelecimento: "Pizzarias",
-    logo: "https://firebasestorage.googleapis.com/v0/b/deliveryaltamira.appspot.com/o/tipoEstabelecimento%2Fpizzarias.png?alt=media&token=8c56fb5e-dc08-4d6b-b9a5-6dd4016afa58",
+    logo: require("../../img/pizzarias.png"),
   },
   {
     tipoEstabelecimento: "Docerias",
-    logo: "https://firebasestorage.googleapis.com/v0/b/deliveryaltamira.appspot.com/o/tipoEstabelecimento%2Fdocerias.png?alt=media&token=c8173b43-fa42-4123-8108-08db28d5c9b3",
+    logo: require("../../img/docerias.png"),
   },
   {
     tipoEstabelecimento: "Farmácias",
-    logo: "https://firebasestorage.googleapis.com/v0/b/deliveryaltamira.appspot.com/o/tipoEstabelecimento%2Ffarmacias.png?alt=media&token=c75299b6-50aa-44f0-8927-c6ac42dc58b2",
+    logo: require("../../img/farmacias.png"),
   },
   {
     tipoEstabelecimento: "Supermercados",
-    logo: "https://firebasestorage.googleapis.com/v0/b/deliveryaltamira.appspot.com/o/tipoEstabelecimento%2Fsupermercados.png?alt=media&token=16850c13-29d6-48f6-9c69-22de3b569b68",
+    logo: require("../../img/supermercados.png"),
   },
   {
     tipoEstabelecimento: "Bebidas",
-    logo: "https://firebasestorage.googleapis.com/v0/b/deliveryaltamira.appspot.com/o/tipoEstabelecimento%2Fbebidas.jpg?alt=media&token=340b991b-2084-4ee4-aa42-d024214ee24c",
+    logo: require("../../img/bebidas.jpg"),
   }
 ];

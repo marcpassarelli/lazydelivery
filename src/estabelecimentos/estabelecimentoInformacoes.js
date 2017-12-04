@@ -8,7 +8,7 @@ import { styles,cores } from '../constants/constants'
 import { getEstabelecimentoInfo, estabelecimentoInfo } from '../firebase/database'
 import * as firebase from 'firebase';
 
-
+var formasPgto = []
 
 export class EstabelecimentoInformacoesScreen extends Component {
 
@@ -49,6 +49,7 @@ export class EstabelecimentoInformacoesScreen extends Component {
   }
 
   componentWillMount(){
+    formasPgto = []
     this.setState({
             loading: true
           });
@@ -70,6 +71,21 @@ export class EstabelecimentoInformacoesScreen extends Component {
       console.log("setState:"+this.state.estabInfo)
     }
     return this.state.estabInfo+""
+  }
+
+
+  getFormasPgto(){
+    if(this.state.din == "s"){
+      formasPgto.push("Dinheiro")
+    }
+
+    if(this.state.cre){
+      
+    }
+
+    if(this.state.deb){
+
+    }
   }
 
   componentDidMount(){
@@ -105,7 +121,7 @@ export class EstabelecimentoInformacoesScreen extends Component {
           });
     })
 
-    console.log("nome"+this.state.logo)
+    console.log("CREDITO"+this.state.cre)
 
   }
 
@@ -150,6 +166,9 @@ export class EstabelecimentoInformacoesScreen extends Component {
        <View style={styles.separator}></View>
 
        <Text style={styles.textInformacoes}>Formas de Pagamento</Text>
+       <Text style={styles.textInformacoesD}>Crédito: {}</Text>
+       <Text style={styles.textInformacoesD}>Débito: {}</Text>
+       <Text style={styles.textInformacoesD}>Dinheiro: {}</Text>
 
        <View style={styles.separator}></View>
 
