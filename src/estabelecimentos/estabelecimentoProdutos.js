@@ -12,7 +12,8 @@ export class EstabelecimentoProdutosScreen extends Component{
 
   static navigationOptions = ({navigation}) => ({
     title: navigation.state.params.nomeEstabelecimento,
-    headerTitleStyle: { color: cores.corPrincipal, textAlign: 'center', alignSelf:'center', fontSize:24 },
+    headerTitleStyle: styles.headerText,
+    headerStyle: styles.header,
     headerRight: (<View></View>)
   });
 

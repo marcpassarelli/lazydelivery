@@ -3,18 +3,17 @@ console.ignoredYellowBox = [
 ]
 
 import React, { Component } from 'react';
-import { Image, Alert, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { Image, Alert, Text, View, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native'
 import { styles,cores } from '../constants/constants'
 import { getEstabelecimentoInfo, estabelecimentoInfo } from '../firebase/database'
 import * as firebase from 'firebase';
-
-var formasPgto = []
 
 export class EstabelecimentoInformacoesScreen extends Component {
 
   static navigationOptions = ({navigation}) => ({
     title: navigation.state.params.nomeEstabelecimento,
-    headerTitleStyle: { color: cores.corPrincipal, textAlign: 'center', alignSelf:'center', fontSize:24 },
+    headerTitleStyle: styles.headerText,
+    headerStyle: styles.header,
     headerRight: (<View></View>)
   });
 
@@ -111,7 +110,7 @@ export class EstabelecimentoInformacoesScreen extends Component {
          style = {styles.activityIndicator}/>
      </View> :
 
-     <View style={{flex:1}}>
+     <ScrollView style={{flex:1}}>
        <View style={styles.separator}></View>
        <Image
          style={styles.imagemEstabInfo}
@@ -144,7 +143,7 @@ export class EstabelecimentoInformacoesScreen extends Component {
 
        <View style={styles.separator}></View>
 
-     </View>
+     </ScrollView>
 
      return (
        <Image

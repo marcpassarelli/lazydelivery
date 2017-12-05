@@ -13,7 +13,8 @@ export class ListaEstabelecimentosScreen extends Component{
 
   static navigationOptions = ({navigation}) => ({
     title: navigation.state.params.tipoEstabelecimento,
-    headerTitleStyle: { color: cores.corPrincipal, textAlign: 'center', alignSelf:'center', fontSize:24 },
+    headerTitleStyle: styles.headerText,
+    headerStyle: styles.header,
     headerRight: (<View></View>)
   });
 
@@ -46,6 +47,12 @@ _callback(){
   return this.state.tipoEstabelecimento+""
 }
 
+loading(){
+  this.setState({
+      loading: false
+    });
+}
+
 
 componentWillMount(){
   this.setState({
@@ -69,10 +76,7 @@ componentDidMount(){
 
   getListaEstabelecimentos(this.state.tipoEstabelecimento)
   this.setState({listaEstabelecimentosUp: listaEstabelecimentos}, function(){
-    this._callback,
-    this.setState({
-        loading: false
-      });
+    this.loading()
   })
 
 }
