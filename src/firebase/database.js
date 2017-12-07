@@ -5,6 +5,7 @@ import * as firebase from 'firebase';
 
 export var listaEstabelecimentos = []
 export var estabelecimentoProd = []
+export var estabelecimentoTiposProd = []
 
 var todoCounter = 1;
 
@@ -219,15 +220,36 @@ export async function getEstabelecimentoProd(nomeEstabelecimento){
       if(estabelecimentoData){
         snapshot.forEach((child) =>{
           estabelecimentoProd.push({
-            imgProduto: child.val().imgProduto,
-            nomeProduto: child.val().nomeProduto,
+            imgProduto: child.val().imagem,
+            nomeProduto: child.val().nome,
             preco: child.val().preco,
             detalhes: child.val().detalhes,
+            tipo: child.val().tipo,
             _id:todoCounter++
           });
         });
       }
-      console.log("DATABASE estabelecimentos:"+JSON.stringify(estabelecimentoInfo))
+      console.log("DATABASE produtos:"+JSON.stringify(estabelecimentoData))
+    })
+  } catch(error){
+    console.log(error)
+  }
+}
+
+export async function getEstabelecimentoTiposProd(nomeEstabelecimento){
+  try{
+    estabelecimentoTiposProd = []
+    firebase.database().ref("/tiposProdutos/"+nomeEstabelecimento).once('value').then(function(snapshot){
+      var estabelecimentoTiposProdData = snapshot.val()
+      if(estabelecimentoTiposProdData){
+        snapshot.forEach((child) =>{
+          estabelecimentoTiposProd.push({
+            tipoProduto: child.val().nome,
+            _id:todoCounter++
+          });
+        });
+      }
+      console.log("DATABASE tipos produtos:"+JSON.stringify(estabelecimentoTiposProd))
     })
   } catch(error){
     console.log(error)

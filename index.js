@@ -57,19 +57,16 @@ const TabEstabelecimento = TabNavigator({
     labelStyle: {
       fontSize: 13,
     },
-    iconStyle:{
-      marginTop:9,
-    },
     style: {
       backgroundColor: '#8b0000',
-      height:50
+      height:40
     },
-    showIcon: true,
+    showIcon: false,
     tabStyle: {
-      height: 50,
+      height: 40,
     },
   },
-  tabBarPosition:'bottom',
+  tabBarPosition:'top',
 })
 
 const DeliveryPassa = StackNavigator({
@@ -81,7 +78,7 @@ const DeliveryPassa = StackNavigator({
   AtualizaCadastro: { screen: AtualizaCadastroScreen },
   AtualizaEndereco: { screen: AtualizaEnderecoScreen },
   ListaEstabelecimentos: { screen: ListaEstabelecimentosScreen},
-  Estabelecimento: { screen: EstabelecimentoInformacoesScreen},
+  Estabelecimento: { screen: TabEstabelecimento},
 },
   { headerMode: 'screen' }
 );

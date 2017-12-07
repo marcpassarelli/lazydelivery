@@ -1,9 +1,10 @@
 
 import React, { Component } from 'react';
-import { Image, Alert, View, Text, Button, ActivityIndicator, FlatList } from 'react-native'
+import { Image, Alert, View, Text, Button, ActivityIndicator, FlatList, SectionList } from 'react-native'
 import { styles } from '../constants/constants'
 import * as firebase from 'firebase';
-import {getEstabelecimentoProd, estabelecimentoProd} from '../firebase/database'
+import {getEstabelecimentoProd, estabelecimentoProd, getEstabelecimentoTiposProd, estabelecimentoTiposProd} from '../firebase/database'
+import EstabelecimentoProdutosListItem from './estabelecimentoProdutosListItem'
 
 import _ from 'lodash'
 
@@ -14,14 +15,16 @@ export class EstabelecimentoProdutosScreen extends Component{
     title: navigation.state.params.nomeEstabelecimento,
     headerTitleStyle: styles.headerText,
     headerStyle: styles.header,
-    headerRight: (<View></View>)
+    headerRight: (<View></View>),
+    tabBarLabel: 'Cardápio',
   });
 
 constructor(props){
   super(props);
   this.state = {
     nomeEstabelecimento:'',
-    estabelecimentoUp:'',
+    produtosUp:'',
+    tiposProdutosUp:'',
     loading: false,
 
   }
@@ -68,16 +71,24 @@ componentDidMount(){
 
   console.log("antes getEstabelecimentos"+this.state.tipoEstabelecimento)
 
+  // getEstabelecimentoTiposProd(this.state.nomeEstabelecimento)
+
   getEstabelecimentoProd(this.state.nomeEstabelecimento)
-  this.setState({estabelecimentoUp: estabelecimentoInfo}, function(){
+
+  this.setState({produtosUp: estabelecimentoProd}, function(){
     this.validateUserName()
   })
-  if(estabelecimentoInfo){
+  //
+  // this.setState({tiposProdutosUp: estabelecimentoTiposProd}, function(){
+  //   this.validateUserName()
+  // })
+
+  if(estabelecimentoProd){
   this.setState({
           loading: false
         });
     }
-  console.log("estabelecimentos"+JSON.stringify(this.state.estabelecimentosUp.logo))
+  console.log("estabelecimentos"+JSON.stringify(this.state.estabelecimentosUp))
 
 }
 
@@ -102,12 +113,11 @@ render() {
 
   <FlatList
     ItemSeparatorComponent={this.renderSeparator}
-    data= {this.state.estabelecimentoUp}
+    data= {this.state.produtosUp}
     extraData={this.state}
     renderItem= {
       ({item}) =>
       <EstabelecimentoProdutosListItem
-        imgProduto = {item.imgProduto}
         nomeProduto = {item.nomeProduto}
         preco = {item.preco}
         detalhes = {item.detalhes}

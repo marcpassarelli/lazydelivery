@@ -14,8 +14,9 @@ export class EstabelecimentoInformacoesScreen extends Component {
     title: navigation.state.params.nomeEstabelecimento,
     headerTitleStyle: styles.headerText,
     headerStyle: styles.header,
-    headerRight: (<View></View>)
-  });
+    headerRight: (<View></View>),
+    tabBarLabel: 'Informações',
+});
 
   constructor(props) {
     super(props);
