@@ -14,13 +14,15 @@ export default class EstabelecimentoProdutosListItem extends Component {
 
     return (
       <TouchableOpacity
-        style={styles.containerListItem}
+        style={styles.containerListItemProdutos}
         onPress = {() => {
           this.props.navigation.navigate('Produtos',{estabelecimento: this.props.estabelecimento})
         }}>
-        <View>
-          <Text style={styles.textEstabelecimento}>{this.props.nomeProduto}</Text>
-          <Text style={styles.textDetalhesEstabelecimento}>{this.props.preco}</Text>
+        <View style={{flexDirection: 'row',justifyContent: 'space-between'}}>
+          <Text style={styles.textProdutos}>{this.props.nomeProduto}</Text>
+          <Text style={styles.textPreco}>{this.props.preco}</Text>
+        </View>
+        <View style={{flexDirection: 'column', marginLeft:10}}>
           <Text style={styles.textDetalhesEstabelecimento}>{this.props.detalhes}</Text>
         </View>
       </TouchableOpacity>

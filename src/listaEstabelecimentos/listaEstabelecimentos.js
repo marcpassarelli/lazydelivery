@@ -42,42 +42,28 @@ renderSeparator = () => {
  );
 };
 
-_callback(){
-  console.log("setState:"+this.state.tipoEstabelecimento)
-  return this.state.tipoEstabelecimento+""
-}
-
-loading(){
-  this.setState({
-      loading: false
-    });
-}
-
 
 componentWillMount(){
+
   this.setState({
-          loading: true
-        });
+    loading: true
+  })
 
   const {state} = this.props.navigation;
   var tipoEstabelecimentoUp = state.params ? state.params.tipoEstabelecimento : ""
 
-  if(tipoEstabelecimentoUp){
-  this.setState({tipoEstabelecimento: tipoEstabelecimentoUp}, function(){
-    this._callback()
-  })
-  }
-
 }
 
 componentDidMount(){
-
-  console.log("antes getEstabelecimentos"+this.state.tipoEstabelecimento)
-
-  getListaEstabelecimentos(this.state.tipoEstabelecimento)
-  this.setState({listaEstabelecimentosUp: listaEstabelecimentos}, function(){
-    this.loading()
+  console.log("antes check did mount"+JSON.stringify(this.state.listaEstabelecimentosUp))
+  this.setState({ listaEstabelecimentosUp: listaEstabelecimentos}, function(){
+    setTimeout(()=>{
+      this.setState({
+        loading: false
+      })
+    },500)
   })
+
 
 }
 
@@ -86,8 +72,6 @@ render() {
     'Setting a timer'
   ]
 
-
-  const { goBack } = this.props.navigation;
   const content = this.state.loading ?
 
   <View style={styles.containerIndicator}>

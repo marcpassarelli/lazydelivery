@@ -244,8 +244,7 @@ export async function getEstabelecimentoTiposProd(nomeEstabelecimento){
       if(estabelecimentoTiposProdData){
         snapshot.forEach((child) =>{
           estabelecimentoTiposProd.push({
-            tipoProduto: child.val().nome,
-            _id:todoCounter++
+            tipoProduto: child.val().nome
           });
         });
       }
@@ -256,6 +255,28 @@ export async function getEstabelecimentoTiposProd(nomeEstabelecimento){
   }
 }
 
+export async function getEstabelecimentoProdutos(nomeEstabelecimento, estabelecimentoTiposProd){
+  try{
+    console.log("estabelecimentoTiposProd antes for"+JSON.stringify(estabelecimentoTiposProd))
+    for (i=0; i < estabelecimentoTiposProd.length;i++){
+    firebase.database().ref("/tiposProdutos/"+nomeEstabelecimento+"/"+estabelecimentoTiposProd[i].tipoProduto).once('value').then(function(snapshot){
+      var estabelecimentoTiposProdData = snapshot.val()
+      if(estabelecimentoTiposProdData){
+        snapshot.forEach((child) =>{
+          estabelecimentoProd[i].push({
+            nome: child.val().nome,
+            preco: child.val().preco,
+            detalhes: child.val().detalhes
+          });
+        });
+      }
+    })
+    console.log("produtos "+estabelecimentoProd)
+    }
+  } catch(error){
+    console.log(error)
+  }
+}
 
 export async function getEstabelecimentoInfo(nomeEstabelecimento, callback){
   try{

@@ -41,6 +41,7 @@ export const styles = StyleSheet.create({
     marginTop: 70
   },
   containerListItem:{
+    position: 'relative',
     flexDirection:'row',
     height:60,
     alignItems:'center',
@@ -48,6 +49,13 @@ export const styles = StyleSheet.create({
     marginRight:5,
     marginBottom:10,
     flex:1
+  },
+  containerListItemProdutos:{
+    flex:1,
+    height:60,
+    justifyContent:'center'
+
+    // alignItems:'center'
   },
   developedBy: {
     fontFamily: 'Cochin',
@@ -164,6 +172,16 @@ export const styles = StyleSheet.create({
   },
   textInputs:{
     borderColor: '#8b0000',
+  },
+  textPreco:{
+    fontSize: 15,
+    marginRight: 15,
+    color: cores.corPrincipal
+  },
+  textProdutos:{
+    marginLeft: 10,
+    fontSize: 15,
+    color: cores.corPrincipal
   },
   textProfileDetails:{
     fontSize:18,

@@ -3,9 +3,10 @@ import React, { Component } from 'react';
 import { Image, Alert, View, Text, Button, ActivityIndicator, FlatList, SectionList } from 'react-native'
 import { styles } from '../constants/constants'
 import * as firebase from 'firebase';
-import {getEstabelecimentoProd, estabelecimentoProd, getEstabelecimentoTiposProd, estabelecimentoTiposProd} from '../firebase/database'
+import {getEstabelecimentoProd, estabelecimentoProd, getEstabelecimentoTiposProd, estabelecimentoTiposProd, getEstabelecimentoProdutos} from '../firebase/database'
 import EstabelecimentoProdutosListItem from './estabelecimentoProdutosListItem'
 
+var sectionData=[]
 import _ from 'lodash'
 
 export class EstabelecimentoProdutosScreen extends Component{
@@ -44,7 +45,8 @@ renderSeparator = () => {
  );
 };
 
-validateUserName(){
+callback(){
+  if(this.state.nome)
   console.log("setState:"+this.state.tipoEstabelecimento)
   return this.state.tipoEstabelecimento+""
 }
@@ -59,35 +61,41 @@ componentWillMount(){
   var nomeEstabelecimentoUp = state.params ? state.params.nomeEstabelecimento : ""
 
   if(nomeEstabelecimentoUp){
-  this.setState({nomeEstabelecimento: nomeEstabelecimentoUp}, function(){
-    this.validateUserName()
-
-  })
+    getEstabelecimentoTiposProd(nomeEstabelecimentoUp)
   }
 
 }
 
 componentDidMount(){
 
-  console.log("antes getEstabelecimentos"+this.state.tipoEstabelecimento)
 
-  // getEstabelecimentoTiposProd(this.state.nomeEstabelecimento)
+  this.setState({tiposProdutosUp: estabelecimentoTiposProd},
+    this.callback,
+    console.log("antes getEstabelecimentoProdutos"+this.state.tiposProdutosUp))
 
-  getEstabelecimentoProd(this.state.nomeEstabelecimento)
+
+  getEstabelecimentoProdutos(this.state.nomeEstabelecimento, this.state.tiposProdutosUp)
 
   this.setState({produtosUp: estabelecimentoProd}, function(){
-    this.validateUserName()
+    this.callback
   })
-  //
-  // this.setState({tiposProdutosUp: estabelecimentoTiposProd}, function(){
-  //   this.validateUserName()
-  // })
+
+  for(i=0; i<estabelecimentoTiposProd.length; i++){
+
+    sectionData[i].push({
+      data:this.state.produtosUp[i],
+      title:this.state.tiposProdutosUp[i]
+    })
+
+  }
 
   if(estabelecimentoProd){
   this.setState({
           loading: false
         });
-    }
+      }
+
+
   console.log("estabelecimentos"+JSON.stringify(this.state.estabelecimentosUp))
 
 }
@@ -111,19 +119,16 @@ render() {
     <Text style={styles.nomeAppHome}>{this.state.tipoEstabelecimento}</Text>
   </View>
 
-  <FlatList
+  <SectionList
     ItemSeparatorComponent={this.renderSeparator}
-    data= {this.state.produtosUp}
-    extraData={this.state}
-    renderItem= {
+    sections={sectionData}
+    renderItem={
       ({item}) =>
       <EstabelecimentoProdutosListItem
-        nomeProduto = {item.nomeProduto}
-        preco = {item.preco}
-        detalhes = {item.detalhes}
-        navigation={this.props.navigation}>
-      </EstabelecimentoProdutosListItem>}
-    keyExtractor={item => item._id}
+        nomeProduto = {sec}>
+
+      </EstabelecimentoProdutosListItem>
+    }
     />
   </View>
 
@@ -136,3 +141,18 @@ render() {
 );
 }
 }
+
+// <FlatList
+//   ItemSeparatorComponent={this.renderSeparator}
+//   data= {this.state.produtosUp}
+//   extraData={this.state}
+//   renderItem= {
+//     ({item}) =>
+//     <EstabelecimentoProdutosListItem
+//       nomeProduto = {item.nomeProduto}
+//       preco = {item.preco}
+//       detalhes = {item.detalhes}
+//       navigation={this.props.navigation}>
+//     </EstabelecimentoProdutosListItem>}
+//   keyExtractor={item => item._id}
+//   />
