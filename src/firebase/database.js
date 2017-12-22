@@ -257,9 +257,9 @@ export async function getEstabelecimentoTiposProd(nomeEstabelecimento){
 
 export async function getEstabelecimentoProdutos(nomeEstabelecimento, estabelecimentoTiposProd){
   try{
-    console.log("estabelecimentoTiposProd antes for"+JSON.stringify(estabelecimentoTiposProd))
-    for (i=0; i < estabelecimentoTiposProd.length;i++){
-    firebase.database().ref("/tiposProdutos/"+nomeEstabelecimento+"/"+estabelecimentoTiposProd[i].tipoProduto).once('value').then(function(snapshot){
+    console.log("estabelecimentoTiposProd antes for-----------------"+JSON.stringify(estabelecimentoTiposProd))
+    for (i=0; i < 4;i++){
+    firebase.database().ref("/tiposProdutos/"+nomeEstabelecimento+"/"+estabelecimentoTiposProd.tipoProduto[i]).once('value').then(function(snapshot){
       var estabelecimentoTiposProdData = snapshot.val()
       if(estabelecimentoTiposProdData){
         snapshot.forEach((child) =>{
@@ -272,7 +272,7 @@ export async function getEstabelecimentoProdutos(nomeEstabelecimento, estabeleci
       }
     })
     console.log("produtos "+estabelecimentoProd)
-    }
+  }
   } catch(error){
     console.log(error)
   }

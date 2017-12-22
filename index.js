@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  AppRegistry,
+  AppRegistry, Easing, Animated
 } from 'react-native';
 import { StackNavigator, TabNavigator } from 'react-navigation';
 import { SplashScreen } from './src/splash/splash'
@@ -67,6 +67,7 @@ const TabEstabelecimento = TabNavigator({
     },
   },
   tabBarPosition:'top',
+  backBehavior: 'none',
 })
 
 const DeliveryPassa = StackNavigator({
@@ -80,7 +81,8 @@ const DeliveryPassa = StackNavigator({
   ListaEstabelecimentos: { screen: ListaEstabelecimentosScreen},
   Estabelecimento: { screen: TabEstabelecimento},
 },
-  { headerMode: 'screen' }
+  { headerMode: 'float',},
+
 );
 
 console.ignoredYellowBox = ['Warning: BackAndroid']

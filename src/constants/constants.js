@@ -71,6 +71,11 @@ export const styles = StyleSheet.create({
   header: {
     height:40
   },
+  headerList:{
+    color: cores.corPrincipal,
+    fontSize:17,
+    marginLeft:5,
+  },
   icon: {
     width: 20,
     height: 20,

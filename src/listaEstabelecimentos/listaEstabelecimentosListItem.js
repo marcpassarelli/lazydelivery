@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { Image, View, Text, TouchableOpacity, ListView } from 'react-native'
 import { styles } from '../constants/constants'
+import { getEstabelecimentoProd } from '../firebase/database'
 
 import _ from 'lodash'
 
@@ -16,6 +17,7 @@ export default class ListaEstabelecimentosListItem extends Component {
       <TouchableOpacity
         style={styles.containerListItem}
         onPress = {() => {
+          getEstabelecimentoProd(this.props.estabelecimento),
           this.props.navigation.navigate('Estabelecimento',{nomeEstabelecimento: this.props.estabelecimento})
         }}>
         <Image
