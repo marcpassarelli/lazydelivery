@@ -74,7 +74,8 @@ export const styles = StyleSheet.create({
   headerList:{
     color: cores.corPrincipal,
     fontSize:17,
-    marginLeft:5,
+    marginLeft:10,
+    flex:1
   },
   icon: {
     width: 20,
@@ -120,6 +121,20 @@ export const styles = StyleSheet.create({
     marginTop: 15,
     marginBottom: 15,
     fontSize: 20
+  },
+  renderSeparatorComponent:{
+    height: 1,
+    width: "100%",
+    backgroundColor: "#CED0CE",
+    marginLeft: 5,
+    marginBottom: 7
+  },
+  renderSeparatorSection:{
+    height: 1,
+    width: "100%",
+    backgroundColor: "#550000",
+    marginLeft: 5,
+    marginBottom: 7
   },
   searchBar:{
     height:40,

@@ -13,6 +13,8 @@ export default class EstabelecimentoProdutosListItem extends Component {
     ]
 
     return (
+      <View
+        onLayout={this.props.onLayout}>
       <TouchableOpacity
         style={styles.containerListItemProdutos}
         onPress = {() => {
@@ -26,7 +28,7 @@ export default class EstabelecimentoProdutosListItem extends Component {
           <Text style={styles.textDetalhesEstabelecimento}>{this.props.detalhes}</Text>
         </View>
       </TouchableOpacity>
-
+      </View>
   )
 }
 
