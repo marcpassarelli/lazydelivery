@@ -15,7 +15,7 @@ export default class ListaEstabelecimentosListItem extends Component {
 
     return (
       <TouchableOpacity
-        style={styles.containerListItem}
+        style={styles.containerSearchListItem}
         onPress = {() => {
           getEstabelecimentoProd(this.props.estabelecimento),
           this.props.navigation.navigate('Estabelecimento',{nomeEstabelecimento: this.props.estabelecimento})

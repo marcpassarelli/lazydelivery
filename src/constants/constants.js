@@ -50,6 +50,16 @@ export const styles = StyleSheet.create({
     marginBottom:10,
     flex:1
   },
+  containerSearchListItem:{
+    position: 'relative',
+    flexDirection:'row',
+    height:40,
+    alignItems:'center',
+    marginLeft:15,
+    marginRight:5,
+    marginBottom:10,
+    flex:1
+  },
   containerListItemProdutos:{
     flex:1,
     height:60,
@@ -231,4 +241,19 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     opacity: 1,
   },
+  container: {
+   alignItems: 'center',
+   backgroundColor: '#ede3f2',
+   padding: 100
+},
+modal: {
+   flex: 1,
+   alignItems: 'center',
+   backgroundColor: '#f7021a',
+   padding: 100
+},
+text: {
+   color: '#3f2949',
+   marginTop: 10
+}
 });

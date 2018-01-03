@@ -1,10 +1,11 @@
 
 import React, { Component } from 'react';
-import { Image, Alert, View, Text, Button, ActivityIndicator, FlatList } from 'react-native'
-import { styles } from '../constants/constants'
-import { checkUserDetails, getUserDetails, atualizarProfilePicture } from '../firebase/database'
+import { Image, Alert, View, Text, Button, ActivityIndicator, FlatList, TouchableOpacity, Modal, TouchableHighlight} from 'react-native'
+import { styles, cores } from '../constants/constants'
+import { checkUserDetails, getUserDetails, atualizarProfilePicture, getNomeEstabelecimentos, nomesEstabelecimentos } from '../firebase/database'
 import * as firebase from 'firebase';
 import HomeListItem from './homeListItem'
+import SearchEstabelecimentoListItem from './searchEstabelecimentoListItem'
 import {dadosTipoEstabelecimento} from './dadosTipoEstabelecimento'
 import { SearchBar } from 'react-native-elements'
 
@@ -35,6 +36,7 @@ export class HomeScreen extends Component {
       referencia:'',
       profilePicURL:'',
       loading: false,
+      showProcura: false
     }
 
   }
@@ -75,6 +77,10 @@ export class HomeScreen extends Component {
             });
     })
 
+    getNomeEstabelecimentos()
+
+
+
   }
 
   goToAtualizarEndereco (endereco, numeroEnd, bairro, referencia){
@@ -109,7 +115,27 @@ export class HomeScreen extends Component {
     )
   }
 
+  toggleModal(visible) {
+   this.setState({ modalVisible: visible });
+ }
 
+  procuraEstabelecimento(){
+    return (
+      <View style = {{marginHorizontal:12, height: 120}}>
+        <FlatList
+          ItemSeparatorComponent={this.renderSeparator}
+          data= {nomesEstabelecimentos}
+          renderItem= {({item}) =>
+          <SearchEstabelecimentoListItem
+            estabelecimento = {item.nome}
+            navigation={this.props.navigation}>
+          </SearchEstabelecimentoListItem>}
+          keyExtractor={item => item.nome}/>
+      </View>
+    )
+  }
+
+    //
 
   render() {
     console.ignoredYellowBox = [
@@ -138,15 +164,22 @@ export class HomeScreen extends Component {
 
     <View style={styles.separator}></View>
 
-    <SearchBar
-      containerStyle={styles.searchBarContainer}
-      style={styles.searchBar}
-      inputStyle={styles.searchBarInput}
-      placeholder='Procurar estabelecimento...'
-      placeholderTextColor='#8b0000'
-      returnKeyType="search"/>
+      <SearchBar
+        onChangeText={() => this.setState({showProcura: true})}
+        onClearText={() => this.setState({showProcura: false})}
+        containerStyle={styles.searchBarContainer}
+        style={styles.searchBar}
+        inputStyle={styles.searchBarInput}
+        placeholder='Procurar estabelecimento...'
+        placeholderTextColor='#8b0000'
+        returnKeyType="search"
+        clearIcon={{color:cores.corPrincipal}}/>
 
-    <View>
+      <View style={{zIndex: 2}}>
+      {this.state.showProcura && this.procuraEstabelecimento() }
+      </View>
+
+    <View style={{zIndex: 1}}>
       <Text style={styles.nomeAppHome}>Opções Delivery</Text>
     </View>
 

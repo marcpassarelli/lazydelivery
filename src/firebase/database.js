@@ -5,7 +5,7 @@ import * as firebase from 'firebase';
 
 export var listaEstabelecimentos = []
 export var estabelecimentoProd = []
-export var estabelecimentoTiposProd = []
+export var nomesEstabelecimentos = []
 
 var todoCounter = 1;
 
@@ -236,43 +236,20 @@ export async function getEstabelecimentoProd(nomeEstabelecimento){
   }
 }
 
-export async function getEstabelecimentoTiposProd(nomeEstabelecimento){
+export async function getNomeEstabelecimentos(){
   try{
-    estabelecimentoTiposProd = []
-    firebase.database().ref("/tiposProdutos/"+nomeEstabelecimento).once('value').then(function(snapshot){
+    nomesEstabelecimentos = []
+    firebase.database().ref("/nomeEstabelecimentos/").once('value').then(function(snapshot){
       var estabelecimentoTiposProdData = snapshot.val()
       if(estabelecimentoTiposProdData){
         snapshot.forEach((child) =>{
-          estabelecimentoTiposProd.push({
-            tipoProduto: child.val().nome
+          nomesEstabelecimentos.push({
+            nome: child.val().nome
           });
         });
       }
-      console.log("DATABASE tipos produtos:"+JSON.stringify(estabelecimentoTiposProd))
+      console.log("DATABASE NOMES ESTABEELCIMENTOS:"+JSON.stringify(nomesEstabelecimentos))
     })
-  } catch(error){
-    console.log(error)
-  }
-}
-
-export async function getEstabelecimentoProdutos(nomeEstabelecimento, estabelecimentoTiposProd){
-  try{
-    console.log("estabelecimentoTiposProd antes for-----------------"+JSON.stringify(estabelecimentoTiposProd))
-    for (i=0; i < 4;i++){
-    firebase.database().ref("/tiposProdutos/"+nomeEstabelecimento+"/"+estabelecimentoTiposProd.tipoProduto[i]).once('value').then(function(snapshot){
-      var estabelecimentoTiposProdData = snapshot.val()
-      if(estabelecimentoTiposProdData){
-        snapshot.forEach((child) =>{
-          estabelecimentoProd[i].push({
-            nome: child.val().nome,
-            preco: child.val().preco,
-            detalhes: child.val().detalhes
-          });
-        });
-      }
-    })
-    console.log("produtos "+estabelecimentoProd)
-  }
   } catch(error){
     console.log(error)
   }
@@ -281,7 +258,7 @@ export async function getEstabelecimentoProdutos(nomeEstabelecimento, estabeleci
 export async function getEstabelecimentoInfo(nomeEstabelecimento, callback){
   try{
     estabelecimentoInfo = []
-    firebase.database().ref("/estabelecimentos/"+nomeEstabelecimento).once('value').then(function(snapshot){
+    firebase.database().ref("/infoEstabelecimentos/"+nomeEstabelecimento).once('value').then(function(snapshot){
       var estabelecimentoData = snapshot.val()
       var logo, nome, precoDelivery, tempoEntrega, seg, ter, qua, qui, sex, sab, dom, cre, deb, din  = "";
       if(estabelecimentoData){
