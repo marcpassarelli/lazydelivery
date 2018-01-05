@@ -160,37 +160,40 @@ export class HomeScreen extends Component {
     });
   }
 
-  modalScreen(){
-    return(
-      <Modal
-        animationType={"slide"}
-        transparent={false}
-        visible={this.state.modalVisible}
-        onRequestClose={() => {alert("Modal has been closed.")}}
-        >
-       <View style={{marginTop: 22}}>
-        <View>
-          <View style={{flexDirection: 'row',alignItems: 'center', justifyContent: 'center'}}>
-            <Text style={styles.textEndHome}>{_.upperFirst(this.state.endereco)}, {this.state.numeroEnd} - </Text>
-            <Text
-              style={styles.textUpdateEnd}
-              onPress = { () => this.goToAtualizarEndereco(this.state.endereco,this.state.numeroEnd,this.state.bairro,this.state.referencia) }>
-            Trocar Endereço
-            </Text>
-          </View>
-          <TouchableHighlight onPress={() => {
-            this.setModalVisible(!this.state.modalVisible),
-            this.setState({
-              modalLoaded: false
-            });
-          }}>
-            <Text>Confirmar endereço</Text>
-          </TouchableHighlight>
-        </View>
-       </View>
-     </Modal>
-    )
-  }
+  // modalScreen(){
+  //   <View style={{top: 60, bottom: 60, left: 60, right: 60}}>
+  //     {this.state.modalLoaded && this.modalScreen()}
+  //   </View>
+  //   return(
+  //     <Modal
+  //       animationType={"slide"}
+  //       transparent={false}
+  //       visible={this.state.modalVisible}
+  //       onRequestClose={() => {alert("Modal has been closed.")}}
+  //       >
+  //      <View style={{marginTop: 22}}>
+  //       <View>
+  //         <View style={{flexDirection: 'row',alignItems: 'center', justifyContent: 'center'}}>
+  //           <Text style={styles.textEndHome}>{_.upperFirst(this.state.endereco)}, {this.state.numeroEnd} - </Text>
+  //           <Text
+  //             style={styles.textUpdateEnd}
+  //             onPress = { () => this.goToAtualizarEndereco(this.state.endereco,this.state.numeroEnd,this.state.bairro,this.state.referencia) }>
+  //           Trocar Endereço
+  //           </Text>
+  //         </View>
+  //         <TouchableHighlight onPress={() => {
+  //           this.setModalVisible(!this.state.modalVisible),
+  //           this.setState({
+  //             modalLoaded: false
+  //           });
+  //         }}>
+  //           <Text>Confirmar endereço</Text>
+  //         </TouchableHighlight>
+  //       </View>
+  //      </View>
+  //    </Modal>
+  //   )
+  // }
 
   setModalVisible(visible) {
     this.setState({modalVisible: visible});
@@ -213,9 +216,6 @@ export class HomeScreen extends Component {
     </View> :
 
     <View style={{flex:1}}>
-      <View style={{top: 60, bottom: 60, left: 60, right: 60}}>
-        {this.state.modalLoaded && this.modalScreen()}
-      </View>
       <View style={{flexDirection: 'row',alignItems: 'center', justifyContent: 'center'}}>
         <Text style={styles.textEndHome}>{_.upperFirst(this.state.endereco)}, {this.state.numeroEnd} - </Text>
         <Text
