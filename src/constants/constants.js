@@ -55,9 +55,6 @@ export const styles = StyleSheet.create({
     flexDirection:'row',
     height:40,
     alignItems:'center',
-    marginLeft:15,
-    marginRight:5,
-    marginBottom:10,
     flex:1
   },
   containerListItemProdutos:{
@@ -105,6 +102,15 @@ export const styles = StyleSheet.create({
     width: 60,
     alignSelf: 'center',
     borderRadius: 60,
+    borderWidth: 1,
+    borderColor:cores.corPrincipal,
+    resizeMode:'cover'
+  },
+  imagemListSearch:{
+    height: 30,
+    width: 30,
+    alignSelf: 'center',
+    borderRadius: 30,
     borderWidth: 1,
     borderColor:cores.corPrincipal,
     resizeMode:'cover'
@@ -176,7 +182,7 @@ export const styles = StyleSheet.create({
     color: cores.textDetalhes
   },
   textEndHome:{
-    fontSize: 15,
+    fontSize: 13,
     marginTop:5,
     color: cores.corPrincipal,
   },
@@ -229,7 +235,7 @@ export const styles = StyleSheet.create({
     color: cores.corPrincipal
   },
   textUpdateEnd:{
-    fontSize: 15,
+    fontSize: 13,
     marginTop:5,
     color:'#0000FF',
   },

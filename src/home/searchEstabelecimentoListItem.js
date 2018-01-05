@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Image, View, Text, TouchableOpacity, ListView } from 'react-native'
 import { styles } from '../constants/constants'
 import * as firebase from 'firebase';
-import { getListaEstabelecimentos } from '../firebase/database'
+import { getEstabelecimentoProd, } from '../firebase/database'
 
 import _ from 'lodash'
 
@@ -15,11 +15,15 @@ export default class SearchEstabelecimentoListItem extends Component {
 
     return (
       <TouchableOpacity
-        style={styles.containerListItem}
+        style={styles.containerSearchListItem}
         onPress = {() => {
           getEstabelecimentoProd(this.props.estabelecimento),
           this.props.navigation.navigate('Estabelecimento',{nomeEstabelecimento: this.props.estabelecimento})
         }}>
+        <Image
+          source={{uri:this.props.imglogo}}
+          style={styles.imagemListSearch}
+          />
         <View>
           <Text
             style={styles.textTipoEstabelecimento}>{this.props.estabelecimento}</Text>
@@ -30,7 +34,3 @@ export default class SearchEstabelecimentoListItem extends Component {
 }
 
 }
-// <Image
-//   source={this.props.imglogo}
-//   style={styles.imagemTipoEstabelecimento}
-//   />

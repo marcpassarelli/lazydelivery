@@ -36,9 +36,15 @@ export class HomeScreen extends Component {
       referencia:'',
       profilePicURL:'',
       loading: false,
-      showProcura: false
+      showProcura: false,
+      nomesEstabSearch:'',
+      text:''
     }
 
+  }
+
+  updateText = (text) => {
+    this.setState({text: text})
   }
 
   renderSeparator = () => {
@@ -79,6 +85,10 @@ export class HomeScreen extends Component {
 
     getNomeEstabelecimentos()
 
+    this.setState({
+      nomesEstabSearch: nomesEstabelecimentos
+    });
+
 
 
   }
@@ -115,19 +125,17 @@ export class HomeScreen extends Component {
     )
   }
 
-  toggleModal(visible) {
-   this.setState({ modalVisible: visible });
- }
-
   procuraEstabelecimento(){
     return (
       <View style = {{marginHorizontal:12, height: 120}}>
         <FlatList
+          keyboardShouldPersistTaps={'always'}
           ItemSeparatorComponent={this.renderSeparator}
-          data= {nomesEstabelecimentos}
+          data= {this.state.nomesEstabSearch}
           renderItem= {({item}) =>
           <SearchEstabelecimentoListItem
             estabelecimento = {item.nome}
+            imglogo = {item.logo}
             navigation={this.props.navigation}>
           </SearchEstabelecimentoListItem>}
           keyExtractor={item => item.nome}/>
@@ -135,8 +143,32 @@ export class HomeScreen extends Component {
     )
   }
 
-    //
+  filterSearch(text){
+    console.log("state.text: "+this.state.text)
+    this.setState({
+      showProcura: true,
+      opacity: 0.2})
+    const newData = nomesEstabelecimentos.filter(function(item){
+      const itemData= item.nome.toUpperCase()
+      const textData= text.toUpperCase()
+      return itemData.indexOf(textData) > -1
+    })
+    this.setState({
+      nomesEstabSearch: newData,
+      text: text
+    }, function(){
+      if(!this.state.text){
+        console.log("dentro if callback "+this.state.text);
+        this.setState({
+          showProcura:false,
+          opacity: 1
+        });
+      }
+    });
+  }
 
+    //
+// style={{position: 'absolute', backgroundColor: '#e6e4e6', opacity: 0.8, top:49, left: 18, right: 18}}
   render() {
     console.ignoredYellowBox = [
       'Setting a timer'
@@ -164,9 +196,10 @@ export class HomeScreen extends Component {
 
     <View style={styles.separator}></View>
 
+    <View>
       <SearchBar
-        onChangeText={() => this.setState({showProcura: true})}
-        onClearText={() => this.setState({showProcura: false})}
+        onChangeText={(text) => {this.filterSearch(text)}}
+        onClearText={() => this.setState({showProcura: false, opacity: 1})}
         containerStyle={styles.searchBarContainer}
         style={styles.searchBar}
         inputStyle={styles.searchBarInput}
@@ -175,25 +208,27 @@ export class HomeScreen extends Component {
         returnKeyType="search"
         clearIcon={{color:cores.corPrincipal}}/>
 
-      <View style={{zIndex: 2}}>
-      {this.state.showProcura && this.procuraEstabelecimento() }
+      <View style={{backgroundColor: '#e6e4e6', opacity: 0.8}}>
+        {this.state.showProcura && this.procuraEstabelecimento() }
       </View>
 
-    <View style={{zIndex: 1}}>
-      <Text style={styles.nomeAppHome}>Opções Delivery</Text>
     </View>
 
-    <FlatList
-      ItemSeparatorComponent={this.renderSeparator}
-      data= {dadosTipoEstabelecimento}
-      renderItem= {({item}) =>
-      <HomeListItem
-        tipoEstabelecimento = {item.tipoEstabelecimento}
-        imglogo = {item.logo}
-        navigation={this.props.navigation}>
-      </HomeListItem>}
-      keyExtractor={item => item.tipoEstabelecimento}
-      />
+    <View style={{opacity: this.state.opacity}}>
+      <Text style={styles.nomeAppHome}>Opções Delivery</Text>
+
+      <FlatList
+        ItemSeparatorComponent={this.renderSeparator}
+        data= {dadosTipoEstabelecimento}
+        renderItem= {({item}) =>
+        <HomeListItem
+          tipoEstabelecimento = {item.tipoEstabelecimento}
+          imglogo = {item.logo}
+          navigation={this.props.navigation}>
+        </HomeListItem>}
+        keyExtractor={item => item.tipoEstabelecimento}
+        />
+    </View>
 
     </View>
 
