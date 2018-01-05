@@ -112,6 +112,7 @@ sectionDataFunction(){
     return acc
   }, [])
 
+
   console.log("depois reduce"+JSON.stringify(sectionData))
 
 }

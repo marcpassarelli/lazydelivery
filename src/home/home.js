@@ -38,13 +38,11 @@ export class HomeScreen extends Component {
       loading: false,
       showProcura: false,
       nomesEstabSearch:'',
-      text:''
+      text:'',
+      modalVisible: true,
+      modalLoaded: true
     }
 
-  }
-
-  updateText = (text) => {
-    this.setState({text: text})
   }
 
   renderSeparator = () => {
@@ -62,7 +60,6 @@ export class HomeScreen extends Component {
  };
 
   async componentWillMount(){
-    console.log('DADOSTIPOESTABELECIMENTO'+dadosTipoEstabelecimento)
     this.setState({
             loading: true
           });
@@ -88,8 +85,6 @@ export class HomeScreen extends Component {
     this.setState({
       nomesEstabSearch: nomesEstabelecimentos
     });
-
-
 
   }
 
@@ -144,7 +139,6 @@ export class HomeScreen extends Component {
   }
 
   filterSearch(text){
-    console.log("state.text: "+this.state.text)
     this.setState({
       showProcura: true,
       opacity: 0.2})
@@ -158,7 +152,6 @@ export class HomeScreen extends Component {
       text: text
     }, function(){
       if(!this.state.text){
-        console.log("dentro if callback "+this.state.text);
         this.setState({
           showProcura:false,
           opacity: 1
@@ -167,7 +160,43 @@ export class HomeScreen extends Component {
     });
   }
 
-    //
+  modalScreen(){
+    return(
+      <Modal
+        animationType={"slide"}
+        transparent={false}
+        visible={this.state.modalVisible}
+        onRequestClose={() => {alert("Modal has been closed.")}}
+        >
+       <View style={{marginTop: 22}}>
+        <View>
+          <View style={{flexDirection: 'row',alignItems: 'center', justifyContent: 'center'}}>
+            <Text style={styles.textEndHome}>{_.upperFirst(this.state.endereco)}, {this.state.numeroEnd} - </Text>
+            <Text
+              style={styles.textUpdateEnd}
+              onPress = { () => this.goToAtualizarEndereco(this.state.endereco,this.state.numeroEnd,this.state.bairro,this.state.referencia) }>
+            Trocar Endereço
+            </Text>
+          </View>
+          <TouchableHighlight onPress={() => {
+            this.setModalVisible(!this.state.modalVisible),
+            this.setState({
+              modalLoaded: false
+            });
+          }}>
+            <Text>Confirmar endereço</Text>
+          </TouchableHighlight>
+        </View>
+       </View>
+     </Modal>
+    )
+  }
+
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible});
+  }
+
+    //    <View style={styles.separator}></View>
 // style={{position: 'absolute', backgroundColor: '#e6e4e6', opacity: 0.8, top:49, left: 18, right: 18}}
   render() {
     console.ignoredYellowBox = [
@@ -184,52 +213,47 @@ export class HomeScreen extends Component {
     </View> :
 
     <View style={{flex:1}}>
-
-    <View style={{flexDirection: 'row',alignItems: 'center', justifyContent: 'center'}}>
-      <Text style={styles.textEndHome}>{_.upperFirst(this.state.endereco)}, {this.state.numeroEnd} - </Text>
-      <Text
-        style={styles.textUpdateEnd}
-        onPress = { () => this.goToAtualizarEndereco(this.state.endereco,this.state.numeroEnd,this.state.bairro,this.state.referencia) }>
-      Trocar Endereço
-      </Text>
-    </View>
-
-    <View style={styles.separator}></View>
-
-    <View>
-      <SearchBar
-        onChangeText={(text) => {this.filterSearch(text)}}
-        onClearText={() => this.setState({showProcura: false, opacity: 1})}
-        containerStyle={styles.searchBarContainer}
-        style={styles.searchBar}
-        inputStyle={styles.searchBarInput}
-        placeholder='Procurar estabelecimento...'
-        placeholderTextColor='#8b0000'
-        returnKeyType="search"
-        clearIcon={{color:cores.corPrincipal}}/>
-
-      <View style={{backgroundColor: '#e6e4e6', opacity: 0.8}}>
-        {this.state.showProcura && this.procuraEstabelecimento() }
+      <View style={{top: 60, bottom: 60, left: 60, right: 60}}>
+        {this.state.modalLoaded && this.modalScreen()}
+      </View>
+      <View style={{flexDirection: 'row',alignItems: 'center', justifyContent: 'center'}}>
+        <Text style={styles.textEndHome}>{_.upperFirst(this.state.endereco)}, {this.state.numeroEnd} - </Text>
+        <Text
+          style={styles.textUpdateEnd}
+          onPress = { () => this.goToAtualizarEndereco(this.state.endereco,this.state.numeroEnd,this.state.bairro,this.state.referencia) }>
+        Trocar Endereço
+        </Text>
+      </View>
+      <View>
+        <SearchBar
+          onChangeText={(text) => {this.filterSearch(text)}}
+          onClearText={() => this.setState({showProcura: false, opacity: 1})}
+          containerStyle={styles.searchBarContainer}
+          style={styles.searchBar}
+          inputStyle={styles.searchBarInput}
+          placeholder='Procurar estabelecimento...'
+          placeholderTextColor='#8b0000'
+          returnKeyType="search"
+          clearIcon={{color:cores.corPrincipal}}/>
+        <View style={{backgroundColor: '#e6e4e6', opacity: 0.8}}>
+          {this.state.showProcura && this.procuraEstabelecimento() }
+        </View>
       </View>
 
-    </View>
-
-    <View style={{opacity: this.state.opacity}}>
-      <Text style={styles.nomeAppHome}>Opções Delivery</Text>
-
-      <FlatList
-        ItemSeparatorComponent={this.renderSeparator}
-        data= {dadosTipoEstabelecimento}
-        renderItem= {({item}) =>
-        <HomeListItem
-          tipoEstabelecimento = {item.tipoEstabelecimento}
-          imglogo = {item.logo}
-          navigation={this.props.navigation}>
-        </HomeListItem>}
-        keyExtractor={item => item.tipoEstabelecimento}
-        />
-    </View>
-
+      <View style={{opacity: this.state.opacity}}>
+        <Text style={styles.nomeAppHome}>Opções Delivery</Text>
+        <FlatList
+          ItemSeparatorComponent={this.renderSeparator}
+          data= {dadosTipoEstabelecimento}
+          renderItem= {({item}) =>
+          <HomeListItem
+            tipoEstabelecimento = {item.tipoEstabelecimento}
+            imglogo = {item.logo}
+            navigation={this.props.navigation}>
+          </HomeListItem>}
+          keyExtractor={item => item.tipoEstabelecimento}
+          />
+      </View>
     </View>
 
     return (
