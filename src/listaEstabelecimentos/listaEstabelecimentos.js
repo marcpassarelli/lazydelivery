@@ -55,18 +55,16 @@ componentWillMount(){
 }
 
 componentDidMount(){
-  console.log("antes check did mount"+JSON.stringify(this.state.listaEstabelecimentosUp))
-  this.setState({ listaEstabelecimentosUp: listaEstabelecimentos}, function(){
-    setTimeout(()=>{
+  this.setState({ listaEstabelecimentosUp: listaEstabelecimentos }, function(){
       this.setState({
         loading: false
       })
-    },500)
   })
 
 
 }
-
+  //   setTimeout(()=>{
+  // },750)
 render() {
   console.ignoredYellowBox = [
     'Setting a timer'

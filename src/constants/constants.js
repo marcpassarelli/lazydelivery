@@ -116,13 +116,13 @@ export const styles = StyleSheet.create({
     resizeMode:'cover'
   },
   imgProduto:{
+    top: 10,
+    marginBottom: 10,
     alignSelf: 'center',
-    resizeMode: 'cover',
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    // resizeMode: 'cover', // or 'stretch'
-    height: null,
-    width: null,
+    resizeMode: 'stretch',
+    borderColor: cores.corPrincipal,
+    borderWidth: 1,
+    marginBottom: 15
   },
   labelCadastro: {
     opacity: 1,
@@ -181,6 +181,12 @@ export const styles = StyleSheet.create({
     fontSize: 13,
     color: cores.textDetalhes
   },
+  textAddProduto:{
+    alignSelf: 'center',
+    color: cores.corPrincipal,
+    fontSize: 18,
+  marginBottom: 20
+},
   textEndHome:{
     fontSize: 13,
     marginTop:5,

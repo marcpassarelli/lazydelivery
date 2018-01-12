@@ -12,6 +12,9 @@ import { AtualizaCadastroScreen } from './src/cadastro/atualizaCadastro'
 import { AtualizaEnderecoScreen } from './src/cadastro/atualizaEndereco'
 import { ProfileScreen } from './src/home/profile'
 import { ListaEstabelecimentosScreen } from './src/listaEstabelecimentos/listaEstabelecimentos'
+import { AddProdutoScreen } from './src/addproduto/addproduto'
+import { CarrinhoScreen } from './src/carrinho/carrinho'
+import { ResumoPgtoScreen } from './src/resumopgto/resumopgto'
 import { EstabelecimentoProdutosScreen } from './src/estabelecimentos/estabelecimentoProdutos'
 import { EstabelecimentoInformacoesScreen } from './src/estabelecimentos/estabelecimentoInformacoes'
 import * as firebase from 'firebase';
@@ -80,6 +83,9 @@ const DeliveryPassa = StackNavigator({
   AtualizaEndereco: { screen: AtualizaEnderecoScreen },
   ListaEstabelecimentos: { screen: ListaEstabelecimentosScreen},
   Estabelecimento: { screen: TabEstabelecimento},
+  Carrinho: { screen: CarrinhoScreen },
+  AddProduto: { screen: AddProdutoScreen },
+  ResumoPgto: { screen: ResumoPgtoScreen }
 },
   { headerMode: 'float',},
 

@@ -122,29 +122,33 @@ componentWillMount(){
           loading: true
         });
 
-  const {state} = this.props.navigation;
-  var nomeEstabelecimentoUp = state.params ? state.params.nomeEstabelecimento : ""
 
   setTimeout(()=>{
     this.setState({produtosUp: estabelecimentoProd}, function(){
-      this.sectionDataFunction()}),
+      this.sectionDataFunction(),
       this.setState({
               loading: false
             });
-  },500)
+    })
+  },750)
 
 }
 
 renderItem = (item) =>{
-  // onLayout={this._setMaxHeight.bind(this)}
+  const {state} = this.props.navigation;
+  var nomeEstabelecimentoUp = state.params ? state.params.nomeEstabelecimento : ""
+
+  // onLayout={this._setMaxHeight.bind(t  his)}
   return (
   <Animated.View style={{height: this.state.animation}}>
     <EstabelecimentoProdutosListItem
-
-    nomeProduto = {item.item.nomeProduto}
-    preco = {item.item.preco}
-    detalhes = {item.item.detalhes}
-    navigation={this.props.navigation}>
+      estabelecimento = {nomeEstabelecimentoUp}
+      nomeProduto = {item.item.nomeProduto}
+      preco = {item.item.preco}
+      detalhes = {item.item.detalhes}
+      imgProduto = {item.item.imgProduto}
+      tipoProduto = {item.item.tipo}
+      navigation={this.props.navigation}>
     </EstabelecimentoProdutosListItem>
   </Animated.View>
   )
@@ -198,7 +202,6 @@ renderHeader = (headerItem) => {
         keyExtractor={(item) => item._id}
         getItemLayout={this.getItemLayout}
         />
-
 
     return (
       <Image
