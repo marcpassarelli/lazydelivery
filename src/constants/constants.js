@@ -169,6 +169,12 @@ export const styles = StyleSheet.create({
   separator:{
     height:15
   },
+  textAddProduto:{
+    alignSelf: 'center',
+    color: cores.corPrincipal,
+    fontSize: 18,
+    marginBottom: 15
+},
   textButtons:{
     alignSelf:'center',
     marginTop:10,
@@ -181,12 +187,6 @@ export const styles = StyleSheet.create({
     fontSize: 13,
     color: cores.textDetalhes
   },
-  textAddProduto:{
-    alignSelf: 'center',
-    color: cores.corPrincipal,
-    fontSize: 18,
-  marginBottom: 20
-},
   textEndHome:{
     fontSize: 13,
     marginTop:5,

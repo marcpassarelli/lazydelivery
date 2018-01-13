@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Image, Alert, View, Text, Button, ActivityIndicator, TouchableOpacity, FlatList, Icon, Dimensions, Picker } from 'react-native'
+import { Image, Alert, View, Text,TextInput, Button, ActivityIndicator, TouchableOpacity, FlatList, Icon, Dimensions, Picker } from 'react-native'
 import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import {getListaEstabelecimentos, listaEstabelecimentos} from '../firebase/database'
@@ -25,8 +25,8 @@ export class AddProdutoScreen extends Component{
       preco:'',
       detalhes:'',
       imgProduto:'',
-      qtde:'',
       adicionais:'',
+      qtde:1,
       listaAdicionais:'',
       loading: false
     }
@@ -62,6 +62,22 @@ export class AddProdutoScreen extends Component{
 
   }
 
+  menosQtde(){
+    let qtde = this.state.qtde
+    if(qtde!=1){
+      this.setState({
+        qtde: qtde - 1
+      });
+    }
+  }
+
+  maisQtde(){
+    let qtde = this.state.qtde + 1
+    this.setState({
+      qtde: qtde
+    });
+  }
+
   render() {
     console.ignoredYellowBox = [
       'Setting a timer'
@@ -78,32 +94,51 @@ export class AddProdutoScreen extends Component{
         style = {styles.activityIndicator}/>
     </View> :
 
-    <View>
+    <View style={{flex: 1}}>
+
       <Image
         source={{uri:this.state.imgProduto}}
         style={[styles.imgProduto,{width: width*0.98, height: height*0.3}]}>
       </Image>
+
       <Text style={styles.textAddProduto}>
           {this.state.nome}
       </Text>
+
       <Text style={styles.textAddProduto}>
         Preço Unitário: R$ {this.state.preco*this.state.qtde}
       </Text>
-      <View style={{flex:1, flexDirection: 'row', marginVertical: 15}}>
-        <Text style={styles.textAddProduto}>Quantidade:</Text>
-        <TouchableOpacity style={{flex:1}} onPress={()=>{}}>
-          <Text style={styles.textAddProduto}>-</Text>
+
+      <Text style={[styles.textAddProduto,{marginBottom: 5}]}>Quantidade:</Text>
+
+      <View style={{flexDirection: 'row', alignSelf: 'center', marginBottom: 10}}>
+
+        <TouchableOpacity style={{}} onPress={()=>{this.menosQtde()}}>
+          <Image source={require('../../img/minus.png')} style={styles.icon}/>
         </TouchableOpacity>
+
+        <Text style={[styles.textAddProduto, {marginHorizontal: 10, fontSize: 16}]}>{this.state.qtde}</Text>
+
+        <TouchableOpacity style={{}} onPress={()=>{this.maisQtde()}}>
+          <Image source={require('../../img/plus.png')} style={styles.icon}/>
+        </TouchableOpacity>
+
       </View>
+
       <Text style={[styles.textAddProduto,{fontSize: 14, marginLeft: 5}]}>
         {this.state.detalhes}
       </Text>
-      <TouchableOpacity>
+
+      <TouchableOpacity onPress={()=>{this.setState({preco: this.state.preco+this.state.preco})}}>
         <Text style={[styles.textAddProduto,{marginBottom: 10,textDecorationLine:'underline'}]}>
           Adicionais?
         </Text>
       </TouchableOpacity>
+
       <Text style={styles.textAddProduto}>Observações</Text>
+      <TextInput>
+      </TextInput>
+
     </View>
 
     return (
