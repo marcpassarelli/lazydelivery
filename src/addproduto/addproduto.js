@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Image, Alert, View, Text,TextInput, Button, ActivityIndicator, TouchableOpacity, FlatList, Icon, Dimensions, Picker } from 'react-native'
 import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
-import {getListaEstabelecimentos, listaEstabelecimentos} from '../firebase/database'
+import {getListaEstabelecimentos, listaEstabelecimentos, getListaAdicionais} from '../firebase/database'
 
 import _ from 'lodash'
 
@@ -25,7 +25,8 @@ export class AddProdutoScreen extends Component{
       preco:'',
       detalhes:'',
       imgProduto:'',
-      adicionais:'',
+      tipoProduto:'',
+      estabelecimento:'',
       qtde:1,
       listaAdicionais:'',
       loading: false
@@ -44,6 +45,7 @@ export class AddProdutoScreen extends Component{
     var detalhes = state.params ? state.params.detalhes : ""
     var imgProduto = state.params ? state.params.imgProduto : ""
     var tipoProduto = state.params ? state.params.tipo : ""
+    var estabelecimento = state.params ? state.params.estabelecimento : ""
 
     console.log("tipoProduto: "+tipoProduto)
 
@@ -52,7 +54,9 @@ export class AddProdutoScreen extends Component{
       nome: nome,
       preco: preco,
       detalhes: detalhes,
-      imgProduto: imgProduto
+      imgProduto: imgProduto,
+      tipoProduto: tipoProduto,
+      estabelecimento: estabelecimento
     }, function(){
         this.setState({
           loading: false
@@ -129,7 +133,11 @@ export class AddProdutoScreen extends Component{
         {this.state.detalhes}
       </Text>
 
-      <TouchableOpacity onPress={()=>{this.setState({preco: this.state.preco+this.state.preco})}}>
+      <TouchableOpacity onPress={()=>{
+          console.log("nome: "+this.state.estabelecimento+", tipoProduto: "+this.state.tipoProduto)
+          getListaAdicionais(this.state.estabelecimento, this.state.tipoProduto),
+          this.props.navigation.navigate('Adicionais')
+        }}>
         <Text style={[styles.textAddProduto,{marginBottom: 10,textDecorationLine:'underline'}]}>
           Adicionais?
         </Text>

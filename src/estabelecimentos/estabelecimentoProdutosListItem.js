@@ -18,7 +18,9 @@ export default class EstabelecimentoProdutosListItem extends Component {
       <TouchableOpacity
         style={styles.containerListItemProdutos}
         onPress = {() => {
-          this.props.navigation.navigate('AddProduto',{estabelecimento: this.props.estabelecimento, nome: this.props.nomeProduto, preco: this.props.preco, detalhes: this.props.detalhes, imgProduto: this.props.imgProduto, tipo: this.props.tipoProduto})
+        this.props.navigation.navigate('AddProduto',{estabelecimento: this.props.estabelecimento,
+        nome: this.props.nomeProduto, preco: this.props.preco, detalhes: this.props.detalhes,
+        imgProduto: this.props.imgProduto, tipo: this.props.tipoProduto})
         }}>
         <View style={{flexDirection: 'row',justifyContent: 'space-between'}}>
           <Text style={styles.textProdutos}>{this.props.nomeProduto}</Text>
