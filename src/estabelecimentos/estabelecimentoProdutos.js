@@ -5,7 +5,6 @@ import { styles } from '../constants/constants'
 import * as firebase from 'firebase';
 import {getEstabelecimentoProd, estabelecimentoProd, getEstabelecimentoTiposProd, estabelecimentoTiposProd, getEstabelecimentoProdutos} from '../firebase/database'
 import EstabelecimentoProdutosListItem from './estabelecimentoProdutosListItem'
-import sectionListGetItemLayout from 'react-native-section-list-get-item-layout'
 
 let sectionData =[]
 let sectionName =[]
@@ -29,20 +28,10 @@ export class EstabelecimentoProdutosScreen extends Component{
 constructor(props){
   super(props);
 
-  this.getItemLayout = sectionListGetItemLayout({
-  // The height of the row with rowData at the given sectionIndex and rowIndex
-  getItemHeight: (rowData, sectionIndex, rowIndex) => sectionIndex === 0 ? 100 : 50,
-
-  // These three properties are optional
-  getSeparatorHeight: () => 1 / PixelRatio.get(), // The height of your separators
-  getSectionHeaderHeight: () => 20, // The height of your section headers
-  getSectionFooterHeight: () => 10, // The height of your section footers
-})
-
-  this.icons ={
-    'up' : require('../../img/up.png'),
-    'down' : require('../../img/down.png')
-  }
+  // this.icons ={
+  //   'up' : require('../../img/up.png'),
+  //   'down' : require('../../img/down.png')
+  // }
 
   this.state = {
     nomeEstabelecimento:'',
@@ -156,21 +145,22 @@ renderItem = (item) =>{
 // onLayout = {this._setMaxHeight.bind(this)}
   // onPress={()=>{this.toggle(headerItem.section.key)}}
 renderHeader = (headerItem) => {
-  let icon = this.icons['down'];
-  if(this.state.expanded){
-      icon = this.icons['up'];
-  }
+  // let icon = this.icons['down'];
+  // if(this.state.expanded){
+  //     icon = this.icons['up'];
+  // }
   // onLayout={this._setMinHeight.bind(this)}
+  // <Image
+  //    style={{width:30, height: 25, marginRight:10}}
+  //    source={icon}>
+  //  </Image>
   return  (
       <View style={{height:30}} >
         <TouchableOpacity
           style={{flexDirection: 'row', alignItems: 'center'}}
         >
             <Text style={styles.headerList}>{headerItem.section.key}</Text>
-            <Image
-               style={{width:30, height: 25, marginRight:10}}
-               source={icon}>
-             </Image>
+
           </TouchableOpacity>
       </View>
     )
@@ -200,7 +190,6 @@ renderHeader = (headerItem) => {
         renderSectionHeader={this.renderHeader}
         sections={sectionData}
         keyExtractor={(item) => item._id}
-        getItemLayout={this.getItemLayout}
         />
 
     return (
