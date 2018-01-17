@@ -1,6 +1,6 @@
-
 import React, { Component } from 'react';
 import { Image, View, Text, TouchableOpacity, ListView } from 'react-native'
+import {getListaAdicionais} from '../firebase/database'
 import { styles } from '../constants/constants'
 
 import _ from 'lodash'
@@ -18,6 +18,7 @@ export default class EstabelecimentoProdutosListItem extends Component {
       <TouchableOpacity
         style={styles.containerListItemProdutos}
         onPress = {() => {
+        getListaAdicionais(this.props.estabelecimento, this.props.tipoProduto),
         this.props.navigation.navigate('AddProduto',{estabelecimento: this.props.estabelecimento,
         nome: this.props.nomeProduto, preco: this.props.preco, detalhes: this.props.detalhes,
         imgProduto: this.props.imgProduto, tipo: this.props.tipoProduto})

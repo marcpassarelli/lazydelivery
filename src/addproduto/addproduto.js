@@ -134,8 +134,6 @@ export class AddProdutoScreen extends Component{
       </Text>
 
       <TouchableOpacity onPress={()=>{
-          console.log("nome: "+this.state.estabelecimento+", tipoProduto: "+this.state.tipoProduto)
-          getListaAdicionais(this.state.estabelecimento, this.state.tipoProduto),
           this.props.navigation.navigate('Adicionais')
         }}>
         <Text style={[styles.textAddProduto,{marginBottom: 10,textDecorationLine:'underline'}]}>
