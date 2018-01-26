@@ -157,8 +157,7 @@ export const styles = StyleSheet.create({
     color: 'rgba(0,0,0,0.5)',
   },
   searchBarContainer:{
-    marginLeft:10,
-    marginRight:10,
+    marginHorizontal: 10,
     borderRadius:6,
     backgroundColor:'rgba(139,0,0,0.1)'
   },
@@ -174,6 +173,12 @@ export const styles = StyleSheet.create({
     color: cores.corPrincipal,
     fontSize: 18,
     marginBottom: 15
+},
+textAdicionais:{
+  alignSelf: 'center',
+  color: cores.corPrincipal,
+  fontSize: 16,
+  marginBottom: 15
 },
   textButtons:{
     alignSelf:'center',

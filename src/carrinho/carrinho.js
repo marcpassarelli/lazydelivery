@@ -4,6 +4,7 @@ import { Image, Alert, View, Text, Button, ActivityIndicator, FlatList, Icon } f
 import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import {getListaEstabelecimentos, listaEstabelecimentos} from '../firebase/database'
+import {carrinho} from '../addproduto/adicionais'
 
 import _ from 'lodash'
 
@@ -81,7 +82,13 @@ export class CarrinhoScreen extends Component{
     </View> :
 
     <View style={{flex:1}}>
-
+      <FlatList
+        ItemSeparatorComponent={this.renderSeparator}
+        data= {carrinho}
+        extraData={this.state}
+        renderItem={this.renderItem}
+        keyExtractor={item => item.nome}
+      />
     </View>
 
     return (

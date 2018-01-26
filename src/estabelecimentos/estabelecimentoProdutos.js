@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { Image, Alert, View, Text, Button, ActivityIndicator, SectionList, TouchableOpacity, Animated, PixelRatio } from 'react-native'
-import { styles } from '../constants/constants'
+import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import {getEstabelecimentoProd, estabelecimentoProd, getEstabelecimentoTiposProd, estabelecimentoTiposProd, getEstabelecimentoProdutos} from '../firebase/database'
 import EstabelecimentoProdutosListItem from './estabelecimentoProdutosListItem'
@@ -166,6 +166,11 @@ renderHeader = (headerItem) => {
     )
 }
 
+goToCarrinho(){
+  const { navigate } = this.props.navigation;
+    navigate('Carrinho')
+}
+
 
 
   render() {
@@ -182,7 +187,7 @@ renderHeader = (headerItem) => {
         size="large"
         style = {styles.activityIndicator}/>
     </View> :
-
+    <View style={{flex: 1}}>
       <SectionList
         style={{marginLeft: 3, marginRight: 3}}
         ItemSeparatorComponent={this.renderSeparatorComponent}
@@ -191,6 +196,13 @@ renderHeader = (headerItem) => {
         sections={sectionData}
         keyExtractor={(item) => item._id}
         />
+      <Button
+          onPress={()=>{this.goToCarrinho()}}
+          title="Carrinho"
+          color={cores.corPrincipal}
+          accessibilityLabel="YourLabelHere"
+        />
+    </View>
 
     return (
       <Image

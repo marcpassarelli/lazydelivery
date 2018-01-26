@@ -122,7 +122,7 @@ export class HomeScreen extends Component {
 
   procuraEstabelecimento(){
     return (
-      <View style = {{marginHorizontal:12, height: 120}}>
+      <View style = {{marginLeft:10, height:130}}>
         <FlatList
           keyboardShouldPersistTaps={'always'}
           ItemSeparatorComponent={this.renderSeparator}
