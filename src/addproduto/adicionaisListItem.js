@@ -7,31 +7,27 @@ export default class AdicionaisListItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      qtde:0
+      qty:0
     }
   }
 
-  menosQtde(){
-    let qtde = this.state.qtde
-    if(qtde!=0){
+  minusQty(){
+    let qty = this.state.qty
+    if(qty!=0){
       this.setState({
-        qtde: qtde - 1
+        qty: qty - 1
       });
     }
   }
 
-  maisQtde(){
-    let qtde = this.state.qtde + 1
+  plusQty(){
+    let qty = this.state.qty + 1
     this.setState({
-      qtde: qtde
+      qty: qty
     });
   }
 
   render() {
-    console.ignoredYellowBox = [
-      'Setting a timer'
-    ]
-
     return (
       <View style={{flex: 1, flexDirection: 'row', marginTop: 5, justifyContent: 'space-between'}}>
         <View style={{flex:1}}>
@@ -41,24 +37,24 @@ export default class AdicionaisListItem extends Component {
         </View>
         <View style={{flex:1}}>
           <Text style={[styles.textAdicionais, {alignSelf: 'center'}]}>
-            R$ {this.props.preco*this.state.qtde}
+            R$ {this.props.preco*this.state.qty}
           </Text>
         </View>
         <View style={{flex:1, flexDirection: 'row', justifyContent: 'flex-end', marginRight: 10}}>
           <TouchableOpacity
             style={{justifyContent: 'center', alignSelf: 'center', marginBottom: 10}}
-            onPress={()=>{this.menosQtde()}}>
+            onPress={()=>{this.minusQty()}}>
             <Image
               source={require('../../img/minus.png')}
               style={styles.icon}/>
           </TouchableOpacity>
           <Text
             style={[styles.textAdicionais, {alignSelf: 'center', justifyContent: 'center', marginHorizontal: 10, fontSize: 16, lineHeight: 16}]}>
-            {this.state.qtde}
+            {this.state.qty}
           </Text>
           <TouchableOpacity
             style={{justifyContent: 'center', alignSelf: 'center', marginBottom: 10}}
-            onPress={()=>{this.maisQtde()}}>
+            onPress={()=>{this.plusQty()}}>
             <Image
               source={require('../../img/plus.png')}
               style={styles.icon}/>

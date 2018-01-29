@@ -96,7 +96,11 @@ export class AdicionaisScreen extends Component{
         ItemSeparatorComponent={this.renderSeparator}
         data= {this.state.listaAdicionais}
         extraData={this.state}
-        renderItem={this.renderItem}
+        renderItem={({item}) =>
+        <AdicionaisListItem
+          nomeAdicional = {item.nome}
+          preco = {item.preco}>
+        </AdicionaisListItem>}
         keyExtractor={item => item.nome}
       />
     <Text>Total={this.state.soma}</Text>

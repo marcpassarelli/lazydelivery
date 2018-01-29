@@ -4,10 +4,10 @@ import { Image, Alert, View, Text,TextInput, Button, ActivityIndicator, Touchabl
 import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import {getListaEstabelecimentos, listaEstabelecimentos, getListaAdicionais} from '../firebase/database'
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import _ from 'lodash'
 
-var options =["Home R$ 5,00","Savings","Car","GirlFriend"];
+export var carrinho =[]
 
 export class AddProdutoScreen extends Component{
 
@@ -29,7 +29,8 @@ export class AddProdutoScreen extends Component{
       estabelecimento:'',
       qtde:1,
       listaAdicionais:'',
-      loading: false
+      loading: false,
+      text:''
     }
 
   updateAdicionais = (adicionais) => {
@@ -80,6 +81,14 @@ export class AddProdutoScreen extends Component{
     this.setState({
       qtde: qtde
     });
+  }
+
+  adicionarAoCarrinho(){
+    carrinho.push({
+      
+    })
+    const { navigate } = this.props.navigation;
+    navigate('Carrinho',{})
   }
 
   render() {
@@ -142,8 +151,22 @@ export class AddProdutoScreen extends Component{
       </TouchableOpacity>
 
       <Text style={styles.textAddProduto}>Observações</Text>
-      <TextInput>
+      <TextInput
+        autoGrow={true}
+        multiline = {true}
+        numberOfLines = {2}
+        onChangeText={(text) => this.setState({text})}
+        value={this.state.text}
+        placeholder='Exemplos: Carne bem passada. Sem cebola. Sem salada, etc'
+        >
       </TextInput>
+
+      <Button
+        onPress={()=>{this.adicionarAoCarrinho()}}
+        title="Adicionar ao Carrinho"
+        color={cores.corPrincipal}
+        accessibilityLabel="YourLabelHere"
+      />
 
     </View>
 
@@ -151,7 +174,9 @@ export class AddProdutoScreen extends Component{
       <Image
         source={require('../../img/alimentos-fundo2.jpg')}
         style={styles.backgroundImage}>
-        {content}
+        <KeyboardAwareScrollView>
+          {content}
+        </KeyboardAwareScrollView>
       </Image>
     );
   }

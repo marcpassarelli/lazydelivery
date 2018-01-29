@@ -5,6 +5,7 @@ import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import {getListaEstabelecimentos, listaEstabelecimentos} from '../firebase/database'
 import {carrinho} from '../addproduto/adicionais'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import _ from 'lodash'
 
