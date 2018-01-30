@@ -28,9 +28,10 @@ export class AddProdutoScreen extends Component{
       tipoProduto:'',
       estabelecimento:'',
       qtde:1,
+      total:'',
       listaAdicionais:'',
       loading: false,
-      text:''
+      obs:''
     }
 
   updateAdicionais = (adicionais) => {
@@ -57,7 +58,8 @@ export class AddProdutoScreen extends Component{
       detalhes: detalhes,
       imgProduto: imgProduto,
       tipoProduto: tipoProduto,
-      estabelecimento: estabelecimento
+      estabelecimento: estabelecimento,
+      total: preco
     }, function(){
         this.setState({
           loading: false
@@ -71,7 +73,11 @@ export class AddProdutoScreen extends Component{
     let qtde = this.state.qtde
     if(qtde!=1){
       this.setState({
-        qtde: qtde - 1
+        qtde: qtde - 1,
+      }, function(){
+        this.setState({
+          total: this.state.qtde*this.state.preco
+        });
       });
     }
   }
@@ -80,15 +86,22 @@ export class AddProdutoScreen extends Component{
     let qtde = this.state.qtde + 1
     this.setState({
       qtde: qtde
+    }, function(){
+      this.setState({
+        total: this.state.qtde*this.state.preco
+      });
     });
   }
 
   adicionarAoCarrinho(){
     carrinho.push({
-
+      nome:this.state.nome,
+      preco:this.state.preco,
+      qtde:this.state.qtde,
+      obs:this.state.obs
     })
     const { navigate } = this.props.navigation;
-    navigate('Carrinho',{})
+    navigate('Carrinho')
   }
 
   render() {
@@ -114,17 +127,21 @@ export class AddProdutoScreen extends Component{
         style={[styles.imgProduto,{width: width*0.98, height: height*0.3}]}>
       </Image>
 
-      <Text style={styles.textAddProduto}>
+      <Text style={[styles.textAddProduto,{marginBottom: 0}]}>
           {this.state.nome}
       </Text>
 
+      <Text style={[styles.textAddProduto,{fontSize: 13, marginHorizontal: 10,color: '#2F4F4F'}]}>
+        {this.state.detalhes}
+      </Text>
+
       <Text style={styles.textAddProduto}>
-        Preço Unitário: R$ {this.state.preco*this.state.qtde}
+        Preço Unitário: R$ {this.state.preco}
       </Text>
 
       <Text style={[styles.textAddProduto,{marginBottom: 5}]}>Quantidade:</Text>
 
-      <View style={{flexDirection: 'row', alignSelf: 'center', marginBottom: 10}}>
+      <View style={{flexDirection: 'row', alignSelf: 'center'}}>
 
         <TouchableOpacity style={{}} onPress={()=>{this.menosQtde()}}>
           <Image source={require('../../img/minus.png')} style={styles.icon}/>
@@ -138,8 +155,8 @@ export class AddProdutoScreen extends Component{
 
       </View>
 
-      <Text style={[styles.textAddProduto,{fontSize: 14, marginLeft: 5}]}>
-        {this.state.detalhes}
+      <Text style={styles.textAddProduto}>
+        Total: R$ {this.state.total}
       </Text>
 
       <TouchableOpacity onPress={()=>{
@@ -150,14 +167,13 @@ export class AddProdutoScreen extends Component{
         </Text>
       </TouchableOpacity>
 
-      <Text style={styles.textAddProduto}>Observações</Text>
+      <Text style={[styles.textAddProduto,{marginBottom: 0, alignSelf: 'flex-start'}]}>Observações:</Text>
       <TextInput
-        autoGrow={true}
+        style={{borderColor: cores.corPrincipal, borderWidth: 0.5, marginBottom: 5}}
         multiline = {true}
-        numberOfLines = {2}
-        onChangeText={(text) => this.setState({text})}
-        value={this.state.text}
-        placeholder='Exemplos: Carne bem passada. Sem cebola. Sem salada...'
+        onChangeText={(text) => this.setState({observacoes: text})}
+        value={this.state.obs}
+        placeholder='Exemplos: Carne bem passada. Sem cebola. Sem salada, etc...'
         >
       </TextInput>
 

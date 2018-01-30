@@ -171,6 +171,7 @@ export const styles = StyleSheet.create({
   textAddProduto:{
     alignSelf: 'center',
     color: cores.corPrincipal,
+    marginLeft:5,
     fontSize: 18,
     marginBottom: 15
 },

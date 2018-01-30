@@ -4,7 +4,7 @@ import { Image, Alert, View, Text, Button, ActivityIndicator, FlatList, Icon } f
 import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import {getListaEstabelecimentos, listaEstabelecimentos} from '../firebase/database'
-import {carrinho} from '../addproduto/adicionais'
+import {carrinho} from '../addproduto/addproduto'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import _ from 'lodash'
@@ -87,7 +87,11 @@ export class CarrinhoScreen extends Component{
         ItemSeparatorComponent={this.renderSeparator}
         data= {carrinho}
         extraData={this.state}
-        renderItem={this.renderItem}
+        renderItem={({item}) =>
+        <AdicionaisListItem
+          nomeAdicional = {item.nome}
+          preco = {item.preco}>
+        </AdicionaisListItem>}
         keyExtractor={item => item.nome}
       />
     </View>
