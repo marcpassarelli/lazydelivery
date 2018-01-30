@@ -85,7 +85,7 @@ export class AddProdutoScreen extends Component{
 
   adicionarAoCarrinho(){
     carrinho.push({
-      
+
     })
     const { navigate } = this.props.navigation;
     navigate('Carrinho',{})
@@ -157,7 +157,7 @@ export class AddProdutoScreen extends Component{
         numberOfLines = {2}
         onChangeText={(text) => this.setState({text})}
         value={this.state.text}
-        placeholder='Exemplos: Carne bem passada. Sem cebola. Sem salada, etc'
+        placeholder='Exemplos: Carne bem passada. Sem cebola. Sem salada...'
         >
       </TextInput>
 
