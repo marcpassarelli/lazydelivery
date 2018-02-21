@@ -346,14 +346,17 @@ export async function getEstabelecimentoInfo(nomeEstabelecimento, callback){
 export async function getListaAdicionais(nomeEstabelecimento, tipoProduto){
   try{
     listaAdicionais = []
+    todoCounter=0
     firebase.database().ref("/listaAdicionais/"+nomeEstabelecimento+"/"+tipoProduto+"/").once('value').then(function(snapshot){
-      
+
       var estabelecimentoTiposProdData = snapshot.val()
       if(estabelecimentoTiposProdData){
         snapshot.forEach((child) =>{
           listaAdicionais.push({
             nome: child.val().nome,
-            preco: child.val().preco
+            preco: child.val().preco,
+            quantidade: child.val().quantidade,
+            _id: todoCounter++
           });
         });
       }

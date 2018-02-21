@@ -240,7 +240,7 @@ export class HomeScreen extends Component {
         </View>
       </View>
 
-      <View style={{opacity: this.state.opacity}}>
+      <View style={{opacity: this.state.opacity, flex:1}}>
         <Text style={styles.nomeAppHome}>Opções Delivery</Text>
         <FlatList
           ItemSeparatorComponent={this.renderSeparator}

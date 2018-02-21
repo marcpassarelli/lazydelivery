@@ -8,6 +8,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import _ from 'lodash'
 
 export var carrinho =[]
+var todoCounter = 1;
 
 export class AddProdutoScreen extends Component{
 
@@ -71,7 +72,7 @@ export class AddProdutoScreen extends Component{
 
   menosQtde(){
     let qtde = this.state.qtde
-    if(qtde!=1){
+    if(qtde>0){
       this.setState({
         qtde: qtde - 1,
       }, function(){
@@ -98,10 +99,13 @@ export class AddProdutoScreen extends Component{
       nome:this.state.nome,
       preco:this.state.preco,
       qtde:this.state.qtde,
-      obs:this.state.obs
+      obs:this.state.obs,
+      _id:todoCounter++
+
     })
     const { navigate } = this.props.navigation;
     navigate('Carrinho')
+    console.log("Carrinho"+JSON.stringify(carrinho));
   }
 
   render() {
@@ -171,7 +175,7 @@ export class AddProdutoScreen extends Component{
       <TextInput
         style={{borderColor: cores.corPrincipal, borderWidth: 0.5, marginBottom: 5}}
         multiline = {true}
-        onChangeText={(text) => this.setState({observacoes: text})}
+        onChangeText={(text) => this.setState({obs: text})}
         value={this.state.obs}
         placeholder='Exemplos: Carne bem passada. Sem cebola. Sem salada, etc...'
         >

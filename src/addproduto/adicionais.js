@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { Image, Alert, View, Text,TextInput, Button, ActivityIndicator, TouchableOpacity, FlatList, Icon, Dimensions, Picker } from 'react-native'
+import { Image, Alert, View, Text, TextInput, Button, ActivityIndicator, TouchableOpacity, FlatList, Icon, Dimensions, Picker } from 'react-native'
 import { styles, cores } from '../constants/constants'
 import {listaAdicionais, listaEstabelecimentos} from '../firebase/database'
 import AdicionaisListItem from './adicionaisListItem'
 
 import _ from 'lodash'
 var soma = 0
-var carrinho = []
+
+const adicionais = listaAdicionais
 
 export class AdicionaisScreen extends Component{
 
@@ -21,40 +22,16 @@ export class AdicionaisScreen extends Component{
     super(props);
     this.state = {
       soma: 0,
-      loading: false
+      loading: false,
+      adicionais,
     }
 
   }
 
   componentWillMount(){
     this.setState({
-            loading: true
-          });
-
-    setTimeout(()=>{
-      this.setState({listaAdicionais: listaAdicionais}, function(){
-        this.setState({
-                loading: false
-              });
-      })
-    },500)
-
-  }
-
-  getSum(total, num) {
-    return total + num
-  }
-
-  renderItem = (item) =>{
-
-    console.log("LISTA ADICIONAIS RENDERITEM"+JSON.stringify(soma));
-    // onLayout={this._setMaxHeight.bind(t  his)}
-    return (
-      <AdicionaisListItem
-        nomeAdicional = {item.item.nome}
-        preco = {item.item.preco}>
-      </AdicionaisListItem>
-    )
+      adicionais: listaAdicionais
+    });
   }
 
   renderSeparator = () => {
@@ -73,10 +50,43 @@ export class AdicionaisScreen extends Component{
 
   adicionarAdicionais(){
     const { navigate } = this.props.navigation;
-      navigate('AddProduto')
+    export var adicionaisEscolhidos= []
+    console.log("Adicionais:"+JSON.stringify(this.state.adicionais));
+    for(i=0;i<this.state.adicionais.length;i++){
+      if(this.state.adicionais[i].quantidade>0){
+          adicionaisEscolhidos.push({
+            nome: this.state.adicionais[i].nome,
+            preco: this.state.adicionais[i].preco,
+            quantidade: this.state.adicionais[i].quantidade
+          })
+      }
+    }
+    console.log("Adicionais escolhidos:"+JSON.stringify(adicionaisEscolhidos));
+    navigate('AddProduto',{adicionais:adicionaisEscolhidos})
+  }
+
+  onSubtract = (item, index) =>{
+  const adicionais = [...this.state.adicionais];
+    if(adicionais[index].quantidade>0){
+      adicionais[index].quantidade -= 1;
+       this.setState({ adicionais });
+    }
+  }
+
+  onAdd = (item, index) =>{
+    const adicionais = [...this.state.adicionais];
+    console.log("dentro produtos"+adicionais);
+    adicionais[index].quantidade += 1;
+    this.setState({ adicionais });
   }
 
   render() {
+    const { adicionais } = this.state;
+    let totalPrice = 0;
+      adicionais.forEach((item) => {
+        totalPrice += item.quantidade * item.preco;
+      })
+
 
     console.ignoredYellowBox = [
       'Setting a timer'
@@ -94,16 +104,17 @@ export class AdicionaisScreen extends Component{
     <View style={{flex: 1}}>
       <FlatList
         ItemSeparatorComponent={this.renderSeparator}
-        data= {this.state.listaAdicionais}
+        data= {this.state.adicionais}
         extraData={this.state}
-        renderItem={({item}) =>
-        <AdicionaisListItem
-          nomeAdicional = {item.nome}
-          preco = {item.preco}>
-        </AdicionaisListItem>}
-        keyExtractor={item => item.nome}
+        renderItem={({ item, index }) => (
+          <AdicionaisListItem
+            item={item}
+            onSubtract={() => this.onSubtract(item, index)}
+            onAdd={() => this.onAdd(item, index)}
+          />
+        )}
+        keyExtractor={item => item._id}
       />
-    <Text>Total={this.state.soma}</Text>
     <Button
       onPress={()=>{this.adicionarAdicionais()}}
       title="Adicionar"

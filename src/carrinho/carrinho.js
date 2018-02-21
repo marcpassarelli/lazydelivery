@@ -5,6 +5,7 @@ import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import {getListaEstabelecimentos, listaEstabelecimentos} from '../firebase/database'
 import {carrinho} from '../addproduto/addproduto'
+import CarrinhoListItem from './carrinhoListItem'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import _ from 'lodash'
@@ -56,13 +57,13 @@ export class CarrinhoScreen extends Component{
   }
 
   componentDidMount(){
-    console.log("antes check did mount"+JSON.stringify(this.state.listaEstabelecimentosUp))
+    console.log("antes check did mount"+JSON.stringify(carrinho))
     this.setState({ listaEstabelecimentosUp: listaEstabelecimentos}, function(){
       setTimeout(()=>{
         this.setState({
           loading: false
         })
-      },500)
+      },500);
     })
 
 
@@ -88,11 +89,13 @@ export class CarrinhoScreen extends Component{
         data= {carrinho}
         extraData={this.state}
         renderItem={({item}) =>
-        <AdicionaisListItem
-          nomeAdicional = {item.nome}
-          preco = {item.preco}>
-        </AdicionaisListItem>}
-        keyExtractor={item => item.nome}
+        <CarrinhoListItem
+          nomeProd = {item.nome}
+          preco = {item.preco}
+          qtde = {item.qtde}
+          obs = {item.obs}>
+        </CarrinhoListItem>}
+        keyExtractor={item => item._id}
       />
     </View>
 
