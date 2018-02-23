@@ -6,6 +6,7 @@ import AdicionaisListItem from './adicionaisListItem'
 
 import _ from 'lodash'
 var soma = 0
+export var adicionaisEscolhidos= []
 
 const adicionais = listaAdicionais
 
@@ -50,17 +51,26 @@ export class AdicionaisScreen extends Component{
 
   adicionarAdicionais(){
     const { navigate } = this.props.navigation;
-    export var adicionaisEscolhidos= []
+    adicionaisEscolhidos = []
     console.log("Adicionais:"+JSON.stringify(this.state.adicionais));
-    for(i=0;i<this.state.adicionais.length;i++){
-      if(this.state.adicionais[i].quantidade>0){
-          adicionaisEscolhidos.push({
-            nome: this.state.adicionais[i].nome,
-            preco: this.state.adicionais[i].preco,
-            quantidade: this.state.adicionais[i].quantidade
-          })
+    this.state.adicionais.map((item)=>{
+      if (item.quantidade>0){
+        adicionaisEscolhidos.push({
+          nome: item.nome,
+          preco: item.preco,
+          quantidade: item.quantidade
+        })
       }
-    }
+    })
+    // for(i=0;i<this.state.adicionais.length;i++){
+    //   if(this.state.adicionais[i].quantidade>0){
+    //       adicionaisEscolhidos.push({
+    //         nome: this.state.adicionais[i].nome,
+    //         preco: this.state.adicionais[i].preco,
+    //         quantidade: this.state.adicionais[i].quantidade
+    //       })
+    //   }
+    // }
     console.log("Adicionais escolhidos:"+JSON.stringify(adicionaisEscolhidos));
     navigate('AddProduto',{adicionais:adicionaisEscolhidos})
   }

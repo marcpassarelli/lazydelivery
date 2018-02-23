@@ -4,6 +4,7 @@ import { Image, Alert, View, Text,TextInput, Button, ActivityIndicator, Touchabl
 import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import {getListaEstabelecimentos, listaEstabelecimentos, getListaAdicionais} from '../firebase/database'
+import {adicionaisEscolhidos} from './adicionais'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import _ from 'lodash'
 
@@ -100,12 +101,16 @@ export class AddProdutoScreen extends Component{
       preco:this.state.preco,
       qtde:this.state.qtde,
       obs:this.state.obs,
+      adicionais: adicionaisEscolhidos,
       _id:todoCounter++
-
     })
     const { navigate } = this.props.navigation;
     navigate('Carrinho')
     console.log("Carrinho"+JSON.stringify(carrinho));
+  }
+
+  adicionaisEscolhidosFunction(){
+
   }
 
   render() {
@@ -170,6 +175,13 @@ export class AddProdutoScreen extends Component{
           Adicionais?
         </Text>
       </TouchableOpacity>
+
+      <Text style={[styles.textAddProduto,{fontSize: 12}]}>{
+          adicionaisEscolhidos.map((item, key)=>(
+                <Text key={key}>{item.nome}</Text>
+              ))
+            }
+      </Text>
 
       <Text style={[styles.textAddProduto,{marginBottom: 0, alignSelf: 'flex-start'}]}>Observações:</Text>
       <TextInput
