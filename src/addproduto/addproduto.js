@@ -51,8 +51,6 @@ export class AddProdutoScreen extends Component{
     var tipoProduto = state.params ? state.params.tipo : ""
     var estabelecimento = state.params ? state.params.estabelecimento : ""
 
-    console.log("tipoProduto: "+tipoProduto)
-
     this.setState({
       loading: true,
       nome: nome,
@@ -66,7 +64,6 @@ export class AddProdutoScreen extends Component{
         this.setState({
           loading: false
         })
-        console.log("state: "+this.state.imgProduto)
     });
 
   }
@@ -106,7 +103,6 @@ export class AddProdutoScreen extends Component{
     })
     const { navigate } = this.props.navigation;
     navigate('Carrinho')
-    console.log("Carrinho"+JSON.stringify(carrinho));
   }
 
   adicionaisEscolhidosFunction(){
@@ -118,7 +114,7 @@ export class AddProdutoScreen extends Component{
       'Setting a timer'
     ]
     var {width, height} = Dimensions.get('window');
-
+    // const adicionaisEscolhidosLength = adicionaisEscolhidos.length
 
     const content = this.state.loading ?
 
@@ -177,9 +173,13 @@ export class AddProdutoScreen extends Component{
       </TouchableOpacity>
 
       <Text style={[styles.textAddProduto,{fontSize: 12}]}>{
-          adicionaisEscolhidos.map((item, key)=>(
-                <Text key={key}>{item.nome}</Text>
-              ))
+          adicionaisEscolhidos.map((item, i, arr)=>{
+                if(arr.length === i + 1 ){
+                  return (<Text>{item.nome}</Text>)
+                }else{
+                  return (<Text>{item.nome}, </Text>)
+                }
+              })
             }
       </Text>
 

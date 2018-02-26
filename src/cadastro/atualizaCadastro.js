@@ -76,7 +76,6 @@ export class AtualizaCadastroScreen extends Component {
 
     //callback to wait for the user to be found
     validateUserName(){
-      console.log("setState:"+this.state.nome)
       return this.state.nome+""
     }
 
@@ -93,31 +92,24 @@ export class AtualizaCadastroScreen extends Component {
       this.setState({nome: nomeUp}, function(){
         this.validateUserName();
       })
-      console.log("NOME"+this.state.nome)
       this.setState({telefone: telefoneUp}, function(){
         this.validateUserName();
       })
-      console.log("telefone"+this.state.telefone)
       this.setState({endereco: enderecoUp}, function(){
         this.validateUserName();
       })
-      console.log("endereco"+this.state.endereco)
       this.setState({numeroEnd: numeroEndUp}, function(){
         this.validateUserName();
       })
-      console.log("NOME"+this.state.nome)
       this.setState({bairro: bairroUp}, function(){
         this.validateUserName();
       })
-      console.log("NOME"+this.state.nome)
       this.setState({referencia: referenciaUp}, function(){
         this.validateUserName();
       })
-      console.log("NOME"+this.state.nome)
       this.setState({profilePicURL: profilePicUp}, function(){
         this.validateUserName();
       })
-      console.log("profilePicURL:"+this.state.profilePicURL)
       }
     }
 

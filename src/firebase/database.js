@@ -16,7 +16,6 @@ export async function login (email, pass, onLogin) {
     try {
         await firebase.auth()
             .signInWithEmailAndPassword(email, pass);
-            console.log("logou")
             onLogin()
 
     } catch (error) {
@@ -39,7 +38,6 @@ export async function signup (email, pass, onSignup) {
         await firebase.auth()
             .createUserWithEmailAndPassword(email, pass);
 
-        console.log("Account created");
         onSignup()
         // Navigate to the Home page, the user is auto logged in
 
@@ -206,7 +204,7 @@ export async function getListaEstabelecimentos(tipoEstabelecimento){
           });
         });
       }
-      console.log("DATABASE estabelecimentos:"+JSON.stringify(listaEstabelecimentos))
+
     })
   } catch(error){
     console.log(error)
@@ -230,7 +228,6 @@ export async function getEstabelecimentoProd(nomeEstabelecimento){
           });
         });
       }
-      console.log("DATABASE produtos:"+JSON.stringify(estabelecimentoData))
     })
   } catch(error){
     console.log(error)
@@ -250,7 +247,6 @@ export async function getNomeEstabelecimentos(){
           });
         });
       }
-      console.log("DATABASE NOMES ESTABEELCIMENTOS:"+JSON.stringify(nomesEstabelecimentos))
     })
   } catch(error){
     console.log(error)
@@ -329,9 +325,6 @@ export async function getEstabelecimentoInfo(nomeEstabelecimento, callback){
             }
 
           }
-          console.log("credito: "+JSON.stringify(cre))
-          console.log("debito: "+JSON.stringify(deb))
-          console.log("dinheiro: "+din)
 
       callback(logo, nome, precoDelivery, tempoEntrega, seg, ter,
         qua, qui, sex, sab, dom, cre, deb, din)
@@ -360,7 +353,6 @@ export async function getListaAdicionais(nomeEstabelecimento, tipoProduto){
           });
         });
       }
-      console.log("listaAdicionais:"+JSON.stringify(listaAdicionais))
     })
   } catch(error){
     console.log(error)

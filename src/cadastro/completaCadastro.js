@@ -77,7 +77,6 @@ export class CompletaCadastroScreen extends Component {
 
     //callback to wait for the user to be found
     validateUserName(){
-      console.log("setState:"+this.state.nome)
       return this.state.nome+""
     }
 
@@ -86,14 +85,12 @@ export class CompletaCadastroScreen extends Component {
       var name = state.params ? state.params.name : ""
       var profilePic = state.params ? state.params.profilePic : ""
       if(name){
-      console.log("NomeCompletaCadastro"+name)
       this.setState({nome: name}, function(){
         this.validateUserName();
       })
       this.setState({profilePicURL: profilePic}, function(){
         this.validateUserName();
       })
-      console.log("setState:"+this.state.nome)
       }
     }
 

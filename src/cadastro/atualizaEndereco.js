@@ -66,7 +66,6 @@ export class AtualizaEnderecoScreen extends Component {
 
     //callback to wait for the user to be found
     validateUserName(){
-      console.log("setState:"+this.state.nome)
       return this.state.nome+""
     }
 
