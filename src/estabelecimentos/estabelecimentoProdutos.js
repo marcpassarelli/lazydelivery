@@ -5,6 +5,7 @@ import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import {getEstabelecimentoProd, estabelecimentoProd, getEstabelecimentoTiposProd, estabelecimentoTiposProd, getEstabelecimentoProdutos} from '../firebase/database'
 import EstabelecimentoProdutosListItem from './estabelecimentoProdutosListItem'
+import Loader from '../loadingModal/loadingModal'
 
 let sectionData =[]
 let sectionName =[]
@@ -36,10 +37,14 @@ constructor(props){
   this.state = {
     nomeEstabelecimento:'',
     produtosUp:'',
+    loadingList: false,
     loading: false,
     expandido: false,
     animation: new Animated.Value()
   }
+
+  this.loadingTrue = this.loadingTrue.bind(this)
+  this.loadingFalse = this.loadingFalse.bind(this)
 }
 
 // toggle(headerName){
@@ -95,20 +100,16 @@ sectionDataFunction(){
   sectionData = _.reduce(sectionData, (acc, next, index) =>{
     acc.push({
       key: index,
-      data: next,
-      renderItem: this.renderItem
+      data: next
     })
     return acc
   }, [])
-
-
-  console.log("depois reduce"+JSON.stringify(sectionData))
 
 }
 
 componentWillMount(){
   this.setState({
-          loading: true
+          loadingList: true
         });
 
 
@@ -116,11 +117,20 @@ componentWillMount(){
     this.setState({produtosUp: estabelecimentoProd}, function(){
       this.sectionDataFunction(),
       this.setState({
-              loading: false
+              loadingList: false
             });
     })
   },750)
 
+}
+
+loadingTrue() {
+  console.log("dentro loadingTrue")
+  this.setState({loading:true})
+}
+loadingFalse() {
+  console.log("dentro loadingFalse")
+  this.setState({loading:false})
 }
 
 renderItem = (item) =>{
@@ -137,7 +147,9 @@ renderItem = (item) =>{
       detalhes = {item.item.detalhes}
       imgProduto = {item.item.imgProduto}
       tipoProduto = {item.item.tipo}
-      navigation={this.props.navigation}>
+      navigation={this.props.navigation}
+      loadingTrue = {this.loadingTrue}
+      loadingFalse = {this.loadingFalse}>
     </EstabelecimentoProdutosListItem>
   </Animated.View>
   )
@@ -179,7 +191,7 @@ goToCarrinho(){
       'Setting a timer'
     ]
 
-    const content = this.state.loading ?
+    const content = this.state.loadingList ?
 
     <View style={styles.containerIndicator}>
       <ActivityIndicator
@@ -192,6 +204,7 @@ goToCarrinho(){
         style={{marginLeft: 3, marginRight: 3}}
         ItemSeparatorComponent={this.renderSeparatorComponent}
         SectionSeparatorComponent={this.renderSeparatorSection}
+        renderItem={this.renderItem}
         renderSectionHeader={this.renderHeader}
         sections={sectionData}
         keyExtractor={(item) => item._id}

@@ -9,6 +9,7 @@ import { Image, Alert, Navigator, View, ActivityIndicator, BackHandler, Platform
 import { styles } from '../constants/constants'
 import * as firebase from 'firebase';
 import FBSDK, { LoginManager, AccessToken, GraphRequestManager, GraphRequest } from 'react-native-fbsdk'
+import Loader from '../loadingModal/loadingModal';
 
 let listener = null
 export class LoginRegisterScreen extends Component {
@@ -32,7 +33,8 @@ export class LoginRegisterScreen extends Component {
       email: '',
       senha: '',
       nameUser: '',
-      profilePicUrl:''
+      profilePicUrl:'',
+      loading: false
     }
 
     this.loginToHome = this.loginToHome.bind(this);
@@ -71,23 +73,44 @@ export class LoginRegisterScreen extends Component {
 
   logintToCadastro ()
   {
+    this.setState({
+      loading: true
+    })
     const {navigate} = this.props.navigation
     navigate('CadastroInicial')
+    this.setState({
+      loading: false
+    })
   }
 
   logintToCadastroFacebook (nomeUsuario, profilePicUrl) {
+    this.setState({
+      loading: true
+    })
     const {navigate} = this.props.navigation
     navigate('CompletaCadastro', { name: nomeUsuario, profilePic: profilePicUrl })
+    this.setState({
+      loading: false
+    })
   }
 
 
   loginToHomeFacebook(){
+    this.setState({
+      loading: true
+    })
     const {navigate} = this.props.navigation
     navigate('Home')
+    this.setState({
+      loading: false
+    })
   }
 
 
   loginWithFacebook = () => {
+    this.setState({
+      loading: true
+    })
     var that = this
     LoginManager.logInWithReadPermissions(['public_profile', 'email']).then(function(result){
       if (result.isCancelled){
@@ -151,6 +174,8 @@ export class LoginRegisterScreen extends Component {
       <Image
         source={require('../../img/alimentos-fundo2.jpg')}
         style={styles.backgroundImage}>
+        <Loader
+          loading={this.state.loading} />
         <ComponentsLoginRegister
           updateEmail = {this.updateEmail}
           updateSenha = {this.updateSenha}

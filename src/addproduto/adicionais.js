@@ -71,8 +71,7 @@ export class AdicionaisScreen extends Component{
     //       })
     //   }
     // }
-    console.log("Adicionais escolhidos:"+JSON.stringify(adicionaisEscolhidos));
-    navigate('AddProduto',{adicionais:adicionaisEscolhidos})
+    navigate('AddProduto',{adicionais:adicionaisEscolhidos, totalPreco: totalPrice})
   }
 
   onSubtract = (item, index) =>{
@@ -85,14 +84,13 @@ export class AdicionaisScreen extends Component{
 
   onAdd = (item, index) =>{
     const adicionais = [...this.state.adicionais];
-    console.log("dentro produtos"+adicionais);
     adicionais[index].quantidade += 1;
     this.setState({ adicionais });
   }
 
   render() {
     const { adicionais } = this.state;
-    let totalPrice = 0;
+    let totalPrice=0
       adicionais.forEach((item) => {
         totalPrice += item.quantidade * item.preco;
       })
@@ -125,6 +123,7 @@ export class AdicionaisScreen extends Component{
         )}
         keyExtractor={item => item._id}
       />
+    <Text>Preço total:{this.totalPrice}</Text>
     <Button
       onPress={()=>{this.adicionarAdicionais()}}
       title="Adicionar"

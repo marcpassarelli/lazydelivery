@@ -5,6 +5,7 @@ import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import ListaEstabelecimentosListItem from './listaEstabelecimentosListItem'
 import {getListaEstabelecimentos, listaEstabelecimentos} from '../firebase/database'
+import Loader from '../loadingModal/loadingModal';
 
 import _ from 'lodash'
 
@@ -24,6 +25,7 @@ constructor(props){
     tipoEstabelecimento:'',
     listaEstabelecimentosUp:'',
     loading: false,
+    loadingList: false
 
   }
 }
@@ -46,7 +48,7 @@ renderSeparator = () => {
 componentWillMount(){
 
   this.setState({
-    loading: true
+    loadingList: true
   })
 
   const {state} = this.props.navigation;
@@ -57,11 +59,18 @@ componentWillMount(){
 componentDidMount(){
   this.setState({ listaEstabelecimentosUp: listaEstabelecimentos }, function(){
       this.setState({
-        loading: false
+        loadingList: false
       })
   })
 
 
+}
+
+loadingTrue(){
+  this.setState({loading:true})
+}
+loadingFalse(){
+  this.setState({loading:false})
 }
   //   setTimeout(()=>{
   // },750)
@@ -70,7 +79,7 @@ render() {
     'Setting a timer'
   ]
 
-  const content = this.state.loading ?
+  const content = this.state.loadingList ?
 
   <View style={styles.containerIndicator}>
     <ActivityIndicator
@@ -92,7 +101,9 @@ render() {
         imglogoEstabelecimento = {item.logo}
         valorDelivery = {item.precoDelivery}
         tempoEntrega = {item.tempoEntrega}
-        navigation={this.props.navigation}>
+        navigation={this.props.navigation}
+        loadingTrue = {()=> this.loadingTrue()}
+        loadingFalse = {()=> this.loadingFalse()}>
       </ListaEstabelecimentosListItem>}
     keyExtractor={item => item._id}
     />
@@ -104,6 +115,8 @@ render() {
       source={require('../../img/alimentos-fundo2.jpg')}
       style={styles.backgroundImage}>
       <View style={styles.separator}></View>
+      <Loader
+          loading = {this.state.loading}/>
       {content}
     </Image>
 );

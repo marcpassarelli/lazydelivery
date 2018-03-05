@@ -4,11 +4,12 @@ import { Image, Alert, View, Text,TextInput, Button, ActivityIndicator, Touchabl
 import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import {getListaEstabelecimentos, listaEstabelecimentos, getListaAdicionais} from '../firebase/database'
-import {adicionaisEscolhidos} from './adicionais'
+import {adicionaisEscolhidos } from './adicionais'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import _ from 'lodash'
 
 export var carrinho =[]
+// export var produtopra
 var todoCounter = 1;
 
 export class AddProdutoScreen extends Component{
@@ -44,6 +45,7 @@ export class AddProdutoScreen extends Component{
   componentWillMount(){
 
     const {state} = this.props.navigation
+    var totalPrice = state.params ? state.params.totalPreco
     var nome = state.params ? state.params.nome : ""
     var preco = state.params ? state.params.preco : ""
     var detalhes = state.params ? state.params.detalhes : ""
@@ -175,13 +177,15 @@ export class AddProdutoScreen extends Component{
       <Text style={[styles.textAddProduto,{fontSize: 12}]}>{
           adicionaisEscolhidos.map((item, i, arr)=>{
                 if(arr.length === i + 1 ){
-                  return (<Text>{item.nome}</Text>)
+                  return (<Text>{item.nome} ({item.quantidade})</Text>)
                 }else{
-                  return (<Text>{item.nome}, </Text>)
+                  return (<Text>{item.nome} ({item.quantidade}), </Text>)
                 }
               })
             }
       </Text>
+      <Text>{totalPrice}</Text>
+      <Text></Text>
 
       <Text style={[styles.textAddProduto,{marginBottom: 0, alignSelf: 'flex-start'}]}>Observações:</Text>
       <TextInput

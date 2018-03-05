@@ -8,6 +8,7 @@ import HomeListItem from './homeListItem'
 import SearchEstabelecimentoListItem from './searchEstabelecimentoListItem'
 import {dadosTipoEstabelecimento} from './dadosTipoEstabelecimento'
 import { SearchBar } from 'react-native-elements'
+import Loader from '../loadingModal/loadingModal';
 
 import _ from 'lodash'
 
@@ -36,6 +37,7 @@ export class HomeScreen extends Component {
       referencia:'',
       profilePicURL:'',
       loading: false,
+      loadingList: false,
       showProcura: false,
       nomesEstabSearch:'',
       text:'',
@@ -61,7 +63,7 @@ export class HomeScreen extends Component {
 
   async componentWillMount(){
     this.setState({
-            loading: true
+            loadingList: true
           });
     let user = await firebase.auth().currentUser;
 
@@ -76,7 +78,7 @@ export class HomeScreen extends Component {
         profilePicURL:profilePicURLP
       });
       this.setState({
-              loading: false
+              loadingList: false
             });
     })
 
@@ -131,7 +133,9 @@ export class HomeScreen extends Component {
           <SearchEstabelecimentoListItem
             estabelecimento = {item.nome}
             imglogo = {item.logo}
-            navigation={this.props.navigation}>
+            navigation={this.props.navigation}
+            loadingTrue = {()=> this.loadingTrue()}
+            loadingFalse = {()=> this.loadingFalse()}>
           </SearchEstabelecimentoListItem>}
           keyExtractor={item => item.nome}/>
       </View>
@@ -195,6 +199,13 @@ export class HomeScreen extends Component {
   //   )
   // }
 
+  loadingTrue(){
+    this.setState({loading:true})
+  }
+  loadingFalse(){
+    this.setState({loading:false})
+  }
+
   setModalVisible(visible) {
     this.setState({modalVisible: visible});
   }
@@ -206,7 +217,7 @@ export class HomeScreen extends Component {
       'Setting a timer'
     ]
 
-    const content = this.state.loading ?
+    const content = this.state.loadingList ?
 
     <View style={styles.containerIndicator}>
       <ActivityIndicator
@@ -247,9 +258,11 @@ export class HomeScreen extends Component {
           data= {dadosTipoEstabelecimento}
           renderItem= {({item}) =>
           <HomeListItem
+            loadingTrue = {()=> this.loadingTrue()}
             tipoEstabelecimento = {item.tipoEstabelecimento}
             imglogo = {item.logo}
-            navigation={this.props.navigation}>
+            navigation = {this.props.navigation}
+            loadingFalse = {()=> this.loadingFalse()}>
           </HomeListItem>}
           keyExtractor={item => item.tipoEstabelecimento}
           />
@@ -260,6 +273,8 @@ export class HomeScreen extends Component {
       <Image
         source={require('../../img/alimentos-fundo2.jpg')}
         style={styles.backgroundImage}>
+        <Loader
+          loading = {this.state.loading}/>
         {content}
       </Image>
   );
