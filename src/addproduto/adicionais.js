@@ -5,8 +5,9 @@ import {listaAdicionais, listaEstabelecimentos} from '../firebase/database'
 import AdicionaisListItem from './adicionaisListItem'
 
 import _ from 'lodash'
-var soma = 0
 export var adicionaisEscolhidos= []
+let totalPrice =0
+var todoCounter = 1;
 
 const adicionais = listaAdicionais
 
@@ -16,7 +17,8 @@ export class AdicionaisScreen extends Component{
     title: "Adicionais",
     headerTitleStyle: styles.headerText,
     headerStyle: styles.header,
-    headerRight: (<View></View>)
+    headerRight: (<View></View>),
+    backBehavior: 'none'
   });
 
   constructor(props){
@@ -58,7 +60,8 @@ export class AdicionaisScreen extends Component{
         adicionaisEscolhidos.push({
           nome: item.nome,
           preco: item.preco,
-          quantidade: item.quantidade
+          quantidade: item.quantidade,
+          _id:todoCounter++
         })
       }
     })
@@ -71,7 +74,7 @@ export class AdicionaisScreen extends Component{
     //       })
     //   }
     // }
-    navigate('AddProduto',{adicionais:adicionaisEscolhidos, totalPreco: totalPrice})
+    navigate('AddProduto',{adicionais:adicionaisEscolhidos, totalPreco: this.totalPrice})
   }
 
   onSubtract = (item, index) =>{
@@ -90,9 +93,9 @@ export class AdicionaisScreen extends Component{
 
   render() {
     const { adicionais } = this.state;
-    let totalPrice=0
+    this.totalPrice=0
       adicionais.forEach((item) => {
-        totalPrice += item.quantidade * item.preco;
+        this.totalPrice += item.quantidade * item.preco;
       })
 
 

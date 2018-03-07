@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Image, Alert, View, Text, Button, ActivityIndicator, FlatList, TouchableOpacity, Modal, TouchableHighlight} from 'react-native'
+import { Image, Alert, View, Text, Button, ActivityIndicator,BackHandler, Platform, FlatList, TouchableOpacity, Modal, TouchableHighlight} from 'react-native'
 import { styles, cores } from '../constants/constants'
 import { checkUserDetails, getUserDetails, atualizarProfilePicture, getNomeEstabelecimentos, nomesEstabelecimentos } from '../firebase/database'
 import * as firebase from 'firebase';
@@ -11,6 +11,8 @@ import { SearchBar } from 'react-native-elements'
 import Loader from '../loadingModal/loadingModal';
 
 import _ from 'lodash'
+
+let listener = null
 
 export class HomeScreen extends Component {
   static navigationOptions = {
@@ -113,6 +115,13 @@ export class HomeScreen extends Component {
   }
 
   componentDidMount(){
+
+    if (Platform.OS == "android" && listener == null) {
+      listener = BackHandler.addEventListener("hardwareBackPress", () => {
+        BackHandler.exitApp()
+      })
+    }
+
     //checar se o usuario já tem o cadastro completo
     checkUserDetails(
       //se já tiver cadastro completo

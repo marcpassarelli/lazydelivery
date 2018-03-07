@@ -1,16 +1,20 @@
 
 import React, { Component } from 'react';
-import { Image, Alert, View, Text,TextInput, Button, ActivityIndicator, TouchableOpacity, FlatList, Icon, Dimensions, Picker } from 'react-native'
+import { Platform, BackHandler, Image, Alert, View, Text,TextInput, Button, ActivityIndicator, TouchableOpacity, FlatList, Dimensions, Picker } from 'react-native'
 import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import {getListaEstabelecimentos, listaEstabelecimentos, getListaAdicionais} from '../firebase/database'
-import {adicionaisEscolhidos } from './adicionais'
+import {adicionaisEscolhidos} from './adicionais'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import _ from 'lodash'
 
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+let listener = null
 export var carrinho =[]
 // export var produtopra
 var todoCounter = 1;
+var totalPrice=0;
 
 export class AddProdutoScreen extends Component{
 
@@ -18,6 +22,7 @@ export class AddProdutoScreen extends Component{
     title: navigation.state.params.estabelecimento,
     headerTitleStyle: styles.headerText,
     headerStyle: styles.header,
+    headerLeft: (<Icon name={'arrow-left'} onPress={() => navigation.navigate('TabEstabelecimento')}></Icon>),
     headerRight: (<View></View>)
   });
 
@@ -42,16 +47,23 @@ export class AddProdutoScreen extends Component{
   }
 }
 
+  componentDidMount(){
+    if (Platform.OS == "android" && listener == null) {
+      listener = BackHandler.addEventListener("hardwareBackPress", () => {
+        BackHandler.exitApp()
+      })
+    }
+  }
+
   componentWillMount(){
 
     const {state} = this.props.navigation
-    var totalPrice = state.params ? state.params.totalPreco
+    this.totalPrice = state.params ? state.params.totalPreco : ""
     var nome = state.params ? state.params.nome : ""
     var preco = state.params ? state.params.preco : ""
     var detalhes = state.params ? state.params.detalhes : ""
     var imgProduto = state.params ? state.params.imgProduto : ""
     var tipoProduto = state.params ? state.params.tipo : ""
-    var estabelecimento = state.params ? state.params.estabelecimento : ""
 
     this.setState({
       loading: true,
@@ -60,7 +72,6 @@ export class AddProdutoScreen extends Component{
       detalhes: detalhes,
       imgProduto: imgProduto,
       tipoProduto: tipoProduto,
-      estabelecimento: estabelecimento,
       total: preco
     }, function(){
         this.setState({
@@ -107,14 +118,21 @@ export class AddProdutoScreen extends Component{
     navigate('Carrinho')
   }
 
-  adicionaisEscolhidosFunction(){
-
+  checkAdicionais(){
+    if(this.totalPrice>0){
+      return <Text>Valor Adicionais: R${this.totalPrice}</Text>
+    }else {
+      return <Text></Text>
+    }
   }
 
   render() {
     console.ignoredYellowBox = [
       'Setting a timer'
-    ]
+    ];
+
+
+
     var {width, height} = Dimensions.get('window');
     // const adicionaisEscolhidosLength = adicionaisEscolhidos.length
 
@@ -167,7 +185,10 @@ export class AddProdutoScreen extends Component{
       </Text>
 
       <TouchableOpacity onPress={()=>{
-          this.props.navigation.navigate('Adicionais')
+          this.props.navigation.navigate('Adicionais',{nome:this.state.nome,
+                preco:this.state.preco,
+                qtde:this.state.qtde,
+                obs:this.state.obs})
         }}>
         <Text style={[styles.textAddProduto,{marginBottom: 10,textDecorationLine:'underline'}]}>
           Adicionais?
@@ -177,14 +198,16 @@ export class AddProdutoScreen extends Component{
       <Text style={[styles.textAddProduto,{fontSize: 12}]}>{
           adicionaisEscolhidos.map((item, i, arr)=>{
                 if(arr.length === i + 1 ){
-                  return (<Text>{item.nome} ({item.quantidade})</Text>)
+                  return (<Text key={i}>{item.nome} ({item.quantidade})</Text>)
                 }else{
-                  return (<Text>{item.nome} ({item.quantidade}), </Text>)
+                  return (<Text key={i}>{item.nome} ({item.quantidade}), </Text>)
                 }
               })
             }
       </Text>
-      <Text>{totalPrice}</Text>
+      <Text style={[styles.textAddProduto,{fontSize:12}]}>
+        {this.checkAdicionais()}
+      </Text>
       <Text></Text>
 
       <Text style={[styles.textAddProduto,{marginBottom: 0, alignSelf: 'flex-start'}]}>Observações:</Text>
