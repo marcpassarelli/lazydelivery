@@ -22,7 +22,7 @@ export class AddProdutoScreen extends Component{
     title: navigation.state.params.estabelecimento,
     headerTitleStyle: styles.headerText,
     headerStyle: styles.header,
-    headerLeft: (<Icon name={'arrow-left'} onPress={() => navigation.navigate('TabEstabelecimento')}></Icon>),
+    headerLeft: (<Icon style={{marginLeft: 15}} name={'arrow-left'} size={26} color="#000000" onPress={()=>{navigation.navigate('Estabelecimento',{nomeEstabelecimento:navigation.state.params.estabelecimento})}}></Icon>),
     headerRight: (<View></View>)
   });
 
@@ -187,8 +187,8 @@ export class AddProdutoScreen extends Component{
       <TouchableOpacity onPress={()=>{
           this.props.navigation.navigate('Adicionais',{nome:this.state.nome,
                 preco:this.state.preco,
-                qtde:this.state.qtde,
-                obs:this.state.obs})
+                detalhes:this.state.detalhes,
+                imgProduto:this.state.imgProduto})
         }}>
         <Text style={[styles.textAddProduto,{marginBottom: 10,textDecorationLine:'underline'}]}>
           Adicionais?

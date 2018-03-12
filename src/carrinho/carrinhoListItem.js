@@ -7,7 +7,7 @@ export default class CarrinhoListItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      qty:0
+      qty:1
     }
   }
 
@@ -36,29 +36,29 @@ export default class CarrinhoListItem extends Component {
         <View style={{flex: 1, flexDirection: 'row', marginTop: 5, justifyContent: 'space-between'}}>
           <View style={{flex:1}}>
             <Text style={[styles.textAdicionais, {alignSelf: 'center', marginHorizontal: 10}]}>
-              {this.props.nomeProd}
+              {item.nomeProd}
             </Text>
           </View>
           <View style={{flex:1}}>
             <Text style={[styles.textAdicionais, {alignSelf: 'center'}]}>
-              R$ {this.props.preco*this.state.qty}
+              R$ {item.preco*item.qtde}
             </Text>
           </View>
           <View style={{flex:1, flexDirection: 'row', justifyContent: 'flex-end', marginRight: 10}}>
             <TouchableOpacity
               style={{justifyContent: 'center', alignSelf: 'center', marginBottom: 10}}
-              onPress={()=>{this.minusQty()}}>
+              onPress={()=>{this.props.minusQty()}}>
               <Image
                 source={require('../../img/minus.png')}
                 style={styles.icon}/>
             </TouchableOpacity>
             <Text
               style={[styles.textAdicionais, {alignSelf: 'center', justifyContent: 'center', marginHorizontal: 10, fontSize: 16, lineHeight: 16}]}>
-              {this.state.qty+this.props.qtde}
+              {item.qtde}
             </Text>
             <TouchableOpacity
               style={{justifyContent: 'center', alignSelf: 'center', marginBottom: 10}}
-              onPress={()=>{this.plusQty()}}>
+              onPress={()=>{this.props.plusQty()}}>
               <Image
                 source={require('../../img/plus.png')}
                 style={styles.icon}/>

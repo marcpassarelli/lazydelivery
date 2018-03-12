@@ -9,6 +9,11 @@ export var adicionaisEscolhidos= []
 let totalPrice =0
 var todoCounter = 1;
 
+var nome=""
+var preco=""
+var detalhes=""
+var imgProduto=""
+
 const adicionais = listaAdicionais
 
 export class AdicionaisScreen extends Component{
@@ -32,6 +37,12 @@ export class AdicionaisScreen extends Component{
   }
 
   componentWillMount(){
+    const {state} = this.props.navigation
+    this.nome = state.params ? state.params.nome : ""
+    this.preco = state.params ? state.params.preco : ""
+    this.detalhes = state.params ? state.params.detalhes : ""
+    this.imgProduto = state.params ? state.params.imgProduto : ""
+
     this.setState({
       adicionais: listaAdicionais
     });
@@ -74,7 +85,7 @@ export class AdicionaisScreen extends Component{
     //       })
     //   }
     // }
-    navigate('AddProduto',{adicionais:adicionaisEscolhidos, totalPreco: this.totalPrice})
+    navigate('AddProduto',{adicionais:adicionaisEscolhidos, totalPreco: this.totalPrice, nome: this.nome , preco: this.preco , detalhes:this.detalhes, imgProduto:this.imgProduto})
   }
 
   onSubtract = (item, index) =>{

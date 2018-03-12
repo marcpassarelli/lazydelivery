@@ -46,6 +46,7 @@ export class CarrinhoScreen extends Component{
 
 
   componentWillMount(){
+    console.log("carrinho: "+JSON.stringify(carrinho));
 
     this.setState({
       loading: true
@@ -90,10 +91,9 @@ export class CarrinhoScreen extends Component{
         extraData={this.state}
         renderItem={({item}) =>
         <CarrinhoListItem
-          nomeProd = {item.nome}
-          preco = {item.preco}
-          qtde = {item.qtde}
-          obs = {item.obs}>
+            item={item}
+            onSubtract={() => this.onSubtract(item, index)}
+            onAdd={() => this.onAdd(item, index)}>
         </CarrinhoListItem>}
         keyExtractor={item => item._id}
       />
