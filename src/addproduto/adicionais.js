@@ -42,7 +42,7 @@ export class AdicionaisScreen extends Component{
     this.preco = state.params ? state.params.preco : ""
     this.detalhes = state.params ? state.params.detalhes : ""
     this.imgProduto = state.params ? state.params.imgProduto : ""
-
+    console.log("listaAdicionais"+JSON.stringify(listaAdicionais));
     this.setState({
       adicionais: listaAdicionais
     });
@@ -63,9 +63,14 @@ export class AdicionaisScreen extends Component{
   };
 
   adicionarAdicionais(){
+    const {state} = this.props.navigation
     const { navigate } = this.props.navigation;
+    var tipoProduto = state.params ? state.params.tipoProduto : ""
+    console.log("tipoProduto"+tipoProduto);
+    var nomeEstabelecimento = state.params ? state.params.nomeEstabelecimento : ""
+
     adicionaisEscolhidos = []
-    console.log("Adicionais:"+JSON.stringify(this.state.adicionais));
+
     this.state.adicionais.map((item)=>{
       if (item.quantidade>0){
         adicionaisEscolhidos.push({
@@ -76,16 +81,16 @@ export class AdicionaisScreen extends Component{
         })
       }
     })
-    // for(i=0;i<this.state.adicionais.length;i++){
-    //   if(this.state.adicionais[i].quantidade>0){
-    //       adicionaisEscolhidos.push({
-    //         nome: this.state.adicionais[i].nome,
-    //         preco: this.state.adicionais[i].preco,
-    //         quantidade: this.state.adicionais[i].quantidade
-    //       })
-    //   }
-    // }
-    navigate('AddProduto',{adicionais:adicionaisEscolhidos, totalPreco: this.totalPrice, nome: this.nome , preco: this.preco , detalhes:this.detalhes, imgProduto:this.imgProduto})
+    navigate('AddProduto',{
+      adicionais:adicionaisEscolhidos,
+      nomeEstabelecimento:nomeEstabelecimento,
+      totalPreco: this.totalPrice,
+      nome: this.nome,
+      preco: this.preco,
+      detalhes:this.detalhes,
+      imgProduto:this.imgProduto,
+      tipoProduto:tipoProduto,
+      telaAdicionais:true})
   }
 
   onSubtract = (item, index) =>{
@@ -137,7 +142,6 @@ export class AdicionaisScreen extends Component{
         )}
         keyExtractor={item => item._id}
       />
-    <Text>Preço total:{this.totalPrice}</Text>
     <Button
       onPress={()=>{this.adicionarAdicionais()}}
       title="Adicionar"

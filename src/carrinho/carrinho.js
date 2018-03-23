@@ -1,16 +1,20 @@
 
 import React, { Component } from 'react';
-import { Image, Alert, View, Text, Button, ActivityIndicator, FlatList, Icon } from 'react-native'
+import { Image, Alert, View, Text, Button, ActivityIndicator, FlatList } from 'react-native'
 import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import {getListaEstabelecimentos, listaEstabelecimentos} from '../firebase/database'
 import {carrinho} from '../addproduto/addproduto'
 import CarrinhoListItem from './carrinhoListItem'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import _ from 'lodash'
+let totalPrice =0
+const produtosCarrinho = carrinho
 
 export class CarrinhoScreen extends Component{
+
 
 
   static navigationOptions = ({navigation}) => ({
@@ -26,23 +30,10 @@ export class CarrinhoScreen extends Component{
       tipoEstabelecimento:'',
       listaEstabelecimentosUp:'',
       loading: false,
-
+      produtosCarrinho
     }
-  }
 
-  renderSeparator = () => {
-   return (
-     <View
-       style={{
-         height: 1,
-         width: "100%",
-         backgroundColor: "#CED0CE",
-         marginLeft: 5,
-         marginBottom: 7
-       }}
-     />
-   );
-  };
+  }
 
 
   componentWillMount(){
@@ -52,14 +43,9 @@ export class CarrinhoScreen extends Component{
       loading: true
     })
 
-    const {state} = this.props.navigation;
-    var tipoEstabelecimentoUp = state.params ? state.params.tipoEstabelecimento : ""
-
-  }
-
-  componentDidMount(){
-    console.log("antes check did mount"+JSON.stringify(carrinho))
-    this.setState({ listaEstabelecimentosUp: listaEstabelecimentos}, function(){
+    this.setState({
+      produtosCarrinho: carrinho
+    }, function(){
       setTimeout(()=>{
         this.setState({
           loading: false
@@ -67,10 +53,64 @@ export class CarrinhoScreen extends Component{
       },500);
     })
 
+    const {state} = this.props.navigation;
+    var tipoEstabelecimentoUp = state.params ? state.params.tipoEstabelecimento : ""
 
   }
 
+  renderSeparatorComponent = () => {
+   return (<View style={styles.renderSeparatorComponent}/>);
+  };
+
+
+  onSubtract = (item, index) =>{
+  const produtosCarrinho = [...this.state.produtosCarrinho];
+  console.log("produtosCarrinho"+produtosCarrinho);
+    if(produtosCarrinho[index].quantidade>1){
+      produtosCarrinho[index].quantidade -= 1;
+       this.setState({ produtosCarrinho });
+    }
+  }
+
+  onAdd = (item, index) =>{
+    const produtosCarrinho = [...this.state.produtosCarrinho];
+    produtosCarrinho[index].quantidade += 1;
+    this.setState({ produtosCarrinho });
+  }
+
+  functionCarrinho=()=>{
+    console.log("carrinho nome"+carrinho.nome);
+    if(carrinho.length>0){
+      return(
+        <View style={{flex: 1}}>
+          <FlatList
+            ItemSeparatorComponent={this.renderSeparatorComponent}
+            data= {this.state.produtosCarrinho}
+            extraData={this.state}
+            renderItem={({ item, index }) => (
+              <CarrinhoListItem
+                item={item}
+                onSubtract={() => this.onSubtract(item, index)}
+                onAdd={() => this.onAdd(item, index)}
+              />
+            )}
+            keyExtractor={item => item._id}
+          />
+        <Text style={styles.textAdicionais}>Valor Total Pedido: R$ {this.totalPrice}</Text>
+      </View>)
+
+    }else{
+      return(<Text style={styles.textAddProduto}>Não há itens no carrinho.</Text>)
+    }
+  }
+
+
   render() {
+    const { produtosCarrinho } = this.state
+    this.totalPrice=0
+      produtosCarrinho.forEach((item) => {
+        this.totalPrice += item.quantidade * item.preco;
+      })
     console.ignoredYellowBox = [
       'Setting a timer'
     ]
@@ -85,18 +125,7 @@ export class CarrinhoScreen extends Component{
     </View> :
 
     <View style={{flex:1}}>
-      <FlatList
-        ItemSeparatorComponent={this.renderSeparator}
-        data= {carrinho}
-        extraData={this.state}
-        renderItem={({item}) =>
-        <CarrinhoListItem
-            item={item}
-            onSubtract={() => this.onSubtract(item, index)}
-            onAdd={() => this.onAdd(item, index)}>
-        </CarrinhoListItem>}
-        keyExtractor={item => item._id}
-      />
+      {this.functionCarrinho()}
     </View>
 
     return (

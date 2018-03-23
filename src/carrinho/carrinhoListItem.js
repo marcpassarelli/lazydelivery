@@ -6,59 +6,39 @@ import { styles } from '../constants/constants'
 export default class CarrinhoListItem extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      qty:1
-    }
-  }
 
-  componentWillMount(){
-
-  }
-  minusQty(){
-    let qty = this.state.qty
-    if(qty>0){
-      this.setState({
-        qty: qty - 1
-      });
-    }
-  }
-
-  plusQty(){
-    let qty = this.state.qty + 1
-    this.setState({
-      qty: qty
-    });
   }
 
   render() {
+    const { item } = this.props;
     return (
       <View>
-        <View style={{flex: 1, flexDirection: 'row', marginTop: 5, justifyContent: 'space-between'}}>
-          <View style={{flex:1}}>
-            <Text style={[styles.textAdicionais, {alignSelf: 'center', marginHorizontal: 10}]}>
-              {item.nomeProd}
+        <View style={{flex: 1, flexDirection: 'row', marginTop: 5}}>
+          <View style={{width: 200}}>
+            <Text style={[styles.textAdicionais, {alignSelf: 'flex-start', marginHorizontal: 10}]}>
+              {item.nome}
             </Text>
           </View>
           <View style={{flex:1}}>
             <Text style={[styles.textAdicionais, {alignSelf: 'center'}]}>
-              R$ {item.preco*item.qtde}
+              R$ {item.preco*item.quantidade}
             </Text>
           </View>
           <View style={{flex:1, flexDirection: 'row', justifyContent: 'flex-end', marginRight: 10}}>
             <TouchableOpacity
               style={{justifyContent: 'center', alignSelf: 'center', marginBottom: 10}}
-              onPress={()=>{this.props.minusQty()}}>
+              onPress={()=>{this.props.onSubtract()}}>
               <Image
                 source={require('../../img/minus.png')}
                 style={styles.icon}/>
             </TouchableOpacity>
             <Text
               style={[styles.textAdicionais, {alignSelf: 'center', justifyContent: 'center', marginHorizontal: 10, fontSize: 16, lineHeight: 16}]}>
-              {item.qtde}
+              {item.quantidade}
             </Text>
             <TouchableOpacity
               style={{justifyContent: 'center', alignSelf: 'center', marginBottom: 10}}
-              onPress={()=>{this.props.plusQty()}}>
+              onPress={()=>{this.props.onAdd()}}>
               <Image
                 source={require('../../img/plus.png')}
                 style={styles.icon}/>
@@ -66,7 +46,7 @@ export default class CarrinhoListItem extends Component {
           </View>
         </View>
         <View>
-          <Text>{this.props.obs}</Text>
+          <Text>{item.obs}</Text>
         </View>
       </View>
     );

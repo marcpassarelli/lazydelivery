@@ -79,7 +79,7 @@ export const styles = StyleSheet.create({
     height:40
   },
   headerList:{
-    color: cores.corPrincipal,
+    color: '#FFFFFF',
     fontSize:17,
     marginLeft:10,
     flex:1
@@ -146,7 +146,7 @@ export const styles = StyleSheet.create({
     marginBottom: 7
   },
   renderSeparatorSection:{
-    height: 1,
+    height: 2,
     width: "100%",
     backgroundColor: "#550000",
     marginLeft: 5,

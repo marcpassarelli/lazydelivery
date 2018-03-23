@@ -1,11 +1,13 @@
 
 import React, { Component } from 'react';
-import { Image, Alert, View, Text, Button, ActivityIndicator, SectionList, TouchableOpacity, Animated, PixelRatio } from 'react-native'
+import { Platform, Image, Alert, View, Text, Button, ActivityIndicator, SectionList, TouchableOpacity, Animated, PixelRatio } from 'react-native'
 import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import {getEstabelecimentoProd, estabelecimentoProd, getEstabelecimentoTiposProd, estabelecimentoTiposProd, getEstabelecimentoProdutos} from '../firebase/database'
 import EstabelecimentoProdutosListItem from './estabelecimentoProdutosListItem'
 import Loader from '../loadingModal/loadingModal'
+import Toast from 'react-native-toast-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 let sectionData =[]
 let sectionName =[]
@@ -15,6 +17,19 @@ var tamanhoCelula = 60,
 
 import _ from 'lodash'
 
+const style={
+                             backgroundColor: "#4ADDFB",
+                             width: 200,
+                             height: Platform.OS === ("ios") ? 50 : 100,
+                             color: "#ffffff",
+                             fontSize: 15,
+                             lineHeight: 2,
+                             lines: 4,
+                             borderRadius: 15,
+                             fontWeight: "bold",
+                             yOffset: 40
+                         };
+
 export class EstabelecimentoProdutosScreen extends Component{
 
 
@@ -22,6 +37,19 @@ export class EstabelecimentoProdutosScreen extends Component{
     title: navigation.state.params.nomeEstabelecimento,
     headerTitleStyle: styles.headerText,
     headerStyle: styles.header,
+    headerLeft: (
+      <Icon
+        style={{marginLeft: 15}}
+        name={'arrow-left'}
+        size={26}
+        color="#000000"
+        onPress={
+          ()=>{
+          navigation.navigate('ListaEstabelecimentos',
+          {tipoEstabelecimento:navigation.state.params.tipoEstabelecimento})
+          }}>
+        </Icon>
+      ),
     headerRight: (<View></View>),
     tabBarLabel: 'Produtos',
   });
@@ -88,7 +116,7 @@ renderSeparatorComponent = () => {
 };
 
 renderSeparatorSection = () => {
-  return (<View style={styles.renderSeparatorSection}/>);
+  return (<View style={{backgroundColor: cores.corPrincipal, height: 10}}/>);
 };
 
 sectionDataFunction(){
@@ -108,6 +136,20 @@ sectionDataFunction(){
 }
 
 componentWillMount(){
+  const {state} = this.props.navigation
+  var estabelecimento = state.params ? state.params.nomeEstabelecimento : ""
+  var toast = state.params ? state.params.toast : ""
+  var telaAnterior = state.params ? state.params.telaAnterior : ""
+
+  if(telaAnterior=="listaEstabelecimentos" || telaAnterior=="home" ){
+    getEstabelecimentoProd(estabelecimento)
+  }
+
+  if(toast){
+    Toast.show(toast+"foi adicionado ao carrinho",Toast.LONG, Toast.BOTTOM, this.style)
+  }
+
+
   this.setState({
           loadingList: true
         });
@@ -167,15 +209,20 @@ renderHeader = (headerItem) => {
   //    source={icon}>
   //  </Image>
   return  (
-      <View style={{height:30}} >
+      <View style={{}} >
         <TouchableOpacity
-          style={{flexDirection: 'row', alignItems: 'center'}}
+          style={{flexDirection: 'row', alignItems: 'center', backgroundColor: cores.corPrincipal}}
         >
             <Text style={styles.headerList}>{headerItem.section.key}</Text>
-
           </TouchableOpacity>
       </View>
     )
+}
+
+renderFooter=()=>{
+  return(
+    <View style={{backgroundColor: cores.corPrincipal}}></View>
+  )
 }
 
 goToCarrinho(){
@@ -206,6 +253,7 @@ goToCarrinho(){
         SectionSeparatorComponent={this.renderSeparatorSection}
         renderItem={this.renderItem}
         renderSectionHeader={this.renderHeader}
+        renderSectionFooter={this.renderFooter}
         sections={sectionData}
         keyExtractor={(item) => item._id}
         />

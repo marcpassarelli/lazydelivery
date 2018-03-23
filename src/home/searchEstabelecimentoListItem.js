@@ -18,8 +18,7 @@ export default class SearchEstabelecimentoListItem extends Component {
         style={styles.containerSearchListItem}
         onPress = {() => {
           this.props.loadingTrue,
-          getEstabelecimentoProd(this.props.estabelecimento),
-          this.props.navigation.navigate('Estabelecimento',{nomeEstabelecimento: this.props.estabelecimento}),
+          this.props.navigation.navigate('Estabelecimento',{nomeEstabelecimento: this.props.estabelecimento, telaAnterior:"home"}),
           this.props.loadingFalse
         }}>
         <Image

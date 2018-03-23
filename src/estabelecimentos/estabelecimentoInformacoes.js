@@ -1,7 +1,7 @@
 console.ignoredYellowBox = [
     'Setting a timer'
 ]
-
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import React, { Component } from 'react';
 import { Image, Alert, Text, View, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native'
 import { styles,cores } from '../constants/constants'
@@ -14,9 +14,22 @@ export class EstabelecimentoInformacoesScreen extends Component {
     title: navigation.state.params.nomeEstabelecimento,
     headerTitleStyle: styles.headerText,
     headerStyle: styles.header,
+    headerLeft: (
+      <Icon
+        style={{marginLeft: 15}}
+        name={'arrow-left'}
+        size={26}
+        color="#000000"
+        onPress={
+          ()=>{
+          navigation.navigate('ListaEstabelecimentos',
+          {tipoEstabelecimento:navigation.state.params.tipoEstabelecimento})
+          }}>
+        </Icon>
+      ),
     headerRight: (<View></View>),
     tabBarLabel: 'Informações',
-});
+  });
 
   constructor(props) {
     super(props);
@@ -41,6 +54,7 @@ export class EstabelecimentoInformacoesScreen extends Component {
     };
   }
 
+
   componentWillMount(){
     formasPgto = []
     this.setState({
@@ -49,25 +63,16 @@ export class EstabelecimentoInformacoesScreen extends Component {
 
     const {state} = this.props.navigation;
     var nomeEstabelecimentoUp = state.params ? state.params.nomeEstabelecimento : ""
-    console.log("nomeEstabelecimentoUp"+nomeEstabelecimentoUp)
     if(nomeEstabelecimentoUp){
-    this.setState({nomeEstabelecimento: nomeEstabelecimentoUp}, function(){
-      this._callback()
-
-    })
+      this.setState({nomeEstabelecimento: nomeEstabelecimentoUp}, function(){
+        this._callback()
+      })
     }
 
   }
 
   _callback(){
-    if(this.state.estabInfo){
-      console.log("setState:"+this.state.estabInfo)
-    }
-    return this.state.estabInfo+""
-  }
-
-  componentDidMount(){
-
+    console.log("inside callback");
     getEstabelecimentoInfo(this.state.nomeEstabelecimento, (logoUp, nomeUp, precoDeliveryUp,
       tempoEntregaUp, segUp, terUp, quaUp, quiUp, sexUp, sabUp, domUp, creUp, debUp, dinUp)=>{
       this.setState({
@@ -90,6 +95,11 @@ export class EstabelecimentoInformacoesScreen extends Component {
             loading: false
           });
     })
+  }
+
+  componentDidMount(){
+
+
 
     console.log("CREDITO"+this.state.cre)
 

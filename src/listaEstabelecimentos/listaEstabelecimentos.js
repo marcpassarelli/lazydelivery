@@ -8,7 +8,7 @@ import {getListaEstabelecimentos, listaEstabelecimentos} from '../firebase/datab
 import Loader from '../loadingModal/loadingModal';
 
 import _ from 'lodash'
-
+var tipoEstabelecimentoUp ='';
 export class ListaEstabelecimentosScreen extends Component{
 
 
@@ -20,7 +20,7 @@ export class ListaEstabelecimentosScreen extends Component{
   });
 
 constructor(props){
-  super(props);
+  super(props)
   this.state = {
     tipoEstabelecimento:'',
     listaEstabelecimentosUp:'',
@@ -46,32 +46,25 @@ renderSeparator = () => {
 
 
 componentWillMount(){
+  const {state} = this.props.navigation;
+  this.tipoEstabelecimentoUp = state.params ? state.params.tipoEstabelecimento : ""
+  console.log("tipoEstabelecimento"+this.tipoEstabelecimentoUp);
+  getListaEstabelecimentos(this.tipoEstabelecimentoUp)
 
   this.setState({
     loadingList: true
   })
 
-  const {state} = this.props.navigation;
-  var tipoEstabelecimentoUp = state.params ? state.params.tipoEstabelecimento : ""
-
-}
-
-componentDidMount(){
-  this.setState({ listaEstabelecimentosUp: listaEstabelecimentos }, function(){
-      this.setState({
-        loadingList: false
+  setTimeout(()=>{
+    this.setState({ listaEstabelecimentosUp: listaEstabelecimentos }, function(){
+        this.setState({
+          loadingList: false
+        })
       })
-  })
-
+  },500)
 
 }
 
-loadingTrue(){
-  this.setState({loading:true})
-}
-loadingFalse(){
-  this.setState({loading:false})
-}
   //   setTimeout(()=>{
   // },750)
 render() {
@@ -102,8 +95,7 @@ render() {
         valorDelivery = {item.precoDelivery}
         tempoEntrega = {item.tempoEntrega}
         navigation={this.props.navigation}
-        loadingTrue = {()=> this.loadingTrue()}
-        loadingFalse = {()=> this.loadingFalse()}>
+        tipoEstabelecimento={this.tipoEstabelecimentoUp}>
       </ListaEstabelecimentosListItem>}
     keyExtractor={item => item._id}
     />

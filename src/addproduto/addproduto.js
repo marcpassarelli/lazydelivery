@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Platform, BackHandler, Image, Alert, View, Text,TextInput, Button, ActivityIndicator, TouchableOpacity, FlatList, Dimensions, Picker } from 'react-native'
+import { Platform, BackHandler, Image, Alert, View, Text,TextInput, Button, ActivityIndicator, TouchableOpacity, FlatList, Dimensions, Picker, ScrollView } from 'react-native'
 import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import {getListaEstabelecimentos, listaEstabelecimentos, getListaAdicionais} from '../firebase/database'
@@ -19,10 +19,22 @@ var totalPrice=0;
 export class AddProdutoScreen extends Component{
 
   static navigationOptions = ({navigation}) => ({
-    title: navigation.state.params.estabelecimento,
+    title: navigation.state.params.nomeEstabelecimento,
     headerTitleStyle: styles.headerText,
     headerStyle: styles.header,
-    headerLeft: (<Icon style={{marginLeft: 15}} name={'arrow-left'} size={26} color="#000000" onPress={()=>{navigation.navigate('Estabelecimento',{nomeEstabelecimento:navigation.state.params.estabelecimento})}}></Icon>),
+    headerLeft: (
+      <Icon
+        style={{marginLeft: 15}}
+        name={'arrow-left'}
+        size={26}
+        color="#000000"
+        onPress={
+          ()=>{
+          navigation.navigate('Estabelecimento',
+          {nomeEstabelecimento:navigation.state.params.nomeEstabelecimento})
+          }}>
+        </Icon>
+      ),
     headerRight: (<View></View>)
   });
 
@@ -37,7 +49,7 @@ export class AddProdutoScreen extends Component{
       estabelecimento:'',
       qtde:1,
       total:'',
-      listaAdicionais:'',
+      listaAdicionais: adicionaisEscolhidos,
       loading: false,
       obs:''
     }
@@ -50,7 +62,7 @@ export class AddProdutoScreen extends Component{
   componentDidMount(){
     if (Platform.OS == "android" && listener == null) {
       listener = BackHandler.addEventListener("hardwareBackPress", () => {
-        BackHandler.exitApp()
+        this.props.navigation('')
       })
     }
   }
@@ -63,7 +75,19 @@ export class AddProdutoScreen extends Component{
     var preco = state.params ? state.params.preco : ""
     var detalhes = state.params ? state.params.detalhes : ""
     var imgProduto = state.params ? state.params.imgProduto : ""
-    var tipoProduto = state.params ? state.params.tipo : ""
+    var tipoProduto = state.params ? state.params.tipoProduto : ""
+    var estabelecimento = state.params ? state.params.nomeEstabelecimento : ""
+    var telaAdicionais = state.params ? state.params.telaAdicionais : ""
+
+
+    if(!telaAdicionais){
+      this.setState({
+        listaAdicionais: []
+      });
+    }
+
+    console.log("estabelecimento: "+estabelecimento+"tipoProduto: "+tipoProduto);
+    getListaAdicionais(estabelecimento, tipoProduto)
 
     this.setState({
       loading: true,
@@ -72,7 +96,8 @@ export class AddProdutoScreen extends Component{
       detalhes: detalhes,
       imgProduto: imgProduto,
       tipoProduto: tipoProduto,
-      total: preco
+      total: preco,
+      estabelecimento: estabelecimento
     }, function(){
         this.setState({
           loading: false
@@ -106,16 +131,19 @@ export class AddProdutoScreen extends Component{
   }
 
   adicionarAoCarrinho(){
+    const {state} = this.props.navigation
+    var estabelecimento = state.params ? state.params.nomeEstabelecimento : ""
+    console.log("estabelecimento add produto"+estabelecimento);
     carrinho.push({
       nome:this.state.nome,
       preco:this.state.preco,
-      qtde:this.state.qtde,
+      quantidade:this.state.qtde,
       obs:this.state.obs,
       adicionais: adicionaisEscolhidos,
       _id:todoCounter++
     })
     const { navigate } = this.props.navigation;
-    navigate('Carrinho')
+    navigate('Estabelecimento',{toast:this.state.nome, nomeEstabelecimento: estabelecimento })
   }
 
   checkAdicionais(){
@@ -127,6 +155,7 @@ export class AddProdutoScreen extends Component{
   }
 
   render() {
+    const {state} = this.props.navigation
     console.ignoredYellowBox = [
       'Setting a timer'
     ];
@@ -134,7 +163,6 @@ export class AddProdutoScreen extends Component{
 
 
     var {width, height} = Dimensions.get('window');
-    // const adicionaisEscolhidosLength = adicionaisEscolhidos.length
 
     const content = this.state.loading ?
 
@@ -146,87 +174,82 @@ export class AddProdutoScreen extends Component{
     </View> :
 
     <View style={{flex: 1}}>
+      <ScrollView>
+        <Image
+          source={{uri:this.state.imgProduto}}
+          style={[styles.imgProduto,{width: width*0.98, height: height*0.3}]}>
+        </Image>
 
-      <Image
-        source={{uri:this.state.imgProduto}}
-        style={[styles.imgProduto,{width: width*0.98, height: height*0.3}]}>
-      </Image>
-
-      <Text style={[styles.textAddProduto,{marginBottom: 0}]}>
-          {this.state.nome}
-      </Text>
-
-      <Text style={[styles.textAddProduto,{fontSize: 13, marginHorizontal: 10,color: '#2F4F4F'}]}>
-        {this.state.detalhes}
-      </Text>
-
-      <Text style={styles.textAddProduto}>
-        Preço Unitário: R$ {this.state.preco}
-      </Text>
-
-      <Text style={[styles.textAddProduto,{marginBottom: 5}]}>Quantidade:</Text>
-
-      <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-
-        <TouchableOpacity style={{}} onPress={()=>{this.menosQtde()}}>
-          <Image source={require('../../img/minus.png')} style={styles.icon}/>
-        </TouchableOpacity>
-
-        <Text style={[styles.textAddProduto, {marginHorizontal: 10, fontSize: 16}]}>{this.state.qtde}</Text>
-
-        <TouchableOpacity style={{}} onPress={()=>{this.maisQtde()}}>
-          <Image source={require('../../img/plus.png')} style={styles.icon}/>
-        </TouchableOpacity>
-
-      </View>
-
-      <Text style={styles.textAddProduto}>
-        Total: R$ {this.state.total}
-      </Text>
-
-      <TouchableOpacity onPress={()=>{
-          this.props.navigation.navigate('Adicionais',{nome:this.state.nome,
-                preco:this.state.preco,
-                detalhes:this.state.detalhes,
-                imgProduto:this.state.imgProduto})
-        }}>
-        <Text style={[styles.textAddProduto,{marginBottom: 10,textDecorationLine:'underline'}]}>
-          Adicionais?
+        <Text style={[styles.textAddProduto,{marginBottom: 0}]}>
+            {this.state.nome}
         </Text>
-      </TouchableOpacity>
 
-      <Text style={[styles.textAddProduto,{fontSize: 12}]}>{
-          adicionaisEscolhidos.map((item, i, arr)=>{
-                if(arr.length === i + 1 ){
-                  return (<Text key={i}>{item.nome} ({item.quantidade})</Text>)
-                }else{
-                  return (<Text key={i}>{item.nome} ({item.quantidade}), </Text>)
-                }
-              })
-            }
-      </Text>
-      <Text style={[styles.textAddProduto,{fontSize:12}]}>
-        {this.checkAdicionais()}
-      </Text>
-      <Text></Text>
+        <Text style={[styles.textAddProduto,{fontSize: 13, marginHorizontal: 10,color: '#2F4F4F'}]}>
+          {this.state.detalhes}
+        </Text>
 
-      <Text style={[styles.textAddProduto,{marginBottom: 0, alignSelf: 'flex-start'}]}>Observações:</Text>
-      <TextInput
-        style={{borderColor: cores.corPrincipal, borderWidth: 0.5, marginBottom: 5}}
-        multiline = {true}
-        onChangeText={(text) => this.setState({obs: text})}
-        value={this.state.obs}
-        placeholder='Exemplos: Carne bem passada. Sem cebola. Sem salada, etc...'
-        >
-      </TextInput>
+        <Text style={styles.textAddProduto}>
+          Preço Unitário: R$ {this.state.preco}
+        </Text>
 
-      <Button
-        onPress={()=>{this.adicionarAoCarrinho()}}
-        title="Adicionar ao Carrinho"
-        color={cores.corPrincipal}
-        accessibilityLabel="YourLabelHere"
-      />
+        <Text style={[styles.textAddProduto,{marginBottom: 5}]}>Quantidade:</Text>
 
+        <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+
+          <TouchableOpacity style={{}} onPress={()=>{this.menosQtde()}}>
+            <Image source={require('../../img/minus.png')} style={styles.icon}/>
+          </TouchableOpacity>
+
+          <Text style={[styles.textAddProduto, {marginHorizontal: 10, fontSize: 16}]}>{this.state.qtde}</Text>
+
+          <TouchableOpacity style={{}} onPress={()=>{this.maisQtde()}}>
+            <Image source={require('../../img/plus.png')} style={styles.icon}/>
+          </TouchableOpacity>
+
+        </View>
+
+        <Text style={styles.textAddProduto}>
+          Total: R$ {this.state.total}
+        </Text>
+
+        <TouchableOpacity onPress={()=>{
+            this.props.navigation.navigate('Adicionais',{nome:this.state.nome,
+                  preco:this.state.preco,
+                  detalhes:this.state.detalhes,
+                  imgProduto:this.state.imgProduto,
+                  tipoProduto:this.state.tipoProduto,
+                  nomeEstabelecimento: this.state.estabelecimento})
+          }}>
+          <Text style={[styles.textAddProduto,{marginBottom: 10,textDecorationLine:'underline'}]}>
+            Adicionais?
+          </Text>
+        </TouchableOpacity>
+
+        <Text style={[styles.textAddProduto,{fontSize: 12}]}>{
+            this.state.listaAdicionais.map((item, i, arr)=>{
+                  if(arr.length === i + 1 ){
+                    return (<Text key={i}>{item.nome} ({item.quantidade})</Text>)
+                  }else{
+                    return (<Text key={i}>{item.nome} ({item.quantidade}), </Text>)
+                  }
+                })
+              }
+        </Text>
+        <Text style={[styles.textAddProduto,{fontSize:12}]}>
+          {this.checkAdicionais()}
+        </Text>
+        <Text></Text>
+
+        <Text style={[styles.textAddProduto,{marginBottom: 0, alignSelf: 'flex-start'}]}>Observações:</Text>
+        <TextInput
+          style={{borderColor: cores.corPrincipal, borderWidth: 0.5, marginBottom: 5}}
+          multiline = {true}
+          onChangeText={(text) => this.setState({obs: text})}
+          value={this.state.obs}
+          placeholder='Exemplos: Carne bem passada. Sem cebola. Sem salada, etc...'
+          >
+        </TextInput>
+      </ScrollView>
     </View>
 
     return (
@@ -236,18 +259,16 @@ export class AddProdutoScreen extends Component{
         <KeyboardAwareScrollView>
           {content}
         </KeyboardAwareScrollView>
+        <View>
+          <Button
+            style={{position: 'absolute', left: 0, right: 0, bottom: 0}}
+            onPress={()=>{this.adicionarAoCarrinho()}}
+            title="Adicionar ao Carrinho"
+            color={cores.corPrincipal}
+            accessibilityLabel="YourLabelHere"
+          />
+        </View>
       </Image>
     );
   }
 }
-// <Picker
-//   style={{width: width*0.9, alignSelf: 'center'}}
-//   selectedValue={this.state.adicionais}
-//   onValueChange={(itemValue, itemIndex) => this.setState({adicionais: itemValue})}>
-//   {options.map((item, index) => {
-//     return (
-//       <Picker.Item
-//       label={item} value={index} key={index}/>
-//     )
-//   })}
-// </Picker>
