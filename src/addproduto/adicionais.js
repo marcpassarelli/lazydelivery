@@ -90,7 +90,8 @@ export class AdicionaisScreen extends Component{
       detalhes:this.detalhes,
       imgProduto:this.imgProduto,
       tipoProduto:tipoProduto,
-      telaAdicionais:true})
+      telaAdicionais:true,
+      tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento})
   }
 
   onSubtract = (item, index) =>{

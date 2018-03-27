@@ -19,8 +19,8 @@ import _ from 'lodash'
 
 const style={
                              backgroundColor: "#4ADDFB",
-                             width: 200,
-                             height: Platform.OS === ("ios") ? 50 : 100,
+                             width: 160,
+                             height: Platform.OS === ("ios") ? 50 : 80,
                              color: "#ffffff",
                              fontSize: 15,
                              lineHeight: 2,
@@ -116,7 +116,7 @@ renderSeparatorComponent = () => {
 };
 
 renderSeparatorSection = () => {
-  return (<View style={{backgroundColor: cores.corPrincipal, height: 10}}/>);
+  return (<View style={{backgroundColor: cores.corPrincipal, height: 5}}/>);
 };
 
 sectionDataFunction(){
@@ -146,7 +146,7 @@ componentWillMount(){
   }
 
   if(toast){
-    Toast.show(toast+"foi adicionado ao carrinho",Toast.LONG, Toast.BOTTOM, this.style)
+    Toast.show(toast+" foi adicionado ao carrinho",Toast.SHORT, Toast.BOTTOM, this.style)
   }
 
 
@@ -248,7 +248,6 @@ goToCarrinho(){
     </View> :
     <View style={{flex: 1}}>
       <SectionList
-        style={{marginLeft: 3, marginRight: 3}}
         ItemSeparatorComponent={this.renderSeparatorComponent}
         SectionSeparatorComponent={this.renderSeparatorSection}
         renderItem={this.renderItem}

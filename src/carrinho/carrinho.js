@@ -96,7 +96,10 @@ export class CarrinhoScreen extends Component{
             )}
             keyExtractor={item => item._id}
           />
-        <Text style={styles.textAdicionais}>Valor Total Pedido: R$ {this.totalPrice}</Text>
+        <View style={{flexDirection: 'column'}}>
+          <Text style={[styles.textAdicionais,{justifyContent: 'flex-start'}]}>Valor Total Pedido:</Text>
+          <Text style={{justifyContent: 'flex-end'}}>R$ {this.totalPrice}</Text>
+        </View>
       </View>)
 
     }else{

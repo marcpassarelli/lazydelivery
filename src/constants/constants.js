@@ -139,7 +139,7 @@ export const styles = StyleSheet.create({
     fontSize: 20
   },
   renderSeparatorComponent:{
-    height: 1,
+    height: 2,
     width: "100%",
     backgroundColor: "#CED0CE",
     marginLeft: 5,

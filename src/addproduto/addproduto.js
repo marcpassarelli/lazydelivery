@@ -31,7 +31,8 @@ export class AddProdutoScreen extends Component{
         onPress={
           ()=>{
           navigation.navigate('Estabelecimento',
-          {nomeEstabelecimento:navigation.state.params.nomeEstabelecimento})
+          {nomeEstabelecimento:navigation.state.params.nomeEstabelecimento,
+          tipoEstabelecimento: navigation.state.params.tipoEstabelecimento})
           }}>
         </Icon>
       ),
@@ -51,7 +52,8 @@ export class AddProdutoScreen extends Component{
       total:'',
       listaAdicionais: adicionaisEscolhidos,
       loading: false,
-      obs:''
+      obs:'',
+      tipoEstabelecimento:''
     }
 
   updateAdicionais = (adicionais) => {
@@ -78,7 +80,7 @@ export class AddProdutoScreen extends Component{
     var tipoProduto = state.params ? state.params.tipoProduto : ""
     var estabelecimento = state.params ? state.params.nomeEstabelecimento : ""
     var telaAdicionais = state.params ? state.params.telaAdicionais : ""
-
+    var tipoEstabelecimento = state.params ? state.params.tipoEstabelecimento : ""
 
     if(!telaAdicionais){
       this.setState({
@@ -97,7 +99,8 @@ export class AddProdutoScreen extends Component{
       imgProduto: imgProduto,
       tipoProduto: tipoProduto,
       total: preco,
-      estabelecimento: estabelecimento
+      estabelecimento: estabelecimento,
+      tipoEstabelecimento: tipoEstabelecimento
     }, function(){
         this.setState({
           loading: false
@@ -143,7 +146,8 @@ export class AddProdutoScreen extends Component{
       _id:todoCounter++
     })
     const { navigate } = this.props.navigation;
-    navigate('Estabelecimento',{toast:this.state.nome, nomeEstabelecimento: estabelecimento })
+    navigate('Estabelecimento',{toast:this.state.nome, nomeEstabelecimento: estabelecimento,
+  tipoEstabelecimento: state.params.tipoEstabelecimento })
   }
 
   checkAdicionais(){
@@ -218,7 +222,8 @@ export class AddProdutoScreen extends Component{
                   detalhes:this.state.detalhes,
                   imgProduto:this.state.imgProduto,
                   tipoProduto:this.state.tipoProduto,
-                  nomeEstabelecimento: this.state.estabelecimento})
+                  nomeEstabelecimento: this.state.estabelecimento,
+                  tipoEstabelecimento: this.state.tipoEstabelecimento})
           }}>
           <Text style={[styles.textAddProduto,{marginBottom: 10,textDecorationLine:'underline'}]}>
             Adicionais?

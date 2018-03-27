@@ -29,7 +29,8 @@ export default class EstabelecimentoProdutosListItem extends Component {
         onPress = {() => {
         this.props.navigation.navigate('AddProduto',{nomeEstabelecimento: this.props.estabelecimento,
         nome: this.props.nomeProduto, preco: this.props.preco, detalhes: this.props.detalhes,
-        imgProduto: this.props.imgProduto, tipoProduto: this.props.tipoProduto})
+        imgProduto: this.props.imgProduto, tipoProduto: this.props.tipoProduto,
+        tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento})
         }}>
         <View style={{flexDirection: 'row',justifyContent: 'space-between'}}>
           <Text style={styles.textProdutos}>{this.props.nomeProduto}</Text>
