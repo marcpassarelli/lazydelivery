@@ -5,6 +5,7 @@ import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import {getEstabelecimentoProd, estabelecimentoProd, getEstabelecimentoTiposProd, estabelecimentoTiposProd, getEstabelecimentoProdutos} from '../firebase/database'
 import EstabelecimentoProdutosListItem from './estabelecimentoProdutosListItem'
+import {carrinho} from '../addproduto/addproduto'
 import Loader from '../loadingModal/loadingModal'
 import Toast from 'react-native-toast-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -71,8 +72,6 @@ constructor(props){
     animation: new Animated.Value()
   }
 
-  this.loadingTrue = this.loadingTrue.bind(this)
-  this.loadingFalse = this.loadingFalse.bind(this)
 }
 
 // toggle(headerName){
@@ -136,6 +135,11 @@ sectionDataFunction(){
 }
 
 componentWillMount(){
+
+    console.log("inicio estabelecimentoProd:"+estabelecimentoProd);
+  this.setState({
+          loadingList: true
+        });
   const {state} = this.props.navigation
   var estabelecimento = state.params ? state.params.nomeEstabelecimento : ""
   var toast = state.params ? state.params.toast : ""
@@ -143,36 +147,30 @@ componentWillMount(){
 
   if(telaAnterior=="listaEstabelecimentos" || telaAnterior=="home" ){
     getEstabelecimentoProd(estabelecimento)
+    setTimeout(()=>{
+      this.setState({produtosUp: estabelecimentoProd}, function(){
+        this.sectionDataFunction(),
+        this.setState({
+                loadingList: false
+              });
+        console.log("estabelecimentoProd:"+estabelecimentoProd);
+      })
+    },750)
+  }
+//para não precisar carregar novamente a lista
+  else{
+    console.log("dentro do else ");
+    // this.sectionDataFunction()
+    this.setState({
+      loadingList:false
+    });
   }
 
   if(toast){
+    console.log("carrinho:"+JSON.stringify(carrinho));
     Toast.show(toast+" foi adicionado ao carrinho",Toast.SHORT, Toast.BOTTOM, this.style)
   }
 
-
-  this.setState({
-          loadingList: true
-        });
-
-
-  setTimeout(()=>{
-    this.setState({produtosUp: estabelecimentoProd}, function(){
-      this.sectionDataFunction(),
-      this.setState({
-              loadingList: false
-            });
-    })
-  },750)
-
-}
-
-loadingTrue() {
-  console.log("dentro loadingTrue")
-  this.setState({loading:true})
-}
-loadingFalse() {
-  console.log("dentro loadingFalse")
-  this.setState({loading:false})
 }
 
 renderItem = (item) =>{
@@ -189,9 +187,7 @@ renderItem = (item) =>{
       detalhes = {item.item.detalhes}
       imgProduto = {item.item.imgProduto}
       tipoProduto = {item.item.tipo}
-      navigation={this.props.navigation}
-      loadingTrue = {this.loadingTrue}
-      loadingFalse = {this.loadingFalse}>
+      navigation={this.props.navigation}>
     </EstabelecimentoProdutosListItem>
   </Animated.View>
   )

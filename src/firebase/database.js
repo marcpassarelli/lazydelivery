@@ -234,6 +234,11 @@ export async function getEstabelecimentoProd(nomeEstabelecimento){
   }
 }
 
+export async function limparEstabelecimentoProd(){
+  console.log("dentro limparEstabelecimentoProd");
+  estabelecimentoProd = []
+}
+
 export async function getNomeEstabelecimentos(){
   try{
     nomesEstabelecimentos = []

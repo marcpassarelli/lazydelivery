@@ -209,10 +209,12 @@ export class HomeScreen extends Component {
   // }
 
   loadingTrue(){
-    this.setState({loading:true})
+    console.log("dentroLoadingTrue");
+    this.setState({loadingList:true})
   }
   loadingFalse(){
-    this.setState({loading:false})
+    console.log("dentroLoadingFalse");
+    this.setState({loadingList:false})
   }
 
   setModalVisible(visible) {

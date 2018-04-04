@@ -7,6 +7,7 @@ import {getListaEstabelecimentos, listaEstabelecimentos, getListaAdicionais} fro
 import {adicionaisEscolhidos} from './adicionais'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import _ from 'lodash'
+import Loader from '../loadingModal/loadingModal';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -52,6 +53,7 @@ export class AddProdutoScreen extends Component{
       total:'',
       listaAdicionais: adicionaisEscolhidos,
       loading: false,
+      loadingAfter: false,
       obs:'',
       tipoEstabelecimento:''
     }
@@ -134,6 +136,9 @@ export class AddProdutoScreen extends Component{
   }
 
   adicionarAoCarrinho(){
+    this.setState({
+      loadingAfter:true
+    });
     const {state} = this.props.navigation
     var estabelecimento = state.params ? state.params.nomeEstabelecimento : ""
     console.log("estabelecimento add produto"+estabelecimento);
@@ -148,6 +153,9 @@ export class AddProdutoScreen extends Component{
     const { navigate } = this.props.navigation;
     navigate('Estabelecimento',{toast:this.state.nome, nomeEstabelecimento: estabelecimento,
   tipoEstabelecimento: state.params.tipoEstabelecimento })
+  this.setState({
+    loadingAfter:false 
+  })
   }
 
   checkAdicionais(){
@@ -247,7 +255,7 @@ export class AddProdutoScreen extends Component{
 
         <Text style={[styles.textAddProduto,{marginBottom: 0, alignSelf: 'flex-start'}]}>Observações:</Text>
         <TextInput
-          style={{borderColor: cores.corPrincipal, borderWidth: 0.5, marginBottom: 5}}
+          style={{marginBottom: 5}}
           multiline = {true}
           onChangeText={(text) => this.setState({obs: text})}
           value={this.state.obs}
@@ -261,6 +269,8 @@ export class AddProdutoScreen extends Component{
       <Image
         source={require('../../img/alimentos-fundo2.jpg')}
         style={styles.backgroundImage}>
+        <Loader
+          loading={this.state.loadingAfter}/>
         <KeyboardAwareScrollView>
           {content}
         </KeyboardAwareScrollView>

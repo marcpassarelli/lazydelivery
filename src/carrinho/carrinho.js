@@ -46,11 +46,9 @@ export class CarrinhoScreen extends Component{
     this.setState({
       produtosCarrinho: carrinho
     }, function(){
-      setTimeout(()=>{
         this.setState({
           loading: false
         })
-      },500);
     })
 
     const {state} = this.props.navigation;
@@ -96,10 +94,19 @@ export class CarrinhoScreen extends Component{
             )}
             keyExtractor={item => item._id}
           />
-        <View style={{flexDirection: 'column'}}>
-          <Text style={[styles.textAdicionais,{justifyContent: 'flex-start'}]}>Valor Total Pedido:</Text>
-          <Text style={{justifyContent: 'flex-end'}}>R$ {this.totalPrice}</Text>
+        <View style={{backgroundColor: cores.corPrincipal, height: 1}}></View>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 3}}>
+          <Text style={[styles.textAdicionais,{fontSize: 18}]}>Valor Total Pedido:</Text>
+          <Text style={[styles.textAdicionais,{alignItems:'flex-end', fontSize: 18}]}>R$ {this.totalPrice}</Text>
         </View>
+        <Button
+          onPress={()=>{
+
+          }}
+          title="Encerrar Pedido"
+          color= {cores.corPrincipal}
+          accessibilityLabel="YourLabelHere"
+        />
       </View>)
 
     }else{

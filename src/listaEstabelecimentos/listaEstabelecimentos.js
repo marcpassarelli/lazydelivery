@@ -4,7 +4,7 @@ import { Image, Alert, View, Text, Button, ActivityIndicator, FlatList, Icon } f
 import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import ListaEstabelecimentosListItem from './listaEstabelecimentosListItem'
-import {getListaEstabelecimentos, listaEstabelecimentos} from '../firebase/database'
+import {getListaEstabelecimentos, listaEstabelecimentos, limparEstabelecimentoProd} from '../firebase/database'
 import Loader from '../loadingModal/loadingModal';
 
 import _ from 'lodash'
@@ -45,23 +45,47 @@ renderSeparator = () => {
 };
 
 
-componentWillMount(){
+ componentWillMount(){
+   this.setState({
+      loadingList: true
+   })
+
+
+  limparEstabelecimentoProd()
   const {state} = this.props.navigation;
   this.tipoEstabelecimentoUp = state.params ? state.params.tipoEstabelecimento : ""
   console.log("tipoEstabelecimento"+this.tipoEstabelecimentoUp);
   getListaEstabelecimentos(this.tipoEstabelecimentoUp)
 
-  this.setState({
-    loadingList: true
-  })
+  this.setState({ listaEstabelecimentosUp: listaEstabelecimentos }, function(){
+    console.log("inside setstate");
+      if(this.state.listaEstabelecimentosUp){
+        console.log("dentro if");
+        setTimeout(()=>{
+          this.setState({
+            loadingList: false
+          })
+        },250)
+      }
+    })
 
-  setTimeout(()=>{
-    this.setState({ listaEstabelecimentosUp: listaEstabelecimentos }, function(){
-        this.setState({
-          loadingList: false
-        })
-      })
-  },500)
+
+
+
+
+
+  // setTimeout(()=>{
+  //   this.setState({ listaEstabelecimentosUp: listaEstabelecimentos }, function(){
+  //       this.setState({
+  //         loadingList: false
+  //       })
+  //     })
+  // },500)
+
+}
+
+componentDidMount(){
+
 
 }
 
