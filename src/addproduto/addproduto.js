@@ -141,26 +141,48 @@ export class AddProdutoScreen extends Component{
     });
     const {state} = this.props.navigation
     var estabelecimento = state.params ? state.params.nomeEstabelecimento : ""
-    console.log("estabelecimento add produto"+estabelecimento);
+    console.log("nome: "+this.state.nome+" preco: "+this.state.preco+" qtde: "+this.state.qtde)
     carrinho.push({
       nome:this.state.nome,
       preco:this.state.preco,
       quantidade:this.state.qtde,
       obs:this.state.obs,
-      adicionais: adicionaisEscolhidos,
+      adicional:false,
       _id:todoCounter++
     })
+
+    this.state.listaAdicionais.map((item, i, arr)=>{
+          if(arr.length > 0 ){
+            console.log("nome: "+item.nome+" preco: "+item.preco+" qtde: "+item.qtde);
+            carrinho.push({
+              nome: item.nome,
+              preco: item.preco,
+              quantidade: item.quantidade,
+              obs:"",
+              adicional:true,
+              _id:todoCounter++
+            })
+          }
+    })
+
     const { navigate } = this.props.navigation;
     navigate('Estabelecimento',{toast:this.state.nome, nomeEstabelecimento: estabelecimento,
   tipoEstabelecimento: state.params.tipoEstabelecimento })
   this.setState({
-    loadingAfter:false 
+    loadingAfter:false
   })
   }
 
   checkAdicionais(){
+    var total = parseFloat(this.state.total) + parseFloat(this.totalPrice)
+
     if(this.totalPrice>0){
-      return <Text>Valor Adicionais: R${this.totalPrice}</Text>
+      return(
+      <View style={{flex:1}}>
+        <Text style={[styles.textAddProduto,{fontSize: 12}]}>Valor Adicionais: R${this.totalPrice}</Text>
+        <Text style={styles.textAddProduto}>Total com Adicionais: R$ {total}</Text>
+      </View>
+      )
     }else {
       return <Text></Text>
     }
@@ -248,14 +270,14 @@ export class AddProdutoScreen extends Component{
                 })
               }
         </Text>
-        <Text style={[styles.textAddProduto,{fontSize:12}]}>
+        <View>
           {this.checkAdicionais()}
-        </Text>
+        </View>
         <Text></Text>
 
         <Text style={[styles.textAddProduto,{marginBottom: 0, alignSelf: 'flex-start'}]}>Observações:</Text>
         <TextInput
-          style={{marginBottom: 5}}
+          style={{}}
           multiline = {true}
           onChangeText={(text) => this.setState({obs: text})}
           value={this.state.obs}

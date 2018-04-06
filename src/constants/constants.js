@@ -86,7 +86,7 @@ export const styles = StyleSheet.create({
   },
   icon: {
     width: 20,
-    height: 20,
+    height: 20
   },
   imagemEstabInfo:{
     height: 100,
@@ -187,6 +187,15 @@ textAdicionais:{
     color:'#FFFFFF',
     fontSize: 14,
     fontWeight:'bold'
+  },
+  textCarrinho:{
+    alignSelf: 'center',
+    color: cores.corPrincipal,
+    fontSize: 16
+  },
+  textCarrinhoAdicionais:{
+    alignSelf: 'center',
+    fontSize: 16
   },
   textDetalhesEstabelecimento:{
     marginLeft: 5,

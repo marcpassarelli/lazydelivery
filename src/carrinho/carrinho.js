@@ -72,11 +72,32 @@ export class CarrinhoScreen extends Component{
 
   onAdd = (item, index) =>{
     const produtosCarrinho = [...this.state.produtosCarrinho];
+
     produtosCarrinho[index].quantidade += 1;
     this.setState({ produtosCarrinho });
   }
 
+  onDelete = (item, index)=>{
+    const produtosCarrinho = [...this.state.produtosCarrinho];
+    Alert.alert(
+      'Remover Item Carrinho',
+      'Tem certeza que deseja remover este item do carrinho?',
+      [
+        {text: 'Sim', onPress: () => {
+          produtosCarrinho.splice(index,1)
+          this.setState({ produtosCarrinho });
+        }},
+        {text: 'Não', onPress: ()=>{
+          console.log("cancelado");
+        }},
+      ],
+      {cancelable: false}
+    )
+
+  }
+
   functionCarrinho=()=>{
+    console.log("carrinho"+carrinho);
     console.log("carrinho nome"+carrinho.nome);
     if(carrinho.length>0){
       return(
@@ -90,6 +111,7 @@ export class CarrinhoScreen extends Component{
                 item={item}
                 onSubtract={() => this.onSubtract(item, index)}
                 onAdd={() => this.onAdd(item, index)}
+                onDelete={()=>this.onDelete(item,index)}
               />
             )}
             keyExtractor={item => item._id}
@@ -113,7 +135,6 @@ export class CarrinhoScreen extends Component{
       return(<Text style={styles.textAddProduto}>Não há itens no carrinho.</Text>)
     }
   }
-
 
   render() {
     const { produtosCarrinho } = this.state
