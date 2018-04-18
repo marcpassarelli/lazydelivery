@@ -5,6 +5,7 @@ import { Image, Alert, View, Text, Button, ActivityIndicator, FlatList, Icon } f
 import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import {getListaEstabelecimentos, listaEstabelecimentos} from '../firebase/database'
+import ResumoPgtoListItem from './resumoPgtoListItem'
 
 import _ from 'lodash'
 

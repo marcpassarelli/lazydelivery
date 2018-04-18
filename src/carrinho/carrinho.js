@@ -158,7 +158,7 @@ export class CarrinhoScreen extends Component{
         </View>
         <Button
           onPress={()=>{
-
+            this.props.navigation.navigate('ResumoPgto')
           }}
           title="Encerrar Pedido"
           color= {cores.corPrincipal}
