@@ -4,17 +4,16 @@ import { Image, Alert, View, Text, Button, ActivityIndicator, FlatList } from 'r
 import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import {getListaEstabelecimentos, listaEstabelecimentos} from '../firebase/database'
-import {carrinho} from '../addproduto/addproduto'
+import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
 import CarrinhoListItem from './carrinhoListItem'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import _ from 'lodash'
 let totalPrice =0
-const produtosCarrinho = carrinho
+const produtosCarrinho = []
 
 export class CarrinhoScreen extends Component{
-
 
 
   static navigationOptions = ({navigation}) => ({
@@ -37,6 +36,7 @@ export class CarrinhoScreen extends Component{
 
 
   componentWillMount(){
+
     console.log("carrinho: "+JSON.stringify(carrinho));
 
     this.setState({
@@ -60,45 +60,80 @@ export class CarrinhoScreen extends Component{
    return (<View style={styles.renderSeparatorComponent}/>);
   };
 
+  removeItensArray(index){
 
+  }
   onSubtract = (item, index) =>{
-  const produtosCarrinho = [...this.state.produtosCarrinho];
-  console.log("produtosCarrinho"+produtosCarrinho);
+    const produtosCarrinho = [...this.state.produtosCarrinho];
+    console.log("produtosCarrinho"+JSON.stringify(produtosCarrinho));
     if(produtosCarrinho[index].quantidade>1){
       produtosCarrinho[index].quantidade -= 1;
-       this.setState({ produtosCarrinho });
+      this.setState({ produtosCarrinho });
+    }
+    else if (produtosCarrinho[index].quantidade==1) {
+      if(produtosCarrinho[index].adicional==false){
+        Alert.alert(
+          'Remover Item Carrinho',
+          'Tem certeza que deseja remover este item do carrinho? Todos os adicionais desse item serão removidos também.',
+          [
+            {text: 'Sim', onPress: () => {
+              var indexToRemove=[]
+              produtosCarrinho.map((item, i, arr)=>{
+                if(produtosCarrinho[index].tag == item.tag){
+                  indexToRemove.push(index)
+                }
+              })
+              for (var i = indexToRemove.length - 1; i>=0;i--){
+                produtosCarrinho.splice(indexToRemove[i],1)
+              }
+
+              this.setState({ produtosCarrinho}, function(){
+                atualizarCarrinho(this.state.produtosCarrinho)
+              })
+            }},
+            {text: 'Não', onPress: ()=>{
+              console.log("cancelado");
+            }},
+          ],
+          {cancelable: false}
+        )
+
+      }else{
+        Alert.alert(
+          'Remover Item Carrinho',
+          'Tem certeza que deseja remover este adicional do carrinho?',
+          [
+            {text: 'Sim', onPress: () => {
+              produtosCarrinho.splice(index,1)
+              this.setState({ produtosCarrinho }, function(){
+                atualizarCarrinho(this.state.produtosCarrinho)
+              });
+            }},
+            {text: 'Não', onPress: ()=>{
+              console.log("cancelado");
+            }},
+          ],
+          {cancelable: false}
+        )
+
+      }
     }
   }
 
   onAdd = (item, index) =>{
     const produtosCarrinho = [...this.state.produtosCarrinho];
-
     produtosCarrinho[index].quantidade += 1;
     this.setState({ produtosCarrinho });
   }
 
   onDelete = (item, index)=>{
     const produtosCarrinho = [...this.state.produtosCarrinho];
-    Alert.alert(
-      'Remover Item Carrinho',
-      'Tem certeza que deseja remover este item do carrinho?',
-      [
-        {text: 'Sim', onPress: () => {
-          produtosCarrinho.splice(index,1)
-          this.setState({ produtosCarrinho });
-        }},
-        {text: 'Não', onPress: ()=>{
-          console.log("cancelado");
-        }},
-      ],
-      {cancelable: false}
-    )
+
 
   }
 
   functionCarrinho=()=>{
-    console.log("carrinho"+carrinho);
-    console.log("carrinho nome"+carrinho.nome);
+    console.log("carrinho"+JSON.stringify(carrinho));
     if(carrinho.length>0){
       return(
         <View style={{flex: 1}}>

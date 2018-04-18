@@ -13,9 +13,13 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 let listener = null
 export var carrinho =[]
-// export var produtopra
 var todoCounter = 1;
 var totalPrice=0;
+var tag=0
+
+export function atualizarCarrinho(carrinhoAtualizado){
+  carrinho = carrinhoAtualizado
+}
 
 export class AddProdutoScreen extends Component{
 
@@ -148,8 +152,10 @@ export class AddProdutoScreen extends Component{
       quantidade:this.state.qtde,
       obs:this.state.obs,
       adicional:false,
+      tag: tag,
       _id:todoCounter++
     })
+
 
     this.state.listaAdicionais.map((item, i, arr)=>{
           if(arr.length > 0 ){
@@ -160,7 +166,8 @@ export class AddProdutoScreen extends Component{
               quantidade: item.quantidade,
               obs:"",
               adicional:true,
-              _id:todoCounter++
+              _id:todoCounter++,
+              tag:tag
             })
           }
     })
@@ -171,6 +178,7 @@ export class AddProdutoScreen extends Component{
   this.setState({
     loadingAfter:false
   })
+    tag++
   }
 
   checkAdicionais(){

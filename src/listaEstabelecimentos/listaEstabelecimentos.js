@@ -1,11 +1,12 @@
 
 import React, { Component } from 'react';
-import { Image, Alert, View, Text, Button, ActivityIndicator, FlatList, Icon } from 'react-native'
+import { Image, Alert, View, Text, Button, ActivityIndicator, FlatList } from 'react-native'
 import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import ListaEstabelecimentosListItem from './listaEstabelecimentosListItem'
 import {getListaEstabelecimentos, listaEstabelecimentos, limparEstabelecimentoProd} from '../firebase/database'
 import Loader from '../loadingModal/loadingModal';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import _ from 'lodash'
 var tipoEstabelecimentoUp ='';
@@ -16,6 +17,18 @@ export class ListaEstabelecimentosScreen extends Component{
     title: navigation.state.params.tipoEstabelecimento,
     headerTitleStyle: styles.headerText,
     headerStyle: styles.header,
+    headerLeft: (
+      <Icon
+        style={{marginLeft: 15}}
+        name={'arrow-left'}
+        size={26}
+        color="#000000"
+        onPress={
+          ()=>{
+          navigation.navigate('Home')
+          }}>
+        </Icon>
+      ),
     headerRight: (<View></View>)
   });
 
