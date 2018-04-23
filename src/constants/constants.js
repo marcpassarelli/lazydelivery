@@ -245,6 +245,11 @@ textAdicionais:{
     alignSelf:'center',
     color: cores.corPrincipal,
   },
+  textResumoPgto:{
+    color: cores.corPrincipal,
+    fontSize: 14,
+    marginBottom: 10
+  },
   textTelaCadastro: {
     fontFamily: 'Cochin',
     fontSize: 18,

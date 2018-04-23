@@ -17,7 +17,7 @@ export class CarrinhoScreen extends Component{
 
 
   static navigationOptions = ({navigation}) => ({
-    title: "Carrinho",
+    title: "Carrinho - "+navigation.state.params.nomeEstabelecimento,
     headerTitleStyle: styles.headerText,
     headerStyle: styles.header,
     headerRight: (<View></View>)
@@ -50,19 +50,12 @@ export class CarrinhoScreen extends Component{
           loading: false
         })
     })
-
-    const {state} = this.props.navigation;
-    var tipoEstabelecimentoUp = state.params ? state.params.tipoEstabelecimento : ""
-
   }
 
   renderSeparatorComponent = () => {
    return (<View style={styles.renderSeparatorComponent}/>);
   };
 
-  removeItensArray(index){
-
-  }
   onSubtract = (item, index) =>{
     const produtosCarrinho = [...this.state.produtosCarrinho];
     console.log("produtosCarrinho"+JSON.stringify(produtosCarrinho));
@@ -126,12 +119,6 @@ export class CarrinhoScreen extends Component{
     this.setState({ produtosCarrinho });
   }
 
-  onDelete = (item, index)=>{
-    const produtosCarrinho = [...this.state.produtosCarrinho];
-
-
-  }
-
   functionCarrinho=()=>{
     console.log("carrinho"+JSON.stringify(carrinho));
     if(carrinho.length>0){
@@ -145,9 +132,7 @@ export class CarrinhoScreen extends Component{
               <CarrinhoListItem
                 item={item}
                 onSubtract={() => this.onSubtract(item, index)}
-                onAdd={() => this.onAdd(item, index)}
-                onDelete={()=>this.onDelete(item,index)}
-              />
+                onAdd={() => this.onAdd(item, index)}/>
             )}
             keyExtractor={item => item._id}
           />
@@ -158,7 +143,10 @@ export class CarrinhoScreen extends Component{
         </View>
         <Button
           onPress={()=>{
-            this.props.navigation.navigate('ResumoPgto')
+            if(this.state.produtosCarrinho.length>0){
+              this.props.navigation.navigate('ResumoPgto',{nomeEstabelecimento: this.props.navigation.state.params.nomeEstabelecimento})
+            }
+
           }}
           title="Encerrar Pedido"
           color= {cores.corPrincipal}

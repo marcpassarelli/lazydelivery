@@ -5,7 +5,7 @@ import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import {getEstabelecimentoProd, estabelecimentoProd, getEstabelecimentoTiposProd, estabelecimentoTiposProd, getEstabelecimentoProdutos} from '../firebase/database'
 import EstabelecimentoProdutosListItem from './estabelecimentoProdutosListItem'
-import {carrinho} from '../addproduto/addproduto'
+import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
 import Loader from '../loadingModal/loadingModal'
 import Toast from 'react-native-toast-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -46,8 +46,26 @@ export class EstabelecimentoProdutosScreen extends Component{
         color="#000000"
         onPress={
           ()=>{
-          navigation.navigate('ListaEstabelecimentos',
-          {tipoEstabelecimento:navigation.state.params.tipoEstabelecimento})
+            if(carrinho.length>0){
+              Alert.alert(
+                'Sair do Estabelecimento',
+                'Tem certeza que deseja sair deste estabelecimento? Todos os items do carrinho serão perdido.',
+                [
+                  {text: 'Sim', onPress: () => {
+                    atualizarCarrinho([])
+                    navigation.navigate('ListaEstabelecimentos',
+                    {tipoEstabelecimento:navigation.state.params.tipoEstabelecimento})
+                  }},
+                  {text: 'Não', onPress: ()=>{
+                    console.log("cancelado");
+                  }},
+                ],
+                {cancelable: false}
+              )
+            }else{
+              navigation.navigate('ListaEstabelecimentos',
+              {tipoEstabelecimento:navigation.state.params.tipoEstabelecimento})
+            }
           }}>
         </Icon>
       ),
@@ -73,42 +91,6 @@ constructor(props){
   }
 
 }
-
-// toggle(headerName){
-//     //Step 1
-//   let initialValue    = this.state.expandido? tamanhoHeader : tamanhoCelula * sectionName[headerName].length + tamanhoHeader,
-//       finalValue      = this.state.expandido? tamanhoCelula * sectionName[headerName].length + tamanhoHeader : tamanhoHeader;
-//
-//
-//   this.setState({
-//       expandido : !this.state.expandido  //Step 2
-//   });
-//
-//   this.state.animation.setValue(initialValue);  //Step 3
-//   Animated.spring(     //Step 4
-//       this.state.animation,
-//       {
-//           toValue: finalValue
-//       }
-//   ).start();  //Step 5
-//   console.log(JSON.stringify(sectionData[0].key))
-//   for(i=0;i<sectionData.length;i++){
-//     console.log(JSON.stringify(sectionData[i].key)+": "+JSON.stringify(sectionData[i].data.length))
-//   }
-// }
-//
-// _setMaxHeight(){
-//     this.setState({
-//         maxHeight   : 60*3+30
-//     });
-// }
-//
-// _setMinHeight(event){
-//     this.setState({
-//         minHeight   : event.nativeEvent.layout.height
-//     });
-// }
-
 
 renderSeparatorComponent = () => {
  return (<View style={styles.renderSeparatorComponent}/>);
@@ -223,7 +205,7 @@ renderFooter=()=>{
 
 goToCarrinho(){
   const { navigate } = this.props.navigation;
-    navigate('Carrinho')
+    navigate('Carrinho',{nomeEstabelecimento: this.props.navigation.state.params.nomeEstabelecimento})
 }
 
 
@@ -269,3 +251,38 @@ goToCarrinho(){
     );
   }
 }
+
+// toggle(headerName){
+//     //Step 1
+//   let initialValue    = this.state.expandido? tamanhoHeader : tamanhoCelula * sectionName[headerName].length + tamanhoHeader,
+//       finalValue      = this.state.expandido? tamanhoCelula * sectionName[headerName].length + tamanhoHeader : tamanhoHeader;
+//
+//
+//   this.setState({
+//       expandido : !this.state.expandido  //Step 2
+//   });
+//
+//   this.state.animation.setValue(initialValue);  //Step 3
+//   Animated.spring(     //Step 4
+//       this.state.animation,
+//       {
+//           toValue: finalValue
+//       }
+//   ).start();  //Step 5
+//   console.log(JSON.stringify(sectionData[0].key))
+//   for(i=0;i<sectionData.length;i++){
+//     console.log(JSON.stringify(sectionData[i].key)+": "+JSON.stringify(sectionData[i].data.length))
+//   }
+// }
+//
+// _setMaxHeight(){
+//     this.setState({
+//         maxHeight   : 60*3+30
+//     });
+// }
+//
+// _setMinHeight(event){
+//     this.setState({
+//         minHeight   : event.nativeEvent.layout.height
+//     });
+// }

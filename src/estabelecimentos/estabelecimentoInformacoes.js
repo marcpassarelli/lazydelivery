@@ -56,7 +56,7 @@ export class EstabelecimentoInformacoesScreen extends Component {
 
 
   componentWillMount(){
-    formasPgto = []
+
     this.setState({
             loading: true
           });
@@ -147,9 +147,23 @@ export class EstabelecimentoInformacoesScreen extends Component {
 
        <Text style={styles.textInformacoes}>Formas de Pagamento</Text>
        <Text style={styles.textInformacoes2}>Crédito:</Text>
-       <Text style={styles.textInformacoesD}>{this.state.cre}</Text>
+       <Text style={styles.textInformacoesD}>{this.state.cre.map((item, i, arr)=>{
+           if(arr.length===i+1){
+             return(<Text key={i}>{item.bandeira}</Text>)
+           }else{
+             return(<Text key={i}>{item.bandeira}, </Text>)
+           }
+         })
+       }</Text>
        <Text style={styles.textInformacoes2}>Débito:</Text>
-       <Text style={styles.textInformacoesD}>{this.state.deb}</Text>
+         <Text style={styles.textInformacoesD}>{this.state.deb.map((item, i, arr)=>{
+             if(arr.length===i+1){
+               return(<Text key={i}>{item.bandeira}</Text>)
+             }else{
+               return(<Text key={i}>{item.bandeira}, </Text>)
+             }
+           })
+         }</Text>
        <Text style={styles.textInformacoes2}>{this.state.din}</Text>
 
        <View style={styles.separator}></View>
