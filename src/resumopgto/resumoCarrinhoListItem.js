@@ -3,9 +3,20 @@ import { View, TouchableOpacity, Image, Text } from 'react-native';
 import { styles } from '../constants/constants'
 
 
-export default class ResumoPgtoListItem extends Component {
+export default class ResumoCarrinhoListItem extends Component {
   constructor(props) {
     super(props);
+
+  }
+
+  functionObservacao=(item)=>{
+    if(item.obs){
+      return(
+        <Text>Observação:{item.obs}</Text>
+      )
+    }else{
+      <Text></Text>
+    }
 
   }
 
@@ -17,18 +28,19 @@ export default class ResumoPgtoListItem extends Component {
             <View style={{width: 200}}>
               <Text style={[styles.textCarrinho,
                   {alignSelf: 'flex-start',
-                  marginHorizontal: 10}]}>
+                  marginHorizontal: 10,
+                fontSize: 13}]}>
               {item.quantidade}x {item.nome}
               </Text>
             </View>
             <View style={{flex:1}}>
-              <Text style={[styles.textCarrinho, {alignSelf: 'flex-end', marginRight: 15}]}>
+              <Text style={[styles.textCarrinho, {fontSize: 13, alignSelf: 'flex-end', marginRight: 15}]}>
                 R$ {item.preco*item.quantidade}
               </Text>
             </View>
           </View>
           <View>
-            <Text style={{color:'#666666', marginLeft: 15, fontSize: 15}}>{item.obs}</Text>
+            <Text style={{color:'#666666', marginLeft: 15, fontSize: 12}}>{this.functionObservacao(item)}</Text>
           </View>
         </View>
       );
@@ -39,18 +51,15 @@ export default class ResumoPgtoListItem extends Component {
             <View style={{width: 180}}>
               <Text
                 style={[styles.textCarrinhoAdicionais,
-                  {alignSelf: 'flex-start', marginHorizontal: 10, fontSize: 12}]}>
+                  {alignSelf: 'flex-start', marginHorizontal: 10, fontSize: 11}]}>
                 {item.quantidade}x {item.nome}
               </Text>
             </View>
             <View style={{flex:1}}>
-              <Text style={[styles.textCarrinhoAdicionais, {alignSelf: 'center', fontSize: 12, marginRight: 5}]}>
+              <Text style={[styles.textCarrinhoAdicionais, {alignSelf: 'flex-end', fontSize: 11, marginRight: 18}]}>
                 R$ {item.preco*item.quantidade}
               </Text>
             </View>
-          </View>
-          <View>
-            <Text style={{color:'#666666', marginLeft: 15, fontSize: 15}}>{item.obs}</Text>
           </View>
         </View>
       );

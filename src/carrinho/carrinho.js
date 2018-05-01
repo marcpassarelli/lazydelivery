@@ -29,7 +29,8 @@ export class CarrinhoScreen extends Component{
       tipoEstabelecimento:'',
       listaEstabelecimentosUp:'',
       loading: false,
-      produtosCarrinho
+      produtosCarrinho,
+      frete:6
     }
 
   }
@@ -137,10 +138,18 @@ export class CarrinhoScreen extends Component{
             keyExtractor={item => item._id}
           />
         <View style={{backgroundColor: cores.corPrincipal, height: 1}}></View>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 3}}>
-          <Text style={[styles.textAdicionais,{fontSize: 18}]}>Valor Total Pedido:</Text>
-          <Text style={[styles.textAdicionais,{alignItems:'flex-end', fontSize: 18}]}>R$ {this.totalPrice}</Text>
-        </View>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 3}}>
+            <Text style={[styles.textAdicionais,{fontSize: 16,marginBottom: 3}]}>Valor Pedido:</Text>
+            <Text style={[styles.textAdicionais,{alignItems:'flex-end', fontSize: 16,marginBottom: 3}]}>R$ {this.totalPrice}</Text>
+          </View>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10}}>
+            <Text style={[styles.textAdicionais,{fontSize: 16, marginBottom: 3}]}>Frete:</Text>
+            <Text style={[styles.textAdicionais,{alignItems:'flex-end', fontSize: 16,marginBottom: 3}]}>R$ {this.state.frete}</Text>
+          </View>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10}}>
+            <Text style={[styles.textAdicionais,{fontSize: 18,marginBottom: 3}]}>Valor Total Pedido:</Text>
+            <Text style={[styles.textAdicionais,{alignItems:'flex-end', fontSize: 18,marginBottom: 3}]}>R$ {this.totalPrice+this.state.frete}</Text>
+          </View>
         <Button
           onPress={()=>{
             if(this.state.produtosCarrinho.length>0){

@@ -9,7 +9,18 @@ export default class CarrinhoListItem extends Component {
 
   }
 
+  functionObservacao(item){
+    if(item){
+      return(<Text style={{color:'#666666', marginLeft: 20, fontSize: 12}}>Observação: {item}</Text>)
+    }else{
+      return(<Text></Text>)
+    }
+  }
+
+
+
   functionCarrinhoListItem=(item)=>{
+    console.log("obs"+item.obs);
     if(item.adicional==false){
       return (
         <View>
@@ -57,7 +68,7 @@ export default class CarrinhoListItem extends Component {
             </View>
           </View>
           <View>
-            <Text style={{color:'#666666', marginLeft: 15, fontSize: 15}}>{item.obs}</Text>
+            {this.functionObservacao(item.obs)}
           </View>
         </View>
       );

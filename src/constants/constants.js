@@ -191,11 +191,11 @@ textAdicionais:{
   textCarrinho:{
     alignSelf: 'center',
     color: cores.corPrincipal,
-    fontSize: 16
+    fontSize: 15
   },
   textCarrinhoAdicionais:{
     alignSelf: 'center',
-    fontSize: 16
+    fontSize: 14
   },
   textDetalhesEstabelecimento:{
     marginLeft: 5,
@@ -248,7 +248,7 @@ textAdicionais:{
   textResumoPgto:{
     color: cores.corPrincipal,
     fontSize: 14,
-    marginBottom: 10
+    marginBottom: 3
   },
   textTelaCadastro: {
     fontFamily: 'Cochin',
