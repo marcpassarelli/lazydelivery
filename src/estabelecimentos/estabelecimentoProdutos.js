@@ -28,7 +28,7 @@ const style={
                              lines: 4,
                              borderRadius: 15,
                              fontWeight: "bold",
-                             yOffset: 40
+                             yOffset: 40,
                          };
 
 export class EstabelecimentoProdutosScreen extends Component{

@@ -18,11 +18,15 @@ import { ResumoPgtoScreen } from './src/resumopgto/resumopgto'
 import { EstabelecimentoProdutosScreen } from './src/estabelecimentos/estabelecimentoProdutos'
 import { EstabelecimentoInformacoesScreen } from './src/estabelecimentos/estabelecimentoInformacoes'
 import { AdicionaisScreen } from './src/addproduto/adicionais'
+import { DestaquesScreen } from './src/home/destaques'
 import * as firebase from 'firebase';
 
 const TabHome = TabNavigator({
   Home: {
     screen: HomeScreen,
+  },
+  Destaques:{
+    screen: DestaquesScreen,
   },
   Profile: {
     screen: ProfileScreen,
@@ -31,7 +35,7 @@ const TabHome = TabNavigator({
   tabBarOptions: {
     activeTintColor: '#FFFFFF',
     labelStyle: {
-      fontSize: 13,
+      fontSize: 11,
     },
     iconStyle:{
       marginTop:9,

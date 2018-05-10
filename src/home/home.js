@@ -17,7 +17,7 @@ let listener = null
 export class HomeScreen extends Component {
   static navigationOptions = {
     header: null,
-    tabBarLabel: 'Estabelecimentos',
+    tabBarLabel: 'Delivery',
     // Note: By default the icon is only shown on iOS. Search the showIcon option below.
     tabBarIcon: ({ tintColor }) => (
       <Image

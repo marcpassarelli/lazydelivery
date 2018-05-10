@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { ScrollView, Dimensions, Image, Alert, View, Text, Button, ActivityIndicator, FlatList, Icon, TouchableWithoutFeedback } from 'react-native'
+import { TextInput, Picker, ScrollView, Dimensions, Image, Alert, View, Text, Button, ActivityIndicator, FlatList, Icon, TouchableWithoutFeedback } from 'react-native'
 import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import {carrinho} from '../addproduto/addproduto'
-import {getListaEstabelecimentos, listaEstabelecimentos, getUserDetails, getEstabelecimentoInfo} from '../firebase/database'
+import {getListaEstabelecimentos, listaEstabelecimentos,
+        getUserDetails, getEstabelecimentoInfo,
+        loadMessages, sendMessage} from '../firebase/database'
 import ResumoCarrinhoListItem from './resumoCarrinhoListItem'
 import FormasPgtoListItem from './formasPgtoListItem'
 import { CheckBox } from 'react-native-elements'
-
 import _ from 'lodash'
 
 let totalPrice =0
@@ -34,33 +35,32 @@ constructor(props){
     nome: "",
     precoDelivery: "",
     tempoEntrega: "",
-    seg: "",
-    ter: "",
-    qua: "",
-    qui: "",
-    sex: "",
-    sab: "",
-    dom: "",
     deb: "",
     cre: "",
     din: "",
-    tiposPgto:"",
+    pgtoEscolhido:"",
     selectedIndex:0,
     checked:true,
     checked2:false,
     checked3:false,
-    frete:6
+    frete:6,
+    troco:''
 
 
   }
   this.updateIndex = this.updateIndex.bind(this)
 }
 
+updatePgtoEscolhido = (pgtoEscolhido) => {
+   this.setState({ pgtoEscolhido: pgtoEscolhido })
+}
 updateIndex (selectedIndex) {
   this.setState({selectedIndex})
 }
 
-
+updateTroco = (text) => {
+  this.setState({troco: text})
+}
 
 renderSeparator = () => {
  return (
@@ -136,6 +136,59 @@ _callback(){
   })
 }
 
+fazerPedido(){
+  Alert.alert("Cliente: "+this.state.nome+"----------")
+}
+
+funcaoCredito(){
+  return(
+    <View style={{marginLeft: 25}}>
+      <Text style={{fontSize: 15}}>Selecione a bandeira do seu cartão de crédito:</Text>
+      <Picker
+        style={{width:350, height: 40}}
+        selectedValue={this.state.pgtoEscolhido}
+        onValueChange={(itemValue, itemIndex) => this.setState({pgtoEscolhido: itemValue})}>
+        {this.state.cre.map((item, index)=>{
+          return (<Picker.Item label={item.bandeira} value={item.bandeira} key={index} />)
+        })}
+      </Picker>
+    </View>
+  )
+}
+
+funcaoDebito(){
+  return(
+    <View style={{marginLeft: 25}}>
+      <Text style={{fontSize: 15}}>Selecione a bandeira do seu cartão de débito:</Text>
+      <Picker
+        style={{width:350, height: 40}}
+        selectedValue={this.state.pgtoEscolhido}
+        onValueChange={(itemValue, itemIndex) => this.setState({pgtoEscolhido: itemValue})}>
+        {this.state.deb.map((item, index)=>{
+          return (<Picker.Item label={item.bandeira} value={item.bandeira} key={index} />)
+        })}
+      </Picker>
+    </View>
+  )
+}
+
+funcaoTroco(){
+  return(
+    <View style={{marginLeft: 25,flexDirection: 'row',alignItems: 'center'}}>
+      <Text style={{fontSize: 15}}>Troco para:</Text>
+      <TextInput
+        style={[styles.textInputs,{width: 250, fontSize: 15}]}
+        onChangeText = {this.updateTroco}
+        labelStyle={{ color: '#8b0000' }}
+        borderColor={'#8b0000'}
+        returnKeyType="next"
+        keyboardType='numeric'
+        maxLength={6}
+       />
+    </View>
+  )
+}
+
 render() {
   var {width, height} = Dimensions.get('window');
   const buttons = [{element: this.credito},{element: this.debito},{element: this.dinheiro}]
@@ -175,15 +228,15 @@ render() {
       keyExtractor={item => item._id}
       />
     </View>
-    <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 15}}>
+    <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5}}>
       <Text style={[styles.textResumoPgto]}>Valor Pedido:</Text>
       <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ {this.totalPrice}</Text>
     </View>
-    <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 15}}>
+    <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5}}>
       <Text style={[styles.textResumoPgto]}>Valor Frete:</Text>
       <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ 6</Text>
     </View>
-    <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 15}}>
+    <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5}}>
       <Text style={[styles.textResumoPgto]}>Valor Total Pedido:</Text>
       <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ {this.totalPrice+this.state.frete}</Text>
     </View>
@@ -192,6 +245,7 @@ render() {
     <Text style={[styles.textAdicionais,{fontSize: 16, marginBottom: 0,marginLeft: 5}]}>Selecione a forma de pagamento:</Text>
     <View style={{}}>
       <CheckBox
+        textStyle={{fontSize: 16}}
         containerStyle={{backgroundColor: 'rgba(0,0,0,0.1)'}}
         title='Cartão de Crédito'
         checkedIcon='dot-circle-o'
@@ -204,16 +258,10 @@ render() {
         }}
       />
       <View>
-        <Text style={{fontSize: 12, marginLeft: 15}}>Bandeiras aceitas: {this.state.cre.map((item, i, arr)=>{
-            if(arr.length===i+1){
-              return(<Text key={i}>{item.bandeira}</Text>)
-            }else{
-              return(<Text key={i}>{item.bandeira}, </Text>)
-            }
-          })
-        }</Text>
+        {this.state.checked && this.funcaoCredito()}
       </View>
       <CheckBox
+        textStyle={{fontSize: 16}}
         containerStyle={{backgroundColor: 'rgba(0,0,0,0.1)'}}
         title='Cartão de Débito'
         checkedIcon='dot-circle-o'
@@ -226,16 +274,10 @@ render() {
         }}
       />
       <View>
-        <Text style={{fontSize: 12, marginLeft: 15}}>Bandeiras aceitas: {this.state.deb.map((item, i, arr)=>{
-            if(arr.length===i+1){
-              return(<Text key={i}>{item.bandeira}</Text>)
-            }else{
-              return(<Text key={i}>{item.bandeira}, </Text>)
-            }
-          })
-        }</Text>
+        {this.state.checked2 && this.funcaoDebito()}
       </View>
       <CheckBox
+        textStyle={{fontSize: 16}}
         containerStyle={{backgroundColor: 'rgba(0,0,0,0.1)'}}
         title='Dinheiro'
         checkedIcon='dot-circle-o'
@@ -247,6 +289,9 @@ render() {
           this.setState({checked3: true})
         }}
       />
+      <View>
+        {this.state.checked3 && this.funcaoTroco()}
+      </View>
     </View>
 
     <View style={{height:2, backgroundColor: cores.corPrincipal}}></View>
@@ -273,9 +318,12 @@ render() {
         <Text>{this.state.referencia}</Text>
       </View>
       </ScrollView>
-
-
-
+      <Button
+        onPress={()=>{this.fazerPedido()}}
+        title="Fazer Pedido"
+        color={cores.corPrincipal}
+        accessibilityLabel="YourLabelHere"
+      />
   </View>
 
   return (

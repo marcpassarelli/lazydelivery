@@ -153,7 +153,7 @@ export const styles = StyleSheet.create({
     marginBottom: 7
   },
   searchBar:{
-    height:40,
+    height:60,
     color: 'rgba(0,0,0,0.5)',
   },
   searchBarContainer:{
@@ -162,6 +162,7 @@ export const styles = StyleSheet.create({
     backgroundColor:'rgba(139,0,0,0.1)'
   },
   searchBarInput:{
+    fontSize: 16,
     backgroundColor: 'rgba(0,0,0,0.1)',
     color:'rgba(139,0,0,1)'
   },
@@ -262,7 +263,7 @@ textAdicionais:{
   },
   textUpdateEnd:{
     fontSize: 13,
-    marginTop:5,
+    marginVertical: 5,
     color:'#0000FF',
   },
   titleCadastro: {
