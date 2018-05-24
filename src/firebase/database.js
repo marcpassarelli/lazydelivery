@@ -375,7 +375,6 @@ export async function getListaAdicionais(nomeEstabelecimento, tipoProduto){
     console.log(error)
   }
 }
-messageRef = null;
 
 export async function loadMessages(callback){
   this.messageRef = firebase.database().ref("/messages/")
@@ -395,12 +394,18 @@ export async function loadMessages(callback){
   this.messageRef.limitToLast(20).on('child_added', onReceive);
 
 }
-export async function sendMessage(message) {
-  for (let i = 0; i < message.length; i++){
+export async function sendMessage(carrinhoNovo, formaPgtoNovo, formaPgtoDetalheNovo,
+   nomeNovo, telefoneNovo, enderecoNovo, bairroNovo, referenciaNovo,estabelecimento ) {
+    this.messageRef = firebase.database().ref("/messages/"+estabelecimento+"/")
     this.messageRef.push({
-      text: message[i].text,
-      user: message[i].user,
+      carrinho: carrinhoNovo,
+      formaPgto: formaPgtoNovo,
+      formaPgtoDetalhe: formaPgtoDetalheNovo,
+      nome: nomeNovo,
+      telefone: telefoneNovo,
+      endereco: enderecoNovo,
+      bairro: bairroNovo,
+      referencia: referenciaNovo,
       createdAt: firebase.database.ServerValue.TIMESTAMP,
     })
   }
-}

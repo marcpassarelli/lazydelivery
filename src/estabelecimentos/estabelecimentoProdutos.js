@@ -63,8 +63,7 @@ export class EstabelecimentoProdutosScreen extends Component{
                 {cancelable: false}
               )
             }else{
-              navigation.navigate('ListaEstabelecimentos',
-              {tipoEstabelecimento:navigation.state.params.tipoEstabelecimento})
+              navigation.navigate('Home')
             }
           }}>
         </Icon>

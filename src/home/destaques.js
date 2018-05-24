@@ -21,7 +21,7 @@ export class DestaquesScreen extends Component {
     // Note: By default the icon is only shown on iOS. Search the showIcon option below.
     tabBarIcon: ({ tintColor }) => (
       <Image
-        source={require('../../img/shop-building.png')}
+        source={require('../../img/icon-ofertas.png')}
         style={[styles.icon, {tintColor: tintColor}]}
         />
     ),

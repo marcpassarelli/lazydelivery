@@ -51,7 +51,7 @@ export default ComponentsCadastroInicial = (props) => {
           onEndEditing = {props.checarSenha}
         />
         <Button
-          onPress = { () => cadastrarUsuarioBD() }
+          onPress = { () => props.cadastrarUsuarioBD() }
           title="Cadastrar"
           color="#8b0000"
           accessibilityLabel="Clique aqui para cadastrar o endereço"

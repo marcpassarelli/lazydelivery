@@ -7,7 +7,7 @@ import {getListaEstabelecimentos, listaEstabelecimentos,
         getUserDetails, getEstabelecimentoInfo,
         loadMessages, sendMessage} from '../firebase/database'
 import ResumoCarrinhoListItem from './resumoCarrinhoListItem'
-import FormasPgtoListItem from './formasPgtoListItem'
+
 import { CheckBox } from 'react-native-elements'
 import _ from 'lodash'
 
@@ -88,7 +88,7 @@ async componentWillMount(){
     this.setState({
       nome: nomeP,
       telefone: telefoneP,
-      endereco:enderecoP,
+      endereco:enderecoP+", "+numeroEndP,
       numeroEnd:numeroEndP,
       bairro:bairroP,
       referencia:referenciaP,
@@ -137,7 +137,21 @@ _callback(){
 }
 
 fazerPedido(){
-  Alert.alert("Cliente: "+this.state.nome+"----------")
+  let formaPgto, formaPgtoDetalhe;
+  if(this.state.checked){
+    formaPgto = "Crédito"
+    formaPgtoDetalhe = this.state.pgtoEscolhido
+  }else if(this.state.checked2){
+    formaPgto = "Débito"
+    formaPgtoDetalhe = this.state.pgtoEscolhido
+  }else{
+    formaPgto = "Dinheiro"
+    formaPgtoDetalhe = this.state.troco
+  }
+  sendMessage(this.state.produtosCarrinho, formaPgto, formaPgtoDetalhe,
+     this.state.nome, this.state.telefone, this.state.endereco, this.state.bairro,
+     this.state.referencia, this.props.navigation.state.params.nomeEstabelecimento)
+
 }
 
 funcaoCredito(){
@@ -307,7 +321,7 @@ render() {
       </View>
       <View style={{flexDirection: 'row'}}>
         <Text style={styles.textResumoPgto}>Endereço: </Text>
-        <Text>{this.state.endereco}, {this.state.numeroEnd}</Text>
+        <Text>{this.state.endereco}</Text>
       </View>
       <View style={{flexDirection: 'row'}}>
         <Text style={styles.textResumoPgto}>Bairro: </Text>
