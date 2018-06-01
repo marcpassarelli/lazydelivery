@@ -376,26 +376,29 @@ export async function getListaAdicionais(nomeEstabelecimento, tipoProduto){
   }
 }
 
-export async function loadMessages(callback){
-  this.messageRef = firebase.database().ref("/messages/")
+export async function loadMessages(estabelecimento, chave, callback){
+  // console.log("dentro loadMessages"+estabelecimento);
+  this.messageRef = firebase.database().ref("/messages/Casa Nova/"+chave+"/status")
+  console.log("messageRef"+this.messageRef);
   this.messageRef.off();
-  const onReceive = (data) =>{
-    const message = data.val()
-    callback({
-      _id: data.key,
-      text: message.text,
-      createdAt: new Date(message.createdAt),
-      user:{
-        _id: message.user._id,
-        name: message.users.name,
-      },
-    })
-  }
-  this.messageRef.limitToLast(20).on('child_added', onReceive);
+  this.messageRef.on('value',function(snap){
+    callback({status:snap.val()})
+  })
 
+
+  // const onReceive = (data) =>{
+  //   const message = data.val()
+  //   callback({
+  //     status: message.status
+  //   })
+  // }
+  // this.messageRef.on('value', onReceive);
 }
+
+export var chaveMsg=""
 export async function sendMessage(carrinhoNovo, formaPgtoNovo, formaPgtoDetalheNovo,
-   nomeNovo, telefoneNovo, enderecoNovo, bairroNovo, referenciaNovo,estabelecimento ) {
+   nomeNovo, telefoneNovo, enderecoNovo, bairroNovo, referenciaNovo,
+   estabelecimento, statusNovo, key) {
     this.messageRef = firebase.database().ref("/messages/"+estabelecimento+"/")
     this.messageRef.push({
       carrinho: carrinhoNovo,
@@ -407,5 +410,8 @@ export async function sendMessage(carrinhoNovo, formaPgtoNovo, formaPgtoDetalheN
       bairro: bairroNovo,
       referencia: referenciaNovo,
       createdAt: firebase.database.ServerValue.TIMESTAMP,
+      status: statusNovo
+    }).then((snap)=>{
+      key({key: snap.key})
     })
   }

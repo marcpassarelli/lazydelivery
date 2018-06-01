@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { styles, cores } from '../constants/constants'
 import {
   StyleSheet,
   View,
   Modal,
-  ActivityIndicator
+  ActivityIndicator,
+  Text
 } from 'react-native';
 
 const Loader = props => {
@@ -18,9 +20,11 @@ const Loader = props => {
       animationType={'none'}
       visible={loading}
       onRequestClose={() => {console.log('close modal')}}>
-      <View style={styles.modalBackground}>
-        <View style={styles.activityIndicatorWrapper}>
+      <View style={stylesLocal.modalBackground}>
+        <View style={stylesLocal.activityIndicatorWrapper}>
+          <Text style={{marginHorizontal: 10}}>Aguardando confirmação que o pedido foi recebido...</Text>
           <ActivityIndicator
+            style = {styles.activityIndicator}
             animating={loading} />
         </View>
       </View>
@@ -28,7 +32,7 @@ const Loader = props => {
   )
 }
 
-const styles = StyleSheet.create({
+const stylesLocal = StyleSheet.create({
   modalBackground: {
     flex: 1,
     alignItems: 'center',
@@ -39,7 +43,6 @@ const styles = StyleSheet.create({
   activityIndicatorWrapper: {
     backgroundColor: '#FFFFFF',
     height: 100,
-    width: 100,
     borderRadius: 10,
     display: 'flex',
     alignItems: 'center',

@@ -166,7 +166,7 @@ export class LoginRegisterScreen extends Component {
         })
       }
     }.bind(this), function(error){
-      console.log('Login fail with error:  '+error);
+      console.log('AQUI CARAI Login fail with error:  '+error);
     })
   }
   render(){

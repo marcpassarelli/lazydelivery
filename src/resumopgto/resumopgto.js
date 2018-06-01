@@ -5,14 +5,16 @@ import * as firebase from 'firebase';
 import {carrinho} from '../addproduto/addproduto'
 import {getListaEstabelecimentos, listaEstabelecimentos,
         getUserDetails, getEstabelecimentoInfo,
-        loadMessages, sendMessage} from '../firebase/database'
+        loadMessages, sendMessage, chaveMsg} from '../firebase/database'
 import ResumoCarrinhoListItem from './resumoCarrinhoListItem'
+import Loader from '../loadingModal/loadingModal';
 
 import { CheckBox } from 'react-native-elements'
 import _ from 'lodash'
 
 let totalPrice =0
-
+let teste=[];
+let estabelecimento=""
 const produtosCarrinho = []
 
 export class ResumoPgtoScreen extends Component{
@@ -44,7 +46,9 @@ constructor(props){
     checked2:false,
     checked3:false,
     frete:6,
-    troco:''
+    troco:'',
+    esperandoConfirmacao:false,
+    key:""
 
 
   }
@@ -76,9 +80,14 @@ renderSeparator = () => {
  );
 };
 
+componentDidMount(){
+
+
+
+}
 
 async componentWillMount(){
-
+  this.estabelecimento= this.props.navigation.state.params.nomeEstabelecimento
   this.setState({
           loading: true
         });
@@ -137,21 +146,59 @@ _callback(){
 }
 
 fazerPedido(){
-  let formaPgto, formaPgtoDetalhe;
-  if(this.state.checked){
-    formaPgto = "Crédito"
-    formaPgtoDetalhe = this.state.pgtoEscolhido
-  }else if(this.state.checked2){
-    formaPgto = "Débito"
-    formaPgtoDetalhe = this.state.pgtoEscolhido
-  }else{
-    formaPgto = "Dinheiro"
-    formaPgtoDetalhe = this.state.troco
-  }
-  sendMessage(this.state.produtosCarrinho, formaPgto, formaPgtoDetalhe,
-     this.state.nome, this.state.telefone, this.state.endereco, this.state.bairro,
-     this.state.referencia, this.props.navigation.state.params.nomeEstabelecimento)
-
+  Alert.alert(
+    'Confirmar Pedido',
+    'Deseja confirmar o pedido? Após a confirmação, o pedido será enviado para o estabelecimento para preparo.',
+    [
+      {text: 'Sim', onPress: () => {
+        this.setState({
+          esperandoConfirmacao: true
+        });
+        let estabelecimentoLoad = this.props.navigation.state.params.nomeEstabelecimento
+        let formaPgto, formaPgtoDetalhe;
+        if(this.state.checked){
+          formaPgto = "Crédito"
+          formaPgtoDetalhe = this.state.pgtoEscolhido
+        }else if(this.state.checked2){
+          formaPgto = "Débito"
+          formaPgtoDetalhe = this.state.pgtoEscolhido
+        }else{
+          formaPgto = "Dinheiro"
+          formaPgtoDetalhe = this.state.troco
+        }
+        //mandar informação do pedido para o banco de dados do pedido
+        sendMessage(this.state.produtosCarrinho, formaPgto, formaPgtoDetalhe,
+           this.state.nome, this.state.telefone, this.state.endereco, this.state.bairro,
+           this.state.referencia, estabelecimentoLoad, "aguardando",(key)=>{
+             //aguardar confirmação do estabelecimento
+             loadMessages(estabelecimentoLoad, key.key, (message)=>{
+               if(message.status=="recebido"){
+                 this.setState({
+                   esperandoConfirmacao: false
+                 },function(){
+                   //caso pedido seja confirmado
+                   Alert.alert(
+                    'Pedido Recebido.',
+                    'Seu pedido foi recebido pelo estabelecimento e está sendo preparado para o envio até você. Em caso de dúvidas entre em contato com o estabelecimento',
+                    [
+                      {text: 'OK', onPress: () => {
+                        const { navigate } = this.props.navigation;
+                        navigate('Home')
+                      }},
+                    ],
+                    { cancelable: false }
+                  )
+                 });
+               }
+             })
+           })
+      }},
+      {text: 'Não', onPress: ()=>{
+        console.log("cancelado");
+      }},
+    ],
+    {cancelable: false}
+  )
 }
 
 funcaoCredito(){
@@ -228,6 +275,8 @@ render() {
   </View> :
 
   <View style={{flex:1}}>
+    <Loader
+            loading={this.state.esperandoConfirmacao} />
     <Text style={[styles.textResumoPgto, {alignSelf: 'center', fontSize: 15}]}>Resumo do Pedido</Text>
     <View style={{height: 100, borderWidth: 1,borderColor: cores.corPrincipal,marginHorizontal: 3}}>
     <FlatList
