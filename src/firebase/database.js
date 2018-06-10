@@ -60,7 +60,9 @@ export function cadastrarUsuario(userId, nome, telefone, endereco,
   return firebase.database().ref(userInformationPath).set({
       nome: nome,
       telefone: telefone,
-      endereco: endereco,
+      listaEndereco: {
+        endereco: endereco
+      },
       numeroEnd: numeroEnd,
       bairro: bairro,
       referencia: referencia,
@@ -154,7 +156,7 @@ export function getUserDetails(userID, callback){
     if(userData){
       nome = userData.details.nome
       telefone = userData.details.telefone
-      endereco = userData.details.endereco
+      endereco = userData.details.listaEndereco.endereco
       numeroEnd = userData.details.numeroEnd
       bairro = userData.details.bairro
       referencia = userData.details.referencia
