@@ -205,6 +205,29 @@ goToCarrinho(){
     navigate('Carrinho',{nomeEstabelecimento: this.props.navigation.state.params.nomeEstabelecimento})
 }
 
+functionButton(){
+  if(Platform.OS==='ios'){
+    return (
+    <View style={{marginBottom: 10}}>
+    <Button
+        onPress={()=>{this.goToCarrinho()}}
+        title="Carrinho"
+        color={cores.corPrincipal}
+        accessibilityLabel="YourLabelHere"
+      />
+    </View>)
+  }else{
+    return(
+      <Button
+          onPress={()=>{this.goToCarrinho()}}
+          title="Carrinho"
+          color={cores.corPrincipal}
+          accessibilityLabel="YourLabelHere"
+        />
+    )
+  }
+}
+
 
 
   render() {
@@ -230,12 +253,7 @@ goToCarrinho(){
         sections={sectionData}
         keyExtractor={(item) => item._id}
         />
-      <Button
-          onPress={()=>{this.goToCarrinho()}}
-          title="Carrinho"
-          color={cores.corPrincipal}
-          accessibilityLabel="YourLabelHere"
-        />
+      <View>{this.functionButton()}</View>
     </View>
 
     return (

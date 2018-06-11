@@ -63,7 +63,7 @@ const TabEstabelecimento = TabNavigator({
   tabBarOptions: {
     activeTintColor: '#FFFFFF',
     labelStyle: {
-      fontSize: 13,
+      fontSize: 16,
     },
     style: {
       backgroundColor: '#8b0000'
