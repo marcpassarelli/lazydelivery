@@ -70,7 +70,7 @@ const TabEstabelecimento = TabNavigator({
     },
     showIcon: false,
     tabStyle: {
-
+      marginBottom:0
     },
   },
   tabBarPosition:'top',

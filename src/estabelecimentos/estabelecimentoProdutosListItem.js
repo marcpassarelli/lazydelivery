@@ -21,9 +21,7 @@ export default class EstabelecimentoProdutosListItem extends Component {
 
     return (
 
-      <View
-        onLayout={this.props.onLayout}>
-        <Loader loading={this.state.loading}></Loader>
+      <View>
       <TouchableOpacity
         style={styles.containerListItemProdutos}
         onPress = {() => {

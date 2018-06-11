@@ -161,7 +161,7 @@ renderItem = (item) =>{
 
   // onLayout={this._setMaxHeight.bind(t  his)}
   return (
-  <Animated.View style={{height: this.state.animation}}>
+  <View>
     <EstabelecimentoProdutosListItem
       estabelecimento = {nomeEstabelecimentoUp}
       nomeProduto = {item.item.nomeProduto}
@@ -171,21 +171,11 @@ renderItem = (item) =>{
       tipoProduto = {item.item.tipo}
       navigation={this.props.navigation}>
     </EstabelecimentoProdutosListItem>
-  </Animated.View>
+  </View>
   )
 }
-// onLayout = {this._setMaxHeight.bind(this)}
-  // onPress={()=>{this.toggle(headerItem.section.key)}}
+
 renderHeader = (headerItem) => {
-  // let icon = this.icons['down'];
-  // if(this.state.expanded){
-  //     icon = this.icons['up'];
-  // }
-  // onLayout={this._setMinHeight.bind(this)}
-  // <Image
-  //    style={{width:30, height: 25, marginRight:10}}
-  //    source={icon}>
-  //  </Image>
   return  (
       <View style={{flexDirection: 'row', alignItems: 'center',
         backgroundColor: cores.corPrincipal}} >
@@ -208,7 +198,7 @@ goToCarrinho(){
 functionButton(){
   if(Platform.OS==='ios'){
     return (
-    <View style={{marginBottom: 10}}>
+    <View style={{marginBottom: 20}}>
     <Button
         onPress={()=>{this.goToCarrinho()}}
         title="Carrinho"
@@ -244,8 +234,11 @@ functionButton(){
         size="large"
         style = {styles.activityIndicator}/>
     </View> :
+
     <View style={{flex: 1}}>
+      <StatusBar/>
       <SectionList
+        automaticallyAdjustContentInsets={false}
         ItemSeparatorComponent={this.renderSeparatorComponent}
         SectionSeparatorComponent={this.renderSeparatorSection}
         renderItem={this.renderItem}
@@ -260,7 +253,6 @@ functionButton(){
       <Image
         source={require('../../img/alimentos-fundo2.jpg')}
         style={styles.backgroundImage}>
-        <StatusBar/>
         {content}
       </Image>
     );

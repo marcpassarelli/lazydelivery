@@ -122,6 +122,8 @@ render() {
   <View style={{flex:1}}>
   <StatusBar/>
   <FlatList
+    contentInset={{top:10}}
+    automaticallyAdjustContentInsets={false}
     ItemSeparatorComponent={this.renderSeparator}
     data= {this.state.listaEstabelecimentosUp}
     extraData={this.state}
@@ -144,7 +146,6 @@ render() {
     <Image
       source={require('../../img/alimentos-fundo2.jpg')}
       style={styles.backgroundImage}>
-      <View style={styles.separator}></View>
       <Loader
           loading = {this.state.loading}/>
       {content}

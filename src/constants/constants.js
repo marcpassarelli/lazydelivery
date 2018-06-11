@@ -75,9 +75,6 @@ export const styles = StyleSheet.create({
     alignSelf:'center',
     fontSize:18,
   },
-  header: {
-    height:40
-  },
   headerList:{
     color: '#FFFFFF',
     fontSize:17,
