@@ -7,7 +7,7 @@ import { styles, goToCadastroCompleto } from '../constants/constants'
 import * as firebase from 'firebase';
 import ComponentsCadastroInicial  from './componentsCadastroInicial'
 import { login, signup, cadastrarUsuario } from '../firebase/database'
-
+import StatusBar from '../constants/statusBar'
 
 
 export class CadastroInicialScreen extends Component {
@@ -84,6 +84,7 @@ export class CadastroInicialScreen extends Component {
         <Image
           source={require('../../img/alimentos-fundo2.jpg')}
           style={styles.backgroundImage}>
+          <StatusBar/>
           <ComponentsCadastroInicial
             updateEmail = {this.updateEmail}
             updateConfirmarEmail = {this.updateConfirmarEmail}

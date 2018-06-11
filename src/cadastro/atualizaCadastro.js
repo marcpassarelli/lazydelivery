@@ -8,7 +8,7 @@ import * as firebase from 'firebase';
 import { login, signup, atualizarUsuario } from '../firebase/database'
 import { Hoshi } from 'react-native-textinput-effects';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
+import StatusBar from '../constants/statusBar'
 
 
 export class AtualizaCadastroScreen extends Component {
@@ -122,6 +122,7 @@ export class AtualizaCadastroScreen extends Component {
       <Image
         source={require('../../img/alimentos-fundo2.jpg')}
         style={styles.backgroundImage}>
+        <StatusBar/>
         <KeyboardAwareScrollView>
         <Text style={styles.titleCadastro}>Atualize o seu cadastro</Text>
         <Hoshi

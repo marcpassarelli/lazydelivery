@@ -8,7 +8,7 @@ import * as firebase from 'firebase';
 import ComponentsCompletaCadastro from './componentsCompletaCadastro'
 import { login, signup, cadastrarUsuario } from '../firebase/database'
 import { Hoshi } from 'react-native-textinput-effects';
-
+import StatusBar from '../constants/statusBar'
 
 
 export class CompletaCadastroScreen extends Component {
@@ -102,6 +102,7 @@ export class CompletaCadastroScreen extends Component {
       <Image
         source={require('../../img/alimentos-fundo2.jpg')}
         style={styles.backgroundImage}>
+        <StatusBar/>
         <Text style={styles.titleCadastro}>Complete o seu cadastro</Text>
         <Hoshi
           style={styles.labelCadastro}

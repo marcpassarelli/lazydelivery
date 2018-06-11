@@ -7,6 +7,7 @@ import ListaEstabelecimentosListItem from './listaEstabelecimentosListItem'
 import {getListaEstabelecimentos, listaEstabelecimentos, limparEstabelecimentoProd} from '../firebase/database'
 import Loader from '../loadingModal/loadingModal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import StatusBar from '../constants/statusBar'
 
 import _ from 'lodash'
 var tipoEstabelecimentoUp ='';
@@ -119,7 +120,7 @@ render() {
   </View> :
 
   <View style={{flex:1}}>
-
+  <StatusBar/>
   <FlatList
     ItemSeparatorComponent={this.renderSeparator}
     data= {this.state.listaEstabelecimentosUp}

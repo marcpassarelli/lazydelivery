@@ -9,6 +9,7 @@ import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
 import Loader from '../loadingModal/loadingModal'
 import Toast from 'react-native-toast-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import StatusBar from '../constants/statusBar'
 
 let sectionData =[]
 let sectionName =[]
@@ -96,7 +97,7 @@ renderSeparatorComponent = () => {
 };
 
 renderSeparatorSection = () => {
-  return (<View style={{backgroundColor: cores.corPrincipal, height: 5}}/>);
+  return (<View style={{backgroundColor: cores.corPrincipal, height: 3}}/>);
 };
 
 sectionDataFunction(){
@@ -186,12 +187,9 @@ renderHeader = (headerItem) => {
   //    source={icon}>
   //  </Image>
   return  (
-      <View style={{}} >
-        <TouchableOpacity
-          style={{flexDirection: 'row', alignItems: 'center', backgroundColor: cores.corPrincipal}}
-        >
+      <View style={{flexDirection: 'row', alignItems: 'center',
+        backgroundColor: cores.corPrincipal}} >
             <Text style={styles.headerList}>{headerItem.section.key}</Text>
-          </TouchableOpacity>
       </View>
     )
 }
@@ -229,7 +227,6 @@ goToCarrinho(){
         SectionSeparatorComponent={this.renderSeparatorSection}
         renderItem={this.renderItem}
         renderSectionHeader={this.renderHeader}
-        renderSectionFooter={this.renderFooter}
         sections={sectionData}
         keyExtractor={(item) => item._id}
         />
@@ -245,6 +242,7 @@ goToCarrinho(){
       <Image
         source={require('../../img/alimentos-fundo2.jpg')}
         style={styles.backgroundImage}>
+        <StatusBar/>
         {content}
       </Image>
     );

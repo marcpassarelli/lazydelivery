@@ -158,6 +158,7 @@ export const styles = StyleSheet.create({
     color: 'rgba(0,0,0,0.5)',
   },
   searchBarContainer:{
+    borderColor:'rgba(139,0,0,0.1)',
     marginHorizontal: 10,
     borderRadius:6,
     backgroundColor:'rgba(139,0,0,0.1)'

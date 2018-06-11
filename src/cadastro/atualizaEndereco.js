@@ -8,7 +8,7 @@ import * as firebase from 'firebase';
 import { login, signup, atualizarUsuario, atualizarEndereco } from '../firebase/database'
 import { Hoshi } from 'react-native-textinput-effects';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
+import StatusBar from '../constants/statusBar'
 
 
 export class AtualizaEnderecoScreen extends Component {
@@ -105,6 +105,7 @@ export class AtualizaEnderecoScreen extends Component {
         source={require('../../img/alimentos-fundo2.jpg')}
         style={styles.backgroundImage}>
         <KeyboardAwareScrollView>
+        <StatusBar/>
         <Text style={styles.titleCadastro}>Atualize o seu cadastro</Text>
         <Hoshi
           style={styles.labelCadastro}

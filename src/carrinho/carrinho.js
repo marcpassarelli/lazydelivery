@@ -8,6 +8,7 @@ import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
 import CarrinhoListItem from './carrinhoListItem'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import StatusBar from '../constants/statusBar'
 
 import _ from 'lodash'
 let totalPrice =0
@@ -188,6 +189,7 @@ export class CarrinhoScreen extends Component{
     </View> :
 
     <View style={{flex:1}}>
+      <StatusBar/>
       {this.functionCarrinho()}
     </View>
 

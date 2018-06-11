@@ -5,6 +5,7 @@ import { styles, cores } from '../constants/constants'
 import { checkUserDetails, getUserDetails, atualizarProfilePicture, getNomeEstabelecimentos, nomesEstabelecimentos } from '../firebase/database'
 import * as firebase from 'firebase';
 import HomeListItem from './homeListItem'
+import StatusBar from '../constants/statusBar'
 import SearchEstabelecimentoListItem from './searchEstabelecimentoListItem'
 import {dadosTipoEstabelecimento} from './dadosTipoEstabelecimento'
 import { SearchBar } from 'react-native-elements'
@@ -238,6 +239,7 @@ export class HomeScreen extends Component {
     </View> :
 
     <View style={{flex:1}}>
+    <StatusBar/>
       <View style={{flexDirection: 'row',alignItems: 'center', justifyContent: 'center'}}>
         <Text style={styles.textEndHome}>{_.upperFirst(this.state.endereco)}, {this.state.numeroEnd} - </Text>
         <Text

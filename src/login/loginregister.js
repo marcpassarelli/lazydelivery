@@ -1,6 +1,7 @@
 console.ignoredYellowBox = [
     'Setting a timer'
 ]
+import StatusBar from '../constants/statusBar'
 import { Madoka } from 'react-native-textinput-effects';
 import ComponentsLoginRegister from './componentsloginregister';
 import { login, checkUserDetails } from '../firebase/database'
@@ -176,6 +177,7 @@ export class LoginRegisterScreen extends Component {
         style={styles.backgroundImage}>
         <Loader
           loading={this.state.loading} />
+        <StatusBar/>
         <ComponentsLoginRegister
           updateEmail = {this.updateEmail}
           updateSenha = {this.updateSenha}

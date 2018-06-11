@@ -3,6 +3,7 @@ import { Image, Alert, View, Text, TextInput, Button, ActivityIndicator, Touchab
 import { styles, cores } from '../constants/constants'
 import {listaAdicionais, listaEstabelecimentos} from '../firebase/database'
 import AdicionaisListItem from './adicionaisListItem'
+import StatusBar from '../constants/statusBar'
 
 import _ from 'lodash'
 export var adicionaisEscolhidos= []
@@ -130,6 +131,7 @@ export class AdicionaisScreen extends Component{
     </View> :
 
     <View style={{flex: 1}}>
+      <StatusBar/>
       <FlatList
         ItemSeparatorComponent={this.renderSeparator}
         data= {this.state.adicionais}

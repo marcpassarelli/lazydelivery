@@ -7,6 +7,7 @@ import { Image, Alert, Text, View, TouchableOpacity, ActivityIndicator, ScrollVi
 import { styles,cores } from '../constants/constants'
 import { getEstabelecimentoInfo, estabelecimentoInfo } from '../firebase/database'
 import * as firebase from 'firebase';
+import StatusBar from '../constants/statusBar'
 
 export class EstabelecimentoInformacoesScreen extends Component {
 
@@ -122,6 +123,7 @@ export class EstabelecimentoInformacoesScreen extends Component {
      </View> :
 
      <ScrollView style={{flex:1}}>
+       <StatusBar/>
        <View style={styles.separator}></View>
        <Image
          style={styles.imagemEstabInfo}

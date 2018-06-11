@@ -8,6 +8,7 @@ import {adicionaisEscolhidos} from './adicionais'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import _ from 'lodash'
 import Loader from '../loadingModal/loadingModal';
+import StatusBar from '../constants/statusBar'
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -216,6 +217,7 @@ export class AddProdutoScreen extends Component{
     </View> :
 
     <View style={{flex: 1}}>
+      <StatusBar/>
       <ScrollView>
         <Image
           source={{uri:this.state.imgProduto}}

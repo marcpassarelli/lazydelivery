@@ -66,12 +66,11 @@ const TabEstabelecimento = TabNavigator({
       fontSize: 13,
     },
     style: {
-      backgroundColor: '#8b0000',
-      height:40
+      backgroundColor: '#8b0000'
     },
     showIcon: false,
     tabStyle: {
-      height: 40,
+
     },
   },
   tabBarPosition:'top',
