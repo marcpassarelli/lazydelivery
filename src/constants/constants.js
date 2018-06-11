@@ -101,7 +101,7 @@ export const styles = StyleSheet.create({
     height: 60,
     width: 60,
     alignSelf: 'center',
-    borderRadius: 60,
+    borderRadius: 20,
     borderWidth: 1,
     borderColor:cores.corPrincipal,
     resizeMode:'cover'
@@ -136,7 +136,8 @@ export const styles = StyleSheet.create({
     color: cores.corPrincipal,
     marginTop: 15,
     marginBottom: 15,
-    fontSize: 20
+    fontSize: 20,
+    backgroundColor:'transparent',
   },
   renderSeparatorComponent:{
     height: 2,
@@ -170,6 +171,7 @@ export const styles = StyleSheet.create({
     height:15
   },
   textAddProduto:{
+    backgroundColor:'transparent',
     alignSelf: 'center',
     color: cores.corPrincipal,
     marginLeft:5,
@@ -177,12 +179,14 @@ export const styles = StyleSheet.create({
     marginBottom: 15
 },
 textAdicionais:{
+  backgroundColor:'transparent',
   alignSelf: 'center',
   color: cores.corPrincipal,
   fontSize: 16,
   marginBottom: 15
 },
   textButtons:{
+    backgroundColor:'transparent',
     alignSelf:'center',
     marginTop:10,
     color:'#FFFFFF',
@@ -190,40 +194,48 @@ textAdicionais:{
     fontWeight:'bold'
   },
   textCarrinho:{
+    backgroundColor:'transparent',
     alignSelf: 'center',
     color: cores.corPrincipal,
     fontSize: 15
   },
   textCarrinhoAdicionais:{
+    backgroundColor:'transparent',
     alignSelf: 'center',
     fontSize: 14
   },
   textDetalhesEstabelecimento:{
+    backgroundColor:'transparent',
     marginLeft: 5,
     fontSize: 13,
     color: cores.textDetalhes
   },
   textEndHome:{
+    backgroundColor:'transparent',
     fontSize: 13,
     marginTop:5,
     color: cores.corPrincipal,
   },
   textEstabelecimento:{
+    backgroundColor:'transparent',
     marginLeft: 5,
     fontSize: 17,
     color: cores.corPrincipal
   },
   textInformacoes:{
+    backgroundColor:'transparent',
     marginLeft:15,
     fontSize: 18,
     color:cores.corPrincipal
   },
   textInformacoes2:{
+    backgroundColor:'transparent',
     marginLeft:20,
     fontSize:17,
     color:cores.textDetalhes
   },
   textInformacoesD: {
+    backgroundColor:'transparent',
     marginLeft:30,
     fontSize: 16,
     color:cores.textDetalhes
@@ -232,26 +244,31 @@ textAdicionais:{
     borderColor: '#8b0000',
   },
   textPreco:{
+    backgroundColor:'transparent',
     fontSize: 15,
     marginRight: 15,
     color: cores.corPrincipal
   },
   textProdutos:{
+    backgroundColor:'transparent',
     marginLeft: 10,
     fontSize: 15,
     color: cores.corPrincipal
   },
   textProfileDetails:{
+    backgroundColor:'transparent',
     fontSize:18,
     alignSelf:'center',
     color: cores.corPrincipal,
   },
   textResumoPgto:{
+    backgroundColor:'transparent',
     color: cores.corPrincipal,
     fontSize: 14,
     marginBottom: 3
   },
   textTelaCadastro: {
+    backgroundColor:'transparent',
     fontFamily: 'Cochin',
     fontSize: 18,
     textAlign: 'left',
@@ -259,14 +276,17 @@ textAdicionais:{
   textTipoEstabelecimento:{
     marginLeft: 10,
     fontSize: 17,
+    backgroundColor:'transparent',
     color: cores.corPrincipal
   },
   textUpdateEnd:{
+    backgroundColor:'transparent',
     fontSize: 13,
     marginVertical: 5,
     color:'#0000FF',
   },
   titleCadastro: {
+    backgroundColor:'transparent',
     paddingBottom: 16,
     textAlign: 'center',
     color: cores.corPrincipal,
