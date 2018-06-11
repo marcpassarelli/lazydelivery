@@ -8,14 +8,15 @@
     "adb": "adb reverse tcp:8081 tcp:8081"
   },
   "dependencies": {
-    "firebase": "^4.3.1",
+    "firebase": "^4.13.1",
     "firebase-admin": "^5.4.0",
+    "grpc": "^1.12.2",
     "lodash": "^4.17.4",
     "react": "16.0.0-alpha.12",
     "react-native": "0.48.3",
     "react-native-easy-toast": "^1.1.0",
     "react-native-elements": "^0.18.2",
-    "react-native-fbsdk": "^0.6.0",
+    "react-native-fbsdk": "^0.6.3",
     "react-native-firebase": "^3.0.4",
     "react-native-keyboard-aware-scroll-view": "^0.3.0",
     "react-native-radio-buttons": "^1.0.0",
