@@ -38,7 +38,7 @@ export class EstabelecimentoProdutosScreen extends Component{
   static navigationOptions = ({navigation}) => ({
     title: navigation.state.params.nomeEstabelecimento,
     headerTitleStyle: styles.headerText,
-    headerStyle: styles.header,
+    headerStyle: Platform.OS=="ios"? styles.headerIos : styles.headerAndroid,
     headerLeft: (
       <Icon
         style={{marginLeft: 15}}
@@ -236,7 +236,6 @@ functionButton(){
     </View> :
 
     <View style={{flex: 1}}>
-      <StatusBar/>
       <SectionList
         automaticallyAdjustContentInsets={false}
         ItemSeparatorComponent={this.renderSeparatorComponent}

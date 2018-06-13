@@ -69,6 +69,9 @@ export const styles = StyleSheet.create({
     fontSize: 10,
     alignSelf: 'center',
   },
+  header:{
+    
+  },
   headerText:{
     color: cores.corPrincipal,
     textAlign: 'center',

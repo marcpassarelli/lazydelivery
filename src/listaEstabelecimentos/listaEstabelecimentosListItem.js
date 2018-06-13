@@ -14,6 +14,7 @@ export default class ListaEstabelecimentosListItem extends Component {
     ]
 
     return (
+      <View style={{}}>
       <TouchableOpacity
         style={styles.containerListItem}
         onPress = {() => {
@@ -31,6 +32,7 @@ export default class ListaEstabelecimentosListItem extends Component {
           <Text style={styles.textDetalhesEstabelecimento}>{this.props.valorDelivery} | {this.props.tempoEntrega}</Text>
         </View>
       </TouchableOpacity>
+      </View>
 
   )
 }

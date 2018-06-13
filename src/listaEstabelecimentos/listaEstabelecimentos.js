@@ -120,10 +120,8 @@ render() {
   </View> :
 
   <View style={{flex:1}}>
-  <StatusBar/>
+  <View style={styles.separator}></View>
   <FlatList
-    contentInset={{top:10}}
-    automaticallyAdjustContentInsets={false}
     ItemSeparatorComponent={this.renderSeparator}
     data= {this.state.listaEstabelecimentosUp}
     extraData={this.state}

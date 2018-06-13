@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TextInput, Picker, ScrollView, Dimensions, Image, Alert, View, Text, Button, ActivityIndicator, FlatList, Icon, TouchableWithoutFeedback } from 'react-native'
+import { TextInput, Picker, PickerIOS, Platform, ScrollView, Dimensions, Image, Alert, View, Text, Button, ActivityIndicator, FlatList, Icon, TouchableWithoutFeedback } from 'react-native'
 import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import {carrinho} from '../addproduto/addproduto'
@@ -201,18 +201,33 @@ fazerPedido(){
   )
 }
 
+functionPicker(){
+  if(Platform.OS==='ios'){
+    <PickerIOS
+      style={{width:350, height: 40}}
+      selectedValue={this.state.pgtoEscolhido}
+      onValueChange={(itemValue, itemIndex) => this.setState({pgtoEscolhido: itemValue})}>
+      {this.state.cre.map((item, index)=>{
+        return (<Picker.Item label={item.bandeira} value={item.bandeira} key={index} />)
+      })}
+    </PickerIOS>
+  }else{
+  <Picker
+    style={{width:350, height: 40}}
+    selectedValue={this.state.pgtoEscolhido}
+    onValueChange={(itemValue, itemIndex) => this.setState({pgtoEscolhido: itemValue})}>
+    {this.state.cre.map((item, index)=>{
+      return (<Picker.Item label={item.bandeira} value={item.bandeira} key={index} />)
+    })}
+  </Picker>
+}
+}
+
 funcaoCredito(){
   return(
     <View style={{marginLeft: 25}}>
       <Text style={{fontSize: 15}}>Selecione a bandeira do seu cartão de crédito:</Text>
-      <Picker
-        style={{width:350, height: 40}}
-        selectedValue={this.state.pgtoEscolhido}
-        onValueChange={(itemValue, itemIndex) => this.setState({pgtoEscolhido: itemValue})}>
-        {this.state.cre.map((item, index)=>{
-          return (<Picker.Item label={item.bandeira} value={item.bandeira} key={index} />)
-        })}
-      </Picker>
+      <View>{this.functionPicker()}</View>
     </View>
   )
 }
@@ -221,14 +236,7 @@ funcaoDebito(){
   return(
     <View style={{marginLeft: 25}}>
       <Text style={{fontSize: 15}}>Selecione a bandeira do seu cartão de débito:</Text>
-      <Picker
-        style={{width:350, height: 40}}
-        selectedValue={this.state.pgtoEscolhido}
-        onValueChange={(itemValue, itemIndex) => this.setState({pgtoEscolhido: itemValue})}>
-        {this.state.deb.map((item, index)=>{
-          return (<Picker.Item label={item.bandeira} value={item.bandeira} key={index} />)
-        })}
-      </Picker>
+      <View>{this.functionPicker()}</View>
     </View>
   )
 }

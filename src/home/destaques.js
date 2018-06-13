@@ -238,46 +238,7 @@ export class DestaquesScreen extends Component {
     </View> :
 
     <View style={{flex:1}}>
-      <View style={{flexDirection: 'row',alignItems: 'center', justifyContent: 'center'}}>
-        <Text style={styles.textEndHome}>{_.upperFirst(this.state.endereco)}, {this.state.numeroEnd} - </Text>
-        <Text
-          style={styles.textUpdateEnd}
-          onPress = { () => this.goToAtualizarEndereco(this.state.endereco,this.state.numeroEnd,this.state.bairro,this.state.referencia) }>
-        Trocar Endereço
-        </Text>
-      </View>
-      <View>
-        <SearchBar
-          onChangeText={(text) => {this.filterSearch(text)}}
-          onClearText={() => this.setState({showProcura: false, opacity: 1})}
-          containerStyle={styles.searchBarContainer}
-          style={styles.searchBar}
-          inputStyle={styles.searchBarInput}
-          placeholder='Procurar estabelecimento...'
-          placeholderTextColor='#8b0000'
-          returnKeyType="search"
-          clearIcon={{color:cores.corPrincipal}}/>
-        <View style={{backgroundColor: '#e6e4e6', opacity: 0.8}}>
-          {this.state.showProcura && this.procuraEstabelecimento() }
-        </View>
-      </View>
-
-      <View style={{opacity: this.state.opacity, flex:1}}>
-        <Text style={styles.nomeAppHome}>Opções Delivery</Text>
-        <FlatList
-          ItemSeparatorComponent={this.renderSeparator}
-          data= {dadosTipoEstabelecimento}
-          renderItem= {({item}) =>
-          <HomeListItem
-            loadingTrue = {()=> this.loadingTrue()}
-            tipoEstabelecimento = {item.tipoEstabelecimento}
-            imglogo = {item.logo}
-            navigation = {this.props.navigation}
-            loadingFalse = {()=> this.loadingFalse()}>
-          </HomeListItem>}
-          keyExtractor={item => item.tipoEstabelecimento}
-          />
-      </View>
+      <Text style={{fontSize: 20, marginTop: 30}}>Em breve...</Text>
     </View>
 
     return (
