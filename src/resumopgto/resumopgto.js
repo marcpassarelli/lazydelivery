@@ -203,6 +203,7 @@ fazerPedido(){
 
 functionPicker(){
   if(Platform.OS==='ios'){
+    return(
     <PickerIOS
       style={{width:350, height: 40}}
       selectedValue={this.state.pgtoEscolhido}
@@ -210,8 +211,9 @@ functionPicker(){
       {this.state.cre.map((item, index)=>{
         return (<Picker.Item label={item.bandeira} value={item.bandeira} key={index} />)
       })}
-    </PickerIOS>
+    </PickerIOS>)
   }else{
+    return(
   <Picker
     style={{width:350, height: 40}}
     selectedValue={this.state.pgtoEscolhido}
@@ -219,7 +221,7 @@ functionPicker(){
     {this.state.cre.map((item, index)=>{
       return (<Picker.Item label={item.bandeira} value={item.bandeira} key={index} />)
     })}
-  </Picker>
+  </Picker>)
 }
 }
 
