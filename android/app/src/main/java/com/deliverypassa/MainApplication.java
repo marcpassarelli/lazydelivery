@@ -3,7 +3,6 @@ package com.deliverypassa;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.beefe.picker.PickerViewPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import com.toast.RCTToastPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -39,7 +38,6 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
                     new MainReactPackage(),
-            new PickerViewPackage(),
             new RNFirebasePackage(),
             new RCTToastPackage(),
             new VectorIconsPackage(),
