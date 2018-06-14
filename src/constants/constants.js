@@ -70,7 +70,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   header:{
-    
+
   },
   headerText:{
     color: cores.corPrincipal,
@@ -110,7 +110,7 @@ export const styles = StyleSheet.create({
     height: 30,
     width: 30,
     alignSelf: 'center',
-    borderRadius: 30,
+    borderRadius: 20,
     borderWidth: 1,
     borderColor:cores.corPrincipal,
     resizeMode:'cover'

@@ -62,15 +62,17 @@ const TabEstabelecimento = TabNavigator({
 },{
   tabBarOptions: {
     activeTintColor: '#FFFFFF',
+    inactiveTintColor: '#000000',
     labelStyle: {
       fontSize: 16,
+      marginBottom:10
     },
     style: {
-      backgroundColor: '#8b0000'
+      backgroundColor: '#8b0000',
     },
     showIcon: false,
     tabStyle: {
-      marginBottom:0
+
     },
   },
   tabBarPosition:'top',

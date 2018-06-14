@@ -19,6 +19,7 @@
     "react-native-fbsdk": "^0.6.3",
     "react-native-firebase": "^3.0.4",
     "react-native-keyboard-aware-scroll-view": "^0.3.0",
+    "react-native-picker": "^4.3.7",
     "react-native-radio-buttons": "^1.0.0",
     "react-native-searchbar": "^1.14.0",
     "react-native-textinput-effects": "^0.4.0",

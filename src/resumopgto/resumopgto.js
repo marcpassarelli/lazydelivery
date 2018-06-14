@@ -201,24 +201,26 @@ fazerPedido(){
   )
 }
 
-functionPicker(){
+functionPicker(tipoPgto){
   if(Platform.OS==='ios'){
     return(
     <PickerIOS
-      style={{width:350, height: 40}}
+      itemStyle={{color: cores.corPrincipal,height:80, fontSize: 20,right: 10}}
+      style={{height: 80}}
       selectedValue={this.state.pgtoEscolhido}
       onValueChange={(itemValue, itemIndex) => this.setState({pgtoEscolhido: itemValue})}>
-      {this.state.cre.map((item, index)=>{
+      {tipoPgto.map((item, index)=>{
         return (<Picker.Item label={item.bandeira} value={item.bandeira} key={index} />)
       })}
-    </PickerIOS>)
+    </PickerIOS>
+  )
   }else{
     return(
   <Picker
     style={{width:350, height: 40}}
     selectedValue={this.state.pgtoEscolhido}
     onValueChange={(itemValue, itemIndex) => this.setState({pgtoEscolhido: itemValue})}>
-    {this.state.cre.map((item, index)=>{
+    {tipoPgto.map((item, index)=>{
       return (<Picker.Item label={item.bandeira} value={item.bandeira} key={index} />)
     })}
   </Picker>)
@@ -229,7 +231,7 @@ funcaoCredito(){
   return(
     <View style={{marginLeft: 25}}>
       <Text style={{fontSize: 15}}>Selecione a bandeira do seu cartão de crédito:</Text>
-      <View>{this.functionPicker()}</View>
+      <View>{this.functionPicker(this.state.cre)}</View>
     </View>
   )
 }
@@ -238,7 +240,7 @@ funcaoDebito(){
   return(
     <View style={{marginLeft: 25}}>
       <Text style={{fontSize: 15}}>Selecione a bandeira do seu cartão de débito:</Text>
-      <View>{this.functionPicker()}</View>
+      <View>{this.functionPicker(this.state.deb)}</View>
     </View>
   )
 }

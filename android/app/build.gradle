@@ -139,6 +139,10 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-picker')
+    compile(project(':react-native-firebase')) {
+        transitive = false
+    }
     compile project(':react-native-vector-icons')
     compile(project(':react-native-fbsdk')){
         exclude(group: 'com.facebook.android', module: 'facebook-android-sdk')
