@@ -7,7 +7,7 @@ import { Image, Alert, Text, View, TouchableOpacity, ActivityIndicator } from 'r
 import { styles } from '../constants/constants'
 import { logout, checkUserDetails, getUserDetails } from '../firebase/database'
 import * as firebase from 'firebase';
-
+import FBSDK, { LoginManager, AccessToken, GraphRequestManager, GraphRequest } from 'react-native-fbsdk'
 
 
 export class ProfileScreen extends Component {
@@ -44,6 +44,42 @@ export class ProfileScreen extends Component {
           });
     let user = await firebase.auth().currentUser;
 
+
+        AccessToken.getCurrentAccessToken().then((accessTokenData) => {
+          let accessToken = accessTokenData.accessToken
+          const responseInfoCallback = (error, result) => {
+            if (error) {
+              error_json = JSON.stringify(error)
+              console.log(error_json)
+              alert('Error fetching data: ' + error.toString());
+            } else {
+              this.setState({profilePicURL: result.picture.data.url})
+            }
+          }
+
+          //GET PHOTOURL
+          const infoRequest = new GraphRequest(
+            '/me',
+            {
+              parameters: {
+                fields: {
+                  string: 'picture.width(100).height(100)' // what you want to get
+                },
+                access_token: {
+                  string: accessToken.toString() // put your accessToken here
+                }
+              }
+            },
+            responseInfoCallback
+          );
+
+          // Start the graph request.
+          new GraphRequestManager().addRequest(infoRequest).start()
+
+        }, (error) => {
+          console.log("Some error occured: " + error)
+        })
+
     getUserDetails(user.uid, (nomeP,telefoneP,enderecoP,numeroEndP,bairroP,referenciaP,profilePicURLP)=>{
       this.setState({
         nome: nomeP,
@@ -52,7 +88,6 @@ export class ProfileScreen extends Component {
         numeroEnd:numeroEndP,
         bairro:bairroP,
         referencia:referenciaP,
-        profilePicURL:profilePicURLP
       });
       this.setState({
               loading: false
@@ -110,7 +145,9 @@ export class ProfileScreen extends Component {
          }}>
          <Text style={styles.textButtons}>ATUALIZAR INFORMAÇÕES</Text>
        </TouchableOpacity>
+
        <View style={styles.separator}></View>
+
        <TouchableOpacity
          style={styles.buttons}
          onPress = { () => {
@@ -119,6 +156,17 @@ export class ProfileScreen extends Component {
          }
          }>
          <Text style={styles.textButtons}> LOGOUT </Text>
+       </TouchableOpacity>
+
+       <View style={styles.separator}></View>
+
+       <TouchableOpacity
+         style={styles.buttons}
+         onPress = { () => {
+
+         }
+         }>
+         <Text style={styles.textButtons}> HISTÓRICO DE PEDIDOS </Text>
        </TouchableOpacity>
      </View>
 

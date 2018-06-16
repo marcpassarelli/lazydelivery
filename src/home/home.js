@@ -11,6 +11,7 @@ import {dadosTipoEstabelecimento} from './dadosTipoEstabelecimento'
 import { SearchBar } from 'react-native-elements'
 import Loader from '../loadingModal/loadingModal';
 
+
 import _ from 'lodash'
 
 let listener = null
@@ -65,6 +66,7 @@ export class HomeScreen extends Component {
  };
 
   async componentWillMount(){
+
     this.setState({
             loadingList: true
           });
@@ -78,7 +80,6 @@ export class HomeScreen extends Component {
         numeroEnd:numeroEndP,
         bairro:bairroP,
         referencia:referenciaP,
-        profilePicURL:profilePicURLP
       });
       this.setState({
               loadingList: false

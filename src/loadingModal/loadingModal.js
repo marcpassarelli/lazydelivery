@@ -11,6 +11,7 @@ import {
 const Loader = props => {
   const {
     loading,
+    message,
     ...attributes
   } = props;
 
@@ -22,7 +23,7 @@ const Loader = props => {
       onRequestClose={() => {console.log('close modal')}}>
       <View style={stylesLocal.modalBackground}>
         <View style={stylesLocal.activityIndicatorWrapper}>
-          <Text style={{marginHorizontal: 10}}>Aguardando confirmação que o pedido foi recebido...</Text>
+          <Text style={{marginHorizontal: 10}}>{message}</Text>
           <ActivityIndicator
             style = {styles.activityIndicator}
             animating={loading} />

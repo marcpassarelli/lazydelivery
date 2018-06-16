@@ -167,7 +167,7 @@ export class LoginRegisterScreen extends Component {
         })
       }
     }.bind(this), function(error){
-      console.log('AQUI CARAI Login fail with error:  '+error);
+      console.log(' Login fail with error:  '+error);
     })
   }
   render(){
@@ -176,7 +176,8 @@ export class LoginRegisterScreen extends Component {
         source={require('../../img/alimentos-fundo2.jpg')}
         style={styles.backgroundImage}>
         <Loader
-          loading={this.state.loading} />
+          loading={this.state.loading}
+          message="Aguarde enquanto o login é completo..." />
         <StatusBar/>
         <ComponentsLoginRegister
           updateEmail = {this.updateEmail}

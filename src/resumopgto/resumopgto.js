@@ -288,9 +288,12 @@ render() {
 
   <View style={{flex:1}}>
     <Loader
-            loading={this.state.esperandoConfirmacao} />
+            loading={this.state.esperandoConfirmacao}
+            message="Aguarde enquanto o estabelecimento confirma o recebimento do pedido..." />
     <Text style={[styles.textResumoPgto, {alignSelf: 'center', fontSize: 15}]}>Resumo do Pedido</Text>
     <View style={{height: 100, borderWidth: 1,borderColor: cores.corPrincipal,marginHorizontal: 3}}>
+      
+      {/* Resumo Carrinho */}
     <FlatList
       ItemSeparatorComponent={this.renderSeparator}
       data= {this.state.produtosCarrinho}
@@ -315,6 +318,8 @@ render() {
       <Text style={[styles.textResumoPgto]}>Valor Total Pedido:</Text>
       <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ {this.totalPrice+this.state.frete}</Text>
     </View>
+
+
     <ScrollView>
     <View style={{height:2, backgroundColor: cores.corPrincipal}}></View>
     <Text style={[styles.textAdicionais,{fontSize: 16, marginBottom: 0,marginLeft: 5}]}>Selecione a forma de pagamento:</Text>
