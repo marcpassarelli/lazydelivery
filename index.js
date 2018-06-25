@@ -19,6 +19,7 @@ import { EstabelecimentoProdutosScreen } from './src/estabelecimentos/estabeleci
 import { EstabelecimentoInformacoesScreen } from './src/estabelecimentos/estabelecimentoInformacoes'
 import { AdicionaisScreen } from './src/addproduto/adicionais'
 import { DestaquesScreen } from './src/home/destaques'
+import { HistoricoPedidosScreen } from './src/historicoPedidos/historicoPedidos'
 import * as firebase from 'firebase';
 
 const TabHome = TabNavigator({
@@ -92,7 +93,8 @@ const DeliveryPassa = StackNavigator({
   Carrinho: { screen: CarrinhoScreen },
   AddProduto: { screen: AddProdutoScreen },
   Adicionais: { screen: AdicionaisScreen},
-  ResumoPgto: { screen: ResumoPgtoScreen }
+  ResumoPgto: { screen: ResumoPgtoScreen },
+  HistoricoPedidos: { screen: HistoricoPedidosScreen }
 },
   { headerMode: 'float',},
 

@@ -388,13 +388,32 @@ export async function loadMessages(estabelecimento, chave, callback){
   })
 
 
-  // const onReceive = (data) =>{
-  //   const message = data.val()
-  //   callback({
-  //     status: message.status
-  //   })
-  // }
-  // this.messageRef.on('value', onReceive);
+
+}
+
+export async function carregarPedidos(callback){
+
+  // console.log("dentro waitMessages");
+  this.messageRef = firebase.database().ref("/messages/Casa Nova")
+  // console.log("messageRef"+this.messageRef);
+  this.messageRef.off();
+  const onReceive = (data) =>{
+    const message = data.val()
+    callback({
+      _id: data.key,
+      carrinho: message.carrinho,
+      createdAt: new Date(message.createdAt),
+      formaPgto: message.formaPgto,
+      formaPgtoDetalhe: message.formaPgtoDetalhe,
+      nome: message.nome,
+      telefone: message.telefone,
+      endereco: message.endereco,
+      bairro: message.bairro,
+      referencia: message.referencia,
+      status: message.status
+    })
+  }
+  this.messageRef.limitToLast(20).on('child_added', onReceive).orderByChild('status');
 }
 
 export var chaveMsg=""
@@ -402,6 +421,7 @@ export async function sendMessage(carrinhoNovo, formaPgtoNovo, formaPgtoDetalheN
    nomeNovo, telefoneNovo, enderecoNovo, bairroNovo, referenciaNovo,
    estabelecimento, statusNovo, key) {
     this.messageRef = firebase.database().ref("/messages/"+estabelecimento+"/")
+    this.messageRef.off();
     this.messageRef.push({
       carrinho: carrinhoNovo,
       formaPgto: formaPgtoNovo,
@@ -415,5 +435,27 @@ export async function sendMessage(carrinhoNovo, formaPgtoNovo, formaPgtoDetalheN
       status: statusNovo
     }).then((snap)=>{
       key({key: snap.key})
+    })
+
+  }
+
+  export async function salvarPedido(carrinhoNovo, formaPgtoNovo, formaPgtoDetalheNovo,
+     nomeNovo, telefoneNovo, enderecoNovo, bairroNovo, referenciaNovo,
+     estabelecimentoNovo){
+       let userId = await firebase.auth().currentUser.uid
+       console.log("userId"+userId);
+       this.historicoPedidos = firebase.database().ref("/user"/+userId+"/details/pedidos/")
+       this.historicoPedidos.off();
+       this.historicoPedidos.push({
+        carrinho: carrinhoNovo,
+        formaPgto: formaPgtoNovo,
+        formaPgtoDetalhe: formaPgtoDetalheNovo,
+        nome: nomeNovo,
+        telefone: telefoneNovo,
+        endereco: enderecoNovo,
+        bairro: bairroNovo,
+        referencia: referenciaNovo,
+        estabelecimento: estabelecimentoNovo,
+        createdAt: firebase.database.ServerValue.TIMESTAMP,
     })
   }

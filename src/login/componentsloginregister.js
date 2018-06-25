@@ -29,29 +29,29 @@ export default ComponentsLoginRegister = (props) => {
             borderColor={'#8b0000'}
             returnKeyType="done"
           />
-        <View style={styles.separator} />
-          <TouchableOpacity
-            style={styles.buttons}
-            onPress = { () => {props.loginToHome()} } >
-            <Text style={styles.textButtons}>LOGIN</Text>
-          </TouchableOpacity>
           <View style={styles.separator} />
-          <TouchableOpacity
-            style={styles.buttons}
-            onPress = {()=>{props.logintToCadastro()}} >
-            <Text style={styles.textButtons}>PRIMEIRO ACESSO? CADASTRE-SE</Text>
-          </TouchableOpacity>
-          <View style={styles.separator} />
-          <Text style={{textAlign:'center', fontSize:16, color:'#8b0000'}}>Ou faça o login com o Facebook:</Text>
-          <TouchableHighlight
-            underlayColor='rgba(0,0,0,0)'
-            onPress={()=>{props.loginWithFacebook()}}>
-              <Image
-                style={styles.buttonFacebook}
-                source={require('../../img/loginFacebook.png')}
-              />
-          </TouchableHighlight>
-    </KeyboardAwareScrollView>
-  )
+      <TouchableOpacity
+        style={styles.buttons}
+        onPress = { () => {props.loginToHome()} } >
+        <Text style={styles.textButtons}>LOGIN</Text>
+      </TouchableOpacity>
+      <View style={styles.separator} />
+      <TouchableOpacity
+        style={styles.buttons}
+        onPress = {()=>{props.logintToCadastro()}} >
+        <Text style={styles.textButtons}>PRIMEIRO ACESSO? CADASTRE-SE</Text>
+      </TouchableOpacity>
+      <View style={styles.separator} />
+      <Text style={{textAlign:'center', fontSize:16, color:'#8b0000'}}>Ou faça o login com o Facebook:</Text>
+      <TouchableHighlight
+        underlayColor='rgba(0,0,0,0)'
+        onPress={()=>{props.loginWithFacebook()}}>
+          <Image
+            style={styles.buttonFacebook}
+            source={require('../../img/loginFacebook.png')}
+          />
+      </TouchableHighlight>
+</KeyboardAwareScrollView>
+)
 
 }

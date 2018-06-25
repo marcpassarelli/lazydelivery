@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Platform, BackHandler, Image, Alert, View, Text,TextInput, Button, ActivityIndicator, TouchableOpacity, FlatList, Dimensions, Picker, ScrollView } from 'react-native'
 import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
-import {getListaEstabelecimentos, listaEstabelecimentos, getListaAdicionais} from '../firebase/database'
+import {listaEstabelecimentos, getListaAdicionais} from '../firebase/database'
 import {adicionaisEscolhidos} from './adicionais'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import _ from 'lodash'

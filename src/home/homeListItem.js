@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { Image, View, Text, TouchableOpacity, ListView } from 'react-native'
 import { styles } from '../constants/constants'
 import * as firebase from 'firebase';
-import { getListaEstabelecimentos } from '../firebase/database'
 
 import _ from 'lodash'
 

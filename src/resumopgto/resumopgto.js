@@ -5,9 +5,10 @@ import * as firebase from 'firebase';
 import {carrinho} from '../addproduto/addproduto'
 import {getListaEstabelecimentos, listaEstabelecimentos,
         getUserDetails, getEstabelecimentoInfo,
-        loadMessages, sendMessage, chaveMsg} from '../firebase/database'
+        loadMessages, sendMessage, chaveMsg, salvarPedido} from '../firebase/database'
 import ResumoCarrinhoListItem from './resumoCarrinhoListItem'
 import Loader from '../loadingModal/loadingModal';
+import {atualizarCarrinho} from '../addproduto/addproduto'
 
 import { CheckBox } from 'react-native-elements'
 import _ from 'lodash'
@@ -40,7 +41,6 @@ constructor(props){
     deb: "",
     cre: "",
     din: "",
-    pgtoEscolhido:"",
     selectedIndex:0,
     checked:true,
     checked2:false,
@@ -55,8 +55,8 @@ constructor(props){
   this.updateIndex = this.updateIndex.bind(this)
 }
 
-updatePgtoEscolhido = (pgtoEscolhido) => {
-   this.setState({ pgtoEscolhido: pgtoEscolhido })
+updatePgtoEscolhido = (value) => {
+   this.setState({ pgtoEscolhido: value })
 }
 updateIndex (selectedIndex) {
   this.setState({selectedIndex})
@@ -158,10 +158,18 @@ fazerPedido(){
         let formaPgto, formaPgtoDetalhe;
         if(this.state.checked){
           formaPgto = "Crédito"
-          formaPgtoDetalhe = this.state.pgtoEscolhido
+          if(this.state.pgtoEscolhido){
+            formaPgtoDetalhe = this.state.pgtoEscolhido
+          }else{
+            formaPgtoDetalhe = this.state.cre[0].bandeira
+          }
         }else if(this.state.checked2){
           formaPgto = "Débito"
-          formaPgtoDetalhe = this.state.pgtoEscolhido
+          if(this.state.pgtoEscolhido){
+            formaPgtoDetalhe = this.state.pgtoEscolhido
+          }else{
+            formaPgtoDetalhe = this.state.deb[0].bandeira
+          }
         }else{
           formaPgto = "Dinheiro"
           formaPgtoDetalhe = this.state.troco
@@ -169,10 +177,11 @@ fazerPedido(){
         //mandar informação do pedido para o banco de dados do pedido
         sendMessage(this.state.produtosCarrinho, formaPgto, formaPgtoDetalhe,
            this.state.nome, this.state.telefone, this.state.endereco, this.state.bairro,
-           this.state.referencia, estabelecimentoLoad, "aguardando",(key)=>{
+           this.state.referencia, estabelecimentoLoad, "Aguardando Confirmação",(key)=>{
              //aguardar confirmação do estabelecimento
              loadMessages(estabelecimentoLoad, key.key, (message)=>{
-               if(message.status=="recebido"){
+
+               if(message.status=="Confirmado Recebimento"){
                  this.setState({
                    esperandoConfirmacao: false
                  },function(){
@@ -182,6 +191,10 @@ fazerPedido(){
                     'Seu pedido foi recebido pelo estabelecimento e está sendo preparado para o envio até você. Em caso de dúvidas entre em contato com o estabelecimento',
                     [
                       {text: 'OK', onPress: () => {
+                        salvarPedido(this.state.produtosCarrinho, formaPgto, formaPgtoDetalhe,
+                          this.state.nome, this.state.telefone, this.state.endereco, this.state.bairro,
+                        this.state.referencia, estabelecimentoLoad)
+                        atualizarCarrinho([])
                         const { navigate } = this.props.navigation;
                         navigate('Home')
                       }},
@@ -208,7 +221,7 @@ functionPicker(tipoPgto){
       itemStyle={{color: cores.corPrincipal,height:80, fontSize: 20,right: 10}}
       style={{height: 80}}
       selectedValue={this.state.pgtoEscolhido}
-      onValueChange={(itemValue, itemIndex) => this.setState({pgtoEscolhido: itemValue})}>
+      onValueChange={this.updatePgtoEscolhido}>
       {tipoPgto.map((item, index)=>{
         return (<Picker.Item label={item.bandeira} value={item.bandeira} key={index} />)
       })}
@@ -219,7 +232,7 @@ functionPicker(tipoPgto){
   <Picker
     style={{width:350, height: 40}}
     selectedValue={this.state.pgtoEscolhido}
-    onValueChange={(itemValue, itemIndex) => this.setState({pgtoEscolhido: itemValue})}>
+    onValueChange={this.updatePgtoEscolhido}>
     {tipoPgto.map((item, index)=>{
       return (<Picker.Item label={item.bandeira} value={item.bandeira} key={index} />)
     })}
@@ -292,7 +305,7 @@ render() {
             message="Aguarde enquanto o estabelecimento confirma o recebimento do pedido..." />
     <Text style={[styles.textResumoPgto, {alignSelf: 'center', fontSize: 15}]}>Resumo do Pedido</Text>
     <View style={{height: 100, borderWidth: 1,borderColor: cores.corPrincipal,marginHorizontal: 3}}>
-      
+
       {/* Resumo Carrinho */}
     <FlatList
       ItemSeparatorComponent={this.renderSeparator}

@@ -109,6 +109,11 @@ export class ProfileScreen extends Component {
     referenciaUp: referencia, profilePicUp: profilePicURL })
   }
 
+  goToHistoricoPedidos(){
+    const {navigate} = this.props.navigation
+    navigate('HistoricoPedidos')
+  }
+
    render() {
 
      console.ignoredYellowBox = [
@@ -163,7 +168,7 @@ export class ProfileScreen extends Component {
        <TouchableOpacity
          style={styles.buttons}
          onPress = { () => {
-
+           this.goToHistoricoPedidos()
          }
          }>
          <Text style={styles.textButtons}> HISTÓRICO DE PEDIDOS </Text>
