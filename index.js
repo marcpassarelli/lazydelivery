@@ -8,6 +8,7 @@ import { CadastroInicialScreen } from './src/cadastro/cadastroInicial'
 import { CompletaCadastroScreen } from './src/cadastro/completaCadastro'
 import { LoginRegisterScreen } from './src/login/loginregister'
 import { HomeScreen } from './src/home/home'
+import { CadastrarEnderecoScreen } from './src/cadastro/cadastrarEndereco'
 import { AtualizaCadastroScreen } from './src/cadastro/atualizaCadastro'
 import { AtualizaEnderecoScreen } from './src/cadastro/atualizaEndereco'
 import { ProfileScreen } from './src/home/profile'
@@ -86,6 +87,7 @@ const DeliveryPassa = StackNavigator({
   CadastroInicial: { screen: CadastroInicialScreen },
   CompletaCadastro: { screen: CompletaCadastroScreen },
   Home: { screen: TabHome },
+  CadastrarEndereco: { screen: CadastrarEnderecoScreen },
   AtualizaCadastro: { screen: AtualizaCadastroScreen },
   AtualizaEndereco: { screen: AtualizaEnderecoScreen },
   ListaEstabelecimentos: { screen: ListaEstabelecimentosScreen},

@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Image, Alert, View, Text, Button, ActivityIndicator,BackHandler, Platform, FlatList, TouchableOpacity, Modal, TouchableHighlight} from 'react-native'
 import { styles, cores } from '../constants/constants'
-import { checkUserDetails, getUserDetails, atualizarProfilePicture, getNomeEstabelecimentos, nomesEstabelecimentos } from '../firebase/database'
+import { getUserListEnd, checkUserDetails, getUserEndAtual, atualizarProfilePicture, getNomeEstabelecimentos, nomesEstabelecimentos } from '../firebase/database'
 import * as firebase from 'firebase';
 import HomeListItem from './homeListItem'
 import StatusBar from '../constants/statusBar'
@@ -10,11 +10,13 @@ import SearchEstabelecimentoListItem from './searchEstabelecimentoListItem'
 import {dadosTipoEstabelecimento} from './dadosTipoEstabelecimento'
 import { SearchBar } from 'react-native-elements'
 import Loader from '../loadingModal/loadingModal';
+import ModalEnd from './modalEnd'
 
 
 import _ from 'lodash'
 
 let listener = null
+let user =''
 
 export class HomeScreen extends Component {
   static navigationOptions = {
@@ -46,7 +48,9 @@ export class HomeScreen extends Component {
       nomesEstabSearch:'',
       text:'',
       modalVisible: true,
-      modalLoaded: true
+      modalLoaded: true,
+      key:'',
+      modalEnd: false
     }
 
   }
@@ -70,16 +74,18 @@ export class HomeScreen extends Component {
     this.setState({
             loadingList: true
           });
-    let user = await firebase.auth().currentUser;
+    this.user = await firebase.auth().currentUser;
+    console.log("user"+JSON.stringify(this.user.uid));
+    getUserEndAtual(this.user.uid, (enderecoP,numeroEndP,bairroP,referenciaP, keyP)=>{
 
-    getUserDetails(user.uid, (nomeP,telefoneP,enderecoP,numeroEndP,bairroP,referenciaP,profilePicURLP)=>{
       this.setState({
-        nome: nomeP,
-        telefone: telefoneP,
         endereco:enderecoP,
         numeroEnd:numeroEndP,
         bairro:bairroP,
         referencia:referenciaP,
+        key:keyP
+      },function(){
+        console.log("state.endereco"+this.state.endereco);
       });
       this.setState({
               loadingList: false
@@ -87,6 +93,7 @@ export class HomeScreen extends Component {
     })
 
     getNomeEstabelecimentos()
+    getUserListEnd(this.user.uid)
 
     this.setState({
       nomesEstabSearch: nomesEstabelecimentos
@@ -94,10 +101,10 @@ export class HomeScreen extends Component {
 
   }
 
-  goToAtualizarEndereco (endereco, numeroEnd, bairro, referencia){
+  goToAtualizarEndereco (endereco, numeroEnd, bairro, referencia, key){
     const { navigate } = this.props.navigation;
     navigate('AtualizaEndereco', {enderecoUp: endereco, numeroEndUp: numeroEnd, bairroUp: bairro,
-    referenciaUp: referencia})
+    referenciaUp: referencia, keyUp: key})
   }
 
   usuarioCompleto(){
@@ -223,8 +230,19 @@ export class HomeScreen extends Component {
     this.setState({modalVisible: visible});
   }
 
-    //    <View style={styles.separator}></View>
-// style={{position: 'absolute', backgroundColor: '#e6e4e6', opacity: 0.8, top:49, left: 18, right: 18}}
+  showModal(){
+    this.setState({
+      modalEnd: !this.state.modalEnd
+    });
+  }
+
+  adicionaEnd = () => {
+     this.props.navigation.navigate('CadastrarEndereco')
+     this.showModal()
+   }
+  // () => this.goToAtualizarEndereco(this.state.endereco,this.state.numeroEnd,
+  //   this.state.bairro,this.state.referencia, this.state.key)
+
   render() {
     console.ignoredYellowBox = [
       'Setting a timer'
@@ -245,7 +263,11 @@ export class HomeScreen extends Component {
         <Text style={styles.textEndHome}>{_.upperFirst(this.state.endereco)}, {this.state.numeroEnd} - </Text>
         <Text
           style={styles.textUpdateEnd}
-          onPress = { () => this.goToAtualizarEndereco(this.state.endereco,this.state.numeroEnd,this.state.bairro,this.state.referencia) }>
+          onPress = {()=>{
+            this.setState({
+              modalEnd: !this.state.modalEnd
+            });
+          }}>
         Trocar Endereço
         </Text>
       </View>
@@ -289,9 +311,12 @@ export class HomeScreen extends Component {
         style={styles.backgroundImage}>
         <Loader
           loading = {this.state.loading}/>
+        <ModalEnd
+          loading = {this.state.modalEnd}
+          showModal = {()=>{this.showModal()}}
+          adicionaEnd = {()=>{this.adicionaEnd()}}/>
         {content}
       </Image>
-  );
-}
-
+    );
+  }
 }

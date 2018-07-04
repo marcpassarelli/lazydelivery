@@ -5,13 +5,13 @@ import React, { Component } from 'react';
 import { Image, Aler, Text, TouchableOpacity, View } from 'react-native';
 import { styles, goToHome } from '../constants/constants'
 import * as firebase from 'firebase';
-import { login, signup, atualizarUsuario, atualizarEndereco } from '../firebase/database'
+import { login, signup, atualizarUsuario, cadastrarEndereco } from '../firebase/database'
 import { Hoshi } from 'react-native-textinput-effects';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import StatusBar from '../constants/statusBar'
 
 
-export class AtualizaEnderecoScreen extends Component {
+export class CadastrarEnderecoScreen extends Component {
 
   static navigationOptions = {
      header: null,
@@ -26,7 +26,6 @@ export class AtualizaEnderecoScreen extends Component {
          numeroEnd: '',
          bairro:'',
          referencia:'',
-         key:'',
          uid: '',
          profilePicURL:''
       }
@@ -45,7 +44,7 @@ export class AtualizaEnderecoScreen extends Component {
     this.setState({referencia: text})
   }
 
-   async atualizarEnderecoBD () {
+   async cadastrarEnderecoBD () {
      const {navigate} = this.props.navigation
      if(this.state.endereco && this.state.bairro &&
         this.state.numeroEnd && this.state.referencia){
@@ -54,7 +53,7 @@ export class AtualizaEnderecoScreen extends Component {
 
           this.setState({uid: user.uid})
 
-          atualizarEndereco(this.state.uid, this.state.key, this.state.endereco,
+          cadastrarEndereco(this.state.uid, this.state.endereco,
             this.state.numeroEnd, this.state.bairro,
             this.state.referencia)
 
@@ -70,27 +69,6 @@ export class AtualizaEnderecoScreen extends Component {
       return this.state.nome+""
     }
 
-    componentWillMount() {
-      const {state} = this.props.navigation;
-      var enderecoUp = state.params ? state.params.enderecoUp : ""
-      var numeroEndUp = state.params ? state.params.numeroEndUp : ""
-      var bairroUp = state.params ? state.params.bairroUp : ""
-      var referenciaUp = state.params ? state.params.referenciaUp : ""
-      var keyUp = state.params ? state.params.keyUp : ""
-      if(enderecoUp){
-
-        this.setState({
-          endereco: enderecoUp,
-          numeroEnd: numeroEndUp,
-          bairro: bairroUp,
-          referencia: referenciaUp,
-          key: keyUp
-        }, function(){
-          this.validateUserName();
-        })
-      }
-    }
-
   render(){
 
     return (
@@ -99,7 +77,7 @@ export class AtualizaEnderecoScreen extends Component {
         style={styles.backgroundImage}>
         <KeyboardAwareScrollView>
         <StatusBar/>
-        <Text style={styles.titleCadastro}>Atualize o seu cadastro</Text>
+        <Text style={styles.titleCadastro}>Cadastre novo endereco</Text>
         <Hoshi
           style={styles.labelCadastro}
           label={'Endereço:'}
@@ -143,8 +121,8 @@ export class AtualizaEnderecoScreen extends Component {
           <View style={styles.separator}/>
           <TouchableOpacity
             style={styles.buttons}
-            onPress = { ()=>this.atualizarEnderecoBD() } >
-            <Text style={styles.textButtons}>ATUALIZAR ENDEREÇO</Text>
+            onPress = { ()=>this.cadastrarEnderecoBD() } >
+            <Text style={styles.textButtons}>CADASTRAR ENDEREÇO</Text>
           </TouchableOpacity>
         </View>
         </KeyboardAwareScrollView>

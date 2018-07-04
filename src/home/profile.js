@@ -5,7 +5,7 @@ console.ignoredYellowBox = [
 import React, { Component } from 'react';
 import { Image, Alert, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { styles } from '../constants/constants'
-import { logout, checkUserDetails, getUserDetails } from '../firebase/database'
+import { logout, checkUserDetails, getUserProfile } from '../firebase/database'
 import * as firebase from 'firebase';
 import FBSDK, { LoginManager, AccessToken, GraphRequestManager, GraphRequest } from 'react-native-fbsdk'
 
@@ -44,6 +44,17 @@ export class ProfileScreen extends Component {
           });
     let user = await firebase.auth().currentUser;
 
+          getUserProfile(user.uid, (nomeP,telefoneP,profilePicURLP)=>{
+            console.log("nomePPPP"+nomeP);
+            this.setState({
+              nome: nomeP,
+              telefone: telefoneP,
+            },function(){
+              console.log("state.nome"+this.state.nome);
+            });
+          })
+
+
 
         AccessToken.getCurrentAccessToken().then((accessTokenData) => {
           let accessToken = accessTokenData.accessToken
@@ -75,24 +86,12 @@ export class ProfileScreen extends Component {
 
           // Start the graph request.
           new GraphRequestManager().addRequest(infoRequest).start()
-
+          this.setState({
+                  loading: false
+                });
         }, (error) => {
           console.log("Some error occured: " + error)
         })
-
-    getUserDetails(user.uid, (nomeP,telefoneP,enderecoP,numeroEndP,bairroP,referenciaP,profilePicURLP)=>{
-      this.setState({
-        nome: nomeP,
-        telefone: telefoneP,
-        endereco:enderecoP,
-        numeroEnd:numeroEndP,
-        bairro:bairroP,
-        referencia:referenciaP,
-      });
-      this.setState({
-              loading: false
-            });
-    })
 
   }
 
@@ -102,11 +101,9 @@ export class ProfileScreen extends Component {
     navigate('LoginRegister')
   }
 
-  goToAtualizarCadastro(nome, telefone, endereco, numeroEnd, bairro, referencia, profilePicURL){
+  goToAtualizarCadastro(nome, telefone){
     const {navigate} = this.props.navigation
-    navigate('AtualizaCadastro', { nomeUp: nome, telefoneUp: telefone,
-    enderecoUp: endereco, numeroEndUp: numeroEnd, bairroUp: bairro,
-    referenciaUp: referencia, profilePicUp: profilePicURL })
+    navigate('AtualizaCadastro', { nomeUp: nome, telefoneUp: telefone })
   }
 
   goToHistoricoPedidos(){

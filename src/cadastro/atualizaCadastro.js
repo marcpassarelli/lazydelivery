@@ -22,12 +22,7 @@ export class AtualizaCadastroScreen extends Component {
     this.state = {
          nome: '',
          telefone: '',
-         endereco: '',
-         numeroEnd: '',
-         bairro:'',
-         referencia:'',
          uid: '',
-         profilePicURL:''
       }
 
       this.atualizarInformacoesBD = this.atualizarInformacoesBD.bind(this);
@@ -39,33 +34,18 @@ export class AtualizaCadastroScreen extends Component {
   updateTelefone = (text) => {
     this.setState({telefone: text})
   }
-  updateEndereco = (text) => {
-    this.setState({endereco: text})
-  }
-  updateNumeroEnd = (text) => {
-    this.setState({numeroEnd: text})
-  }
-  updateBairro = (text) => {
-    this.setState({bairro: text})
-  }
-  updateReferencia = (text) => {
-    this.setState({referencia: text})
-  }
+
 
    async atualizarInformacoesBD () {
      const {navigate} = this.props.navigation
-     if(this.state.nome && this.state.telefone &&
-        this.state.endereco && this.state.bairro &&
-        this.state.numeroEnd && this.state.referencia){
+     if(this.state.nome && this.state.telefone){
 
           let user = await firebase.auth().currentUser;
 
           this.setState({uid: user.uid})
 
           atualizarUsuario(this.state.uid, this.state.nome,
-            this.state.telefone, this.state.endereco,
-            this.state.numeroEnd, this.state.bairro,
-            this.state.referencia, this.state.profilePicURL)
+            this.state.telefone)
 
         navigate('Home')
 
@@ -83,37 +63,16 @@ export class AtualizaCadastroScreen extends Component {
       const {state} = this.props.navigation;
       var nomeUp = state.params ? state.params.nomeUp : ""
       var telefoneUp = state.params ? state.params.telefoneUp : ""
-      var enderecoUp = state.params ? state.params.enderecoUp : ""
-      var numeroEndUp = state.params ? state.params.numeroEndUp : ""
-      var bairroUp = state.params ? state.params.bairroUp : ""
-      var referenciaUp = state.params ? state.params.referenciaUp : ""
-      var profilePicUp = state.params ? state.params.profilePicUp : ""
       if(nomeUp){
-      this.setState({nome: nomeUp}, function(){
-        this.validateUserName();
-      })
-      this.setState({telefone: telefoneUp}, function(){
-        this.validateUserName();
-      })
-      this.setState({endereco: enderecoUp}, function(){
-        this.validateUserName();
-      })
-      this.setState({numeroEnd: numeroEndUp}, function(){
-        this.validateUserName();
-      })
-      this.setState({bairro: bairroUp}, function(){
-        this.validateUserName();
-      })
-      this.setState({referencia: referenciaUp}, function(){
-        this.validateUserName();
-      })
-      this.setState({profilePicURL: profilePicUp}, function(){
+      this.setState({
+        nome: nomeUp,
+        telefone: telefoneUp
+      }, function(){
         this.validateUserName();
       })
       }
     }
 
-//<Text>NOME AQUI CARALHO{name}</Text>
   render(){
     console.ignoredYellowBox = [
         'Setting a timer'
@@ -144,45 +103,6 @@ export class AtualizaCadastroScreen extends Component {
           keyboardType="numeric"
           value = {this.state.telefone}
           borderColor={'#8b0000'}
-        />
-        <Hoshi
-          style={styles.labelCadastro}
-          label={'Endereço:'}
-          labelStyle={{ color: '#8b0000' }}
-          onChangeText = {this.updateEndereco}
-          returnKeyType="next"
-          value = {this.state.endereco}
-          borderColor={'#8b0000'}
-          autoCapitalize='words'
-        />
-        <Hoshi
-          style={styles.labelCadastro}
-          label={'Número Endereço:'}
-          labelStyle={{ color: '#8b0000' }}
-          onChangeText = {this.updateNumeroEnd}
-          returnKeyType="next"
-          value = {this.state.numeroEnd}
-          borderColor={'#8b0000'}
-        />
-        <Hoshi
-          style={styles.labelCadastro}
-          label={'Bairro:'}
-          labelStyle={{ color: '#8b0000' }}
-          onChangeText = {this.updateBairro}
-          returnKeyType="next"
-          value = {this.state.bairro}
-          borderColor={'#8b0000'}
-          autoCapitalize='words'
-        />
-        <Hoshi
-          style={styles.labelCadastro}
-          label={'Referência:'}
-          labelStyle={{ color: '#8b0000' }}
-          onChangeText = {this.updateReferencia}
-          returnKeyType="done"
-          value = {this.state.referencia}
-          borderColor={'#8b0000'}
-          autoCapitalize='words'
         />
         <View>
           <View style={styles.separator}/>

@@ -69,20 +69,20 @@ export class DestaquesScreen extends Component {
           });
     let user = await firebase.auth().currentUser;
 
-    getUserDetails(user.uid, (nomeP,telefoneP,enderecoP,numeroEndP,bairroP,referenciaP,profilePicURLP)=>{
-      this.setState({
-        nome: nomeP,
-        telefone: telefoneP,
-        endereco:enderecoP,
-        numeroEnd:numeroEndP,
-        bairro:bairroP,
-        referencia:referenciaP,
-        profilePicURL:profilePicURLP
-      });
-      this.setState({
-              loadingList: false
-            });
-    })
+    // getUserDetails(user.uid, (nomeP,telefoneP,enderecoP,numeroEndP,bairroP,referenciaP,profilePicURLP)=>{
+    //   this.setState({
+    //     nome: nomeP,
+    //     telefone: telefoneP,
+    //     endereco:enderecoP,
+    //     numeroEnd:numeroEndP,
+    //     bairro:bairroP,
+    //     referencia:referenciaP,
+    //     profilePicURL:profilePicURLP
+    //   });
+    //   this.setState({
+    //           loadingList: false
+    //         });
+    // })
 
     getNomeEstabelecimentos()
 

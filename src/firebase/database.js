@@ -7,9 +7,9 @@ export var listaEstabelecimentos = []
 export var listaAdicionais = []
 export var estabelecimentoProd = []
 export var nomesEstabelecimentos = []
-
+export var allDatabase = []
+export var listaEnderecos = []
 var todoCounter = 1;
-
 
 export async function login (email, pass, onLogin) {
 
@@ -56,55 +56,74 @@ export function cadastrarUsuario(userId, nome, telefone, endereco,
   numeroEnd, bairro, referencia, profilePicURL) {
 
   let userInformationPath = "/user/" + userId + "/details";
+  let userInformationPathEnd = "/user/" + userId + "/details/listaEnderecos";
 
-  return firebase.database().ref(userInformationPath).set({
+  firebase.database().ref(userInformationPath).set({
       nome: nome,
       telefone: telefone,
-      listaEndereco: {
-        endereco: endereco
-      },
-      numeroEnd: numeroEnd,
-      bairro: bairro,
-      referencia: referencia,
       profilePicURL: profilePicURL
   })
+
+  firebase.database().ref(userInformationPathEnd).push({
+    endereco: endereco,
+    numeroEnd: numeroEnd,
+    bairro: bairro,
+    referencia: referencia,
+    escolhido: true,
+  })
+
 }
 
-export function atualizarUsuario(userId, nome, telefone, endereco,
-  numeroEnd, bairro, referencia, profilePicURL) {
+export function atualizarUsuario(userId, nome, telefone) {
 
   let userInformationPath = "/user/" + userId + "/details";
 
   return firebase.database().ref(userInformationPath).update({
       nome: nome,
-      telefone: telefone,
-      endereco: endereco,
-      numeroEnd: numeroEnd,
-      bairro: bairro,
-      referencia: referencia,
-      profilePicURL: profilePicURL
+      telefone: telefone
   })
 }
 
-export function atualizarEndereco(userId, endereco,
+export function cadastrarEndereco(userId,  endereco,
+  numeroEnd, bairro, referencia){
+    let userInformationPath = "/user/" + userId + "/details/listaEnderecos/"
+
+    firebase.database().ref(userInformationPath).once('value').then(function(snapshot) {
+      snapshot.forEach((child)=>{
+        if(child.val().escolhido==true){
+          firebase.database().ref(userInformationPath+"/"+child.key+"/").update({
+            escolhido:false
+          })
+        }
+      })
+      firebase.database().ref(userInformationPath).push({
+        endereco: endereco,
+        numeroEnd: numeroEnd,
+        bairro: bairro,
+        referencia: referencia,
+        escolhido: true
+      })
+
+    })
+
+
+
+  }
+
+  export function selecionarEndereco(userId){
+
+  }
+
+export function atualizarEndereco(userId, key, endereco,
   numeroEnd, bairro, referencia) {
 
-  let userInformationPath = "/user/" + userId + "/details";
+  let userInformationPath = "/user/" + userId + "/details/listaEnderecos/"+key+"/";
 
   return firebase.database().ref(userInformationPath).update({
       endereco: endereco,
       numeroEnd: numeroEnd,
       bairro: bairro,
       referencia: referencia,
-  })
-}
-
-export function atualizarProfilePicture(userId, profilePicURL) {
-
-  let userInformationPath = "/user/" + userId + "/details";
-
-  return firebase.database().ref(userInformationPath).update({
-    profilePicURL: profilePicURL
   })
 }
 
@@ -141,31 +160,75 @@ export async function deleteUser(){
   }
 }
 
-export function getUserDetails(userID, callback){
+export function getUserProfile(userID, callback){
   let userPath = "/user/"+userID
+
+  var nome = "";
+  var telefone = "";
+  var profilePicURL = "";
+
   firebase.database().ref(userPath).once('value').then(function(snapshot) {
     var userData = snapshot.val()
-    var nome = "";
-    var telefone = "";
-    var endereco = "";
-    var numeroEnd = "";
-    var bairro = "";
-    var referencia = "";
-    var profilePicURL = "";
+
 //Se userData não for nulo, isso quer dizer que o usuário já existe e não precisa completar cadastro
     if(userData){
       nome = userData.details.nome
+      console.log("nome"+nome);
       telefone = userData.details.telefone
-      endereco = userData.details.listaEndereco.endereco
-      numeroEnd = userData.details.numeroEnd
-      bairro = userData.details.bairro
-      referencia = userData.details.referencia
       profilePicURL = userData.details.profilePicURL
     }
-
-    callback(nome, telefone, endereco, numeroEnd, bairro, referencia, profilePicURL)
-
+    callback(nome, telefone, profilePicURL)
   });
+
+
+}
+
+export function getUserEndAtual(userID, callback){
+  let userPath = "/user/"+userID
+
+  var endereco = "";
+  var numeroEnd = "";
+  var bairro = "";
+  var referencia = "";
+  var key =""
+
+  firebase.database().ref(userPath+"/details/listaEnderecos").once('value').then(function(snapshot) {
+    snapshot.forEach((child)=>{
+      console.log("child escolhido"+child.val().escolhido);
+      if(child.val().escolhido){
+        endereco = child.val().endereco
+        console.log("endereco"+endereco);
+        numeroEnd = child.val().numeroEnd
+        bairro = child.val().bairro
+        referencia = child.val().referencia
+        key = child.key
+      }
+    })
+
+    callback(endereco, numeroEnd, bairro, referencia, key)
+  })
+
+}
+
+export function getUserListEnd(userID){
+  let userPath = "/user/"+userID
+
+  firebase.database().ref(userPath+"/details/listaEnderecos/").once('value').then(function(snapshot){
+    listaEnderecos=[]
+    snapshot.forEach((child)=>{
+      listaEnderecos.push({
+        bairro: child.val().bairro,
+        endereco: child.val().endereco,
+        numeroEnd: child.val().numeroEnd,
+        referencia: child.val().referencia,
+        key: child.key
+      })
+    })
+  })
+}
+
+export function addEndereco(userID){
+
 }
 
 
