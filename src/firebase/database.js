@@ -2,6 +2,7 @@ console.ignoredYellowBox = [
     'Setting a timer'
 ]
 import * as firebase from 'firebase';
+import { AsyncStorage } from 'react-native';
 
 export var listaEstabelecimentos = []
 export var listaAdicionais = []
@@ -52,7 +53,7 @@ export async function signup (email, pass, onSignup) {
     }
 }
 
-export function cadastrarUsuario(userId, nome, telefone, endereco,
+export async function cadastrarUsuario(userId, nome, telefone, endereco,
   numeroEnd, bairro, referencia, profilePicURL) {
 
   let userInformationPath = "/user/" + userId + "/details";
@@ -68,9 +69,16 @@ export function cadastrarUsuario(userId, nome, telefone, endereco,
     endereco: endereco,
     numeroEnd: numeroEnd,
     bairro: bairro,
-    referencia: referencia,
-    escolhido: true,
+    referencia: referencia
   })
+
+  try {
+    await AsyncStorage.multiSet([['endAtual', endereco], ['numeroEnd', numeroEnd],
+                                ['bairro', bairro], ['referencia', referencia]]);
+
+  } catch (error) {
+    console.log("error AsyncStorage cadastrarUsuario"+error)
+  }
 
 }
 
@@ -84,29 +92,24 @@ export function atualizarUsuario(userId, nome, telefone) {
   })
 }
 
-export function cadastrarEndereco(userId,  endereco,
+export async function cadastrarEndereco(userId,  endereco,
   numeroEnd, bairro, referencia){
     let userInformationPath = "/user/" + userId + "/details/listaEnderecos/"
 
-    firebase.database().ref(userInformationPath).once('value').then(function(snapshot) {
-      snapshot.forEach((child)=>{
-        if(child.val().escolhido==true){
-          firebase.database().ref(userInformationPath+"/"+child.key+"/").update({
-            escolhido:false
-          })
-        }
-      })
       firebase.database().ref(userInformationPath).push({
         endereco: endereco,
         numeroEnd: numeroEnd,
         bairro: bairro,
-        referencia: referencia,
-        escolhido: true
+        referencia: referencia
       })
 
-    })
+      try {
+        await AsyncStorage.multiSet([['endAtual', endereco], ['numeroEnd', numeroEnd],
+                                    ['bairro', bairro], ['referencia', referencia]]);
 
-
+      } catch (error) {
+        console.log("error AsyncStorage cadastrarEndereco"+error)
+      }
 
   }
 
@@ -114,7 +117,7 @@ export function cadastrarEndereco(userId,  endereco,
 
   }
 
-export function atualizarEndereco(userId, key, endereco,
+export async function atualizarEndereco(userId, key, endereco,
   numeroEnd, bairro, referencia) {
 
   let userInformationPath = "/user/" + userId + "/details/listaEnderecos/"+key+"/";
@@ -125,6 +128,15 @@ export function atualizarEndereco(userId, key, endereco,
       bairro: bairro,
       referencia: referencia,
   })
+
+  try {
+    await AsyncStorage.multiSet([['endAtual', endereco], ['numeroEnd', numeroEnd],
+                                ['bairro', bairro], ['referencia', referencia]]);
+
+  } catch (error) {
+    console.log("error AsyncStorage atualizarEndereco"+error)
+  }
+
 }
 
 
@@ -183,30 +195,29 @@ export function getUserProfile(userID, callback){
 
 }
 
-export function getUserEndAtual(userID, callback){
-  let userPath = "/user/"+userID
-
+export async function getUserEndAtual(callback){
+  // let userPath = "/user/"+userID
+  //
   var endereco = "";
   var numeroEnd = "";
   var bairro = "";
   var referencia = "";
-  var key =""
+  // var key =""
 
-  firebase.database().ref(userPath+"/details/listaEnderecos").once('value').then(function(snapshot) {
-    snapshot.forEach((child)=>{
-      console.log("child escolhido"+child.val().escolhido);
-      if(child.val().escolhido){
-        endereco = child.val().endereco
-        console.log("endereco"+endereco);
-        numeroEnd = child.val().numeroEnd
-        bairro = child.val().bairro
-        referencia = child.val().referencia
-        key = child.key
-      }
-    })
+  try {
 
-    callback(endereco, numeroEnd, bairro, referencia, key)
-  })
+    await AsyncStorage.multiGet(['endAtual','numeroEnd','bairro', 'referencia']).then((response)=>{
+      endereco = response[0][1]
+      numeroEnd = response[1][1]
+      bairro = response[2][1]
+      referencia = response[3][1]
+
+      callback(endereco, numeroEnd, bairro, referencia)
+    });
+
+  } catch (error) {
+    console.log("error AsyncStorage getUserEndAtual: "+error)
+  }
 
 }
 
@@ -253,7 +264,7 @@ export async function checkUserDetails(userExiste, userNaoExiste){
 
 }
 
-export async function getListaEstabelecimentos(tipoEstabelecimento){
+export async function getListaEstabelecimentos(tipoEstabelecimento, onListLoad){
   try{
     listaEstabelecimentos = []
     firebase.database().ref("/tiposEstabelecimentos/"+tipoEstabelecimento).once('value').then(function(snapshot){
@@ -267,7 +278,8 @@ export async function getListaEstabelecimentos(tipoEstabelecimento){
             tempoEntrega: child.val().TempoEntrega,
             _id:todoCounter++
           });
-        });
+        })
+        onListLoad()
       }
 
     })
@@ -276,7 +288,7 @@ export async function getListaEstabelecimentos(tipoEstabelecimento){
   }
 }
 
-export async function getEstabelecimentoProd(nomeEstabelecimento){
+export async function getEstabelecimentoProd(nomeEstabelecimento, sectionDataFunction, onListLoad ){
   try{
     estabelecimentoProd = []
     firebase.database().ref("/produtos/"+nomeEstabelecimento).once('value').then(function(snapshot){
@@ -291,7 +303,10 @@ export async function getEstabelecimentoProd(nomeEstabelecimento){
             tipo: child.val().tipo,
             _id:todoCounter++
           });
-        });
+        })
+        sectionDataFunction()
+        onListLoad()
+        ;
       }
     })
   } catch(error){

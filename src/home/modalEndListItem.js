@@ -27,7 +27,8 @@ export default class ModalEndListItem extends Component {
               <Text>Editar Endereço</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={()=>{this.props.selecionaEnd()}}>
+              onPress={()=>{this.props.selecionaEnd(),
+                            this.props.showModal()}}>
               <Text>Selecionar</Text>
             </TouchableOpacity>
             </View>

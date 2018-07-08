@@ -76,21 +76,8 @@ export class HomeScreen extends Component {
           });
     this.user = await firebase.auth().currentUser;
     console.log("user"+JSON.stringify(this.user.uid));
-    getUserEndAtual(this.user.uid, (enderecoP,numeroEndP,bairroP,referenciaP, keyP)=>{
 
-      this.setState({
-        endereco:enderecoP,
-        numeroEnd:numeroEndP,
-        bairro:bairroP,
-        referencia:referenciaP,
-        key:keyP
-      },function(){
-        console.log("state.endereco"+this.state.endereco);
-      });
-      this.setState({
-              loadingList: false
-            });
-    })
+
 
     getNomeEstabelecimentos()
     getUserListEnd(this.user.uid)
@@ -99,12 +86,6 @@ export class HomeScreen extends Component {
       nomesEstabSearch: nomesEstabelecimentos
     });
 
-  }
-
-  goToAtualizarEndereco (endereco, numeroEnd, bairro, referencia, key){
-    const { navigate } = this.props.navigation;
-    navigate('AtualizaEndereco', {enderecoUp: endereco, numeroEndUp: numeroEnd, bairroUp: bairro,
-    referenciaUp: referencia, keyUp: key})
   }
 
   usuarioCompleto(){
@@ -130,6 +111,21 @@ export class HomeScreen extends Component {
         BackHandler.exitApp()
       })
     }
+
+    getUserEndAtual((enderecoP,numeroEndP,bairroP,referenciaP)=>{
+
+        this.setState({
+          endereco:enderecoP,
+          numeroEnd:numeroEndP,
+          bairro:bairroP,
+          referencia:referenciaP
+        },function(){
+          console.log("state.endereco"+this.state.endereco);
+        });
+        this.setState({
+                loadingList: false
+              });
+      })
 
     //checar se o usuario já tem o cadastro completo
     checkUserDetails(
@@ -182,41 +178,6 @@ export class HomeScreen extends Component {
     });
   }
 
-  // modalScreen(){
-  //   <View style={{top: 60, bottom: 60, left: 60, right: 60}}>
-  //     {this.state.modalLoaded && this.modalScreen()}
-  //   </View>
-  //   return(
-  //     <Modal
-  //       animationType={"slide"}
-  //       transparent={false}
-  //       visible={this.state.modalVisible}
-  //       onRequestClose={() => {alert("Modal has been closed.")}}
-  //       >
-  //      <View style={{marginTop: 22}}>
-  //       <View>
-  //         <View style={{flexDirection: 'row',alignItems: 'center', justifyContent: 'center'}}>
-  //           <Text style={styles.textEndHome}>{_.upperFirst(this.state.endereco)}, {this.state.numeroEnd} - </Text>
-  //           <Text
-  //             style={styles.textUpdateEnd}
-  //             onPress = { () => this.goToAtualizarEndereco(this.state.endereco,this.state.numeroEnd,this.state.bairro,this.state.referencia) }>
-  //           Trocar Endereço
-  //           </Text>
-  //         </View>
-  //         <TouchableHighlight onPress={() => {
-  //           this.setModalVisible(!this.state.modalVisible),
-  //           this.setState({
-  //             modalLoaded: false
-  //           });
-  //         }}>
-  //           <Text>Confirmar endereço</Text>
-  //         </TouchableHighlight>
-  //       </View>
-  //      </View>
-  //    </Modal>
-  //   )
-  // }
-
   loadingTrue(){
     console.log("dentroLoadingTrue");
     this.setState({loadingList:true})
@@ -232,8 +193,24 @@ export class HomeScreen extends Component {
 
   showModal(){
     this.setState({
-      modalEnd: !this.state.modalEnd
+      modalEnd: !this.state.modalEnd,
+      loadingList: false
     });
+
+    getUserEndAtual((enderecoP,numeroEndP,bairroP,referenciaP)=>{
+
+        this.setState({
+          endereco:enderecoP,
+          numeroEnd:numeroEndP,
+          bairro:bairroP,
+          referencia:referenciaP
+        },function(){
+          console.log("state.endereco"+this.state.endereco);
+        });
+        this.setState({
+                loadingList: false
+              });
+      })
   }
 
   adicionaEnd = () => {
@@ -265,6 +242,7 @@ export class HomeScreen extends Component {
           style={styles.textUpdateEnd}
           onPress = {()=>{
             this.setState({
+              loadingList: true,
               modalEnd: !this.state.modalEnd
             });
           }}>

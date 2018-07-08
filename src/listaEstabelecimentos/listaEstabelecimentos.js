@@ -69,32 +69,12 @@ renderSeparator = () => {
   const {state} = this.props.navigation;
   this.tipoEstabelecimentoUp = state.params ? state.params.tipoEstabelecimento : ""
   console.log("tipoEstabelecimento"+this.tipoEstabelecimentoUp);
-  getListaEstabelecimentos(this.tipoEstabelecimentoUp)
-
-  this.setState({ listaEstabelecimentosUp: listaEstabelecimentos }, function(){
-    console.log("inside setstate");
-      if(this.state.listaEstabelecimentosUp){
-        console.log("dentro if");
-        setTimeout(()=>{
-          this.setState({
-            loadingList: false
-          })
-        },250)
-      }
-    })
-
-
-
-
-
-
-  // setTimeout(()=>{
-  //   this.setState({ listaEstabelecimentosUp: listaEstabelecimentos }, function(){
-  //       this.setState({
-  //         loadingList: false
-  //       })
-  //     })
-  // },500)
+  getListaEstabelecimentos(this.tipoEstabelecimentoUp,
+  ()=> {
+    this.setState({
+      loadingList: false
+    });
+  })
 
 }
 
@@ -103,8 +83,6 @@ componentDidMount(){
 
 }
 
-  //   setTimeout(()=>{
-  // },750)
 render() {
   console.ignoredYellowBox = [
     'Setting a timer'
@@ -123,7 +101,7 @@ render() {
   <View style={styles.separator}></View>
   <FlatList
     ItemSeparatorComponent={this.renderSeparator}
-    data= {this.state.listaEstabelecimentosUp}
+    data= {listaEstabelecimentos}
     extraData={this.state}
     renderItem= {
       ({item}) =>

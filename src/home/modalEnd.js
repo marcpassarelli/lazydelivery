@@ -6,6 +6,7 @@ import {
   Modal,
   FlatList,
   TouchableOpacity,
+  AsyncStorage,
   Text
 } from 'react-native';
 import { listaEnderecos } from '../firebase/database'
@@ -37,8 +38,15 @@ export default class ModalEnd extends Component {
 
    }
 
-   selecionaEnd = (item, index) =>{
-     
+   selecionaEnd = async (item, index) =>{
+     try {
+       await AsyncStorage.multiSet([['endAtual', item.endereco], ['numeroEnd', item.numeroEnd],
+                                   ['bairro', item.bairro], ['referencia', item.referencia]]);
+
+
+     } catch (error) {
+       console.log("error AsyncStorage"+error)
+     }
    }
 
 render(){
@@ -54,17 +62,24 @@ render(){
             <FlatList
               ItemSeparatorComponent={this.renderSeparator}
               data= {listaEnderecos}
-              renderItem= {({item}) =>
+              renderItem= {({item, index}) =>
               <ModalEndListItem
                 item = {item}
                 editEnd = {() => this.editEnd(item, index)}
-                selecionaEnd = {() => this.selecionaEnd(item, index)}/>
+                selecionaEnd = {() => this.selecionaEnd(item, index)}
+                showModal = {()=>{this.props.showModal()}}/>
               }
               keyExtractor={item => item.key}/>
               <View>
                 <TouchableOpacity
                   onPress={()=>{this.props.adicionaEnd()}}>
                   <Text>Adicionar Endereço</Text>
+                </TouchableOpacity>
+              </View>
+              <View>
+                <TouchableOpacity
+                  onPress={()=>{this.props.showModal()}}>
+                  <Text>Fechar</Text>
                 </TouchableOpacity>
               </View>
           </View>

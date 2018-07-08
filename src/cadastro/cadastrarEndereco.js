@@ -59,6 +59,7 @@ export class CadastrarEnderecoScreen extends Component {
 
         navigate('Home')
 
+
       }else{
         alert('Preencha todos os campos')
       }

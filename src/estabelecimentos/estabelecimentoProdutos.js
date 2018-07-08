@@ -102,7 +102,7 @@ renderSeparatorSection = () => {
 
 sectionDataFunction(){
 
-  sectionData = _.groupBy(this.state.produtosUp, p => p.tipo)
+  sectionData = _.groupBy(estabelecimentoProd, p => p.tipo)
 
   sectionName = sectionData
 
@@ -128,16 +128,16 @@ componentWillMount(){
   var telaAnterior = state.params ? state.params.telaAnterior : ""
 
   if(telaAnterior=="listaEstabelecimentos" || telaAnterior=="home" ){
-    getEstabelecimentoProd(estabelecimento)
-    setTimeout(()=>{
-      this.setState({produtosUp: estabelecimentoProd}, function(){
-        this.sectionDataFunction(),
-        this.setState({
-                loadingList: false
-              });
-        console.log("estabelecimentoProd:"+estabelecimentoProd);
-      })
-    },750)
+    getEstabelecimentoProd(estabelecimento,
+    ()=>{
+      this.sectionDataFunction()
+    },
+    ()=>{
+      this.setState({
+              loadingList: false
+            })
+    })
+
   }
 //para não precisar carregar novamente a lista
   else{
@@ -257,38 +257,3 @@ functionButton(){
     );
   }
 }
-
-// toggle(headerName){
-//     //Step 1
-//   let initialValue    = this.state.expandido? tamanhoHeader : tamanhoCelula * sectionName[headerName].length + tamanhoHeader,
-//       finalValue      = this.state.expandido? tamanhoCelula * sectionName[headerName].length + tamanhoHeader : tamanhoHeader;
-//
-//
-//   this.setState({
-//       expandido : !this.state.expandido  //Step 2
-//   });
-//
-//   this.state.animation.setValue(initialValue);  //Step 3
-//   Animated.spring(     //Step 4
-//       this.state.animation,
-//       {
-//           toValue: finalValue
-//       }
-//   ).start();  //Step 5
-//   console.log(JSON.stringify(sectionData[0].key))
-//   for(i=0;i<sectionData.length;i++){
-//     console.log(JSON.stringify(sectionData[i].key)+": "+JSON.stringify(sectionData[i].data.length))
-//   }
-// }
-//
-// _setMaxHeight(){
-//     this.setState({
-//         maxHeight   : 60*3+30
-//     });
-// }
-//
-// _setMinHeight(event){
-//     this.setState({
-//         minHeight   : event.nativeEvent.layout.height
-//     });
-// }

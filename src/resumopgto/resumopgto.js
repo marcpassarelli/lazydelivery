@@ -4,8 +4,8 @@ import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import {carrinho} from '../addproduto/addproduto'
 import {getListaEstabelecimentos, listaEstabelecimentos,
-        getUserDetails, getEstabelecimentoInfo,
-        loadMessages, sendMessage, chaveMsg, salvarPedido} from '../firebase/database'
+  getUserProfile, getUserEndAtual, getEstabelecimentoInfo,
+  loadMessages, sendMessage, chaveMsg, salvarPedido} from '../firebase/database'
 import ResumoCarrinhoListItem from './resumoCarrinhoListItem'
 import Loader from '../loadingModal/loadingModal';
 import {atualizarCarrinho} from '../addproduto/addproduto'
@@ -93,22 +93,34 @@ async componentWillMount(){
         });
   let user = await firebase.auth().currentUser;
 
-  getUserDetails(user.uid, (nomeP,telefoneP,enderecoP,numeroEndP,bairroP,referenciaP,profilePicURLP)=>{
+  getUserProfile(user.uid, (nomeP,telefoneP,profilePicURLP)=>{
+    console.log("nomePPPP"+nomeP);
     this.setState({
       nome: nomeP,
       telefone: telefoneP,
-      endereco:enderecoP+", "+numeroEndP,
-      numeroEnd:numeroEndP,
-      bairro:bairroP,
-      referencia:referenciaP,
+    },function(){
+      console.log("state.nome"+this.state.nome);
     });
-    this.setState({
-            produtosCarrinho: carrinho
-          });
   })
+
+  getUserEndAtual((enderecoP,numeroEndP,bairroP,referenciaP)=>{
+    console.log("dentrogetUserEndAtul");
+      this.setState({
+        endereco:enderecoP+", "+numeroEndP,
+        bairro:bairroP,
+        referencia:referenciaP
+      },function(){
+        console.log("state.endereco"+this.state.endereco);
+      });
+      this.setState({
+              loading: false
+            });
+    })
+
 
   const {state} = this.props.navigation;
   var nomeEstabelecimentoUp = state.params ? state.params.nomeEstabelecimento : ""
+  console.log("nomeEstabelecimentoUp"+nomeEstabelecimentoUp);
   if(nomeEstabelecimentoUp){
     this.setState({nomeEstabelecimento: nomeEstabelecimentoUp}, function(){
       this._callback()
@@ -118,7 +130,7 @@ async componentWillMount(){
 }
 
 _callback(){
-  console.log("inside callback");
+  console.log("inside callback"+this.state.nomeEstabelecimento);
   getEstabelecimentoInfo(this.state.nomeEstabelecimento, (logoUp, nomeUp, precoDeliveryUp,
     tempoEntregaUp, segUp, terUp, quaUp, quiUp, sexUp, sabUp, domUp, creUp, debUp, dinUp)=>{
     this.setState({
