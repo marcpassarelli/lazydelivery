@@ -3,7 +3,7 @@ console.ignoredYellowBox = [
 ]
 import { styles } from '../constants/constants'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { Text, View, TextInput, Image, KeyboardAvoidingView, Button } from 'react-native';
+import { Text, View, TextInput, Button } from 'react-native';
 import React, { Component } from 'react';
 import { Hoshi } from 'react-native-textinput-effects';
 

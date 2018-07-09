@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { Image, View, Text, TouchableOpacity, ListView } from 'react-native'
+import { Image, View, Text, TouchableOpacity } from 'react-native'
 import {getListaAdicionais} from '../firebase/database'
 import { styles } from '../constants/constants'
 import Loader from '../loadingModal/loadingModal'
-
-import _ from 'lodash'
 
 export default class EstabelecimentoProdutosListItem extends Component {
 

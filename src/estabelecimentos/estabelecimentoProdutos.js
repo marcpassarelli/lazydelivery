@@ -1,23 +1,19 @@
 
 import React, { Component } from 'react';
-import { Platform, Image, Alert, View, Text, Button, ActivityIndicator, SectionList, TouchableOpacity, Animated, PixelRatio } from 'react-native'
+import { Platform, Image, Alert, View, Text, Button, ActivityIndicator, SectionList, Animated } from 'react-native'
 import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
-import {getEstabelecimentoProd, estabelecimentoProd, getEstabelecimentoTiposProd, estabelecimentoTiposProd, getEstabelecimentoProdutos} from '../firebase/database'
+import {getEstabelecimentoProd, estabelecimentoProd} from '../firebase/database'
 import EstabelecimentoProdutosListItem from './estabelecimentoProdutosListItem'
 import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
-import Loader from '../loadingModal/loadingModal'
 import Toast from 'react-native-toast-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import StatusBar from '../constants/statusBar'
 
+import _ from 'lodash';
+
 let sectionData =[]
 let sectionName =[]
-
-var tamanhoCelula = 60,
-    tamanhoHeader = 30
-
-import _ from 'lodash'
 
 const style={
                              backgroundColor: "#4ADDFB",

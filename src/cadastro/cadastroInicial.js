@@ -3,10 +3,10 @@ console.ignoredYellowBox = [
 ]
 import React, { Component } from 'react';
 import { Image, Alert } from 'react-native';
-import { styles, goToCadastroCompleto } from '../constants/constants'
+import { styles } from '../constants/constants'
 import * as firebase from 'firebase';
 import ComponentsCadastroInicial  from './componentsCadastroInicial'
-import { login, signup, cadastrarUsuario } from '../firebase/database'
+import { signup, cadastrarUsuario } from '../firebase/database'
 import StatusBar from '../constants/statusBar'
 
 

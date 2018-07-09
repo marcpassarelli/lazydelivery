@@ -3,7 +3,7 @@ console.ignoredYellowBox = [
 ]
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import React, { Component } from 'react';
-import { Image, Alert, Text, View, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native'
+import { Image, Text, View, ActivityIndicator, ScrollView } from 'react-native'
 import { styles,cores } from '../constants/constants'
 import { getEstabelecimentoInfo, estabelecimentoInfo } from '../firebase/database'
 import * as firebase from 'firebase';

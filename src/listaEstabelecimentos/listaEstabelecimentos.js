@@ -1,15 +1,13 @@
 
 import React, { Component } from 'react';
-import { Image, Alert, View, Text, Button, ActivityIndicator, FlatList } from 'react-native'
+import { Image, View, Text, ActivityIndicator, FlatList } from 'react-native'
 import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
 import ListaEstabelecimentosListItem from './listaEstabelecimentosListItem'
 import {getListaEstabelecimentos, listaEstabelecimentos, limparEstabelecimentoProd} from '../firebase/database'
 import Loader from '../loadingModal/loadingModal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import StatusBar from '../constants/statusBar'
 
-import _ from 'lodash'
 var tipoEstabelecimentoUp ='';
 export class ListaEstabelecimentosScreen extends Component{
 

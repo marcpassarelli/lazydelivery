@@ -2,11 +2,10 @@ console.ignoredYellowBox = [
     'Setting a timer'
 ]
 import StatusBar from '../constants/statusBar'
-import { Madoka } from 'react-native-textinput-effects';
 import ComponentsLoginRegister from './componentsloginregister';
 import { login, checkUserDetails } from '../firebase/database'
 import React, { Component } from 'react';
-import { Image, Alert, Navigator, View, ActivityIndicator, BackHandler, Platform } from 'react-native';
+import { Image, Alert, BackHandler, Platform } from 'react-native';
 import { styles } from '../constants/constants'
 import * as firebase from 'firebase';
 import FBSDK, { LoginManager, AccessToken, GraphRequestManager, GraphRequest } from 'react-native-fbsdk'

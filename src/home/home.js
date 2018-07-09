@@ -1,8 +1,8 @@
 
 import React, { Component } from 'react';
-import { Image, Alert, View, Text, Button, ActivityIndicator,BackHandler, Platform, FlatList, TouchableOpacity, Modal, TouchableHighlight} from 'react-native'
+import { Image, Alert, View, Text, ActivityIndicator, BackHandler, Platform, FlatList, Modal } from 'react-native'
 import { styles, cores } from '../constants/constants'
-import { getUserListEnd, checkUserDetails, getUserEndAtual, atualizarProfilePicture, getNomeEstabelecimentos, nomesEstabelecimentos } from '../firebase/database'
+import { getUserListEnd, checkUserDetails, getUserEndAtual, getNomeEstabelecimentos, nomesEstabelecimentos } from '../firebase/database'
 import * as firebase from 'firebase';
 import HomeListItem from './homeListItem'
 import StatusBar from '../constants/statusBar'
@@ -77,8 +77,6 @@ export class HomeScreen extends Component {
     this.user = await firebase.auth().currentUser;
     console.log("user"+JSON.stringify(this.user.uid));
 
-
-
     getNomeEstabelecimentos()
     getUserListEnd(this.user.uid)
 
@@ -147,9 +145,7 @@ export class HomeScreen extends Component {
           <SearchEstabelecimentoListItem
             estabelecimento = {item.nome}
             imglogo = {item.logo}
-            navigation={this.props.navigation}
-            loadingTrue = {()=> this.loadingTrue()}
-            loadingFalse = {()=> this.loadingFalse()}>
+            navigation={this.props.navigation}>
           </SearchEstabelecimentoListItem>}
           keyExtractor={item => item.nome}/>
       </View>
@@ -176,19 +172,6 @@ export class HomeScreen extends Component {
         });
       }
     });
-  }
-
-  loadingTrue(){
-    console.log("dentroLoadingTrue");
-    this.setState({loadingList:true})
-  }
-  loadingFalse(){
-    console.log("dentroLoadingFalse");
-    this.setState({loadingList:false})
-  }
-
-  setModalVisible(visible) {
-    this.setState({modalVisible: visible});
   }
 
   showModal(){
@@ -272,11 +255,9 @@ export class HomeScreen extends Component {
           data= {dadosTipoEstabelecimento}
           renderItem= {({item}) =>
           <HomeListItem
-            loadingTrue = {()=> this.loadingTrue()}
             tipoEstabelecimento = {item.tipoEstabelecimento}
             imglogo = {item.logo}
-            navigation = {this.props.navigation}
-            loadingFalse = {()=> this.loadingFalse()}>
+            navigation = {this.props.navigation}>
           </HomeListItem>}
           keyExtractor={item => item.tipoEstabelecimento}
           />

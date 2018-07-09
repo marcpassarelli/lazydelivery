@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import { TextInput, Picker, PickerIOS, Platform, ScrollView, Dimensions, Image, Alert, View, Text, Button, ActivityIndicator, FlatList, Icon, TouchableWithoutFeedback } from 'react-native'
+import { TextInput, Picker, PickerIOS, Platform, ScrollView, Dimensions, Image, Alert, View, Text, Button, ActivityIndicator, FlatList, Icon } from 'react-native'
 import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
-import {carrinho} from '../addproduto/addproduto'
-import {getListaEstabelecimentos, listaEstabelecimentos,
-  getUserProfile, getUserEndAtual, getEstabelecimentoInfo,
-  loadMessages, sendMessage, chaveMsg, salvarPedido} from '../firebase/database'
+import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
+import { getUserProfile, getUserEndAtual, getEstabelecimentoInfo,
+  loadMessages, sendMessage, salvarPedido} from '../firebase/database'
 import ResumoCarrinhoListItem from './resumoCarrinhoListItem'
+import ResumoInformacoes from './resumoInformacoes'
 import Loader from '../loadingModal/loadingModal';
-import {atualizarCarrinho} from '../addproduto/addproduto'
 
 import { CheckBox } from 'react-native-elements'
 import _ from 'lodash'
@@ -89,7 +88,8 @@ componentDidMount(){
 async componentWillMount(){
   this.estabelecimento= this.props.navigation.state.params.nomeEstabelecimento
   this.setState({
-          loading: true
+          loading: true,
+          produtosCarrinho: carrinho
         });
   let user = await firebase.auth().currentUser;
 
@@ -112,9 +112,6 @@ async componentWillMount(){
       },function(){
         console.log("state.endereco"+this.state.endereco);
       });
-      this.setState({
-              loading: false
-            });
     })
 
 
@@ -152,7 +149,9 @@ _callback(){
     this.setState({
         loading: false
       },function(){
-        console.log(this.state.din);
+        console.log("this.state.din"+this.state.din);
+        console.log("this.state.cre"+this.state.cre);
+        console.log("this.state.deb"+this.state.deb);
       })
   })
 }
@@ -344,9 +343,10 @@ render() {
       <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ {this.totalPrice+this.state.frete}</Text>
     </View>
 
-
+      {/* Resumo Formas Pgto */}
     <ScrollView>
     <View style={{height:2, backgroundColor: cores.corPrincipal}}></View>
+
     <Text style={[styles.textAdicionais,{fontSize: 16, marginBottom: 0,marginLeft: 5}]}>Selecione a forma de pagamento:</Text>
     <View style={{}}>
       <CheckBox
@@ -399,30 +399,18 @@ render() {
       </View>
     </View>
 
+    {/* Resumo Informações */}
     <View style={{height:2, backgroundColor: cores.corPrincipal}}></View>
 
-      <Text style={[styles.textAdicionais,{fontSize: 16}]}>Informações para Entrega</Text>
-      <View style={{flexDirection: 'row'}}>
-        <Text style={styles.textResumoPgto}>Entregar para: </Text>
-        <Text>{this.state.nome}</Text>
-      </View>
-      <View style={{flexDirection: 'row'}}>
-        <Text style={styles.textResumoPgto}>Telefone para Contato: </Text>
-        <Text>{this.state.telefone}</Text>
-      </View>
-      <View style={{flexDirection: 'row'}}>
-        <Text style={styles.textResumoPgto}>Endereço: </Text>
-        <Text>{this.state.endereco}</Text>
-      </View>
-      <View style={{flexDirection: 'row'}}>
-        <Text style={styles.textResumoPgto}>Bairro: </Text>
-        <Text>{this.state.bairro}</Text>
-      </View>
-      <View style={{flexDirection: 'row'}}>
-        <Text style={styles.textResumoPgto}>Referência: </Text>
-        <Text>{this.state.referencia}</Text>
-      </View>
+      <ResumoInformacoes
+        nome={this.state.nome}
+        telefone={this.state.telefone}
+        endereco={this.state.endereco}
+        bairro={this.state.bairro}
+        referencia={this.state.referencia}/>
+
       </ScrollView>
+
       <Button
         onPress={()=>{this.fazerPedido()}}
         title="Fazer Pedido"

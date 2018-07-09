@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Image, Alert, View, Text, TextInput, Button, ActivityIndicator, TouchableOpacity, FlatList, Icon, Dimensions, Picker } from 'react-native'
+import { Image, View, Text, Button, ActivityIndicator, FlatList } from 'react-native'
 import { styles, cores } from '../constants/constants'
-import {listaAdicionais, listaEstabelecimentos} from '../firebase/database'
+import {listaAdicionais} from '../firebase/database'
 import AdicionaisListItem from './adicionaisListItem'
 import StatusBar from '../constants/statusBar'
 

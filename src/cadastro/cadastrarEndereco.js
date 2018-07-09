@@ -2,10 +2,10 @@ console.ignoredYellowBox = [
     'Setting a timer'
 ]
 import React, { Component } from 'react';
-import { Image, Aler, Text, TouchableOpacity, View } from 'react-native';
-import { styles, goToHome } from '../constants/constants'
+import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { styles } from '../constants/constants'
 import * as firebase from 'firebase';
-import { login, signup, atualizarUsuario, cadastrarEndereco } from '../firebase/database'
+import { cadastrarEndereco } from '../firebase/database'
 import { Hoshi } from 'react-native-textinput-effects';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import StatusBar from '../constants/statusBar'

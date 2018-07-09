@@ -3,11 +3,9 @@ import React, { Component } from 'react';
 import { Image, Alert, View, Text, Button, ActivityIndicator, FlatList } from 'react-native'
 import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
-import {getListaEstabelecimentos, listaEstabelecimentos} from '../firebase/database'
 import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
 import CarrinhoListItem from './carrinhoListItem'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import StatusBar from '../constants/statusBar'
 
 import _ from 'lodash'
@@ -28,7 +26,6 @@ export class CarrinhoScreen extends Component{
     super(props);
     this.state = {
       tipoEstabelecimento:'',
-      listaEstabelecimentosUp:'',
       loading: false,
       produtosCarrinho,
       frete:6

@@ -1,12 +1,11 @@
 
 import React, { Component } from 'react';
-import { Platform, BackHandler, Image, Alert, View, Text,TextInput, Button, ActivityIndicator, TouchableOpacity, FlatList, Dimensions, Picker, ScrollView } from 'react-native'
+import { Platform, BackHandler, Image, View, Text,TextInput, Button, ActivityIndicator, TouchableOpacity, Dimensions, ScrollView } from 'react-native'
 import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
-import {listaEstabelecimentos, getListaAdicionais} from '../firebase/database'
+import {getListaAdicionais} from '../firebase/database'
 import {adicionaisEscolhidos} from './adicionais'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import _ from 'lodash'
 import Loader from '../loadingModal/loadingModal';
 import StatusBar from '../constants/statusBar'
 

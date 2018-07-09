@@ -1,8 +1,8 @@
 
 import React, { Component } from 'react';
-import { Vibration, FlatList, Image, ImageBackground, View, Text, Button, ActivityIndicator, TouchableHighlight, YellowBox, Alert } from 'react-native'
+import { FlatList, Image, View, Text, Button, ActivityIndicator, TouchableHighlight, YellowBox } from 'react-native'
 import { styles, cores } from '../constants/constants'
-import { updateStatus, loadStatus, carregarPedidos } from '../firebase/database'
+import { updateStatus, carregarPedidos } from '../firebase/database'
 import HistoricoPedidosListItem from './historicoPedidosListItem'
 
 import * as firebase from 'firebase';
