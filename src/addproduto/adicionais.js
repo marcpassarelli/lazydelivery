@@ -141,6 +141,13 @@ export class AdicionaisScreen extends Component{
             item={item}
             onSubtract={() => this.onSubtract(item, index)}
             onAdd={() => this.onAdd(item, index)}
+            preco={() => {
+              var str = item.preco*item.quantidade
+              var res = str.toString().replace(".",",")
+              return(
+                  <Text style={styles.textAdicionais}>R$ {res}</Text>
+              )
+            }}
           />
         )}
         keyExtractor={item => item._id}

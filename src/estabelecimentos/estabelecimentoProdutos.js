@@ -72,11 +72,6 @@ export class EstabelecimentoProdutosScreen extends Component{
 constructor(props){
   super(props);
 
-  // this.icons ={
-  //   'up' : require('../../img/up.png'),
-  //   'down' : require('../../img/down.png')
-  // }
-
   this.state = {
     nomeEstabelecimento:'',
     produtosUp:'',
@@ -159,13 +154,25 @@ renderItem = (item) =>{
   return (
   <View>
     <EstabelecimentoProdutosListItem
-      estabelecimento = {nomeEstabelecimentoUp}
       nomeProduto = {item.item.nomeProduto}
-      preco = {item.item.preco}
+      preco = {()=>{
+        var str = item.item.preco
+        var res = str.replace(".",",")
+        return(
+            <Text style={styles.textPreco}>{res}</Text>
+        )
+      }}
       detalhes = {item.item.detalhes}
-      imgProduto = {item.item.imgProduto}
-      tipoProduto = {item.item.tipo}
-      navigation={this.props.navigation}>
+      navigation={()=>{
+        if(item.item.nomeProduto=="Picanha Assada 100g"){
+          this.props.navigation.navigate('AddProduto',{nomeEstabelecimento: nomeEstabelecimentoUp,
+          nome: item.item.nomeProduto, preco: item.item.preco, detalhes: item.item.detalhes,
+          imgProduto: item.item.imgProduto, tipoProduto: item.item.tipo,
+          tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento})
+        }else{
+          this.props.navigation.navigate('Pizza')
+        }
+    }}>
     </EstabelecimentoProdutosListItem>
   </View>
   )

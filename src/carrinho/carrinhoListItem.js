@@ -33,9 +33,7 @@ export default class CarrinhoListItem extends Component {
               </Text>
             </View>
             <View style={{flex:1}}>
-              <Text style={[styles.textCarrinho, {alignSelf: 'center'}]}>
-                R$ {item.preco*item.quantidade}
-              </Text>
+              {this.props.preco()}
             </View>
             <View style={
                 {flex:1,

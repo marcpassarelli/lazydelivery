@@ -12,7 +12,6 @@ export default class AdicionaisListItem extends Component {
   }
 
 
-
   render() {
     const { item } = this.props;
 
@@ -24,9 +23,7 @@ export default class AdicionaisListItem extends Component {
           </Text>
         </View>
         <View style={{flex:1}}>
-          <Text style={[styles.textAdicionais, {alignSelf: 'center'}]}>
-            R$ {item.preco*item.quantidade}
-          </Text>
+          {this.props.preco()}
         </View>
         <View style={{flex:1, flexDirection: 'row', justifyContent: 'flex-end', marginRight: 10}}>
           <TouchableOpacity

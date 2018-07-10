@@ -118,6 +118,14 @@ export class CarrinhoScreen extends Component{
     this.setState({ produtosCarrinho });
   }
 
+  valorVirgula(valor){
+    var str = valor
+    var res = str.toString().replace(".",",")
+    return(
+        <Text style={styles.textAddProduto}>{res}</Text>
+    )
+  }
+
   functionCarrinho=()=>{
     console.log("carrinho"+JSON.stringify(carrinho));
     if(carrinho.length>0){
@@ -131,22 +139,43 @@ export class CarrinhoScreen extends Component{
               <CarrinhoListItem
                 item={item}
                 onSubtract={() => this.onSubtract(item, index)}
-                onAdd={() => this.onAdd(item, index)}/>
+                onAdd={() => this.onAdd(item, index)}
+                preco={() => {
+                  var str = item.preco*item.quantidade
+                  var res = str.toString().replace(".",",")
+                  return(
+                      <Text style={styles.textCarrinho}>R$ {res}</Text>
+                  )
+                }}/>
             )}
             keyExtractor={item => item._id}
           />
         <View style={{backgroundColor: cores.corPrincipal, height: 1}}></View>
           <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 3}}>
-            <Text style={[styles.textAdicionais,{fontSize: 16,marginBottom: 3}]}>Valor Pedido:</Text>
-            <Text style={[styles.textAdicionais,{alignItems:'flex-end', fontSize: 16,marginBottom: 3}]}>R$ {this.totalPrice}</Text>
+            <Text style={[styles.textAdicionais,{fontSize: 16,marginBottom: 3}]}>
+              Valor Pedido:
+            </Text>
+            <Text style={[styles.textAdicionais,
+                {alignItems:'flex-end', fontSize: 16,marginBottom: 3}]}>
+                R$ {this.valorVirgula(this.totalPrice)}
+            </Text>
           </View>
           <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10}}>
             <Text style={[styles.textAdicionais,{fontSize: 16, marginBottom: 3}]}>Frete:</Text>
-            <Text style={[styles.textAdicionais,{alignItems:'flex-end', fontSize: 16,marginBottom: 3}]}>R$ {this.state.frete}</Text>
+            <Text style={[styles.textAdicionais,
+                {alignItems:'flex-end', fontSize: 16,marginBottom: 3}]}>
+                R$ {this.valorVirgula(this.state.frete)}
+            </Text>
           </View>
           <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10}}>
-            <Text style={[styles.textAdicionais,{fontSize: 18,marginBottom: 3}]}>Valor Total Pedido:</Text>
-            <Text style={[styles.textAdicionais,{alignItems:'flex-end', fontSize: 18,marginBottom: 3}]}>R$ {this.totalPrice+this.state.frete}</Text>
+            <Text style={[styles.textAdicionais,
+                {fontSize: 18,marginBottom: 3}]}>
+                Valor Total Pedido:
+            </Text>
+            <Text style={[styles.textAdicionais,
+                {alignItems:'flex-end', fontSize: 18,marginBottom: 3}]}>
+                R$ {this.valorVirgula(this.totalPrice+this.state.frete)}
+            </Text>
           </View>
         <Button
           onPress={()=>{

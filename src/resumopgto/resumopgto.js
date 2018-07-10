@@ -286,6 +286,14 @@ funcaoTroco(){
   )
 }
 
+valorVirgula(valor){
+  var str = valor
+  var res = str.toString().replace(".",",")
+  return(
+      <Text style={styles.textResumoPgto}>{res}</Text>
+  )
+}
+
 render() {
   var {width, height} = Dimensions.get('window');
   const buttons = [{element: this.credito},{element: this.debito},{element: this.dinheiro}]
@@ -325,14 +333,21 @@ render() {
       renderItem= {
         ({item}) =>
         <ResumoCarrinhoListItem
-          item ={item}>
+          item ={item}
+          preco={() => {
+            var str = item.preco*item.quantidade
+            var res = str.toString().replace(".",",")
+            return(
+                <Text style={[styles.textCarrinho, {fontSize: 13, alignSelf: 'flex-end', marginRight: 15}]}>R$ {res}</Text>
+            )
+          }}>
         </ResumoCarrinhoListItem>}
       keyExtractor={item => item._id}
       />
     </View>
     <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5}}>
       <Text style={[styles.textResumoPgto]}>Valor Pedido:</Text>
-      <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ {this.totalPrice}</Text>
+      <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ {this.valorVirgula(this.totalPrice)}</Text>
     </View>
     <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5}}>
       <Text style={[styles.textResumoPgto]}>Valor Frete:</Text>
@@ -340,7 +355,7 @@ render() {
     </View>
     <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5}}>
       <Text style={[styles.textResumoPgto]}>Valor Total Pedido:</Text>
-      <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ {this.totalPrice+this.state.frete}</Text>
+      <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ {this.valorVirgula(this.totalPrice+this.state.frete)}</Text>
     </View>
 
       {/* Resumo Formas Pgto */}

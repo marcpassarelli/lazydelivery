@@ -94,7 +94,6 @@ export class AddProdutoScreen extends Component{
       });
     }
 
-    console.log("estabelecimento: "+estabelecimento+"tipoProduto: "+tipoProduto);
     getListaAdicionais(estabelecimento, tipoProduto)
 
     this.setState({
@@ -196,6 +195,14 @@ export class AddProdutoScreen extends Component{
     }
   }
 
+  valorVirgula(valor){
+    var str = valor
+    var res = str.replace(".",",")
+    return(
+        <Text style={styles.textAddProduto}>{res}</Text>
+    )
+  }
+
   render() {
     const {state} = this.props.navigation
     console.ignoredYellowBox = [
@@ -232,7 +239,7 @@ export class AddProdutoScreen extends Component{
         </Text>
 
         <Text style={styles.textAddProduto}>
-          Preço Unitário: R$ {this.state.preco}
+          Preço Unitário: R$ {this.valorVirgula(this.state.preco)}
         </Text>
 
         <Text style={[styles.textAddProduto,{marginBottom: 5}]}>Quantidade:</Text>
@@ -252,7 +259,7 @@ export class AddProdutoScreen extends Component{
         </View>
 
         <Text style={styles.textAddProduto}>
-          Total: R$ {this.state.total}
+          Total: R$ {this.valorVirgula(this.state.total)}
         </Text>
 
         <TouchableOpacity onPress={()=>{

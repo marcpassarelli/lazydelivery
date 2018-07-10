@@ -34,9 +34,7 @@ export default class ResumoCarrinhoListItem extends Component {
               </Text>
             </View>
             <View style={{flex:1}}>
-              <Text style={[styles.textCarrinho, {fontSize: 13, alignSelf: 'flex-end', marginRight: 15}]}>
-                R$ {item.preco*item.quantidade}
-              </Text>
+              {this.props.preco()}
             </View>
           </View>
           <View>

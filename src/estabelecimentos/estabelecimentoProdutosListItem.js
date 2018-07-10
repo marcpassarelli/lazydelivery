@@ -23,14 +23,11 @@ export default class EstabelecimentoProdutosListItem extends Component {
       <TouchableOpacity
         style={styles.containerListItemProdutos}
         onPress = {() => {
-        this.props.navigation.navigate('AddProduto',{nomeEstabelecimento: this.props.estabelecimento,
-        nome: this.props.nomeProduto, preco: this.props.preco, detalhes: this.props.detalhes,
-        imgProduto: this.props.imgProduto, tipoProduto: this.props.tipoProduto,
-        tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento})
+        this.props.navigation()
         }}>
         <View style={{flexDirection: 'row',justifyContent: 'space-between'}}>
           <Text style={styles.textProdutos}>{this.props.nomeProduto}</Text>
-          <Text style={styles.textPreco}>{this.props.preco}</Text>
+          {this.props.preco()}
         </View>
         <View style={{flexDirection: 'column', marginLeft:10}}>
           <Text style={styles.textDetalhesEstabelecimento}>{this.props.detalhes}</Text>
@@ -41,3 +38,4 @@ export default class EstabelecimentoProdutosListItem extends Component {
 }
 
 }
+//
