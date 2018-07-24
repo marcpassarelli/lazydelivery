@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Platform, Image, Alert, View, Text, Button, ActivityIndicator, SectionList, Animated } from 'react-native'
 import { styles, cores } from '../constants/constants'
 import * as firebase from 'firebase';
-import {getEstabelecimentoProd, estabelecimentoProd} from '../firebase/database'
+import {getEstabelecimentoProd, estabelecimentoProd, listaTamanhosPizzas, getTamanhosPizzas, numTamanhos} from '../firebase/database'
 import EstabelecimentoProdutosListItem from './estabelecimentoProdutosListItem'
 import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
 import Toast from 'react-native-toast-native';
@@ -93,7 +93,64 @@ renderSeparatorSection = () => {
 
 sectionDataFunction(){
 
-  sectionData = _.groupBy(estabelecimentoProd, p => p.tipo)
+  var newEstabelecimentoProd = _.orderBy(estabelecimentoProd, ['tipo', 'nomeProduto'], ['asc','asc'])
+  var listaPizzas = []
+  var indexToRemove = []
+
+
+  //pega as pizzas do cardápio e adicionar em listPizzas e criar array de indices q devem ser removidos
+  newEstabelecimentoProd.map((item,i)=>{
+    if(item.tipo==="Pizzas"){
+      listaPizzas.push(newEstabelecimentoProd[i])
+      indexToRemove.push(i)
+    }
+  })
+  //Remover Pizzas da lista de produtos
+  for (var i = indexToRemove.length - 1; i>=0;i--){
+    newEstabelecimentoProd.splice(indexToRemove[i],1)
+  }
+
+//definir preco minimo de cada tamanho
+  precoMinimo = _.orderBy(listaPizzas,['preco','tamanho'], ['asc','asc'])
+  precoMinimo = _.uniqBy(precoMinimo,'tamanho')
+  console.log("precoMinimo"+JSON.stringify(precoMinimo));
+
+
+  newListaTamanhosPizzas = _.orderBy(listaTamanhosPizzas, ['fatias'], ['asc'])
+
+//Cria lista baseado na qtde de sabores q um tamanho aceita, tamanho, qtde fatias e o preco mínimo
+  //id para itens da lista
+  var id=0
+    //mapeia lista de tamanhos
+    newListaTamanhosPizzas.map((item,i)=>{
+      let preco=""
+      //mapeia lista com os precos minimos para identificar preco mínimo de cada tamanho
+      precoMinimo.map((item2,i2)=>{
+        if(item.tamanho==item2.tamanho){
+          preco = item2.preco
+        }
+      })
+        for(var j = 1;j < parseInt(item.sabores)+1; j++){
+          if(j==1){
+            newEstabelecimentoProd.push({
+              nomeProduto: _.upperFirst(item.tamanho)+" ("+item.fatias+" fatias)",
+              preco: preco,
+              tipo: "Pizzas",
+              _id: id++
+            })
+          }else{
+            newEstabelecimentoProd.push({
+              nomeProduto: _.upperFirst(item.tamanho)+" ("+item.fatias+" fatias) "+j+" sabores",
+              preco: preco,
+              tipo: "Pizzas",
+              _id: id++
+            })
+          }
+        }
+    })
+
+//Separa lista por tipo de produto
+  sectionData = _.groupBy(newEstabelecimentoProd, p => p.tipo)
 
   sectionName = sectionData
 
@@ -109,7 +166,6 @@ sectionDataFunction(){
 
 componentWillMount(){
 
-    console.log("inicio estabelecimentoProd:"+estabelecimentoProd);
   this.setState({
           loadingList: true
         });
@@ -119,6 +175,7 @@ componentWillMount(){
   var telaAnterior = state.params ? state.params.telaAnterior : ""
 
   if(telaAnterior=="listaEstabelecimentos" || telaAnterior=="home" ){
+    getTamanhosPizzas(estabelecimento)
     getEstabelecimentoProd(estabelecimento,
     ()=>{
       this.sectionDataFunction()
@@ -132,7 +189,6 @@ componentWillMount(){
   }
 //para não precisar carregar novamente a lista
   else{
-    console.log("dentro do else ");
     // this.sectionDataFunction()
     this.setState({
       loadingList:false
@@ -140,7 +196,6 @@ componentWillMount(){
   }
 
   if(toast){
-    console.log("carrinho:"+JSON.stringify(carrinho));
     Toast.show(toast+" foi adicionado ao carrinho",Toast.SHORT, Toast.BOTTOM, this.style)
   }
 
@@ -156,21 +211,31 @@ renderItem = (item) =>{
     <EstabelecimentoProdutosListItem
       nomeProduto = {item.item.nomeProduto}
       preco = {()=>{
-        var str = item.item.preco
-        var res = str.replace(".",",")
+        if(item.item.tipo=="Pizzas"){
+          return(
+              <Text style={styles.textPreco}>A partir de R$ {item.item.preco}</Text>
+          )
+        }else{
+        // console.log("item.item.preco"+item.item.preco);
+        let str = item.item.preco
+        // console.log("str num"+str);
+        str = str.toString()
+        // console.log("str string"+str);
+        let res = str.toString().replace(".",",")
+        // console.log("res"+res);
         return(
-            <Text style={styles.textPreco}>{res}</Text>
-        )
+            <Text style={styles.textPreco}>R$ {res}</Text>
+        )}
       }}
       detalhes = {item.item.detalhes}
       navigation={()=>{
-        if(item.item.nomeProduto=="Picanha Assada 100g"){
+        if(item.item.tipo=="Pizzas"){
+          this.props.navigation.navigate('Pizza')
+        }else{
           this.props.navigation.navigate('AddProduto',{nomeEstabelecimento: nomeEstabelecimentoUp,
           nome: item.item.nomeProduto, preco: item.item.preco, detalhes: item.item.detalhes,
           imgProduto: item.item.imgProduto, tipoProduto: item.item.tipo,
           tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento})
-        }else{
-          this.props.navigation.navigate('Pizza')
         }
     }}>
     </EstabelecimentoProdutosListItem>
