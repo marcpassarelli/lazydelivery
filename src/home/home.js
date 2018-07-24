@@ -113,7 +113,7 @@ export class HomeScreen extends Component {
     getUserEndAtual((enderecoP,numeroEndP,bairroP,referenciaP)=>{
 
         this.setState({
-          endereco:enderecoP,
+          endereco:_.upperFirst(enderecoP),
           numeroEnd:numeroEndP,
           bairro:bairroP,
           referencia:referenciaP
@@ -200,8 +200,6 @@ export class HomeScreen extends Component {
      this.props.navigation.navigate('CadastrarEndereco')
      this.showModal()
    }
-  // () => this.goToAtualizarEndereco(this.state.endereco,this.state.numeroEnd,
-  //   this.state.bairro,this.state.referencia, this.state.key)
 
   render() {
     console.ignoredYellowBox = [

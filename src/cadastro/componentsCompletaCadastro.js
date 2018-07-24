@@ -35,6 +35,7 @@ export default ComponentsCompletaCadastro = (props) => {
             labelStyle={{ color: '#8b0000' }}
             onChangeText = {props.updateNumeroEnd}
             returnKeyType="next"
+            keyboardType="numeric"
             borderColor={'#8b0000'}
         />
         <Hoshi

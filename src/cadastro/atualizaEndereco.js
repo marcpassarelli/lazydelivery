@@ -118,6 +118,7 @@ export class AtualizaEnderecoScreen extends Component {
           returnKeyType="next"
           value = {this.state.numeroEnd}
           borderColor={'#8b0000'}
+          autoCapitalize="words"
         />
         <Hoshi
           style={styles.labelCadastro}
