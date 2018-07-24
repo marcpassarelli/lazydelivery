@@ -7,9 +7,11 @@ import { AsyncStorage } from 'react-native';
 export var listaEstabelecimentos = []
 export var listaAdicionais = []
 export var estabelecimentoProd = []
+export var listaTamanhosPizzas = []
 export var nomesEstabelecimentos = []
 export var allDatabase = []
 export var listaEnderecos = []
+export var numTamanhos = 0
 var todoCounter = 1;
 
 export async function login (email, pass, onLogin) {
@@ -301,6 +303,8 @@ export async function getEstabelecimentoProd(nomeEstabelecimento, sectionDataFun
             preco: child.val().preco,
             detalhes: child.val().detalhes,
             tipo: child.val().tipo,
+            sabores: child.val().sabores,
+            tamanho: child.val().tamanho,
             _id:todoCounter++
           });
         })
@@ -313,6 +317,30 @@ export async function getEstabelecimentoProd(nomeEstabelecimento, sectionDataFun
     console.log(error)
   }
 }
+
+export async function getTamanhosPizzas(nomeEstabelecimento){
+  try{
+    listaTamanhosPizzas = []
+    firebase.database().ref("/pizza/"+nomeEstabelecimento).once('value').then(function(snapshot){
+      var estabelecimentoPizzas = snapshot.val()
+      if(estabelecimentoPizzas){
+        snapshot.forEach((child) =>{
+          listaTamanhosPizzas.push({
+            fatias: child.val().fatias,
+            sabores: child.val().sabores,
+            tamanho: child.val().tamanho,
+            _id:todoCounter++
+          });
+        })
+        numTamanhos = snapshot.numChildren()
+      }
+    })
+  } catch(error){
+    console.log(error)
+  }
+}
+
+
 
 export async function limparEstabelecimentoProd(){
   console.log("dentro limparEstabelecimentoProd");
