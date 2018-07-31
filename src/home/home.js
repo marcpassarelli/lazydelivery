@@ -1,8 +1,8 @@
 
 import React, { Component } from 'react';
-import { Image, Alert, View, Text, ActivityIndicator, BackHandler, Platform, FlatList, Modal } from 'react-native'
+import { Image, Alert, View, Text, ActivityIndicator, BackHandler, Platform, FlatList, Modal, AsyncStorage } from 'react-native'
 import { styles, cores } from '../constants/constants'
-import { getUserListEnd, checkUserDetails, getUserEndAtual, getNomeEstabelecimentos, nomesEstabelecimentos } from '../firebase/database'
+import { listaEnderecos, getUserListEnd, checkUserDetails, getUserEndAtual, getNomeEstabelecimentos, nomesEstabelecimentos } from '../firebase/database'
 import * as firebase from 'firebase';
 import HomeListItem from './homeListItem'
 import StatusBar from '../constants/statusBar'
@@ -75,10 +75,47 @@ export class HomeScreen extends Component {
             loadingList: true
           });
     this.user = await firebase.auth().currentUser;
-    console.log("user"+JSON.stringify(this.user.uid));
+
 
     getNomeEstabelecimentos()
-    getUserListEnd(this.user.uid)
+    getUserListEnd(this.user.uid,
+    ()=>{
+      getUserEndAtual((enderecoP,numeroEndP,bairroP,referenciaP)=>{
+        if(enderecoP){
+          console.log("dentro do if");
+          this.setState({
+            endereco: enderecoP,
+            numeroEnd:numeroEndP,
+            bairro:bairroP,
+            referencia:referenciaP
+          },function(){
+            console.log("state.endereco"+this.state.endereco);
+          });
+          this.setState({
+                  loadingList: false
+                });
+        }else{
+          console.log("dentro do else");
+          this.setState({
+            endereco: listaEnderecos[0].endereco,
+            numeroEnd:listaEnderecos[0].numeroEnd,
+            bairro:listaEnderecos[0].bairro,
+            referencia:listaEnderecos[0].referencia
+          },async function(){
+            try {
+              await AsyncStorage.multiSet([['endAtual', this.state.endereco], ['numeroEnd', this.state.numeroEnd],
+                                          ['bairro', this.state.bairro], ['referencia', this.state.referencia]]);
+
+            } catch (error) {
+              console.log("error AsyncStorage cadastrarEndereco"+error)
+            }
+          });
+          this.setState({
+                  loadingList: false
+                });
+        }
+        })
+    })
 
     this.setState({
       nomesEstabSearch: nomesEstabelecimentos
@@ -109,22 +146,6 @@ export class HomeScreen extends Component {
         BackHandler.exitApp()
       })
     }
-
-    getUserEndAtual((enderecoP,numeroEndP,bairroP,referenciaP)=>{
-
-        this.setState({
-          endereco:_.upperFirst(enderecoP),
-          numeroEnd:numeroEndP,
-          bairro:bairroP,
-          referencia:referenciaP
-        },function(){
-          console.log("state.endereco"+this.state.endereco);
-        });
-        this.setState({
-                loadingList: false
-              });
-      })
-
     //checar se o usuario já tem o cadastro completo
     checkUserDetails(
       //se já tiver cadastro completo

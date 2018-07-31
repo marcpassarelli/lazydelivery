@@ -14,6 +14,7 @@ import _ from 'lodash';
 
 let sectionData =[]
 let sectionName =[]
+export var listaPizzas = []
 
 const style={
                              backgroundColor: "#4ADDFB",
@@ -94,9 +95,9 @@ renderSeparatorSection = () => {
 sectionDataFunction(){
 
   var newEstabelecimentoProd = _.orderBy(estabelecimentoProd, ['tipo', 'nomeProduto'], ['asc','asc'])
-  var listaPizzas = []
-  var indexToRemove = []
 
+  var indexToRemove = []
+  listaPizzas = []
 
   //pega as pizzas do cardápio e adicionar em listPizzas e criar array de indices q devem ser removidos
   newEstabelecimentoProd.map((item,i)=>{
@@ -113,10 +114,13 @@ sectionDataFunction(){
 //definir preco minimo de cada tamanho
   precoMinimo = _.orderBy(listaPizzas,['preco','tamanho'], ['asc','asc'])
   precoMinimo = _.uniqBy(precoMinimo,'tamanho')
-  console.log("precoMinimo"+JSON.stringify(precoMinimo));
 
-
+  // organiza por qtde de fatias para definir ordem das pizzas no cardápio
   newListaTamanhosPizzas = _.orderBy(listaTamanhosPizzas, ['fatias'], ['asc'])
+
+  //array de sabores de pizza agrupados por tamanhos
+  listaPizzas = _.groupBy(listaPizzas,'tamanho')
+  // console.log("listaPizzas"+JSON.stringify(listaPizzas.broto));
 
 //Cria lista baseado na qtde de sabores q um tamanho aceita, tamanho, qtde fatias e o preco mínimo
   //id para itens da lista
@@ -130,19 +134,24 @@ sectionDataFunction(){
           preco = item2.preco
         }
       })
+      //laço para definir item do array de acordo com a quantidade de sabores aceitos para um tamanho
         for(var j = 1;j < parseInt(item.sabores)+1; j++){
           if(j==1){
             newEstabelecimentoProd.push({
+              tamanho: item.tamanho,
               nomeProduto: _.upperFirst(item.tamanho)+" ("+item.fatias+" fatias)",
               preco: preco,
               tipo: "Pizzas",
+              fatias: item.fatias,
               _id: id++
             })
           }else{
             newEstabelecimentoProd.push({
+              tamanho: item.tamanho,
               nomeProduto: _.upperFirst(item.tamanho)+" ("+item.fatias+" fatias) "+j+" sabores",
               preco: preco,
               tipo: "Pizzas",
+              fatias: item.fatias,
               _id: id++
             })
           }
@@ -185,7 +194,6 @@ componentWillMount(){
               loadingList: false
             })
     })
-
   }
 //para não precisar carregar novamente a lista
   else{
@@ -216,13 +224,13 @@ renderItem = (item) =>{
               <Text style={styles.textPreco}>A partir de R$ {item.item.preco}</Text>
           )
         }else{
-        // console.log("item.item.preco"+item.item.preco);
+
         let str = item.item.preco
-        // console.log("str num"+str);
+
         str = str.toString()
-        // console.log("str string"+str);
+
         let res = str.toString().replace(".",",")
-        // console.log("res"+res);
+
         return(
             <Text style={styles.textPreco}>R$ {res}</Text>
         )}
@@ -230,7 +238,8 @@ renderItem = (item) =>{
       detalhes = {item.item.detalhes}
       navigation={()=>{
         if(item.item.tipo=="Pizzas"){
-          this.props.navigation.navigate('Pizza')
+          console.log("Pizzas do tamanho "+item.item.tamanho);
+          this.props.navigation.navigate('Pizza',{nomeEstabelecimento: nomeEstabelecimentoUp, title:"Pizza "+item.item.nomeProduto, fatias: item.item.fatias, tamanhoPizza: item.item.tamanho})
         }else{
           this.props.navigation.navigate('AddProduto',{nomeEstabelecimento: nomeEstabelecimentoUp,
           nome: item.item.nomeProduto, preco: item.item.preco, detalhes: item.item.detalhes,

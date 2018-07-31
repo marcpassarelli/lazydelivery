@@ -31,7 +31,7 @@ constructor(props){
   super(props);
   this.state = {
     produtosCarrinho,
-    loading: false,
+    loading: true,
     nomeEstabelecimento:"",
     logo: "",
     nome: "",
@@ -86,12 +86,38 @@ componentDidMount(){
 }
 
 async componentWillMount(){
+  let userId = await firebase.auth().currentUser.uid
+  console.log("userID"+userId);
   this.estabelecimento= this.props.navigation.state.params.nomeEstabelecimento
+  console.log("this.estabelecimento"+this.estabelecimento);
   this.setState({
           loading: true,
-          produtosCarrinho: carrinho
+          produtosCarrinho: carrinho,
+          nomeEstabelecimento: this.estabelecimento
         });
   let user = await firebase.auth().currentUser;
+
+  getEstabelecimentoInfo(this.estabelecimento, (logoUp, nomeUp, precoDeliveryUp,
+    tempoEntregaUp, segUp, terUp, quaUp, quiUp, sexUp, sabUp, domUp, creUp, debUp, dinUp)=>{
+    this.setState({
+        logo: logoUp,
+        nomeEstab: nomeUp,
+        precoDelivery: precoDeliveryUp,
+        tempoEntrega: tempoEntregaUp,
+        seg: segUp,
+        ter: terUp,
+        qua: quaUp,
+        qui: quiUp,
+        sex: sexUp,
+        sab: sabUp,
+        dom: domUp,
+        cre: creUp,
+        deb: debUp,
+        din: dinUp
+    },function(){
+      console.log("state.cre"+this.state.cre);
+    })
+  })
 
   getUserProfile(user.uid, (nomeP,telefoneP,profilePicURLP)=>{
     console.log("nomePPPP"+nomeP);
@@ -115,45 +141,12 @@ async componentWillMount(){
     })
 
 
-  const {state} = this.props.navigation;
-  var nomeEstabelecimentoUp = state.params ? state.params.nomeEstabelecimento : ""
-  console.log("nomeEstabelecimentoUp"+nomeEstabelecimentoUp);
-  if(nomeEstabelecimentoUp){
-    this.setState({nomeEstabelecimento: nomeEstabelecimentoUp}, function(){
-      this._callback()
-    })
-  }
 
 }
 
 _callback(){
   console.log("inside callback"+this.state.nomeEstabelecimento);
-  getEstabelecimentoInfo(this.state.nomeEstabelecimento, (logoUp, nomeUp, precoDeliveryUp,
-    tempoEntregaUp, segUp, terUp, quaUp, quiUp, sexUp, sabUp, domUp, creUp, debUp, dinUp)=>{
-    this.setState({
-        logo: logoUp,
-        nomeEstab: nomeUp,
-        precoDelivery: precoDeliveryUp,
-        tempoEntrega: tempoEntregaUp,
-        seg: segUp,
-        ter: terUp,
-        qua: quaUp,
-        qui: quiUp,
-        sex: sexUp,
-        sab: sabUp,
-        dom: domUp,
-        cre: creUp,
-        deb: debUp,
-        din: dinUp
-    })
-    this.setState({
-        loading: false
-      },function(){
-        console.log("this.state.din"+this.state.din);
-        console.log("this.state.cre"+this.state.cre);
-        console.log("this.state.deb"+this.state.deb);
-      })
-  })
+
 }
 
 fazerPedido(){
@@ -188,9 +181,9 @@ fazerPedido(){
         //mandar informação do pedido para o banco de dados do pedido
         sendMessage(this.state.produtosCarrinho, formaPgto, formaPgtoDetalhe,
            this.state.nome, this.state.telefone, this.state.endereco, this.state.bairro,
-           this.state.referencia, estabelecimentoLoad, "Aguardando Confirmação",(key)=>{
+           this.state.referencia, this.state.nomeEstabelecimento, "Aguardando Confirmação",(key)=>{
              //aguardar confirmação do estabelecimento
-             loadMessages(estabelecimentoLoad, key.key, (message)=>{
+             loadMessages(this.state.nomeEstabelecimento, key.key, (message)=>{
 
                if(message.status=="Confirmado Recebimento"){
                  this.setState({
@@ -204,7 +197,7 @@ fazerPedido(){
                       {text: 'OK', onPress: () => {
                         salvarPedido(this.state.produtosCarrinho, formaPgto, formaPgtoDetalhe,
                           this.state.nome, this.state.telefone, this.state.endereco, this.state.bairro,
-                        this.state.referencia, estabelecimentoLoad)
+                        this.state.referencia, this.state.nomeEstabelecimento)
                         atualizarCarrinho([])
                         const { navigate } = this.props.navigation;
                         navigate('Home')

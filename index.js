@@ -13,6 +13,7 @@ import { AtualizaCadastroScreen } from './src/cadastro/atualizaCadastro'
 import { AtualizaEnderecoScreen } from './src/cadastro/atualizaEndereco'
 import { ProfileScreen } from './src/home/profile'
 import { ListaEstabelecimentosScreen } from './src/listaEstabelecimentos/listaEstabelecimentos'
+import { PizzaScreen } from './src/estabelecimentos/pizza'
 import { AddProdutoScreen } from './src/addproduto/addproduto'
 import { CarrinhoScreen } from './src/carrinho/carrinho'
 import { ResumoPgtoScreen } from './src/resumopgto/resumopgto'
@@ -92,6 +93,7 @@ const DeliveryPassa = StackNavigator({
   AtualizaEndereco: { screen: AtualizaEnderecoScreen },
   ListaEstabelecimentos: { screen: ListaEstabelecimentosScreen},
   Estabelecimento: { screen: TabEstabelecimento},
+  Pizza: { screen: PizzaScreen },
   Carrinho: { screen: CarrinhoScreen },
   AddProduto: { screen: AddProdutoScreen },
   Adicionais: { screen: AdicionaisScreen},

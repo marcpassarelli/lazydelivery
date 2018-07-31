@@ -57,6 +57,7 @@ export class AddProdutoScreen extends Component{
       total:'',
       listaAdicionais: adicionaisEscolhidos,
       loading: false,
+      imageLoaded: true,
       loadingAfter: false,
       obs:'',
       tipoEstabelecimento:''
@@ -106,10 +107,10 @@ export class AddProdutoScreen extends Component{
       total: preco,
       estabelecimento: estabelecimento,
       tipoEstabelecimento: tipoEstabelecimento
-    }, function(){
-        this.setState({
-          loading: false
-        })
+    },function(){
+      this.setState({
+        loading:false
+      });
     });
 
   }
@@ -203,6 +204,11 @@ export class AddProdutoScreen extends Component{
     )
   }
 
+  handleImageLoaded() {
+    console.log("handledimage");
+   this.setState({ loading: false });
+ }
+
   render() {
     const {state} = this.props.navigation
     console.ignoredYellowBox = [
@@ -212,6 +218,7 @@ export class AddProdutoScreen extends Component{
 
 
     var {width, height} = Dimensions.get('window');
+
 
     const content = this.state.loading ?
 
@@ -227,9 +234,11 @@ export class AddProdutoScreen extends Component{
       <ScrollView>
         <Image
           source={{uri:this.state.imgProduto}}
+          onLoadEnd={()=>{this.setState({
+            imageLoaded: false
+          });}}
           style={[styles.imgProduto,{width: width*0.98, height: height*0.3}]}>
         </Image>
-
         <Text style={[styles.textAddProduto,{marginBottom: 0}]}>
             {this.state.nome}
         </Text>
@@ -315,6 +324,7 @@ export class AddProdutoScreen extends Component{
         <View>
           <Button
             style={{position: 'absolute', left: 0, right: 0, bottom: 0}}
+            disabled={this.state.imageLoaded}
             onPress={()=>{this.adicionarAoCarrinho()}}
             title="Adicionar ao Carrinho"
             color={cores.corPrincipal}

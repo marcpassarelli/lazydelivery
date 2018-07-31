@@ -223,7 +223,7 @@ export async function getUserEndAtual(callback){
 
 }
 
-export function getUserListEnd(userID){
+export function getUserListEnd(userID, onListLoad){
   let userPath = "/user/"+userID
 
   firebase.database().ref(userPath+"/details/listaEnderecos/").once('value').then(function(snapshot){
@@ -237,7 +237,9 @@ export function getUserListEnd(userID){
         key: child.key
       })
     })
+    onListLoad()
   })
+
 }
 
 export function addEndereco(userID){
