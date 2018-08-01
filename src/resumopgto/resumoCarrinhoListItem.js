@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Image, Text } from 'react-native';
-import { styles } from '../constants/constants'
+import { styles, images} from '../constants/constants'
 
 
 export default class ResumoCarrinhoListItem extends Component {

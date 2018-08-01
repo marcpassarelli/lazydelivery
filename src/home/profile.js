@@ -4,7 +4,7 @@ console.ignoredYellowBox = [
 
 import React, { Component } from 'react';
 import { Image, Alert, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'
-import { styles } from '../constants/constants'
+import { styles, images } from '../constants/constants'
 import { logout, getUserProfile } from '../firebase/database'
 import * as firebase from 'firebase';
 import FBSDK, { AccessToken, GraphRequestManager, GraphRequest } from 'react-native-fbsdk'
@@ -174,7 +174,7 @@ export class ProfileScreen extends Component {
 
      return (
        <Image
-         source={require('../../img/alimentos-fundo2.jpg')}
+         source={images.imageBackground}
          style={styles.backgroundImage}>
          {content}
        </Image>

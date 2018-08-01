@@ -2,7 +2,7 @@ import PizzaListItem from './pizzaListItem'
 
 import React, { Component } from 'react';
 import { Platform, Image, Alert, View, Text, Button, ActivityIndicator, FlatList } from 'react-native'
-import { styles, cores } from '../constants/constants'
+import { styles, cores, images} from '../constants/constants'
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import StatusBar from '../constants/statusBar'
@@ -148,7 +148,7 @@ renderItem = (item) =>{
 
     return (
       <Image
-        source={require('../../img/alimentos-fundo2.jpg')}
+        source={images.imageBackground}
         style={styles.backgroundImage}>
         {content}
       </Image>

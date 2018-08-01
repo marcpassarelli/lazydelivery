@@ -3,7 +3,7 @@ console.ignoredYellowBox = [
 ]
 import React, { Component } from 'react';
 import { Image, Alert } from 'react-native';
-import { styles } from '../constants/constants'
+import { styles, images} from '../constants/constants'
 import * as firebase from 'firebase';
 import ComponentsCadastroInicial  from './componentsCadastroInicial'
 import { signup, cadastrarUsuario } from '../firebase/database'
@@ -82,7 +82,7 @@ export class CadastroInicialScreen extends Component {
       ]
       return (
         <Image
-          source={require('../../img/alimentos-fundo2.jpg')}
+          source={images.imageBackground}
           style={styles.backgroundImage}>
           <StatusBar/>
           <ComponentsCadastroInicial

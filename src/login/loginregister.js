@@ -6,7 +6,7 @@ import ComponentsLoginRegister from './componentsloginregister';
 import { login, checkUserDetails } from '../firebase/database'
 import React, { Component } from 'react';
 import { Image, Alert, BackHandler, Platform } from 'react-native';
-import { styles } from '../constants/constants'
+import { styles, images} from '../constants/constants'
 import * as firebase from 'firebase';
 import FBSDK, { LoginManager, AccessToken, GraphRequestManager, GraphRequest } from 'react-native-fbsdk'
 import Loader from '../loadingModal/loadingModal';
@@ -172,7 +172,7 @@ export class LoginRegisterScreen extends Component {
   render(){
     return (
       <Image
-        source={require('../../img/alimentos-fundo2.jpg')}
+        source={images.imageBackground}
         style={styles.backgroundImage}>
         <Loader
           loading={this.state.loading}

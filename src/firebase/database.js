@@ -552,7 +552,7 @@ export async function sendMessage(carrinhoNovo, formaPgtoNovo, formaPgtoDetalheN
      estabelecimentoNovo){
        let userId = await firebase.auth().currentUser.uid
        console.log("userId"+userId);
-       this.historicoPedidos = firebase.database().ref("/user"/+userId+"/details/pedidos/")
+       this.historicoPedidos = firebase.database().ref("/user/"+userId+"/details/pedidos/")
        this.historicoPedidos.off();
        this.historicoPedidos.push({
         carrinho: carrinhoNovo,

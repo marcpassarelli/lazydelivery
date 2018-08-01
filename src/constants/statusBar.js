@@ -15,7 +15,7 @@ export default class StatusBar extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles= StyleSheet.create({
   statusBarBackground:{
     height: (Platform.OS === 'ios') ? 30 : 0,
     backgroundColor: 'transparent'

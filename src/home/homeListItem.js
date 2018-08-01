@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { Image, View, Text, TouchableOpacity, ListView } from 'react-native'
-import { styles } from '../constants/constants'
+import { styles, images} from '../constants/constants'
 import * as firebase from 'firebase';
 
 import _ from 'lodash'

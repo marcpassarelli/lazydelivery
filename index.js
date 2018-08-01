@@ -1,4 +1,5 @@
 import React from 'react';
+import { cores } from './src/constants/constants'
 import {
   AppRegistry, Easing, Animated
 } from 'react-native';
@@ -44,7 +45,7 @@ const TabHome = TabNavigator({
       marginTop:9,
     },
     style: {
-      backgroundColor: '#8b0000',
+      backgroundColor: cores.corPrincipal,
       height:50
     },
     showIcon: true,
@@ -71,7 +72,7 @@ const TabEstabelecimento = TabNavigator({
       marginBottom:10
     },
     style: {
-      backgroundColor: '#8b0000',
+      backgroundColor: cores.corPrincipal,
     },
     showIcon: false,
     tabStyle: {

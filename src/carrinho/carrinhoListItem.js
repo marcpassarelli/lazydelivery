@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Image, Text } from 'react-native';
-import { styles } from '../constants/constants'
+import { styles, images} from '../constants/constants'
 
 
 export default class CarrinhoListItem extends Component {
@@ -83,7 +83,7 @@ export default class CarrinhoListItem extends Component {
             </View>
             <View style={{flex:1}}>
               <Text style={[styles.textCarrinhoAdicionais, {alignSelf: 'center'}]}>
-                R$ {item.preco*item.quantidade}
+                R$ {(item.preco*item.quantidade).toFixed(2)}
               </Text>
             </View>
             <View style={

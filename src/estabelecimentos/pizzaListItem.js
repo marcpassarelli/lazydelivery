@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Image, View, Text, TouchableOpacity } from 'react-native'
-import { styles } from '../constants/constants'
+import { styles, images} from '../constants/constants'
 
 export default class PizzaListItem extends Component {
 

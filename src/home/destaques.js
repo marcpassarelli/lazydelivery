@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { Image, Alert, View, Text, Button, ActivityIndicator,BackHandler, Platform, FlatList, TouchableOpacity, Modal, TouchableHighlight} from 'react-native'
-import { styles, cores } from '../constants/constants'
+import { styles, cores, images} from '../constants/constants'
 import { checkUserDetails, getUserDetails, atualizarProfilePicture, getNomeEstabelecimentos, nomesEstabelecimentos } from '../firebase/database'
 import * as firebase from 'firebase';
 import HomeListItem from './homeListItem'
@@ -243,7 +243,7 @@ export class DestaquesScreen extends Component {
 
     return (
       <Image
-        source={require('../../img/alimentos-fundo2.jpg')}
+        source={images.imageBackground}
         style={styles.backgroundImage}>
         <Loader
           loading = {this.state.loading}/>

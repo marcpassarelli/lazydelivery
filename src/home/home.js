@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { Image, Alert, View, Text, ActivityIndicator, BackHandler, Platform, FlatList, Modal, AsyncStorage } from 'react-native'
-import { styles, cores } from '../constants/constants'
+import { styles, cores, images } from '../constants/constants'
 import { listaEnderecos, getUserListEnd, checkUserDetails, getUserEndAtual, getNomeEstabelecimentos, nomesEstabelecimentos } from '../firebase/database'
 import * as firebase from 'firebase';
 import HomeListItem from './homeListItem'
@@ -231,7 +231,7 @@ export class HomeScreen extends Component {
 
     <View style={styles.containerIndicator}>
       <ActivityIndicator
-        color = '#8b0000'
+        color = {cores.corPrincipal}
         size="large"
         style = {styles.activityIndicator}/>
     </View> :
@@ -259,7 +259,7 @@ export class HomeScreen extends Component {
           style={styles.searchBar}
           inputStyle={styles.searchBarInput}
           placeholder='Procurar estabelecimento...'
-          placeholderTextColor='#8b0000'
+          placeholderTextColor={cores.corPrincipal}
           returnKeyType="search"
           clearIcon={{color:cores.corPrincipal}}/>
         <View style={{backgroundColor: '#e6e4e6', opacity: 0.8}}>
@@ -285,7 +285,7 @@ export class HomeScreen extends Component {
 
     return (
       <Image
-        source={require('../../img/alimentos-fundo2.jpg')}
+        source={images.imageBackground}
         style={styles.backgroundImage}>
         <Loader
           loading = {this.state.loading}/>

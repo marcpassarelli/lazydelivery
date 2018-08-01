@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { Platform, BackHandler, Image, View, Text,TextInput, Button, ActivityIndicator, TouchableOpacity, Dimensions, ScrollView } from 'react-native'
-import { styles, cores } from '../constants/constants'
+import { styles, cores, images} from '../constants/constants'
 import * as firebase from 'firebase';
 import {getListaAdicionais} from '../firebase/database'
 import {adicionaisEscolhidos} from './adicionais'
@@ -118,23 +118,31 @@ export class AddProdutoScreen extends Component{
   menosQtde(){
     let qtde = this.state.qtde
     if(qtde>0){
+      let qtde = this.state.qtde
+      qtde = qtde - 1
+      let preco = parseFloat(this.state.preco)
+      let total = (qtde*preco).toFixed(2)
       this.setState({
-        qtde: qtde - 1,
+        qtde: qtde,
       }, function(){
         this.setState({
-          total: this.state.qtde*this.state.preco
+          total: total
         });
       });
     }
   }
 
   maisQtde(){
-    let qtde = this.state.qtde + 1
+    let qtde = this.state.qtde
+    qtde = qtde + 1
+    let preco = parseFloat(this.state.preco)
+    let total = (qtde*preco).toFixed(2)
+    console.log("qtde:"+qtde+" preco:"+preco+" total:"+total);
     this.setState({
       qtde: qtde
     }, function(){
       this.setState({
-        total: this.state.qtde*this.state.preco
+        total: total
       });
     });
   }
@@ -198,7 +206,14 @@ export class AddProdutoScreen extends Component{
 
   valorVirgula(valor){
     var str = valor
-    var res = str.replace(".",",")
+    var res =''
+    console.log("str"+str);
+    if(str.indexOf(".")>-1){
+      res = str.replace(".",",")
+    }else{
+      res = str
+    }
+
     return(
         <Text style={styles.textAddProduto}>{res}</Text>
     )
@@ -314,7 +329,7 @@ export class AddProdutoScreen extends Component{
 
     return (
       <Image
-        source={require('../../img/alimentos-fundo2.jpg')}
+        source={images.imageBackground}
         style={styles.backgroundImage}>
         <Loader
           loading={this.state.loadingAfter}/>

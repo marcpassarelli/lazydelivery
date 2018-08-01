@@ -4,7 +4,7 @@ console.ignoredYellowBox = [
 import React, { Component } from 'react';
 import { Text, Image, View } from 'react-native';
 import FadeInOutView from '../animation/fadeinoutview'
-import { styles } from '../constants/constants'
+import { styles, images} from '../constants/constants'
 import * as firebase from 'firebase';
 /*import { Home } from './home'*/
 

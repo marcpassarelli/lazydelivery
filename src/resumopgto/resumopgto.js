@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { TextInput, Picker, PickerIOS, Platform, ScrollView, Dimensions, Image, Alert, View, Text, Button, ActivityIndicator, FlatList, Icon } from 'react-native'
-import { styles, cores } from '../constants/constants'
+import { styles, cores, images} from '../constants/constants'
 import * as firebase from 'firebase';
 import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
 import { getUserProfile, getUserEndAtual, getEstabelecimentoInfo,
@@ -136,7 +136,7 @@ async componentWillMount(){
         bairro:bairroP,
         referencia:referenciaP
       },function(){
-        console.log("state.endereco"+this.state.endereco);
+        this._callback()
       });
     })
 
@@ -146,6 +146,9 @@ async componentWillMount(){
 
 _callback(){
   console.log("inside callback"+this.state.nomeEstabelecimento);
+  this.setState({
+    loading:false
+  });
 
 }
 
@@ -280,7 +283,7 @@ funcaoTroco(){
 }
 
 valorVirgula(valor){
-  var str = valor
+  var str = (valor).toFixed(2)
   var res = str.toString().replace(".",",")
   return(
       <Text style={styles.textResumoPgto}>{res}</Text>
@@ -328,7 +331,7 @@ render() {
         <ResumoCarrinhoListItem
           item ={item}
           preco={() => {
-            var str = item.preco*item.quantidade
+            var str = (item.preco*item.quantidade).toFixed(2)
             var res = str.toString().replace(".",",")
             return(
                 <Text style={[styles.textCarrinho, {fontSize: 13, alignSelf: 'flex-end', marginRight: 15}]}>R$ {res}</Text>
@@ -344,7 +347,7 @@ render() {
     </View>
     <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5}}>
       <Text style={[styles.textResumoPgto]}>Valor Frete:</Text>
-      <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ 6</Text>
+      <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ 6,00</Text>
     </View>
     <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5}}>
       <Text style={[styles.textResumoPgto]}>Valor Total Pedido:</Text>
@@ -430,7 +433,7 @@ render() {
   return (
 
     <Image
-      source={require('../../img/alimentos-fundo2.jpg')}
+      source={images.imageBackground}
       style={styles.backgroundImage}>
       <View style={styles.separator}></View>
       {content}

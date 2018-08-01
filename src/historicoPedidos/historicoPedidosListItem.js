@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Image, Text, Button } from 'react-native';
-import { styles, cores } from '../constants/constants'
+import { styles, cores, images} from '../constants/constants'
 
 
 export default class HistoricoPedidosListItem extends Component {

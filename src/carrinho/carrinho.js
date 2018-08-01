@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { Image, Alert, View, Text, Button, ActivityIndicator, FlatList } from 'react-native'
-import { styles, cores } from '../constants/constants'
+import { styles, cores, images} from '../constants/constants'
 import * as firebase from 'firebase';
 import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
 import CarrinhoListItem from './carrinhoListItem'
@@ -119,7 +119,7 @@ export class CarrinhoScreen extends Component{
   }
 
   valorVirgula(valor){
-    var str = valor
+    var str = (valor).toFixed(2)
     var res = str.toString().replace(".",",")
     return(
         <Text style={styles.textAddProduto}>{res}</Text>
@@ -141,7 +141,7 @@ export class CarrinhoScreen extends Component{
                 onSubtract={() => this.onSubtract(item, index)}
                 onAdd={() => this.onAdd(item, index)}
                 preco={() => {
-                  var str = item.preco*item.quantidade
+                  var str = (item.preco*item.quantidade).toFixed(2)
                   var res = str.toString().replace(".",",")
                   return(
                       <Text style={styles.textCarrinho}>R$ {res}</Text>
@@ -221,7 +221,7 @@ export class CarrinhoScreen extends Component{
 
     return (
       <Image
-        source={require('../../img/alimentos-fundo2.jpg')}
+        source={images.imageBackground}
         style={styles.backgroundImage}>
         <View style={styles.separator}></View>
         {content}

@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { Image, View, Text, ActivityIndicator, FlatList } from 'react-native'
-import { styles, cores } from '../constants/constants'
+import { styles, cores, images} from '../constants/constants'
 import * as firebase from 'firebase';
 import ListaEstabelecimentosListItem from './listaEstabelecimentosListItem'
 import {getListaEstabelecimentos, listaEstabelecimentos, limparEstabelecimentoProd} from '../firebase/database'
@@ -118,7 +118,7 @@ render() {
   return (
 
     <Image
-      source={require('../../img/alimentos-fundo2.jpg')}
+      source={images.imageBackground}
       style={styles.backgroundImage}>
       <Loader
           loading = {this.state.loading}/>

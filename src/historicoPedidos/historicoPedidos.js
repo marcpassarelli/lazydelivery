@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { FlatList, Image, View, Text, Button, ActivityIndicator, TouchableHighlight, YellowBox } from 'react-native'
-import { styles, cores } from '../constants/constants'
+import { styles, cores, images} from '../constants/constants'
 import { updateStatus, carregarPedidos } from '../firebase/database'
 import HistoricoPedidosListItem from './historicoPedidosListItem'
 
@@ -119,7 +119,7 @@ export class HistoricoPedidosScreen extends Component {
 
     return (
       <ImageBackground
-        source={require('../../img/alimentos-fundo2.jpg')}
+        source={images.imageBackground}
         style={styles.backgroundImage}>
         <View style={{flex:1}}>
           {content}

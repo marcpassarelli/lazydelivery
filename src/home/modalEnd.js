@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { styles, cores } from '../constants/constants'
+import { styles, cores, images} from '../constants/constants'
 import {
   StyleSheet,
   View,

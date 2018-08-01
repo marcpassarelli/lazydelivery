@@ -4,9 +4,13 @@ console.ignoredYellowBox = [
 import { StyleSheet, Alert, Navigator } from 'react-native';
 import React, { Component } from 'react';
 
+export const images ={
+  imageBackground: require('../../img/transparent.png'),
+}
 export const cores = {
-    corPrincipal: '#8b0000',
-    textDetalhes:'#2F4F4F',
+    corPrincipal: '#472c82',
+    corSecundaria: 'rgba(252, 204, 60,0.85)',
+    textDetalhes:'rgb(43, 189, 204)',
 };
 
 export const styles = StyleSheet.create({
@@ -20,6 +24,7 @@ export const styles = StyleSheet.create({
     // resizeMode: 'cover', // or 'stretch'
     height: null,
     width: null,
+    tintColor: cores.corSecundaria
   },
   buttonFacebook: {
     height: 60,

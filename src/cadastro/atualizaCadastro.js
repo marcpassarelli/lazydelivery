@@ -3,7 +3,7 @@ console.ignoredYellowBox = [
 ]
 import React, { Component } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
-import { styles } from '../constants/constants'
+import { styles, images} from '../constants/constants'
 import * as firebase from 'firebase';
 import { atualizarUsuario } from '../firebase/database'
 import { Hoshi } from 'react-native-textinput-effects';
@@ -79,7 +79,7 @@ export class AtualizaCadastroScreen extends Component {
     ]
     return (
       <Image
-        source={require('../../img/alimentos-fundo2.jpg')}
+        source={images.imageBackground}
         style={styles.backgroundImage}>
         <StatusBar/>
         <KeyboardAwareScrollView>

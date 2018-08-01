@@ -4,7 +4,7 @@ console.ignoredYellowBox = [
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import React, { Component } from 'react';
 import { Image, Text, View, ActivityIndicator, ScrollView } from 'react-native'
-import { styles,cores } from '../constants/constants'
+import { styles,cores, images} from '../constants/constants'
 import { getEstabelecimentoInfo, estabelecimentoInfo } from '../firebase/database'
 import * as firebase from 'firebase';
 import StatusBar from '../constants/statusBar'
@@ -174,7 +174,7 @@ export class EstabelecimentoInformacoesScreen extends Component {
 
      return (
        <Image
-         source={require('../../img/alimentos-fundo2.jpg')}
+         source={images.imageBackground}
          style={styles.backgroundImage}>
          {content}
        </Image>
