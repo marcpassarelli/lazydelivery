@@ -145,7 +145,7 @@ export const styles = StyleSheet.create({
     backgroundColor:'transparent',
   },
   renderSeparatorComponent:{
-    height: 2,
+    height: 3,
     width: "100%",
     backgroundColor: "#CED0CE",
     marginLeft: 5,
@@ -227,6 +227,13 @@ textAdicionais:{
     marginLeft: 5,
     fontSize: 17,
     color: cores.corPrincipal
+  },
+  textHistoricoPedidos: {
+    backgroundColor:'transparent',
+    fontSize: 15,
+    color: cores.corPrincipal,
+    marginBottom:5,
+    marginLeft: 5
   },
   textInformacoes:{
     backgroundColor:'transparent',

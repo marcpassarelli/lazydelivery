@@ -198,9 +198,10 @@ fazerPedido(){
                     'Seu pedido foi recebido pelo estabelecimento e está sendo preparado para o envio até você. Em caso de dúvidas entre em contato com o estabelecimento',
                     [
                       {text: 'OK', onPress: () => {
-                        salvarPedido(this.state.produtosCarrinho, formaPgto, formaPgtoDetalhe,
-                          this.state.nome, this.state.telefone, this.state.endereco, this.state.bairro,
-                        this.state.referencia, this.state.nomeEstabelecimento)
+                        console.log("totalPrice"+this.totalPrice);
+                        salvarPedido(this.state.produtosCarrinho, this.totalPrice, this.state.frete, formaPgto, formaPgtoDetalhe,
+                          this.state.endereco, this.state.bairro,
+                          this.state.nomeEstabelecimento)
                         atualizarCarrinho([])
                         const { navigate } = this.props.navigation;
                         navigate('Home')

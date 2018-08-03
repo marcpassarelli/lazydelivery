@@ -1,9 +1,10 @@
 
 import React, { Component } from 'react';
-import { FlatList, Image, View, Text, Button, ActivityIndicator, TouchableHighlight, YellowBox } from 'react-native'
+import { ImageBackground, FlatList, Image, View, Text, Button, ActivityIndicator, TouchableHighlight, YellowBox } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
 import { updateStatus, carregarPedidos } from '../firebase/database'
 import HistoricoPedidosListItem from './historicoPedidosListItem'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import * as firebase from 'firebase';
 let todocount=0
@@ -11,9 +12,24 @@ let listener = null
 let teste=[];
 export class HistoricoPedidosScreen extends Component {
 
-  static navigationOptions = {
-    header: null
-  };
+  static navigationOptions = ({navigation}) => ({
+    title: "Histórico de Pedidos",
+    headerTitleStyle: styles.headerText,
+    headerStyle: styles.header,
+    headerLeft: (
+      <Icon
+        style={{marginLeft: 15}}
+        name={'arrow-left'}
+        size={26}
+        color="#000000"
+        onPress={
+          ()=>{
+          navigation.navigate('Home')
+          }}>
+        </Icon>
+      ),
+    headerRight: (<View></View>)
+  })
 
   constructor(props) {
     super(props);
@@ -35,17 +51,16 @@ export class HistoricoPedidosScreen extends Component {
     carregarPedidos((message)=>{
       teste.push({
         id:message._id,
-        nome:message.nome,
-        telefone:message.telefone,
         endereco:message.endereco,
         bairro: message.bairro,
-        referencia: message.referencia,
+        estabelecimento: message.estabelecimento,
         formaPgto: message.formaPgto,
         carrinho: message.carrinho,
+        frete: message.frete,
+        valorCompra: message.valorCompra,
         createdAt: message.createdAt,
-        status: message.status
+        logo: message.logo
         })
-        console.log("teste.status"+JSON.stringify(teste.status));
       this.setState({
         messages:teste
       },function(){
@@ -55,25 +70,30 @@ export class HistoricoPedidosScreen extends Component {
         });
       });
     })
-
-
   }
 
   onPressSend=(item,index)=>{
-    console.log("dentro onpresssend");
-    const messages = [...this.state.messages]
-    updateStatus(messages[index].id,"recebido",(status)=>{
-       messages[index].status = status.status
-      this.setState({messages});
-    })
+    // const messages = [...this.state.messages]
+    const { navigate } = this.props.navigation;
+    navigate('DetalhesPedido',{
+      endereco:item.endereco,
+      bairro: item.bairro,
+      estabelecimento: item.estabelecimento,
+      formaPgto: item.formaPgto,
+      carrinho: item.carrinho,
+      valorCompra: item.valorCompra,
+      createdAt: item.createdAt,
+      logo: item.logo,
+      frete: item.frete
+  })
   }
 
   _renderItem=({item,index})=>{
     return(
-      <HomeListItem
+      <HistoricoPedidosListItem
         onPressSend={()=>this.onPressSend(item,index)}
         item={item}>
-      </HomeListItem>
+      </HistoricoPedidosListItem>
     )
   }
   renderSeparatorComponent = () => {
@@ -112,21 +132,18 @@ export class HistoricoPedidosScreen extends Component {
     </View> :
 
     <View>
-      <Text style={{alignSelf: 'center',fontSize: 16, marginBottom: 10}}>Pedidos</Text>
       <View>{this.functionListaPedidos()}</View>
     </View>
 
 
     return (
-      <ImageBackground
+      <Image
         source={images.imageBackground}
         style={styles.backgroundImage}>
         <View style={{flex:1}}>
           {content}
         </View>
-      </ImageBackground>
-
-
+      </Image>
     );
   }
 

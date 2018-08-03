@@ -106,6 +106,7 @@ sectionDataFunction(){
       indexToRemove.push(i)
     }
   })
+
   //Remover Pizzas da lista de produtos
   for (var i = indexToRemove.length - 1; i>=0;i--){
     newEstabelecimentoProd.splice(indexToRemove[i],1)
@@ -143,7 +144,8 @@ sectionDataFunction(){
               preco: preco,
               tipo: "Pizzas",
               fatias: item.fatias,
-              _id: id++
+              _id: id++,
+              sabores: j
             })
           }else{
             newEstabelecimentoProd.push({
@@ -152,12 +154,14 @@ sectionDataFunction(){
               preco: preco,
               tipo: "Pizzas",
               fatias: item.fatias,
-              _id: id++
+              _id: id++,
+              sabores: j
             })
           }
         }
     })
-
+    console.log("newEstabelecimentoProd"+JSON.stringify(newEstabelecimentoProd));
+    console.log("listaPizzas"+JSON.stringify(listaPizzas));
 //Separa lista por tipo de produto
   sectionData = _.groupBy(newEstabelecimentoProd, p => p.tipo)
 
@@ -219,18 +223,15 @@ renderItem = (item) =>{
     <EstabelecimentoProdutosListItem
       nomeProduto = {item.item.nomeProduto}
       preco = {()=>{
-        if(item.item.tipo=="Pizzas"){
-          return(
-              <Text style={styles.textPreco}>A partir de R$ {item.item.preco}</Text>
-          )
-        }else{
-
         let str = item.item.preco
-
-        str = str.toString()
-
+        console.log("str"+str);
         let res = str.toString().replace(".",",")
 
+        if(item.item.tipo=="Pizzas"){
+          return(
+              <Text style={styles.textPreco}>A partir de R$ {res}</Text>
+          )
+        }else{
         return(
             <Text style={styles.textPreco}>R$ {res}</Text>
         )}
@@ -239,7 +240,7 @@ renderItem = (item) =>{
       navigation={()=>{
         if(item.item.tipo=="Pizzas"){
           console.log("Pizzas do tamanho "+item.item.tamanho);
-          this.props.navigation.navigate('Pizza',{nomeEstabelecimento: nomeEstabelecimentoUp, title:"Pizza "+item.item.nomeProduto, fatias: item.item.fatias, tamanhoPizza: item.item.tamanho})
+          this.props.navigation.navigate('Pizza',{nomeEstabelecimento: nomeEstabelecimentoUp, title:"Pizza "+item.item.nomeProduto, sabores: item.item.sabores, tamanhoPizza: item.item.tamanho})
         }else{
           this.props.navigation.navigate('AddProduto',{nomeEstabelecimento: nomeEstabelecimentoUp,
           nome: item.item.nomeProduto, preco: item.item.preco, detalhes: item.item.detalhes,

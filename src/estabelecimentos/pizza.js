@@ -12,6 +12,7 @@ import { listaPizzas } from './estabelecimentoProdutos'
 import _ from 'lodash';
 
 var listaPizzasTamanho = []
+var qtdeSabores = 0
 
 export class PizzaScreen extends Component{
 
@@ -63,46 +64,20 @@ componentWillMount(){
   const {state} = this.props.navigation
   var estabelecimento = state.params ? state.params.nomeEstabelecimento : ""
   tamanhoPizza = state.params ? state.params.tamanhoPizza : ""
+  this.qtdeSabores = state.params ? state.params.sabores : ""
+  console.log("this.qtdeSabores"+this.qtdeSabores);
+
   listaPizzasTamanho = listaPizzas[tamanhoPizza]
   listaPizzasTamanho = _.orderBy(listaPizzasTamanho,['preco','nomeProduto'],['asc','asc'])
-  
+  console.log("listaPizzasTamanho"+JSON.stringify(listaPizzasTamanho));
+
+
   this.setState({
     loadingList: false
   },function(){
     console.log("listLoadad");
   });
 
-}
-
-renderItem = (item) =>{
-  const {state} = this.props.navigation;
-  var nomeEstabelecimentoUp = state.params ? state.params.nomeEstabelecimento : ""
-
-  return (
-  <View>
-    <PizzaListItem
-      item={item}
-      nomeProduto = {item.nomeProduto}
-      preco = {()=>{
-        return(
-            <Text style={styles.textPreco}>R$ {parseDouble(item.preco)/parseDouble(item.fatias)}</Text>
-        )
-      }}
-      detalhes = {item.detalhes}
-      navigation={()=>{
-        if(item.item.tipo=="Pizzas"){
-          // console.log("Pizzas do tamanho "+item.item.tamanho+": "+JSON.stringify(listaPizzas[item.item.tamanho]));
-          this.props.navigation.navigate('Pizza')
-        }else{
-          this.props.navigation.navigate('AddProduto',{nomeEstabelecimento: nomeEstabelecimentoUp,
-          nome: item.item.nomeProduto, preco: item.item.preco, detalhes: item.item.detalhes,
-          imgProduto: item.item.imgProduto, tipoProduto: item.item.tipo,
-          tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento})
-        }
-    }}>
-  </PizzaListItem>
-  </View>
-  )
 }
 
   render() {
@@ -126,6 +101,7 @@ renderItem = (item) =>{
         data={listaPizzasTamanho}
         renderItem={({item})=>(
           <PizzaListItem
+            qtdeSabores={this.qtdeSabores}
             item={item}
             navigation={()=>{
               if(item.item.tipo=="Pizzas"){
@@ -139,7 +115,6 @@ renderItem = (item) =>{
               }
           }}
             >
-
           </PizzaListItem>
         )}
         keyExtractor={(item) => item._id}

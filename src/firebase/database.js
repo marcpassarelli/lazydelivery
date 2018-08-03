@@ -12,6 +12,7 @@ export var nomesEstabelecimentos = []
 export var allDatabase = []
 export var listaEnderecos = []
 export var numTamanhos = 0
+export var listaPedidos=[]
 var todoCounter = 1;
 
 export async function login (email, pass, onLogin) {
@@ -500,28 +501,27 @@ export async function loadMessages(estabelecimento, chave, callback){
 }
 
 export async function carregarPedidos(callback){
-
+  let userId = await firebase.auth().currentUser.uid
   // console.log("dentro waitMessages");
-  this.messageRef = firebase.database().ref("/messages/Casa Nova")
-  // console.log("messageRef"+this.messageRef);
-  this.messageRef.off();
-  const onReceive = (data) =>{
-    const message = data.val()
-    callback({
-      _id: data.key,
-      carrinho: message.carrinho,
-      createdAt: new Date(message.createdAt),
-      formaPgto: message.formaPgto,
-      formaPgtoDetalhe: message.formaPgtoDetalhe,
-      nome: message.nome,
-      telefone: message.telefone,
-      endereco: message.endereco,
-      bairro: message.bairro,
-      referencia: message.referencia,
-      status: message.status
+  firebase.database().ref("/user/"+userId+"/details/pedidos").once('value').then(function(snapshot){
+    snapshot.forEach((child)=>{
+      firebase.database().ref("/infoEstabelecimentos/"+child.val().estabelecimento+"/logo").once('value').then(function(logo){
+      callback({
+        logo: logo.val(),
+        _id:child.key,
+        carrinho: child.val().carrinho,
+        bairro: child.val().bairro,
+        frete: child.val().frete,
+        createdAt: new Date(child.val().createdAt),
+        endereco: child.val().endereco,
+        estabelecimento: child.val().estabelecimento,
+        formaPgto: child.val().formaPgto,
+        formaPgtoDetalhe: child.val().formaPgtoDetalhe,
+        valorCompra: child.val().valorCompra
+      })
     })
-  }
-  this.messageRef.limitToLast(20).on('child_added', onReceive).orderByChild('status');
+  })
+  })
 }
 
 export var chaveMsg=""
@@ -547,9 +547,8 @@ export async function sendMessage(carrinhoNovo, formaPgtoNovo, formaPgtoDetalheN
 
   }
 
-  export async function salvarPedido(carrinhoNovo, formaPgtoNovo, formaPgtoDetalheNovo,
-     nomeNovo, telefoneNovo, enderecoNovo, bairroNovo, referenciaNovo,
-     estabelecimentoNovo){
+  export async function salvarPedido(carrinhoNovo, totalPriceNovo, freteNovo, formaPgtoNovo, formaPgtoDetalheNovo,
+     enderecoNovo, bairroNovo, estabelecimentoNovo){
        let userId = await firebase.auth().currentUser.uid
        console.log("userId"+userId);
        this.historicoPedidos = firebase.database().ref("/user/"+userId+"/details/pedidos/")
@@ -558,12 +557,12 @@ export async function sendMessage(carrinhoNovo, formaPgtoNovo, formaPgtoDetalheN
         carrinho: carrinhoNovo,
         formaPgto: formaPgtoNovo,
         formaPgtoDetalhe: formaPgtoDetalheNovo,
-        nome: nomeNovo,
-        telefone: telefoneNovo,
         endereco: enderecoNovo,
         bairro: bairroNovo,
-        referencia: referenciaNovo,
+        frete: freteNovo,
         estabelecimento: estabelecimentoNovo,
+        valorCompra: totalPriceNovo,
         createdAt: firebase.database.ServerValue.TIMESTAMP,
+
     })
   }

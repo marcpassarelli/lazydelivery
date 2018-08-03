@@ -24,7 +24,7 @@ export default class PizzaListItem extends Component {
         }}>
         <View style={{flexDirection: 'row',justifyContent: 'space-between'}}>
           <Text style={styles.textProdutos}>{item.nomeProduto}</Text>
-          <Text style={styles.textProdutos}>{item.preco}</Text>
+          <Text style={styles.textProdutos}>{(item.preco/this.props.qtdeSabores).toFixed(2)}</Text>
         </View>
         <View style={{flexDirection: 'column', marginLeft:10}}>
           <Text style={styles.textDetalhesEstabelecimento}>{item.detalhes}</Text>

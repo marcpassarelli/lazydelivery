@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Image, Text, Button } from 'react-native';
 import { styles, cores, images} from '../constants/constants'
-
+import _ from 'lodash'
 
 export default class HistoricoPedidosListItem extends Component {
   constructor(props) {
@@ -9,25 +9,6 @@ export default class HistoricoPedidosListItem extends Component {
     this.state = {
       status:false
     }
-  }
-
-  functionButton=(item,functionProps)=>{
-    console.log(" dentro function button status"+JSON.stringify(item.status));
-    if(item.status=="recebido"){
-      console.log("dentro do pedido já aceito")
-      return(
-        <Text>Pedido já aceito.</Text>
-      )
-    }else{
-      return(
-      <Button
-        onPress={functionProps}
-        title="Pedido Pendente"
-        color="#8b0000"
-        accessibilityLabel="YourLabelHere"
-      />)
-    }
-
   }
 
   functionCarrinhoListItem=(item)=>{
@@ -50,30 +31,32 @@ export default class HistoricoPedidosListItem extends Component {
           <TouchableOpacity
             style={item.status=="recebido" ? styles.recebidoStatus : styles.aguardandoStatus}
             onPress={this.props.onPressSend}>
-            <View style={{flex: 1, flexDirection: 'column', justifyContent: 'flex-start', height: 160}}>
-                <Text style={[styles.textCarrinho,
-                    {marginHorizontal: 5,
-                  fontSize: 13}]}>Nome Cliente: {item.nome}
-                </Text>
-                <Text style={[styles.textCarrinho]}>
-                  Telefone: {item.telefone}
-                </Text>
-                <Text style={[styles.textCarrinho]}>
-                  Endereco: {item.endereco}
-                </Text>
-                <Text style={[styles.textCarrinho]}>
-                  Bairro: {item.bairro}
-                </Text>
-                <Text style={[styles.textCarrinho]}>
-                  Referência: {item.referencia}
-                </Text>
-                <Text style={[styles.textCarrinho]}>
-                  Horário do Pedido: {hours+":"+minutes+":"+seconds}
-                </Text>
-                <Text style={[styles.textCarrinho]}>
+            <View style={{flex: 1, flexDirection: 'column'}}>
+              <View style={{flexDirection: 'row',justifyContent: 'space-between',marginVertical: 10}}>
+                <View>
+                  <Text style={[styles.textHistoricoPedidos,{fontSize: 22, marginTop:5}]}>
+                    {item.estabelecimento}
+                  </Text>
+                  <Text style={[styles.textHistoricoPedidos]}>
+                    Valor Compra: R${(item.valorCompra+item.frete).toFixed(2)}
+                  </Text>
+                </View>
+                <View style={{marginRight: 10}}>
+                  <Image
+                    source={{uri:item.logo}}
+                    style={styles.imagemTipoEstabelecimento}
+                    />
+                </View>
+              </View>
+                <Text style={[styles.textHistoricoPedidos]}>
                   Data do Pedido: {day+"/"+month+"/"+year}
                 </Text>
-                <Text style={[styles.textCarrinho, {fontSize: 16  , alignSelf: 'center'}]}>Status: {item.status}</Text>
+                <Text style={[styles.textHistoricoPedidos]}>
+                  Horário do Pedido: {hours+":"+minutes+":"+seconds}
+                </Text>
+                <Text style={[styles.textHistoricoPedidos]}>
+                  CLIQUE PARA MAIS DETALHES SOBRE O PEDIDO
+                </Text>
             </View>
           </TouchableOpacity>
         </View>
