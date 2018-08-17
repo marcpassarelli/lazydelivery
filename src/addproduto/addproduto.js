@@ -3,11 +3,12 @@ import React, { Component } from 'react';
 import { Platform, BackHandler, Image, View, Text,TextInput, Button, ActivityIndicator, TouchableOpacity, Dimensions, ScrollView } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
 import * as firebase from 'firebase';
-import {getListaAdicionais} from '../firebase/database'
+import {getListaAdicionais, listaAdicionais} from '../firebase/database'
 import {adicionaisEscolhidos} from './adicionais'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Loader from '../loadingModal/loadingModal';
 import StatusBar from '../constants/statusBar'
+import { AndroidBackHandler } from 'react-navigation-backhandler';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -35,9 +36,9 @@ export class AddProdutoScreen extends Component{
         color="#000000"
         onPress={
           ()=>{
-          navigation.navigate('Estabelecimento',
-          {nomeEstabelecimento:navigation.state.params.nomeEstabelecimento,
-          tipoEstabelecimento: navigation.state.params.tipoEstabelecimento})
+            navigation.navigate('Estabelecimento',
+            {nomeEstabelecimento:navigation.state.params.nomeEstabelecimento,
+            tipoEstabelecimento: navigation.state.params.tipoEstabelecimento})
           }}>
         </Icon>
       ),
@@ -68,33 +69,30 @@ export class AddProdutoScreen extends Component{
   }
 }
 
-  componentDidMount(){
-    if (Platform.OS == "android" && listener == null) {
-      listener = BackHandler.addEventListener("hardwareBackPress", () => {
-        this.props.navigation('')
-      })
-    }
-  }
-
   componentWillMount(){
 
     const {state} = this.props.navigation
-    this.totalPrice = state.params ? state.params.totalPreco : ""
+
     var nome = state.params ? state.params.nome : ""
-    var preco = state.params ? state.params.preco : ""
+    var preco = state.params.tipoProduto=="Pizzas" ? state.params.precoPizza : state.params.preco
     var detalhes = state.params ? state.params.detalhes : ""
     var imgProduto = state.params ? state.params.imgProduto : ""
     var tipoProduto = state.params ? state.params.tipoProduto : ""
+
     var estabelecimento = state.params ? state.params.nomeEstabelecimento : ""
+
     var telaAdicionais = state.params ? state.params.telaAdicionais : ""
     var tipoEstabelecimento = state.params ? state.params.tipoEstabelecimento : ""
+    this.totalPrice = state.params ? state.params.totalPreco : ""
 
+
+    //Se tiver vindo da lista de produtos zerará os adicionais
     if(!telaAdicionais){
       this.setState({
         listaAdicionais: []
       });
     }
-
+    console.log("estabelecimento "+estabelecimento+"/ tipoProduto"+tipoProduto);
     getListaAdicionais(estabelecimento, tipoProduto)
 
     this.setState({
@@ -137,7 +135,7 @@ export class AddProdutoScreen extends Component{
     qtde = qtde + 1
     let preco = parseFloat(this.state.preco)
     let total = (qtde*preco).toFixed(2)
-    console.log("qtde:"+qtde+" preco:"+preco+" total:"+total);
+
     this.setState({
       qtde: qtde
     }, function(){
@@ -153,21 +151,24 @@ export class AddProdutoScreen extends Component{
     });
     const {state} = this.props.navigation
     var estabelecimento = state.params ? state.params.nomeEstabelecimento : ""
-    console.log("nome: "+this.state.nome+" preco: "+this.state.preco+" qtde: "+this.state.qtde)
+
+
     carrinho.push({
       nome:this.state.nome,
       preco:this.state.preco,
       quantidade:this.state.qtde,
       obs:this.state.obs,
+      detalhes:this.state.detalhes,
       adicional:false,
       tag: tag,
-      _id:todoCounter++
+      _id:todoCounter++,
+      tipoProduto:this.state.tipoProduto
     })
 
 
     this.state.listaAdicionais.map((item, i, arr)=>{
           if(arr.length > 0 ){
-            console.log("nome: "+item.nome+" preco: "+item.preco+" qtde: "+item.qtde);
+
             carrinho.push({
               nome: item.nome,
               preco: item.preco,
@@ -175,7 +176,8 @@ export class AddProdutoScreen extends Component{
               obs:"",
               adicional:true,
               _id:todoCounter++,
-              tag:tag
+              tag:tag,
+              tipoProduto:item.tipoProduto
             })
           }
     })
@@ -192,36 +194,47 @@ export class AddProdutoScreen extends Component{
   checkAdicionais(){
     var total = parseFloat(this.state.total) + parseFloat(this.totalPrice)
 
-    if(this.totalPrice>0){
+
+    if(this.tipoProduto="Pizzas"&&this.totalPrice>=0){
       return(
       <View style={{flex:1}}>
         <Text style={[styles.textAddProduto,{fontSize: 12}]}>Valor Adicionais: R${this.totalPrice}</Text>
         <Text style={styles.textAddProduto}>Total com Adicionais: R$ {total}</Text>
       </View>
       )
-    }else {
-      return <Text></Text>
+    }else if(this.totalPrice>=0) {
+      return(
+      <View style={{flex:1}}>
+        <Text style={[styles.textAddProduto,{fontSize: 12}]}>Valor Adicionais: R${this.totalPrice}</Text>
+        <Text style={styles.textAddProduto}>Total com Adicionais: R$ {total}</Text>
+      </View>
+      )
     }
   }
 
   valorVirgula(valor){
-    var str = valor
-    var res =''
-    console.log("str"+str);
-    if(str.indexOf(".")>-1){
-      res = str.replace(".",",")
-    }else{
-      res = str
-    }
 
+    var str = parseFloat(valor)
+    str = (str).toFixed(2)
+    var res = str.toString().replace(".",",")
     return(
         <Text style={styles.textAddProduto}>{res}</Text>
     )
   }
 
+
   handleImageLoaded() {
-    console.log("handledimage");
+
    this.setState({ loading: false });
+ }
+
+ onBackButtonPressAndroid = () =>{
+   const {navigate} = this.props.navigation
+   const {state} = this.props.navigation
+   navigate('Estabelecimento',
+   {nomeEstabelecimento:state.params.nomeEstabelecimento,
+   tipoEstabelecimento: state.params.tipoEstabelecimento})
+   return true
  }
 
   render() {
@@ -230,10 +243,7 @@ export class AddProdutoScreen extends Component{
       'Setting a timer'
     ];
 
-
-
     var {width, height} = Dimensions.get('window');
-
 
     const content = this.state.loading ?
 
@@ -244,16 +254,22 @@ export class AddProdutoScreen extends Component{
         style = {styles.activityIndicator}/>
     </View> :
 
+    <AndroidBackHandler onBackPress={this.onBackButtonPressAndroid}>
     <View style={{flex: 1}}>
       <StatusBar/>
       <ScrollView>
-        <Image
-          source={{uri:this.state.imgProduto}}
-          onLoadEnd={()=>{this.setState({
-            imageLoaded: false
-          });}}
-          style={[styles.imgProduto,{width: width*0.98, height: height*0.3}]}>
-        </Image>
+        {this.state.imgProduto ?
+          <Image
+            source={{uri:this.state.imgProduto}}
+            onLoadEnd={()=>{this.setState({
+              imageLoaded: false
+            });}}
+            style={[styles.imgProduto,{width: width*0.98, height: height*0.3}]}>
+          </Image>
+          :
+          <View style={{marginTop: 10}}></View>
+        }
+
         <Text style={[styles.textAddProduto,{marginBottom: 0}]}>
             {this.state.nome}
         </Text>
@@ -285,8 +301,9 @@ export class AddProdutoScreen extends Component{
         <Text style={styles.textAddProduto}>
           Total: R$ {this.valorVirgula(this.state.total)}
         </Text>
-
+        {listaAdicionais.length>0 ?
         <TouchableOpacity onPress={()=>{
+            console.log("this.state.tipoProduto"+this.state.tipoProduto);
             this.props.navigation.navigate('Adicionais',{nome:this.state.nome,
                   preco:this.state.preco,
                   detalhes:this.state.detalhes,
@@ -299,15 +316,26 @@ export class AddProdutoScreen extends Component{
             Adicionais?
           </Text>
         </TouchableOpacity>
-
+        :
+        <View onLayout={()=>{
+            this.setState({
+              imageLoaded: false
+            });
+          }}></View>
+      }
         <Text style={[styles.textAddProduto,{fontSize: 12}]}>{
+            this.state.tipoProduto == "Pizzas" ?
+              this.state.listaAdicionais.map((item,i)=>{
+                return <Text key={i}>{item.nome}</Text>
+              })
+            :
             this.state.listaAdicionais.map((item, i, arr)=>{
-                  if(arr.length === i + 1 ){
-                    return (<Text key={i}>{item.nome} ({item.quantidade})</Text>)
-                  }else{
-                    return (<Text key={i}>{item.nome} ({item.quantidade}), </Text>)
-                  }
-                })
+                if(arr.length === i + 1 ){
+                  return (<Text key={i}>{item.quantidade}x {item.nome} (R$ {item.preco*item.quantidade})</Text>)
+                }else{
+                  return (<Text key={i}>{item.quantidade}x {item.nome} (R$ {item.preco*item.quantidade}), </Text>)
+                }
+              })
               }
         </Text>
         <View>
@@ -326,6 +354,7 @@ export class AddProdutoScreen extends Component{
         </TextInput>
       </ScrollView>
     </View>
+    </AndroidBackHandler>
 
     return (
       <Image

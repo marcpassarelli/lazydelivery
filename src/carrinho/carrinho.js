@@ -7,7 +7,8 @@ import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
 import CarrinhoListItem from './carrinhoListItem'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import StatusBar from '../constants/statusBar'
-
+import { retiraLoja } from '../firebase/database'
+import { CheckBox } from 'react-native-elements'
 import _ from 'lodash'
 let totalPrice =0
 const produtosCarrinho = []
@@ -27,8 +28,10 @@ export class CarrinhoScreen extends Component{
     this.state = {
       tipoEstabelecimento:'',
       loading: false,
-      produtosCarrinho,
-      frete:6
+      produtosCarrinho:[],
+      frete:6,
+      retiraNaLoja:'',
+      retirar:false
     }
 
   }
@@ -36,19 +39,32 @@ export class CarrinhoScreen extends Component{
 
   componentWillMount(){
 
-    console.log("carrinho: "+JSON.stringify(carrinho));
+    const {state} = this.props.navigation
+    var nomeEstabelecimento = state.params ? state.params.nomeEstabelecimento : ""
+
+    retiraLoja(nomeEstabelecimento,(callback)=>{
+      this.setState({
+        retiraNaLoja: callback.retiraLoja
+      });
+    });
 
     this.setState({
       loading: true
     })
+    if(carrinho.length>0){
+      this.setState({
+        produtosCarrinho: carrinho
+      }, function(){
+          this.setState({
+            loading: false
+          })
+      })
+    }else{
+      this.setState({
+        loading: false
+      })
+    }
 
-    this.setState({
-      produtosCarrinho: carrinho
-    }, function(){
-        this.setState({
-          loading: false
-        })
-    })
   }
 
   renderSeparatorComponent = () => {
@@ -57,7 +73,6 @@ export class CarrinhoScreen extends Component{
 
   onSubtract = (item, index) =>{
     const produtosCarrinho = [...this.state.produtosCarrinho];
-    console.log("produtosCarrinho"+JSON.stringify(produtosCarrinho));
     if(produtosCarrinho[index].quantidade>1){
       produtosCarrinho[index].quantidade -= 1;
       this.setState({ produtosCarrinho });
@@ -79,9 +94,24 @@ export class CarrinhoScreen extends Component{
                 produtosCarrinho.splice(indexToRemove[i],1)
               }
 
-              this.setState({ produtosCarrinho}, function(){
-                atualizarCarrinho(this.state.produtosCarrinho)
-              })
+              if(produtosCarrinho.length>0){
+                this.setState({produtosCarrinho},function(){
+                  atualizarCarrinho(this.state.produtosCarrinho)
+                });
+              }else{
+                this.setState({
+                  produtosCarrinho:[]
+                });
+                atualizarCarrinho([])
+              }
+
+              // this.setState({ produtosCarrinho}, function(){
+              //   if(produtosCarrinho.length>0){
+              //   atualizarCarrinho(this.state.produtosCarrinho)
+              // }else{
+              //   atualizarCarrinho([])
+              // }
+              // })
             }},
             {text: 'Não', onPress: ()=>{
               console.log("cancelado");
@@ -119,6 +149,7 @@ export class CarrinhoScreen extends Component{
   }
 
   valorVirgula(valor){
+    console.log("valor"+valor);
     var str = (valor).toFixed(2)
     var res = str.toString().replace(".",",")
     return(
@@ -127,8 +158,7 @@ export class CarrinhoScreen extends Component{
   }
 
   functionCarrinho=()=>{
-    console.log("carrinho"+JSON.stringify(carrinho));
-    if(carrinho.length>0){
+    if(Object.keys(this.state.produtosCarrinho).length>0){
       return(
         <View style={{flex: 1}}>
           <FlatList
@@ -151,22 +181,61 @@ export class CarrinhoScreen extends Component{
             keyExtractor={item => item._id}
           />
         <View style={{backgroundColor: cores.corPrincipal, height: 1}}></View>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 3}}>
-            <Text style={[styles.textAdicionais,{fontSize: 16,marginBottom: 3}]}>
-              Valor Pedido:
-            </Text>
-            <Text style={[styles.textAdicionais,
-                {alignItems:'flex-end', fontSize: 16,marginBottom: 3}]}>
-                R$ {this.valorVirgula(this.totalPrice)}
-            </Text>
+          <View>
+            {this.state.retiraNaLoja ?
+              <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10}}>
+                <Text style={[styles.textAdicionais,{fontSize: 16,marginBottom: 3}]}>Retirar na loja?</Text>
+                <CheckBox
+                  checked={this.state.retirar}
+                  onPress={()=>{
+                    if(this.state.retirar){
+                      console.log("this.frete"+this.frete);
+                      this.setState({
+                        frete: 6.00,
+                        retirar: false
+                      });
+                      console.log("this.totalPrice"+this.totalPrice);
+                      console.log("this.state.frete"+this.state.frete);
+                    }else{
+                      this.setState({
+                        frete:0.00,
+                        retirar: true
+                      })
+                      console.log("this.totalPrice"+this.totalPrice);
+                      console.log("this.state.frete"+this.state.frete);
+                    }
+                  }}
+                  textStyle={{fontSize: 10}}
+                  containerStyle={{backgroundColor: 'rgba(0,0,0,0.1)'}}
+                />
+              </View>
+            :
+              <View></View>
+            }
           </View>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10}}>
-            <Text style={[styles.textAdicionais,{fontSize: 16, marginBottom: 3}]}>Frete:</Text>
-            <Text style={[styles.textAdicionais,
-                {alignItems:'flex-end', fontSize: 16,marginBottom: 3}]}>
-                R$ {this.valorVirgula(this.state.frete)}
-            </Text>
-          </View>
+        <View style={{backgroundColor: cores.corPrincipal, height: 1}}></View>
+        {this.state.retirar ?
+            <View></View>
+            :
+            <View>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 3}}>
+              <Text style={[styles.textAdicionais,{fontSize: 16,marginBottom: 3}]}>
+                Valor Pedido:
+              </Text>
+              <Text style={[styles.textAdicionais,
+                  {alignItems:'flex-end', fontSize: 16,marginBottom: 3}]}>
+                  R$ {this.valorVirgula(this.totalPrice)}
+              </Text>
+            </View>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10}}>
+              <Text style={[styles.textAdicionais,{fontSize: 16, marginBottom: 3}]}>Frete:</Text>
+              <Text style={[styles.textAdicionais,
+                  {alignItems:'flex-end', fontSize: 16,marginBottom: 3}]}>
+                  R$ {this.valorVirgula(this.state.frete)}
+              </Text>
+            </View>
+            </View>
+          }
           <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10}}>
             <Text style={[styles.textAdicionais,
                 {fontSize: 18,marginBottom: 3}]}>
@@ -180,9 +249,10 @@ export class CarrinhoScreen extends Component{
         <Button
           onPress={()=>{
             if(this.state.produtosCarrinho.length>0){
-              this.props.navigation.navigate('ResumoPgto',{nomeEstabelecimento: this.props.navigation.state.params.nomeEstabelecimento})
+              this.props.navigation.navigate('ResumoPgto',{
+                nomeEstabelecimento: this.props.navigation.state.params.nomeEstabelecimento,
+                retirarLoja: this.state.retirar})
             }
-
           }}
           title="Encerrar Pedido"
           color= {cores.corPrincipal}

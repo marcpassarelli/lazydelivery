@@ -9,10 +9,21 @@ export default class CarrinhoListItem extends Component {
 
   }
 
-  functionObservacao(item){
-    if(item){
-      return(<Text style={{color:'#666666', marginLeft: 20, fontSize: 12}}>Observação: {item}</Text>)
-    }else{
+  functionObservacao(obs, detalhes){
+    if(detalhes&&obs){
+      return(
+        <View>
+          <Text style={{color:'#666666', marginLeft: 20, fontSize: 12}}>{detalhes}</Text>
+          <Text style={{color:'#666666', marginLeft: 20, fontSize: 12}}>Observação: {obs}</Text>
+        </View>
+    )
+  }else if(detalhes){
+    return(
+      <Text style={{color:'#666666', marginLeft: 20, fontSize: 12}}>{detalhes}</Text>)
+  }else if(obs){
+    return(
+      <Text style={{color:'#666666', marginLeft: 20, fontSize: 12}}>Observação: {obs}</Text>)
+  }else{
       return(<Text></Text>)
     }
   }
@@ -20,7 +31,6 @@ export default class CarrinhoListItem extends Component {
 
 
   functionCarrinhoListItem=(item)=>{
-    console.log("obs"+item.obs);
     if(item.adicional==false){
       return (
         <View>
@@ -66,7 +76,7 @@ export default class CarrinhoListItem extends Component {
             </View>
           </View>
           <View>
-            {this.functionObservacao(item.obs)}
+            {this.functionObservacao(item.obs, item.detalhes)}
           </View>
         </View>
       );
@@ -78,7 +88,7 @@ export default class CarrinhoListItem extends Component {
               <Text
                 style={[styles.textCarrinhoAdicionais,
                   {alignSelf: 'flex-start', marginHorizontal: 10}]}>
-                {item.nome}
+                {item.nome} (adicional)
               </Text>
             </View>
             <View style={{flex:1}}>
@@ -106,13 +116,17 @@ export default class CarrinhoListItem extends Component {
                   lineHeight: 16}]}>
                 {item.quantidade}
               </Text>
-              <TouchableOpacity
-                style={{justifyContent: 'center', alignSelf: 'center'}}
-                onPress={()=>{this.props.onAdd()}}>
-                <Image
-                  source={require('../../img/plus.png')}
-                  style={styles.icon}/>
-              </TouchableOpacity>
+              {item.tipoProduto=="Pizzas" ?
+                <View style={{justifyContent: 'center', alignSelf: 'center'}}></View>
+                :
+                <TouchableOpacity
+                  style={{justifyContent: 'center', alignSelf: 'center'}}
+                  onPress={()=>{this.props.onAdd()}}>
+                  <Image
+                    source={require('../../img/plus.png')}
+                    style={styles.icon}/>
+                </TouchableOpacity>
+              }
             </View>
           </View>
           <View>

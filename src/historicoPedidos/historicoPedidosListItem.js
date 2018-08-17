@@ -28,9 +28,7 @@ export default class HistoricoPedidosListItem extends Component {
 
       return (
         <View>
-          <TouchableOpacity
-            style={item.status=="recebido" ? styles.recebidoStatus : styles.aguardandoStatus}
-            onPress={this.props.onPressSend}>
+
             <View style={{flex: 1, flexDirection: 'column'}}>
               <View style={{flexDirection: 'row',justifyContent: 'space-between',marginVertical: 10}}>
                 <View>
@@ -48,17 +46,31 @@ export default class HistoricoPedidosListItem extends Component {
                     />
                 </View>
               </View>
-                <Text style={[styles.textHistoricoPedidos]}>
-                  Data do Pedido: {day+"/"+month+"/"+year}
-                </Text>
-                <Text style={[styles.textHistoricoPedidos]}>
-                  Horário do Pedido: {hours+":"+minutes+":"+seconds}
-                </Text>
-                <Text style={[styles.textHistoricoPedidos]}>
+              <View style={{flexDirection: 'row',justifyContent: 'space-between',marginVertical: 10}}>
+                <View>
+                  <Text style={[styles.textHistoricoPedidos]}>
+                    Data do Pedido: {day+"/"+month+"/"+year}
+                  </Text>
+                  <Text style={[styles.textHistoricoPedidos]}>
+                    Horário do Pedido: {hours+":"+minutes+":"+seconds}
+                  </Text>
+                </View>
+                <View style={{marginRight: 10}}>
+                  <TouchableOpacity
+                    style={[styles.buttons,{width: null, marginHorizontal: 10}]}
+                    onPress = { () => {this.props.loginToHome()} } >
+                    <Text style={[styles.textButtons,{marginHorizontal: 5}]}>AVALIAR PEDIDO</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <TouchableOpacity
+                style={[styles.buttons,{width: null, marginBottom: 5}]}
+                onPress={this.props.onPressSend}>
+                <Text style={[styles.textButtons,{marginHorizontal: 5}]}>
                   CLIQUE PARA MAIS DETALHES SOBRE O PEDIDO
                 </Text>
+                </TouchableOpacity>
             </View>
-          </TouchableOpacity>
         </View>
       );
   }

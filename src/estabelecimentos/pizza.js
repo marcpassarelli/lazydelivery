@@ -13,6 +13,7 @@ import _ from 'lodash';
 
 var listaPizzasTamanho = []
 var qtdeSabores = 0
+var partePizza = 0
 
 export class PizzaScreen extends Component{
 
@@ -62,14 +63,15 @@ componentWillMount(){
           loadingList: true
         });
   const {state} = this.props.navigation
+
   var estabelecimento = state.params ? state.params.nomeEstabelecimento : ""
   tamanhoPizza = state.params ? state.params.tamanhoPizza : ""
   this.qtdeSabores = state.params ? state.params.sabores : ""
-  console.log("this.qtdeSabores"+this.qtdeSabores);
+  this.partePizza = state.params ? state.params.partePizza: ""
+
 
   listaPizzasTamanho = listaPizzas[tamanhoPizza]
   listaPizzasTamanho = _.orderBy(listaPizzasTamanho,['preco','nomeProduto'],['asc','asc'])
-  console.log("listaPizzasTamanho"+JSON.stringify(listaPizzasTamanho));
 
 
   this.setState({
@@ -100,18 +102,55 @@ componentWillMount(){
         ItemSeparatorComponent={this.renderSeparatorComponent}
         data={listaPizzasTamanho}
         renderItem={({item})=>(
+
           <PizzaListItem
-            qtdeSabores={this.qtdeSabores}
+            nomeProduto={()=>{
+              if(this.qtdeSabores==1){
+                return(
+                  <Text style={styles.textProdutos}>{item.nomeProduto}</Text>
+                )
+              }else{
+                return(
+                  <Text style={styles.textProdutos}>{this.partePizza}/{this.qtdeSabores} {item.nomeProduto}</Text>
+                )
+              }
+            }}
+            preco={()=>{
+              var preco = (item.preco/this.qtdeSabores).toFixed(2)
+
+              var res = preco.replace(".",",")
+              return(
+                <Text style={styles.textProdutos}>R$ {res}</Text>
+              )
+            }}
             item={item}
             navigation={()=>{
-              if(item.item.tipo=="Pizzas"){
-                // console.log("Pizzas do tamanho "+item.item.tamanho+": "+JSON.stringify(listaPizzas[item.item.tamanho]));
-                this.props.navigation.navigate('Pizza')
+              const {state} = this.props.navigation
+
+              let preco = (item.preco/this.qtdeSabores).toFixed(2)
+              // console.log("preco "+preco);
+              // console.log("state.params.preco"+state.params.preco);
+              let precoParams = state.params.precoPizza ? state.params.precoPizza : 0
+              precoParams = (parseFloat(precoParams)).toFixed(2)
+              let precoPizza = parseFloat(preco) + parseFloat(precoParams)
+              console.log("partepizza"+state.params.partePizza+"parseFloat(preco)"+parseFloat(preco));
+              console.log("partepizza"+state.params.partePizza+"parseFloat(precoParams)"+parseFloat(precoParams));
+              console.log("partepizza"+state.params.partePizza+"precoPizza"+precoPizza);
+
+              if(state.params.partePizza==state.params.sabores){
+                this.props.navigation.navigate('AddProduto',{nomeEstabelecimento: state.params.nomeEstabelecimento,
+                nome: state.params.title, preco: preco, precoPizza: precoPizza,
+                detalhes: "Sabores da Pizza: "+state.params.detalhes+item.nomeProduto+"("+preco+")",
+                imgProduto: "https://firebasestorage.googleapis.com/v0/b/deliveryaltamira.appspot.com/o/produtos%2FCasa%20Nova%2Fdiversos-tamanhos-varios.jpg?alt=media&token=a548a5f5-14a9-47a4-9a30-0fd56e838e0c" , tipoProduto: state.params.tipoProduto ,
+                tipoEstabelecimento: state.params.tipoEstabelecimento,
+                tipoProduto: state.params.tipoProduto})
               }else{
-                this.props.navigation.navigate('AddProduto',{nomeEstabelecimento: nomeEstabelecimentoUp,
-                nome: item.nomeProduto, preco: item.item.preco, detalhes: item.detalhes,
-                imgProduto: item.imgProduto, tipoProduto: item.tipo,
-                tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento})
+                this.props.navigation.push('Pizza',{nomeEstabelecimento: state.params.tipoEstabelecimento,
+                title:state.params.title, preco: preco, precoPizza: precoPizza,
+                detalhes:state.params.detalhes+item.nomeProduto+"("+preco+"), ",
+                sabores: state.params.sabores, tipoProduto: state.params.tipoProduto,
+                tamanhoPizza: state.params.tamanhoPizza, partePizza: state.params.partePizza+1,
+                nomeEstabelecimento: state.params.nomeEstabelecimento  })
               }
           }}
             >

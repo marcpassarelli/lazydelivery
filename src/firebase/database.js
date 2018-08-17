@@ -480,6 +480,7 @@ export async function getListaAdicionais(nomeEstabelecimento, tipoProduto){
             _id: todoCounter++
           });
         });
+        console.log("listaAdicionais"+listaAdicionais);
       }
     })
   } catch(error){
@@ -489,7 +490,7 @@ export async function getListaAdicionais(nomeEstabelecimento, tipoProduto){
 
 export async function loadMessages(estabelecimento, chave, callback){
   // console.log("dentro loadMessages"+estabelecimento);
-  this.messageRef = firebase.database().ref("/messages/Casa Nova/"+chave+"/status")
+  this.messageRef = firebase.database().ref("/messages/"+estabelecimento+"/"+chave+"/status")
   console.log("messageRef"+this.messageRef);
   this.messageRef.off();
   this.messageRef.on('value',function(snap){
@@ -548,7 +549,7 @@ export async function sendMessage(carrinhoNovo, formaPgtoNovo, formaPgtoDetalheN
   }
 
   export async function salvarPedido(carrinhoNovo, totalPriceNovo, freteNovo, formaPgtoNovo, formaPgtoDetalheNovo,
-     enderecoNovo, bairroNovo, estabelecimentoNovo){
+     enderecoNovo, bairroNovo, estabelecimentoNovo, keyNovo){
        let userId = await firebase.auth().currentUser.uid
        console.log("userId"+userId);
        this.historicoPedidos = firebase.database().ref("/user/"+userId+"/details/pedidos/")
@@ -563,6 +564,16 @@ export async function sendMessage(carrinhoNovo, formaPgtoNovo, formaPgtoDetalheN
         estabelecimento: estabelecimentoNovo,
         valorCompra: totalPriceNovo,
         createdAt: firebase.database.ServerValue.TIMESTAMP,
-
+        key: keyNovo
     })
+  }
+
+  export async function retiraLoja(nomeEstabelecimento, callback){
+    try{
+      firebase.database().ref("/infoEstabelecimentos/"+nomeEstabelecimento+"/retiraLoja").once('value').then(function(snapshot){
+          callback({retiraLoja: snapshot.val()})
+      })
+    } catch(error){
+      console.log(error)
+    }
   }

@@ -23,8 +23,8 @@ export default class PizzaListItem extends Component {
         this.props.navigation()
         }}>
         <View style={{flexDirection: 'row',justifyContent: 'space-between'}}>
-          <Text style={styles.textProdutos}>{item.nomeProduto}</Text>
-          <Text style={styles.textProdutos}>{(item.preco/this.props.qtdeSabores).toFixed(2)}</Text>
+          {this.props.nomeProduto()}
+          {this.props.preco()}
         </View>
         <View style={{flexDirection: 'column', marginLeft:10}}>
           <Text style={styles.textDetalhesEstabelecimento}>{item.detalhes}</Text>

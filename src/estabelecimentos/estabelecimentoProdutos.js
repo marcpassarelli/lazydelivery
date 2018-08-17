@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { Platform, Image, Alert, View, Text, Button, ActivityIndicator, SectionList, Animated } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
@@ -160,8 +159,7 @@ sectionDataFunction(){
           }
         }
     })
-    console.log("newEstabelecimentoProd"+JSON.stringify(newEstabelecimentoProd));
-    console.log("listaPizzas"+JSON.stringify(listaPizzas));
+
 //Separa lista por tipo de produto
   sectionData = _.groupBy(newEstabelecimentoProd, p => p.tipo)
 
@@ -239,8 +237,11 @@ renderItem = (item) =>{
       detalhes = {item.item.detalhes}
       navigation={()=>{
         if(item.item.tipo=="Pizzas"){
+
           console.log("Pizzas do tamanho "+item.item.tamanho);
-          this.props.navigation.navigate('Pizza',{nomeEstabelecimento: nomeEstabelecimentoUp, title:"Pizza "+item.item.nomeProduto, sabores: item.item.sabores, tamanhoPizza: item.item.tamanho})
+          this.props.navigation.navigate('Pizza',{nomeEstabelecimento: nomeEstabelecimentoUp,
+          title:"Pizza "+item.item.nomeProduto, sabores: item.item.sabores,
+          tamanhoPizza: item.item.tamanho, partePizza:1, tipoProduto: item.item.tipo, preco:parseInt(0),detalhes:""})
         }else{
           this.props.navigation.navigate('AddProduto',{nomeEstabelecimento: nomeEstabelecimentoUp,
           nome: item.item.nomeProduto, preco: item.item.preco, detalhes: item.item.detalhes,

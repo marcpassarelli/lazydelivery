@@ -47,7 +47,8 @@ constructor(props){
     frete:6,
     troco:'',
     esperandoConfirmacao:false,
-    key:""
+    key:"",
+    retirar:''
 
 
   }
@@ -88,15 +89,23 @@ componentDidMount(){
 async componentWillMount(){
   let userId = await firebase.auth().currentUser.uid
   console.log("userID"+userId);
+
   this.estabelecimento= this.props.navigation.state.params.nomeEstabelecimento
-  console.log("this.estabelecimento"+this.estabelecimento);
+  console.log("this.retirar"+this.props.navigation.state.params.retirarLoja);
   this.setState({
           loading: true,
+          retirar: this.props.navigation.state.params.retirarLoja,
           produtosCarrinho: carrinho,
           nomeEstabelecimento: this.estabelecimento
+        },function(){
+          if (this.state.retirar) {
+            this.setState({
+              frete:0
+            });
+          }
         });
   let user = await firebase.auth().currentUser;
-
+  //Pegar formas de pagamento
   getEstabelecimentoInfo(this.estabelecimento, (logoUp, nomeUp, precoDeliveryUp,
     tempoEntregaUp, segUp, terUp, quaUp, quiUp, sexUp, sabUp, domUp, creUp, debUp, dinUp)=>{
     this.setState({
@@ -118,7 +127,7 @@ async componentWillMount(){
       console.log("state.cre"+this.state.cre);
     })
   })
-
+  //Pegar informações usuário
   getUserProfile(user.uid, (nomeP,telefoneP,profilePicURLP)=>{
     console.log("nomePPPP"+nomeP);
     this.setState({
@@ -128,7 +137,7 @@ async componentWillMount(){
       console.log("state.nome"+this.state.nome);
     });
   })
-
+  //Pegar endereço cadastrado
   getUserEndAtual((enderecoP,numeroEndP,bairroP,referenciaP)=>{
     console.log("dentrogetUserEndAtul");
       this.setState({
@@ -201,7 +210,7 @@ fazerPedido(){
                         console.log("totalPrice"+this.totalPrice);
                         salvarPedido(this.state.produtosCarrinho, this.totalPrice, this.state.frete, formaPgto, formaPgtoDetalhe,
                           this.state.endereco, this.state.bairro,
-                          this.state.nomeEstabelecimento)
+                          this.state.nomeEstabelecimento, key.key)
                         atualizarCarrinho([])
                         const { navigate } = this.props.navigation;
                         navigate('Home')
@@ -342,14 +351,20 @@ render() {
       keyExtractor={item => item._id}
       />
     </View>
-    <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5}}>
-      <Text style={[styles.textResumoPgto]}>Valor Pedido:</Text>
-      <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ {this.valorVirgula(this.totalPrice)}</Text>
-    </View>
-    <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5}}>
-      <Text style={[styles.textResumoPgto]}>Valor Frete:</Text>
-      <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ 6,00</Text>
-    </View>
+    {this.state.retirar ?
+      <View></View>
+    :
+      <View>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5}}>
+          <Text style={[styles.textResumoPgto]}>Valor Pedido:</Text>
+          <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ {this.valorVirgula(this.totalPrice)}</Text>
+        </View>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5}}>
+          <Text style={[styles.textResumoPgto]}>Valor Frete:</Text>
+          <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ {this.valorVirgula(this.state.frete)}</Text>
+        </View>
+      </View>
+    }
     <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5}}>
       <Text style={[styles.textResumoPgto]}>Valor Total Pedido:</Text>
       <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ {this.valorVirgula(this.totalPrice+this.state.frete)}</Text>
@@ -415,6 +430,7 @@ render() {
     <View style={{height:2, backgroundColor: cores.corPrincipal}}></View>
 
       <ResumoInformacoes
+        retirar={this.state.retirar}
         nome={this.state.nome}
         telefone={this.state.telefone}
         endereco={this.state.endereco}

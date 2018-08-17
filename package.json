@@ -24,7 +24,8 @@
     "react-native-textinput-effects": "^0.4.0",
     "react-native-toast-native": "^1.2.1",
     "react-native-vector-icons": "^4.4.2",
-    "react-navigation": "^1.0.0-beta.11"
+    "react-navigation": "^1.0.0-beta.11",
+    "react-navigation-backhandler": "^1.1.1"
   },
   "devDependencies": {
     "babel-jest": "21.0.2",

@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
     width: 300,
     alignSelf: 'center',
     borderRadius: 6,
-    backgroundColor: cores.corPrincipal
+    backgroundColor: cores.corSecundaria
   },
   containerIndicator:{
     flex: 1,
