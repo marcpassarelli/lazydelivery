@@ -191,7 +191,7 @@ fazerPedido(){
           formaPgtoDetalhe = this.state.troco
         }
         //mandar informação do pedido para o banco de dados do pedido
-        sendMessage(this.state.produtosCarrinho, formaPgto, formaPgtoDetalhe,
+        sendMessage(this.state.retirar, this.state.produtosCarrinho, formaPgto, formaPgtoDetalhe,
            this.state.nome, this.state.telefone, this.state.endereco, this.state.bairro,
            this.state.referencia, this.state.nomeEstabelecimento, "Aguardando Confirmação",(key)=>{
              //aguardar confirmação do estabelecimento
@@ -208,7 +208,7 @@ fazerPedido(){
                     [
                       {text: 'OK', onPress: () => {
                         console.log("totalPrice"+this.totalPrice);
-                        salvarPedido(this.state.produtosCarrinho, this.totalPrice, this.state.frete, formaPgto, formaPgtoDetalhe,
+                        salvarPedido(this.state.retirar, this.state.produtosCarrinho, this.totalPrice, this.state.frete, formaPgto, formaPgtoDetalhe,
                           this.state.endereco, this.state.bairro,
                           this.state.nomeEstabelecimento, key.key)
                         atualizarCarrinho([])

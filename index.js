@@ -24,6 +24,7 @@ import { AdicionaisScreen } from './src/addproduto/adicionais'
 import { DestaquesScreen } from './src/home/destaques'
 import { HistoricoPedidosScreen } from './src/historicoPedidos/historicoPedidos'
 import { DetalhesPedidoScreen } from './src/historicoPedidos/detalhesPedido'
+import { AvaliacaoScreen } from './src/historicoPedidos/avaliacao'
 import * as firebase from 'firebase';
 
 const TabHome = TabNavigator({
@@ -101,7 +102,8 @@ const DeliveryPassa = StackNavigator({
   Adicionais: { screen: AdicionaisScreen},
   ResumoPgto: { screen: ResumoPgtoScreen },
   HistoricoPedidos: { screen: HistoricoPedidosScreen },
-  DetalhesPedido: { screen: DetalhesPedidoScreen }
+  DetalhesPedido: { screen: DetalhesPedidoScreen },
+  Avaliacao: { screen: AvaliacaoScreen }
 },
   { headerMode: 'float',},
 

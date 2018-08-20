@@ -74,6 +74,7 @@ export class DetalhesPedidoScreen extends Component {
     this.logo = state.params ? state.params.logo : ""
     this.createdAt = state.params ? state.params.createdAt : ""
     this.frete = state.params ? state.params.frete : ""
+    this.retirar = state.params ? state.params.retirar : ""
     console.log("this.frete"+(this.frete).toFixed(2));
 
     this.year = this.createdAt.getUTCFullYear();
@@ -164,23 +165,29 @@ export class DetalhesPedidoScreen extends Component {
         <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>{this.formaPgto}</Text>
       </View>
 
-      <View style={{marginTop: 10}}>
-      <Text style={[styles.textAdicionais,{fontSize: 16}]}>Informações da entrega</Text>
-      <View style={{flexDirection: 'row'}}>
-        <Text style={styles.textHistoricoPedidos}>Entregue no endereço: </Text>
-        <Text>{this.endereco}</Text>
-      </View>
-      <View style={{flexDirection: 'row'}}>
-        <Text style={[styles.textHistoricoPedidos]}>
-          Data do Pedido: {this.day+"/"+this.month+"/"+this.year}
-        </Text>
-      </View>
-      <View style={{flexDirection: 'row'}}>
-        <Text style={[styles.textHistoricoPedidos]}>
-          Horário do Pedido: {this.hours+":"+this.minutes+":"+this.seconds}
-        </Text>
-      </View>
-      </View>
+
+        {this.retirar?
+          <View style={{marginTop: 10}}></View>
+        :
+          <View style={{marginTop: 10}}>
+          <Text style={[styles.textAdicionais,{fontSize: 16}]}>Informações da entrega</Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={styles.textHistoricoPedidos}>Entregue no endereço: </Text>
+            <Text>{this.endereco}</Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={[styles.textHistoricoPedidos]}>
+              Data do Pedido: {this.day+"/"+this.month+"/"+this.year}
+            </Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={[styles.textHistoricoPedidos]}>
+              Horário do Pedido: {this.hours+":"+this.minutes+":"+this.seconds}
+            </Text>
+          </View>
+          </View>
+        }
+
     </View>
 
     )

@@ -526,12 +526,13 @@ export async function carregarPedidos(callback){
 }
 
 export var chaveMsg=""
-export async function sendMessage(carrinhoNovo, formaPgtoNovo, formaPgtoDetalheNovo,
+export async function sendMessage(retirarNovo, carrinhoNovo, formaPgtoNovo, formaPgtoDetalheNovo,
    nomeNovo, telefoneNovo, enderecoNovo, bairroNovo, referenciaNovo,
    estabelecimento, statusNovo, key) {
     this.messageRef = firebase.database().ref("/messages/"+estabelecimento+"/")
     this.messageRef.off();
     this.messageRef.push({
+      retirar: retirarNovo,
       carrinho: carrinhoNovo,
       formaPgto: formaPgtoNovo,
       formaPgtoDetalhe: formaPgtoDetalheNovo,
@@ -548,13 +549,14 @@ export async function sendMessage(carrinhoNovo, formaPgtoNovo, formaPgtoDetalheN
 
   }
 
-  export async function salvarPedido(carrinhoNovo, totalPriceNovo, freteNovo, formaPgtoNovo, formaPgtoDetalheNovo,
+  export async function salvarPedido(retirarNovo, carrinhoNovo, totalPriceNovo, freteNovo, formaPgtoNovo, formaPgtoDetalheNovo,
      enderecoNovo, bairroNovo, estabelecimentoNovo, keyNovo){
        let userId = await firebase.auth().currentUser.uid
        console.log("userId"+userId);
        this.historicoPedidos = firebase.database().ref("/user/"+userId+"/details/pedidos/")
        this.historicoPedidos.off();
        this.historicoPedidos.push({
+        retirar: retirarNovo,
         carrinho: carrinhoNovo,
         formaPgto: formaPgtoNovo,
         formaPgtoDetalhe: formaPgtoDetalheNovo,

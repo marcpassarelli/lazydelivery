@@ -59,7 +59,8 @@ export class HistoricoPedidosScreen extends Component {
         frete: message.frete,
         valorCompra: message.valorCompra,
         createdAt: message.createdAt,
-        logo: message.logo
+        logo: message.logo,
+        retirar: message.retirar
         })
       this.setState({
         messages:teste
@@ -84,7 +85,8 @@ export class HistoricoPedidosScreen extends Component {
       valorCompra: item.valorCompra,
       createdAt: item.createdAt,
       logo: item.logo,
-      frete: item.frete
+      frete: item.frete,
+      retirar: item.retirar
   })
   }
 
