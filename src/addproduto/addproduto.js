@@ -1,8 +1,7 @@
 
 import React, { Component } from 'react';
-import { Platform, BackHandler, Image, View, Text,TextInput, Button, ActivityIndicator, TouchableOpacity, Dimensions, ScrollView } from 'react-native'
+import { ImageBackground, Platform, BackHandler, Image, View, Text,TextInput, Button, ActivityIndicator, TouchableOpacity, Dimensions, ScrollView } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
-import * as firebase from 'firebase';
 import {getListaAdicionais, listaAdicionais} from '../firebase/database'
 import {adicionaisEscolhidos} from './adicionais'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -249,7 +248,7 @@ export class AddProdutoScreen extends Component{
 
     <View style={styles.containerIndicator}>
       <ActivityIndicator
-        color = '#8b0000'
+        color = {cores.corPrincipal}
         size="large"
         style = {styles.activityIndicator}/>
     </View> :
@@ -357,7 +356,7 @@ export class AddProdutoScreen extends Component{
     </AndroidBackHandler>
 
     return (
-      <Image
+      <ImageBackground
         source={images.imageBackground}
         style={styles.backgroundImage}>
         <Loader
@@ -375,7 +374,7 @@ export class AddProdutoScreen extends Component{
             accessibilityLabel="YourLabelHere"
           />
         </View>
-      </Image>
+      </ImageBackground>
     );
   }
 }

@@ -3,12 +3,11 @@ console.ignoredYellowBox = [
 ]
 
 import React, { Component } from 'react';
-import { Image, Alert, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'
-import { styles, images } from '../constants/constants'
+import { ImageBackground, Image, Alert, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { styles, images, cores } from '../constants/constants'
 import { logout, getUserProfile } from '../firebase/database'
-import * as firebase from 'firebase';
 import FBSDK, { AccessToken, GraphRequestManager, GraphRequest } from 'react-native-fbsdk'
-
+import { auth} from '../firebase/firebase'
 
 export class ProfileScreen extends Component {
 
@@ -42,7 +41,7 @@ export class ProfileScreen extends Component {
     this.setState({
             loading: true
           });
-    let user = await firebase.auth().currentUser;
+    let user = await auth.currentUser;
 
           getUserProfile(user.uid, (nomeP,telefoneP,profilePicURLP)=>{
             console.log("nomePPPP"+nomeP);
@@ -125,7 +124,7 @@ export class ProfileScreen extends Component {
 
      <View style={styles.containerIndicator}>
        <ActivityIndicator
-         color = '#8b0000'
+         color = {cores.corPrincipal}
          size="large"
          style = {styles.activityIndicator}/>
      </View> :
@@ -173,11 +172,11 @@ export class ProfileScreen extends Component {
      </View>
 
      return (
-       <Image
+       <ImageBackground
          source={images.imageBackground}
          style={styles.backgroundImage}>
          {content}
-       </Image>
+       </ImageBackground>
      );
      }
 }

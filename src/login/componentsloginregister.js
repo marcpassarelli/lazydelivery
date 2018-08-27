@@ -2,7 +2,7 @@ console.ignoredYellowBox = [
     'Setting a timer'
 ]
 import { Text, View, TextInput, Image, Button, TouchableHighlight, TouchableOpacity  } from 'react-native';
-import { styles, images} from '../constants/constants'
+import { styles, images, cores } from '../constants/constants'
 import { Hoshi } from 'react-native-textinput-effects';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import React, { Component } from 'react';
@@ -16,17 +16,17 @@ export default ComponentsLoginRegister = (props) => {
             label={'Email:'}
             //autoFocus = {true}
             onChangeText = {props.updateEmail}
-            labelStyle={{ color: '#8b0000' }}
-            borderColor={'#8b0000'}
+            labelStyle={{ color: cores.corPrincipal }}
+            borderColor={cores.corPrincipal}
             returnKeyType="next"
            />
           <Hoshi
             style={styles.labelCadastro}
             label={'Senha:'}
-            labelStyle={{ color: '#8b0000' }}
+            labelStyle={{ color: cores.corPrincipal }}
             onChangeText = {props.updateSenha}
             secureTextEntry = {true}
-            borderColor={'#8b0000'}
+            borderColor={cores.corPrincipal}
             returnKeyType="done"
           />
           <View style={styles.separator} />
@@ -42,7 +42,7 @@ export default ComponentsLoginRegister = (props) => {
         <Text style={styles.textButtons}>PRIMEIRO ACESSO? CADASTRE-SE</Text>
       </TouchableOpacity>
       <View style={styles.separator} />
-      <Text style={{textAlign:'center', fontSize:16, color:'#8b0000'}}>Ou faça o login com o Facebook:</Text>
+      <Text style={{textAlign:'center', fontSize:16, color:cores.corPrincipal}}>Ou faça o login com o Facebook:</Text>
       <TouchableHighlight
         underlayColor='rgba(0,0,0,0)'
         onPress={()=>{props.loginWithFacebook()}}>

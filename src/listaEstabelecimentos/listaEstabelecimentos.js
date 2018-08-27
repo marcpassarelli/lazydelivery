@@ -1,8 +1,7 @@
 
 import React, { Component } from 'react';
-import { Image, View, Text, ActivityIndicator, FlatList } from 'react-native'
+import { ImageBackground, Image, View, Text, ActivityIndicator, FlatList } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
-import * as firebase from 'firebase';
 import ListaEstabelecimentosListItem from './listaEstabelecimentosListItem'
 import {getListaEstabelecimentos, listaEstabelecimentos, limparEstabelecimentoProd} from '../firebase/database'
 import Loader from '../loadingModal/loadingModal';
@@ -90,7 +89,7 @@ render() {
 
   <View style={styles.containerIndicator}>
     <ActivityIndicator
-      color = '#8b0000'
+      color = {cores.corPrincipal}
       size="large"
       style = {styles.activityIndicator}/>
   </View> :
@@ -111,19 +110,19 @@ render() {
         navigation={this.props.navigation}
         tipoEstabelecimento={this.tipoEstabelecimentoUp}>
       </ListaEstabelecimentosListItem>}
-    keyExtractor={item => item._id}
+    keyExtractor={item => item._id.toString()}
     />
   </View>
 
   return (
 
-    <Image
+    <ImageBackground
       source={images.imageBackground}
       style={styles.backgroundImage}>
       <Loader
           loading = {this.state.loading}/>
       {content}
-    </Image>
+    </ImageBackground>
 );
 }
 }

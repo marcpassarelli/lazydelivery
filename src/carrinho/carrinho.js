@@ -1,8 +1,7 @@
 
 import React, { Component } from 'react';
-import { Image, Alert, View, Text, Button, ActivityIndicator, FlatList } from 'react-native'
+import { ImageBackground, Image, Alert, View, Text, Button, ActivityIndicator, FlatList } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
-import * as firebase from 'firebase';
 import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
 import CarrinhoListItem from './carrinhoListItem'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -178,7 +177,7 @@ export class CarrinhoScreen extends Component{
                   )
                 }}/>
             )}
-            keyExtractor={item => item._id}
+            keyExtractor={item => item._id.toString()}
           />
         <View style={{backgroundColor: cores.corPrincipal, height: 1}}></View>
           <View>
@@ -279,7 +278,7 @@ export class CarrinhoScreen extends Component{
 
     <View style={styles.containerIndicator}>
       <ActivityIndicator
-        color = '#8b0000'
+        color = {cores.corPrincipal}
         size="large"
         style = {styles.activityIndicator}/>
     </View> :
@@ -290,12 +289,12 @@ export class CarrinhoScreen extends Component{
     </View>
 
     return (
-      <Image
+      <ImageBackground
         source={images.imageBackground}
         style={styles.backgroundImage}>
         <View style={styles.separator}></View>
         {content}
-      </Image>
+      </ImageBackground>
     );
   }
 }

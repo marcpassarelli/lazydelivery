@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View, Text, Button, ActivityIndicator, FlatList } from 'react-native'
+import { ImageBackground, Image, View, Text, Button, ActivityIndicator, FlatList } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
 import {listaAdicionais} from '../firebase/database'
 import AdicionaisListItem from './adicionaisListItem'
@@ -168,7 +168,7 @@ export class AdicionaisScreen extends Component{
 
     <View style={styles.containerIndicator}>
       <ActivityIndicator
-        color = '#8b0000'
+        color = {cores.corPrincipal}
         size="large"
         style = {styles.activityIndicator}/>
     </View> :
@@ -204,7 +204,7 @@ export class AdicionaisScreen extends Component{
             onAdd={() => this.onAdd(item, index)}
           />
         )}
-        keyExtractor={item => item._id}
+        keyExtractor={item => item._id.toString()}
       />
     <Button
       onPress={()=>{this.adicionarAdicionais()}}
@@ -215,11 +215,11 @@ export class AdicionaisScreen extends Component{
     </View>
 
     return (
-      <Image
+      <ImageBackground
         source={images.imageBackground}
         style={styles.backgroundImage}>
         {content}
-      </Image>
+      </ImageBackground>
     );
   }
 }

@@ -6,7 +6,6 @@ import { updateStatus, carregarPedidos } from '../firebase/database'
 import DetalhesPedidoListItem from './detalhesPedidoListItem'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import * as firebase from 'firebase';
 var endereco = ''
 var bairro = ''
 var estabelecimento = ''
@@ -145,7 +144,7 @@ export class DetalhesPedidoScreen extends Component {
                 )
               }}>
             </DetalhesPedidoListItem>}
-          keyExtractor={item => item._id}
+          keyExtractor={item => item._id.toString()}
           />
       </View>
       <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5}}>
@@ -202,7 +201,7 @@ export class DetalhesPedidoScreen extends Component {
 
     <View style={styles.containerIndicator}>
       <ActivityIndicator
-        color = '#8b0000'
+        color = {cores.corPrincipal}
         size="large"
         style = {styles.activityIndicator}/>
     </View> :
@@ -213,13 +212,13 @@ export class DetalhesPedidoScreen extends Component {
 
 
     return (
-      <Image
+      <ImageBackground
         source={images.imageBackground}
         style={styles.backgroundImage}>
         <View style={{flex:1}}>
           {content}
         </View>
-      </Image>
+      </ImageBackground>
     );
   }
 

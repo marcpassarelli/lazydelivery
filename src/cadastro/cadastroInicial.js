@@ -2,9 +2,8 @@ console.ignoredYellowBox = [
     'Setting a timer'
 ]
 import React, { Component } from 'react';
-import { Image, Alert } from 'react-native';
+import { ImageBackground, Image, Alert } from 'react-native';
 import { styles, images} from '../constants/constants'
-import * as firebase from 'firebase';
 import ComponentsCadastroInicial  from './componentsCadastroInicial'
 import { signup, cadastrarUsuario } from '../firebase/database'
 import StatusBar from '../constants/statusBar'
@@ -81,7 +80,7 @@ export class CadastroInicialScreen extends Component {
           'Setting a timer'
       ]
       return (
-        <Image
+        <ImageBackground
           source={images.imageBackground}
           style={styles.backgroundImage}>
           <StatusBar/>
@@ -94,7 +93,7 @@ export class CadastroInicialScreen extends Component {
             checarSenha = {this.checarSenha}
             cadastrarUsuarioBD = {this.cadastrarUsuarioBD}
             />
-        </Image>
+        </ImageBackground>
       )
     }
   }

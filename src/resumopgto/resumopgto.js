@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import { TextInput, Picker, PickerIOS, Platform, ScrollView, Dimensions, Image, Alert, View, Text, Button, ActivityIndicator, FlatList, Icon } from 'react-native'
+import { ImageBackground, TextInput, Picker, PickerIOS, Platform, ScrollView, Dimensions, Image, Alert, View, Text, Button, ActivityIndicator, FlatList, Icon } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
-import * as firebase from 'firebase';
 import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
 import { getUserProfile, getUserEndAtual, getEstabelecimentoInfo,
   loadMessages, sendMessage, salvarPedido} from '../firebase/database'
 import ResumoCarrinhoListItem from './resumoCarrinhoListItem'
 import ResumoInformacoes from './resumoInformacoes'
 import Loader from '../loadingModal/loadingModal';
-
+import {auth} from '../firebase/firebase'
 import { CheckBox } from 'react-native-elements'
 import _ from 'lodash'
 
@@ -87,7 +86,7 @@ componentDidMount(){
 }
 
 async componentWillMount(){
-  let userId = await firebase.auth().currentUser.uid
+  let userId = await auth.currentUser.uid
   console.log("userID"+userId);
 
   this.estabelecimento= this.props.navigation.state.params.nomeEstabelecimento
@@ -104,7 +103,7 @@ async componentWillMount(){
             });
           }
         });
-  let user = await firebase.auth().currentUser;
+  let user = await auth.currentUser;
   //Pegar formas de pagamento
   getEstabelecimentoInfo(this.estabelecimento, (logoUp, nomeUp, precoDeliveryUp,
     tempoEntregaUp, segUp, terUp, quaUp, quiUp, sexUp, sabUp, domUp, creUp, debUp, dinUp)=>{
@@ -125,6 +124,7 @@ async componentWillMount(){
         din: dinUp
     },function(){
       console.log("state.cre"+this.state.cre);
+      console.log("state.deb"+this.state.deb);
     })
   })
   //Pegar informações usuário
@@ -282,8 +282,8 @@ funcaoTroco(){
       <TextInput
         style={[styles.textInputs,{width: 250, fontSize: 15}]}
         onChangeText = {this.updateTroco}
-        labelStyle={{ color: '#8b0000' }}
-        borderColor={'#8b0000'}
+        labelStyle={{ color: cores.corPrincipal }}
+        borderColor={cores.corPrincipal}
         returnKeyType="next"
         keyboardType='numeric'
         maxLength={6}
@@ -319,7 +319,7 @@ render() {
 
   <View style={styles.containerIndicator}>
     <ActivityIndicator
-      color = '#8b0000'
+      color = {cores.corPrincipal}
       size="large"
       style = {styles.activityIndicator}/>
   </View> :
@@ -348,7 +348,7 @@ render() {
             )
           }}>
         </ResumoCarrinhoListItem>}
-      keyExtractor={item => item._id}
+      keyExtractor={item => item._id.toString()}
       />
     </View>
     {this.state.retirar ?
@@ -449,12 +449,12 @@ render() {
 
   return (
 
-    <Image
+    <ImageBackground
       source={images.imageBackground}
       style={styles.backgroundImage}>
       <View style={styles.separator}></View>
       {content}
-    </Image>
+    </ImageBackground>
 );
 }
 }

@@ -1,7 +1,7 @@
 import PizzaListItem from './pizzaListItem'
 
 import React, { Component } from 'react';
-import { Platform, Image, Alert, View, Text, Button, ActivityIndicator, FlatList } from 'react-native'
+import { ImageBackground, Platform, Image, Alert, View, Text, Button, ActivityIndicator, FlatList } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -92,7 +92,7 @@ componentWillMount(){
 
     <View style={styles.containerIndicator}>
       <ActivityIndicator
-        color = '#8b0000'
+        color = {cores.corPrincipal}
         size="large"
         style = {styles.activityIndicator}/>
     </View> :
@@ -156,16 +156,16 @@ componentWillMount(){
             >
           </PizzaListItem>
         )}
-        keyExtractor={(item) => item._id}
+        keyExtractor={(item) => item._id.toString()}
         />
     </View>
 
     return (
-      <Image
+      <ImageBackground
         source={images.imageBackground}
         style={styles.backgroundImage}>
         {content}
-      </Image>
+      </ImageBackground>
     );
   }
 }

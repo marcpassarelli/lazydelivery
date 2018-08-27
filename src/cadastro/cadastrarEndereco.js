@@ -2,14 +2,13 @@ console.ignoredYellowBox = [
     'Setting a timer'
 ]
 import React, { Component } from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { ImageBackground, Image, Text, TouchableOpacity, View } from 'react-native';
 import { styles, images} from '../constants/constants'
-import * as firebase from 'firebase';
 import { cadastrarEndereco } from '../firebase/database'
 import { Hoshi } from 'react-native-textinput-effects';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import StatusBar from '../constants/statusBar'
-
+import {db, auth} from '../firebase/firebase'
 
 export class CadastrarEnderecoScreen extends Component {
 
@@ -49,7 +48,7 @@ export class CadastrarEnderecoScreen extends Component {
      if(this.state.endereco && this.state.bairro &&
         this.state.numeroEnd && this.state.referencia){
 
-          let user = await firebase.auth().currentUser;
+          let user = await auth.currentUser;
 
           this.setState({uid: user.uid})
 
@@ -73,7 +72,7 @@ export class CadastrarEnderecoScreen extends Component {
   render(){
 
     return (
-      <Image
+      <ImageBackground
         source={images.imageBackground}
         style={styles.backgroundImage}>
         <KeyboardAwareScrollView>
@@ -82,40 +81,40 @@ export class CadastrarEnderecoScreen extends Component {
         <Hoshi
           style={styles.labelCadastro}
           label={'Endereço:'}
-          labelStyle={{ color: '#8b0000' }}
+          labelStyle={{ color: cores.corPrincipal }}
           onChangeText = {this.updateEndereco}
           returnKeyType="next"
           value = {this.state.endereco}
-          borderColor={'#8b0000'}
+          borderColor={cores.corPrincipal}
           autoCapitalize='words'
         />
         <Hoshi
           style={styles.labelCadastro}
           label={'Número Endereço:'}
-          labelStyle={{ color: '#8b0000' }}
+          labelStyle={{ color: cores.corPrincipal }}
           onChangeText = {this.updateNumeroEnd}
           returnKeyType="next"
           value = {this.state.numeroEnd}
-          borderColor={'#8b0000'}
+          borderColor={cores.corPrincipal}
         />
         <Hoshi
           style={styles.labelCadastro}
           label={'Bairro:'}
-          labelStyle={{ color: '#8b0000' }}
+          labelStyle={{ color: cores.corPrincipal }}
           onChangeText = {this.updateBairro}
           returnKeyType="next"
           value = {this.state.bairro}
-          borderColor={'#8b0000'}
+          borderColor={cores.corPrincipal}
           autoCapitalize='words'
         />
         <Hoshi
           style={styles.labelCadastro}
           label={'Referência:'}
-          labelStyle={{ color: '#8b0000' }}
+          labelStyle={{ color: cores.corPrincipal }}
           onChangeText = {this.updateReferencia}
           returnKeyType="done"
           value = {this.state.referencia}
-          borderColor={'#8b0000'}
+          borderColor={cores.corPrincipal}
           autoCapitalize='words'
         />
         <View>
@@ -127,7 +126,7 @@ export class CadastrarEnderecoScreen extends Component {
           </TouchableOpacity>
         </View>
         </KeyboardAwareScrollView>
-      </Image>
+      </ImageBackground>
     )
   }
 }

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Image, View, Text, TouchableOpacity, ListView } from 'react-native'
 import { styles, images} from '../constants/constants'
-import * as firebase from 'firebase';
 import { getEstabelecimentoProd, } from '../firebase/database'
 
 import _ from 'lodash'

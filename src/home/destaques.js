@@ -1,14 +1,14 @@
 
 import React, { Component } from 'react';
-import { Image, Alert, View, Text, Button, ActivityIndicator,BackHandler, Platform, FlatList, TouchableOpacity, Modal, TouchableHighlight} from 'react-native'
+import { ImageBackground, Image, Alert, View, Text, Button, ActivityIndicator,BackHandler, Platform, FlatList, TouchableOpacity, Modal, TouchableHighlight} from 'react-native'
 import { styles, cores, images} from '../constants/constants'
 import { checkUserDetails, getUserDetails, atualizarProfilePicture, getNomeEstabelecimentos, nomesEstabelecimentos } from '../firebase/database'
-import * as firebase from 'firebase';
 import HomeListItem from './homeListItem'
 import SearchEstabelecimentoListItem from './searchEstabelecimentoListItem'
 import {dadosTipoEstabelecimento} from './dadosTipoEstabelecimento'
 import { SearchBar } from 'react-native-elements'
 import Loader from '../loadingModal/loadingModal';
+import {auth} from '../firebase/firebase'
 
 import _ from 'lodash'
 
@@ -67,7 +67,7 @@ export class DestaquesScreen extends Component {
     this.setState({
             loadingList: true
           });
-    let user = await firebase.auth().currentUser;
+    let user = await auth.currentUser;
 
     // getUserDetails(user.uid, (nomeP,telefoneP,enderecoP,numeroEndP,bairroP,referenciaP,profilePicURLP)=>{
     //   this.setState({
@@ -232,7 +232,7 @@ export class DestaquesScreen extends Component {
 
     <View style={styles.containerIndicator}>
       <ActivityIndicator
-        color = '#8b0000'
+        color = {cores.corPrincipal}
         size="large"
         style = {styles.activityIndicator}/>
     </View> :
@@ -242,13 +242,13 @@ export class DestaquesScreen extends Component {
     </View>
 
     return (
-      <Image
+      <ImageBackground
         source={images.imageBackground}
         style={styles.backgroundImage}>
         <Loader
           loading = {this.state.loading}/>
         {content}
-      </Image>
+      </ImageBackground>
   );
 }
 

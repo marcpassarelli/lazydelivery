@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Platform, Image, Alert, View, Text, Button, ActivityIndicator, SectionList, Animated } from 'react-native'
+import { ImageBackground, Platform, Image, Alert, View, Text, Button, ActivityIndicator, SectionList, Animated } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
-import * as firebase from 'firebase';
 import {getEstabelecimentoProd, estabelecimentoProd, listaTamanhosPizzas, getTamanhosPizzas, numTamanhos} from '../firebase/database'
 import EstabelecimentoProdutosListItem from './estabelecimentoProdutosListItem'
 import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
@@ -309,7 +308,7 @@ functionButton(){
 
     <View style={styles.containerIndicator}>
       <ActivityIndicator
-        color = '#8b0000'
+        color = {cores.corPrincipal}
         size="large"
         style = {styles.activityIndicator}/>
     </View> :
@@ -322,17 +321,17 @@ functionButton(){
         renderItem={this.renderItem}
         renderSectionHeader={this.renderHeader}
         sections={sectionData}
-        keyExtractor={(item) => item._id}
+        keyExtractor={(item) => item._id.toString()}
         />
       <View>{this.functionButton()}</View>
     </View>
 
     return (
-      <Image
+      <ImageBackground
         source={images.imageBackground}
         style={styles.backgroundImage}>
         {content}
-      </Image>
+      </ImageBackground>
     );
   }
 }

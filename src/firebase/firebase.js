@@ -1,18 +1,14 @@
-console.ignoredYellowBox = [
-    'Setting a timer'
-]
-import * as firebase from "firebase";
+import firebase from 'firebase'
 
-export class Firebase {
-
-    static initialize() {
-        firebase.initializeApp({
-              apiKey: "AIzaSyDEg_vdMB9UiCpBv2mVnksveSI___aNP5I",
-              authDomain: "deliveryaltamira.firebaseapp.com",
-              databaseURL: "https://deliveryaltamira.firebaseio.com",
-              projectId: "deliveryaltamira",
-              storageBucket: "deliveryaltamira.appspot.com",
-              messagingSenderId: "752201168315"
-        });
-    }
+const config = {
+  apiKey: "AIzaSyDEg_vdMB9UiCpBv2mVnksveSI___aNP5I",
+  authDomain: "deliveryaltamira.firebaseapp.com",
+  databaseURL: "https://deliveryaltamira.firebaseio.com",
+  projectId: "deliveryaltamira",
+  storageBucket: "deliveryaltamira.appspot.com",
+  messagingSenderId: "752201168315"
 }
+
+export const firebaseImpl = firebase.initializeApp(config)
+export const db = firebase.database()
+export const auth = firebase.auth()

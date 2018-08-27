@@ -25,7 +25,8 @@ import { DestaquesScreen } from './src/home/destaques'
 import { HistoricoPedidosScreen } from './src/historicoPedidos/historicoPedidos'
 import { DetalhesPedidoScreen } from './src/historicoPedidos/detalhesPedido'
 import { AvaliacaoScreen } from './src/historicoPedidos/avaliacao'
-import * as firebase from 'firebase';
+import { YellowBox } from 'react-native';
+YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader', 'Setting a timer for a long']);
 
 const TabHome = TabNavigator({
   Home: {

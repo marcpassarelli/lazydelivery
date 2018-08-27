@@ -6,7 +6,6 @@ import { updateStatus, carregarPedidos } from '../firebase/database'
 import HistoricoPedidosListItem from './historicoPedidosListItem'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import * as firebase from 'firebase';
 let todocount=0
 let listener = null
 let teste=[];
@@ -42,13 +41,12 @@ export class HistoricoPedidosScreen extends Component {
 
   }
 
-  componentWillMount(){
-    this.setState({
-      loading:true
-    });
-  }
   componentDidMount(){
     carregarPedidos((message)=>{
+      console.log("dentro carregapedidos");
+      this.setState({
+        loading:true
+      });
       teste.push({
         id:message._id,
         endereco:message.endereco,
@@ -103,19 +101,9 @@ export class HistoricoPedidosScreen extends Component {
   };
 
   functionListaPedidos(){
-    if(this.state.messages){
-    return(
-      <FlatList
-        refreshing={this.state.refreshing}
-        ItemSeparatorComponent={this.renderSeparatorComponent}
-        data={this.state.messages}
-        extraData={this.state}
-        renderItem={this._renderItem}
-        keyExtractor={item => item.id}
-        />
-    )}else{
-      <View>Sem pedidos</View>
-    }
+    // console.log("dentroFunctionListaPedidos");
+
+
   }
 
   render() {
@@ -123,29 +111,39 @@ export class HistoricoPedidosScreen extends Component {
     console.ignoredYellowBox = [
       'Setting a timer'
     ]
+    console.log("loading: "+this.state.loading);
 
     const content = this.state.loading ?
 
     <View style={styles.containerIndicator}>
       <ActivityIndicator
-        color = '#8b0000'
+        color = {cores.corPrincipal}
         size="large"
         style = {styles.activityIndicator}/>
     </View> :
 
-    <View>
-      <View>{this.functionListaPedidos()}</View>
+    <View onLayout={()=>console.log("dentro onlayout antes function")}>
+      {this.state.messages=[] ?
+        <View style={{marginTop: 10}}><Text style={styles.textAddProduto}>Sem pedidos realizados.</Text></View>
+        :
+        <FlatList
+          refreshing={this.state.refreshing}
+          ItemSeparatorComponent={this.renderSeparatorComponent}
+          data={this.state.messages}
+          extraData={this.state}
+          renderItem={this._renderItem}
+          keyExtractor={item => item.id.toString()}
+          />}
     </View>
 
-
     return (
-      <Image
+      <ImageBackground
         source={images.imageBackground}
         style={styles.backgroundImage}>
         <View style={{flex:1}}>
           {content}
         </View>
-      </Image>
+      </ImageBackground>
     );
   }
 

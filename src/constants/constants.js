@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
     // resizeMode: 'cover', // or 'stretch'
     height: null,
     width: null,
-    tintColor: cores.corSecundaria
+    // tintColor: cores.corSecundaria
   },
   buttonFacebook: {
     height: 60,
@@ -254,7 +254,7 @@ textAdicionais:{
     color:cores.textDetalhes
   },
   textInputs:{
-    borderColor: '#8b0000',
+    borderColor: cores.corPrincipal,
   },
   textPreco:{
     backgroundColor:'transparent',

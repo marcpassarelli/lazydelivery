@@ -5,7 +5,8 @@ import React, { Component } from 'react';
 import { Text, Image, View } from 'react-native';
 import FadeInOutView from '../animation/fadeinoutview'
 import { styles, images} from '../constants/constants'
-import * as firebase from 'firebase';
+import {auth} from '../firebase/firebase'
+
 /*import { Home } from './home'*/
 
 export class SplashScreen extends Component {
@@ -23,7 +24,7 @@ export class SplashScreen extends Component {
 
   async getUser(){
     const { navigate } = this.props.navigation;
-    let user = await firebase.auth().currentUser
+    let user = await auth.currentUser
     this.setState({loggedIn: user}, function(){
       this.validateUserName();
     })

@@ -1,9 +1,8 @@
 
 import React, { Component } from 'react';
-import { Image, Alert, View, Text, ActivityIndicator, BackHandler, Platform, FlatList, Modal, AsyncStorage } from 'react-native'
+import { ImageBackground, Image, Alert, View, Text, ActivityIndicator, BackHandler, Platform, FlatList, Modal, AsyncStorage } from 'react-native'
 import { styles, cores, images } from '../constants/constants'
 import { listaEnderecos, getUserListEnd, checkUserDetails, getUserEndAtual, getNomeEstabelecimentos, nomesEstabelecimentos } from '../firebase/database'
-import * as firebase from 'firebase';
 import HomeListItem from './homeListItem'
 import StatusBar from '../constants/statusBar'
 import SearchEstabelecimentoListItem from './searchEstabelecimentoListItem'
@@ -11,7 +10,7 @@ import {dadosTipoEstabelecimento} from './dadosTipoEstabelecimento'
 import { SearchBar } from 'react-native-elements'
 import Loader from '../loadingModal/loadingModal';
 import ModalEnd from './modalEnd'
-
+import {auth} from '../firebase/firebase'
 
 import _ from 'lodash'
 
@@ -70,11 +69,11 @@ export class HomeScreen extends Component {
  };
 
   async componentWillMount(){
-
     this.setState({
             loadingList: true
           });
-    this.user = await firebase.auth().currentUser;
+
+    this.user = await auth.currentUser;
 
 
     getNomeEstabelecimentos()
@@ -284,7 +283,7 @@ export class HomeScreen extends Component {
     </View>
 
     return (
-      <Image
+      <ImageBackground
         source={images.imageBackground}
         style={styles.backgroundImage}>
         <Loader
@@ -294,7 +293,7 @@ export class HomeScreen extends Component {
           showModal = {()=>{this.showModal()}}
           adicionaEnd = {()=>{this.adicionaEnd()}}/>
         {content}
-      </Image>
+      </ImageBackground>
     );
   }
 }

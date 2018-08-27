@@ -2,14 +2,13 @@ console.ignoredYellowBox = [
     'Setting a timer'
 ]
 import React, { Component } from 'react';
-import { Image, Text } from 'react-native';
+import { ImageBackground, Image, Text } from 'react-native';
 import { styles, images} from '../constants/constants'
-import * as firebase from 'firebase';
 import ComponentsCompletaCadastro from './componentsCompletaCadastro'
 import { cadastrarUsuario } from '../firebase/database'
 import { Hoshi } from 'react-native-textinput-effects';
 import StatusBar from '../constants/statusBar'
-
+import {db, auth} from '../firebase/firebase'
 
 export class CompletaCadastroScreen extends Component {
 
@@ -59,7 +58,7 @@ export class CompletaCadastroScreen extends Component {
         this.state.endereco && this.state.bairro &&
         this.state.numeroEnd && this.state.referencia){
 
-          let user = await firebase.auth().currentUser;
+          let user = await auth.currentUser;
 
           this.setState({uid: user.uid})
 
@@ -99,7 +98,7 @@ export class CompletaCadastroScreen extends Component {
         'Setting a timer'
     ]
     return (
-      <Image
+      <ImageBackground
         source={images.imageBackground}
         style={styles.backgroundImage}>
         <StatusBar/>
@@ -107,12 +106,12 @@ export class CompletaCadastroScreen extends Component {
         <Hoshi
           style={styles.labelCadastro}
           label={'Nome:'}
-          labelStyle={{ color: '#8b0000' }}
+          labelStyle={{ color: cores.corPrincipal }}
           onChangeText = {this.updateNome}
           returnKeyType="next"
           autoCapitalize="words"
           value = {this.state.nome}
-          borderColor={'#8b0000'}
+          borderColor={cores.corPrincipal}
         />
         <ComponentsCompletaCadastro
           validateUserName = {this.validateUserName}
@@ -124,7 +123,7 @@ export class CompletaCadastroScreen extends Component {
           updateReferencia = {this.updateReferencia}
           cadastrarInformacoesBD = {this.cadastrarInformacoesBD}
           />
-      </Image>
+      </ImageBackground>
     )
   }
 }

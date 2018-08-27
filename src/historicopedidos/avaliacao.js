@@ -6,7 +6,6 @@ import React, { Component } from 'react';
 import { Image, Alert, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { styles, images } from '../constants/constants'
 import { logout, getUserProfile } from '../firebase/database'
-import * as firebase from 'firebase';
 
 
 export class AvaliacaoScreen extends Component {
@@ -54,7 +53,7 @@ export class AvaliacaoScreen extends Component {
 
      <View style={styles.containerIndicator}>
        <ActivityIndicator
-         color = '#8b0000'
+         color = {cores.corPrincipal}
          size="large"
          style = {styles.activityIndicator}/>
      </View> :
@@ -64,11 +63,11 @@ export class AvaliacaoScreen extends Component {
      </View>
 
      return (
-       <Image
+       <ImageBackground
          source={images.imageBackground}
          style={styles.backgroundImage}>
          {content}
-       </Image>
+       </ImageBackground>
      );
      }
 }

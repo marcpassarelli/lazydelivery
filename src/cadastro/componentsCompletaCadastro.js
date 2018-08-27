@@ -14,47 +14,47 @@ export default ComponentsCompletaCadastro = (props) => {
         <Hoshi
           style={styles.labelCadastro}
           label={'Telefone com DDD:'}
-          labelStyle={{ color: '#8b0000' }}
+          labelStyle={{ color: cores.corPrincipal }}
           onChangeText = {props.updateTelefone}
           returnKeyType="next"
           keyboardType="numeric"
-          borderColor={'#8b0000'}
+          borderColor={cores.corPrincipal}
         />
         <Hoshi
           style={styles.labelCadastro}
           label={'Endereço:'}
-          labelStyle={{ color: '#8b0000' }}
+          labelStyle={{ color: cores.corPrincipal }}
           onChangeText = {props.updateEndereco}
           returnKeyType="next"
           autoCapitalize='words'
-          borderColor={'#8b0000'}
+          borderColor={cores.corPrincipal}
         />
         <Hoshi
             style={styles.labelCadastro}
             label={'Número Endereço:'}
-            labelStyle={{ color: '#8b0000' }}
+            labelStyle={{ color: cores.corPrincipal }}
             onChangeText = {props.updateNumeroEnd}
             returnKeyType="next"
             keyboardType="numeric"
-            borderColor={'#8b0000'}
+            borderColor={cores.corPrincipal}
         />
         <Hoshi
           style={styles.labelCadastro}
           label={'Bairro:'}
-          labelStyle={{ color: '#8b0000' }}
+          labelStyle={{ color: cores.corPrincipal }}
           onChangeText = {props.updateBairro}
           returnKeyType="next"
           autoCapitalize='words'
-          borderColor={'#8b0000'}
+          borderColor={cores.corPrincipal}
         />
         <Hoshi
           style={styles.labelCadastro}
           label={'Referência:'}
-          labelStyle={{ color: '#8b0000' }}
+          labelStyle={{ color: cores.corPrincipal }}
           onChangeText = {props.updateReferencia}
           returnKeyType="done"
           autoCapitalize='words'
-          borderColor={'#8b0000'}
+          borderColor={cores.corPrincipal}
         />
         <View style={styles.separator}/>
         <TouchableOpacity

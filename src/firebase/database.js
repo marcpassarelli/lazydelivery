@@ -1,8 +1,9 @@
 console.ignoredYellowBox = [
     'Setting a timer'
 ]
-import * as firebase from 'firebase';
 import { AsyncStorage } from 'react-native';
+import {db, auth} from './firebase'
+import firebase from 'firebase'
 
 export var listaEstabelecimentos = []
 export var listaAdicionais = []
@@ -15,10 +16,11 @@ export var numTamanhos = 0
 export var listaPedidos=[]
 var todoCounter = 1;
 
+
 export async function login (email, pass, onLogin) {
 
     try {
-        await firebase.auth()
+        await db
             .signInWithEmailAndPassword(email, pass);
             onLogin()
 
@@ -39,7 +41,7 @@ export async function login (email, pass, onLogin) {
 export async function signup (email, pass, onSignup) {
 
     try {
-        await firebase.auth()
+        await db
             .createUserWithEmailAndPassword(email, pass);
 
         onSignup()
@@ -62,13 +64,13 @@ export async function cadastrarUsuario(userId, nome, telefone, endereco,
   let userInformationPath = "/user/" + userId + "/details";
   let userInformationPathEnd = "/user/" + userId + "/details/listaEnderecos";
 
-  firebase.database().ref(userInformationPath).set({
+  db.ref(userInformationPath).set({
       nome: nome,
       telefone: telefone,
       profilePicURL: profilePicURL
   })
 
-  firebase.database().ref(userInformationPathEnd).push({
+  db.ref(userInformationPathEnd).push({
     endereco: endereco,
     numeroEnd: numeroEnd,
     bairro: bairro,
@@ -89,7 +91,7 @@ export function atualizarUsuario(userId, nome, telefone) {
 
   let userInformationPath = "/user/" + userId + "/details";
 
-  return firebase.database().ref(userInformationPath).update({
+  return db.ref(userInformationPath).update({
       nome: nome,
       telefone: telefone
   })
@@ -99,7 +101,7 @@ export async function cadastrarEndereco(userId,  endereco,
   numeroEnd, bairro, referencia){
     let userInformationPath = "/user/" + userId + "/details/listaEnderecos/"
 
-      firebase.database().ref(userInformationPath).push({
+      db.ref(userInformationPath).push({
         endereco: endereco,
         numeroEnd: numeroEnd,
         bairro: bairro,
@@ -125,7 +127,7 @@ export async function atualizarEndereco(userId, key, endereco,
 
   let userInformationPath = "/user/" + userId + "/details/listaEnderecos/"+key+"/";
 
-  return firebase.database().ref(userInformationPath).update({
+  return db.ref(userInformationPath).update({
       endereco: endereco,
       numeroEnd: numeroEnd,
       bairro: bairro,
@@ -147,7 +149,7 @@ export async function logout() {
 
     try {
 
-        await firebase.auth().signOut();
+        await auth.signOut();
 
         // Navigate to login view
 
@@ -161,10 +163,10 @@ export async function deleteUser(){
 
   try {
 
-    let user = await firebase.auth().currentUser;
+    let user = await auth.currentUser;
     let userInformationPath = "/user/" + user.uid
     user.delete().then(function() {
-      firebase.database().ref(userInformationPath).remove()
+      db.ref(userInformationPath).remove()
       console.log("user deletado")
     }, function(error) {
       console.log("user não deletado"+error)// An error happened.
@@ -182,7 +184,7 @@ export function getUserProfile(userID, callback){
   var telefone = "";
   var profilePicURL = "";
 
-  firebase.database().ref(userPath).once('value').then(function(snapshot) {
+  db.ref(userPath).once('value').then(function(snapshot) {
     var userData = snapshot.val()
 
 //Se userData não for nulo, isso quer dizer que o usuário já existe e não precisa completar cadastro
@@ -227,7 +229,7 @@ export async function getUserEndAtual(callback){
 export function getUserListEnd(userID, onListLoad){
   let userPath = "/user/"+userID
 
-  firebase.database().ref(userPath+"/details/listaEnderecos/").once('value').then(function(snapshot){
+  db.ref(userPath+"/details/listaEnderecos/").once('value').then(function(snapshot){
     listaEnderecos=[]
     snapshot.forEach((child)=>{
       listaEnderecos.push({
@@ -251,8 +253,8 @@ export function addEndereco(userID){
 export async function checkUserDetails(userExiste, userNaoExiste){
 
   try {
-    let userId = await firebase.auth().currentUser.uid
-    firebase.database().ref("/user/"+userId).once('value').then(function(snapshot) {
+    let userId = await auth.currentUser.uid
+    db.ref("/user/"+userId).once('value').then(function(snapshot) {
       var userData = snapshot.val()
 
   //Se userData não for nulo, isso quer dizer que o usuário já existe e não precisa completar cadastro
@@ -272,7 +274,7 @@ export async function checkUserDetails(userExiste, userNaoExiste){
 export async function getListaEstabelecimentos(tipoEstabelecimento, onListLoad){
   try{
     listaEstabelecimentos = []
-    firebase.database().ref("/tiposEstabelecimentos/"+tipoEstabelecimento).once('value').then(function(snapshot){
+    db.ref("/tiposEstabelecimentos/"+tipoEstabelecimento).once('value').then(function(snapshot){
       var estabelecimentoData = snapshot.val()
       if(estabelecimentoData){
         snapshot.forEach((child) =>{
@@ -296,7 +298,7 @@ export async function getListaEstabelecimentos(tipoEstabelecimento, onListLoad){
 export async function getEstabelecimentoProd(nomeEstabelecimento, sectionDataFunction, onListLoad ){
   try{
     estabelecimentoProd = []
-    firebase.database().ref("/produtos/"+nomeEstabelecimento).once('value').then(function(snapshot){
+    db.ref("/produtos/"+nomeEstabelecimento).once('value').then(function(snapshot){
       var estabelecimentoData = snapshot.val()
       if(estabelecimentoData){
         snapshot.forEach((child) =>{
@@ -324,7 +326,7 @@ export async function getEstabelecimentoProd(nomeEstabelecimento, sectionDataFun
 export async function getTamanhosPizzas(nomeEstabelecimento){
   try{
     listaTamanhosPizzas = []
-    firebase.database().ref("/pizza/"+nomeEstabelecimento).once('value').then(function(snapshot){
+    db.ref("/pizza/"+nomeEstabelecimento).once('value').then(function(snapshot){
       var estabelecimentoPizzas = snapshot.val()
       if(estabelecimentoPizzas){
         snapshot.forEach((child) =>{
@@ -353,7 +355,7 @@ export async function limparEstabelecimentoProd(){
 export async function getNomeEstabelecimentos(){
   try{
     nomesEstabelecimentos = []
-    firebase.database().ref("/nomeEstabelecimentos/").once('value').then(function(snapshot){
+    db.ref("/nomeEstabelecimentos/").once('value').then(function(snapshot){
       var estabelecimentoTiposProdData = snapshot.val()
       if(estabelecimentoTiposProdData){
         snapshot.forEach((child) =>{
@@ -372,7 +374,7 @@ export async function getNomeEstabelecimentos(){
 export async function getEstabelecimentoInfo(nomeEstabelecimento, callback){
   try{
     estabelecimentoInfo = []
-    firebase.database().ref("/infoEstabelecimentos/"+nomeEstabelecimento).once('value').then(function(snapshot){
+    db.ref("/infoEstabelecimentos/"+nomeEstabelecimento).once('value').then(function(snapshot){
       var estabelecimentoData = snapshot.val()
       var logo, nome, precoDelivery, tempoEntrega, seg, ter, qua, qui, sex, sab, dom, deb, din  = "";
       var cre = []
@@ -468,7 +470,7 @@ export async function getListaAdicionais(nomeEstabelecimento, tipoProduto){
   try{
     listaAdicionais = []
     todoCounter=0
-    firebase.database().ref("/listaAdicionais/"+nomeEstabelecimento+"/"+tipoProduto+"/").once('value').then(function(snapshot){
+    db.ref("/listaAdicionais/"+nomeEstabelecimento+"/"+tipoProduto+"/").once('value').then(function(snapshot){
 
       var estabelecimentoTiposProdData = snapshot.val()
       if(estabelecimentoTiposProdData){
@@ -490,7 +492,7 @@ export async function getListaAdicionais(nomeEstabelecimento, tipoProduto){
 
 export async function loadMessages(estabelecimento, chave, callback){
   // console.log("dentro loadMessages"+estabelecimento);
-  this.messageRef = firebase.database().ref("/messages/"+estabelecimento+"/"+chave+"/status")
+  this.messageRef = db.ref("/messages/"+estabelecimento+"/"+chave+"/status")
   console.log("messageRef"+this.messageRef);
   this.messageRef.off();
   this.messageRef.on('value',function(snap){
@@ -502,11 +504,11 @@ export async function loadMessages(estabelecimento, chave, callback){
 }
 
 export async function carregarPedidos(callback){
-  let userId = await firebase.auth().currentUser.uid
+  let userId = await auth.currentUser.uid
   // console.log("dentro waitMessages");
-  firebase.database().ref("/user/"+userId+"/details/pedidos").once('value').then(function(snapshot){
+  db.ref("/user/"+userId+"/details/pedidos").once('value').then(function(snapshot){
     snapshot.forEach((child)=>{
-      firebase.database().ref("/infoEstabelecimentos/"+child.val().estabelecimento+"/logo").once('value').then(function(logo){
+      db.ref("/infoEstabelecimentos/"+child.val().estabelecimento+"/logo").once('value').then(function(logo){
       callback({
         logo: logo.val(),
         _id:child.key,
@@ -529,7 +531,7 @@ export var chaveMsg=""
 export async function sendMessage(retirarNovo, carrinhoNovo, formaPgtoNovo, formaPgtoDetalheNovo,
    nomeNovo, telefoneNovo, enderecoNovo, bairroNovo, referenciaNovo,
    estabelecimento, statusNovo, key) {
-    this.messageRef = firebase.database().ref("/messages/"+estabelecimento+"/")
+    this.messageRef = db.ref("/messages/"+estabelecimento+"/")
     this.messageRef.off();
     this.messageRef.push({
       retirar: retirarNovo,
@@ -551,9 +553,9 @@ export async function sendMessage(retirarNovo, carrinhoNovo, formaPgtoNovo, form
 
   export async function salvarPedido(retirarNovo, carrinhoNovo, totalPriceNovo, freteNovo, formaPgtoNovo, formaPgtoDetalheNovo,
      enderecoNovo, bairroNovo, estabelecimentoNovo, keyNovo){
-       let userId = await firebase.auth().currentUser.uid
+       let userId = await auth.currentUser.uid
        console.log("userId"+userId);
-       this.historicoPedidos = firebase.database().ref("/user/"+userId+"/details/pedidos/")
+       this.historicoPedidos = db.ref("/user/"+userId+"/details/pedidos/")
        this.historicoPedidos.off();
        this.historicoPedidos.push({
         retirar: retirarNovo,
@@ -572,7 +574,7 @@ export async function sendMessage(retirarNovo, carrinhoNovo, formaPgtoNovo, form
 
   export async function retiraLoja(nomeEstabelecimento, callback){
     try{
-      firebase.database().ref("/infoEstabelecimentos/"+nomeEstabelecimento+"/retiraLoja").once('value').then(function(snapshot){
+      db.ref("/infoEstabelecimentos/"+nomeEstabelecimento+"/retiraLoja").once('value').then(function(snapshot){
           callback({retiraLoja: snapshot.val()})
       })
     } catch(error){

@@ -1,16 +1,16 @@
 console.ignoredYellowBox = [
     'Setting a timer'
 ]
+import firebase from 'firebase';
 import StatusBar from '../constants/statusBar'
 import ComponentsLoginRegister from './componentsloginregister';
 import { login, checkUserDetails } from '../firebase/database'
 import React, { Component } from 'react';
-import { Image, Alert, BackHandler, Platform } from 'react-native';
+import { ImageBackground, Image, Alert, BackHandler, Platform } from 'react-native';
 import { styles, images} from '../constants/constants'
-import * as firebase from 'firebase';
 import FBSDK, { LoginManager, AccessToken, GraphRequestManager, GraphRequest } from 'react-native-fbsdk'
 import Loader from '../loadingModal/loadingModal';
-
+import { auth} from '../firebase/firebase'
 let listener = null
 export class LoginRegisterScreen extends Component {
 
@@ -119,7 +119,7 @@ export class LoginRegisterScreen extends Component {
         AccessToken.getCurrentAccessToken().then((accessTokenData) => {
           let accessToken = accessTokenData.accessToken
           const credential = firebase.auth.FacebookAuthProvider.credential(accessToken)
-          firebase.auth().signInWithCredential(credential).then((result)=> {
+            auth.signInAndRetrieveDataWithCredential(credential).then((result)=> {
 
             const responseInfoCallback = (error, result) => {
               if (error) {
@@ -171,7 +171,7 @@ export class LoginRegisterScreen extends Component {
   }
   render(){
     return (
-      <Image
+      <ImageBackground
         source={images.imageBackground}
         style={styles.backgroundImage}>
         <Loader
@@ -186,7 +186,7 @@ export class LoginRegisterScreen extends Component {
           logintToCadastroFacebook = {this.logintToCadastroFacebook}
           loginWithFacebook = {this.loginWithFacebook}
           />
-      </Image>
+      </ImageBackground>
     )
   }
 }

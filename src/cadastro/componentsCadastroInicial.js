@@ -14,8 +14,8 @@ export default ComponentsCadastroInicial = (props) => {
         <Hoshi
           style={styles.labelCadastro}
           label={'Email:'}
-          labelStyle={{ color: '#8b0000' }}
-          borderColor={'#8b0000'}
+          labelStyle={{ color: cores.corPrincipal }}
+          borderColor={cores.corPrincipal}
           autoFocus = {true}
           keyboardType="email-address"
           returnKeyType="next"
@@ -24,8 +24,8 @@ export default ComponentsCadastroInicial = (props) => {
         <Hoshi
           style={styles.labelCadastro}
           label={'Confirmar Email:'}
-          labelStyle={{ color: '#8b0000' }}
-          borderColor={'#8b0000'}
+          labelStyle={{ color: cores.corPrincipal }}
+          borderColor={cores.corPrincipal}
           keyboardType="email-address"
           returnKeyType="next"
           onChangeText = {props.updateConfirmarEmail}
@@ -34,8 +34,8 @@ export default ComponentsCadastroInicial = (props) => {
         <Hoshi
           style={styles.labelCadastro}
           label={'Senha:'}
-          labelStyle={{ color: '#8b0000' }}
-          borderColor={'#8b0000'}
+          labelStyle={{ color: cores.corPrincipal }}
+          borderColor={cores.corPrincipal}
           onChangeText = {props.updateSenha}
           secureTextEntry = {true}
           returnKeyType="next"
@@ -43,8 +43,8 @@ export default ComponentsCadastroInicial = (props) => {
         <Hoshi
           style={styles.labelCadastro}
           label={'Confirmar Senha:'}
-          labelStyle={{ color: '#8b0000' }}
-          borderColor={'#8b0000'}
+          labelStyle={{ color: cores.corPrincipal }}
+          borderColor={cores.corPrincipal}
           onChangeText = {props.updateConfirmarSenha}
           secureTextEntry = {true}
           returnKeyType="next"

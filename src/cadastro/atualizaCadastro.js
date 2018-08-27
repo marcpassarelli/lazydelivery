@@ -2,14 +2,13 @@ console.ignoredYellowBox = [
     'Setting a timer'
 ]
 import React, { Component } from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { ImageBackground, Image, Text, TouchableOpacity, View } from 'react-native';
 import { styles, images} from '../constants/constants'
-import * as firebase from 'firebase';
 import { atualizarUsuario } from '../firebase/database'
 import { Hoshi } from 'react-native-textinput-effects';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import StatusBar from '../constants/statusBar'
-
+import {db, auth} from '../firebase/firebase'
 
 export class AtualizaCadastroScreen extends Component {
 
@@ -38,9 +37,10 @@ export class AtualizaCadastroScreen extends Component {
 
    async atualizarInformacoesBD () {
      const {navigate} = this.props.navigation
+
      if(this.state.nome && this.state.telefone){
 
-          let user = await firebase.auth().currentUser;
+          let user = await auth.currentUser;
 
           this.setState({uid: user.uid})
 
@@ -78,7 +78,7 @@ export class AtualizaCadastroScreen extends Component {
         'Setting a timer'
     ]
     return (
-      <Image
+      <ImageBackground
         source={images.imageBackground}
         style={styles.backgroundImage}>
         <StatusBar/>
@@ -87,22 +87,22 @@ export class AtualizaCadastroScreen extends Component {
         <Hoshi
           style={styles.labelCadastro}
           label={'Nome:'}
-          labelStyle={{ color: '#8b0000' }}
+          labelStyle={{ color: cores.corPrincipal }}
           onChangeText = {this.updateNome}
           returnKeyType="next"
           autoCapitalize="words"
           value = {this.state.nome}
-          borderColor={'#8b0000'}
+          borderColor={cores.corPrincipal}
         />
         <Hoshi
           style={styles.labelCadastro}
           label={'Telefone:'}
-          labelStyle={{ color: '#8b0000' }}
+          labelStyle={{ color: cores.corPrincipal }}
           onChangeText = {this.updateTelefone}
           returnKeyType="next"
           keyboardType="numeric"
           value = {this.state.telefone}
-          borderColor={'#8b0000'}
+          borderColor={cores.corPrincipal}
         />
         <View>
           <View style={styles.separator}/>
@@ -113,7 +113,7 @@ export class AtualizaCadastroScreen extends Component {
           </TouchableOpacity>
         </View>
         </KeyboardAwareScrollView>
-      </Image>
+      </ImageBackground>
     )
   }
 }
