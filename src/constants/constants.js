@@ -3,9 +3,17 @@ console.ignoredYellowBox = [
 ]
 import { StyleSheet, Alert, Navigator } from 'react-native';
 import React, { Component } from 'react';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+
 
 export const images ={
   imageBackground: require('../../img/transparent.png'),
+  backgroundSplash: require('../../img/01-Front---background.png'),
+  iconSplash: require('../../img/Icon---Roxo.png'),
+  backgroundLogin: require('../../img/Login-background.png'),
+  logoLogin: require('../../img/Logo-White.png'),
+  logoFacebook: require('../../img/facebook.png')
+
 }
 export const cores = {
     corPrincipal: '#472c82',
@@ -14,30 +22,41 @@ export const cores = {
 };
 
 export const styles = StyleSheet.create({
+  logoLogin:{
+    height: hp('12.73%'),
+    width: wp('63.98%'),
+    marginTop: hp('23.15%'),
+    marginBottom: hp('12.96%'),
+    alignSelf: 'center'
+  },
   activityIndicator:{
     justifyContent:'center',
     alignItems:'center',
     height:70
   },
   backgroundImage: {
-    flex: 1,
+
     // resizeMode: 'cover', // or 'stretch'
-    height: null,
-    width: null,
+    height: hp('100%'),
+    width: wp('100%'),
     // tintColor: cores.corSecundaria
   },
-  buttonFacebook: {
-    height: 60,
-    width: null,
-    resizeMode: 'contain',
-    borderRadius: 6,
+  containerButtonFacebook: {
+    height: hp('5.94%'),
+    width: wp('75.28%'),
+    alignSelf: 'center',
+
+    backgroundColor: 'rgb(0,89,159)',
+    borderRadius: 3,
   },
   buttons:{
-    height: 40,
-    width: 300,
+    height: hp('5.94%'),
+    width: wp('75.28%'),
     alignSelf: 'center',
-    borderRadius: 6,
-    backgroundColor: cores.corSecundaria
+    justifyContent: 'center',
+    backgroundColor: 'rgb(252, 204, 60)',
+    marginBottom: hp('4.98%'),
+    borderRadius: 3
   },
   containerIndicator:{
     flex: 1,
@@ -133,8 +152,11 @@ export const styles = StyleSheet.create({
     opacity: 1,
   },
   logo: {
-    marginTop: 140,
-    alignSelf: 'center'
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+    resizeMode: 'center'
   },
   nomeAppHome:{
     alignSelf:'center',
@@ -182,121 +204,139 @@ export const styles = StyleSheet.create({
     color: cores.corPrincipal,
     marginLeft:5,
     fontSize: 18,
-    marginBottom: 15
+    marginBottom: 15,
+    fontFamily: 'Futura Medium'
 },
 textAdicionais:{
   backgroundColor:'transparent',
   alignSelf: 'center',
   color: cores.corPrincipal,
   fontSize: 16,
-  marginBottom: 15
+  marginBottom: 15,
+  fontFamily: 'Futura Medium'
 },
   textButtons:{
     backgroundColor:'transparent',
     alignSelf:'center',
-    marginTop:10,
     color:'#FFFFFF',
-    fontSize: 14,
-    fontWeight:'bold'
+    fontSize: 16,
+    fontFamily: 'Futura Medium'
   },
   textCarrinho:{
     backgroundColor:'transparent',
     alignSelf: 'center',
     color: cores.corPrincipal,
-    fontSize: 15
+    fontSize: 15,
+    fontFamily: 'Futura Medium'
   },
   textCarrinhoAdicionais:{
     backgroundColor:'transparent',
     alignSelf: 'center',
-    fontSize: 14
+    fontSize: 14,
+    fontFamily: 'Futura Medium'
   },
   textDetalhesEstabelecimento:{
     backgroundColor:'transparent',
     marginLeft: 5,
     fontSize: 13,
-    color: cores.textDetalhes
+    color: cores.textDetalhes,
+    fontFamily: 'Futura Medium'
   },
   textEndHome:{
     backgroundColor:'transparent',
     fontSize: 13,
     marginTop:5,
     color: cores.corPrincipal,
+    fontFamily: 'Futura Medium'
   },
   textEstabelecimento:{
     backgroundColor:'transparent',
     marginLeft: 5,
     fontSize: 17,
-    color: cores.corPrincipal
+    color: cores.corPrincipal,
+    fontFamily: 'Futura Medium'
   },
   textHistoricoPedidos: {
     backgroundColor:'transparent',
     fontSize: 15,
     color: cores.corPrincipal,
     marginBottom:5,
-    marginLeft: 5
+    marginLeft: 5,
+    fontFamily: 'Futura Medium'
   },
   textInformacoes:{
     backgroundColor:'transparent',
     marginLeft:15,
     fontSize: 18,
-    color:cores.corPrincipal
+    color:cores.corPrincipal,
+    fontFamily: 'Futura Medium'
   },
   textInformacoes2:{
     backgroundColor:'transparent',
     marginLeft:20,
     fontSize:17,
-    color:cores.textDetalhes
+    color:cores.textDetalhes,
+    fontFamily: 'Futura Medium'
   },
   textInformacoesD: {
     backgroundColor:'transparent',
     marginLeft:30,
     fontSize: 16,
-    color:cores.textDetalhes
+    color:cores.textDetalhes,
+    fontFamily: 'Futura Medium'
   },
   textInputs:{
     borderColor: cores.corPrincipal,
+    fontFamily: 'Futura Medium'
   },
   textPreco:{
     backgroundColor:'transparent',
     fontSize: 15,
     marginRight: 15,
-    color: cores.corPrincipal
+    color: cores.corPrincipal,
+    fontFamily: 'Futura Medium'
   },
   textProdutos:{
     backgroundColor:'transparent',
     marginLeft: 10,
     fontSize: 15,
-    color: cores.corPrincipal
+    color: cores.corPrincipal,
+    fontFamily: 'Futura Medium'
   },
   textProfileDetails:{
     backgroundColor:'transparent',
     fontSize:18,
     alignSelf:'center',
     color: cores.corPrincipal,
+    fontFamily: 'Futura Medium'
   },
   textResumoPgto:{
     backgroundColor:'transparent',
     color: cores.corPrincipal,
     fontSize: 14,
-    marginBottom: 3
+    marginBottom: 3,
+    fontFamily: 'Futura Medium'
   },
   textTelaCadastro: {
     backgroundColor:'transparent',
     fontFamily: 'Cochin',
     fontSize: 18,
     textAlign: 'left',
+    fontFamily: 'Futura Medium'
   },
   textTipoEstabelecimento:{
     marginLeft: 10,
     fontSize: 17,
     backgroundColor:'transparent',
-    color: cores.corPrincipal
+    color: cores.corPrincipal,
+    fontFamily: 'Futura Medium'
   },
   textUpdateEnd:{
     backgroundColor:'transparent',
     fontSize: 13,
     marginVertical: 5,
     color:'#0000FF',
+    fontFamily: 'Futura Medium'
   },
   titleCadastro: {
     backgroundColor:'transparent',
@@ -304,8 +344,8 @@ textAdicionais:{
     textAlign: 'center',
     color: cores.corPrincipal,
     fontSize: 24,
-    fontWeight: 'bold',
     opacity: 1,
+    fontFamily: 'Futura Medium'
   },
   container: {
    alignItems: 'center',
@@ -320,6 +360,7 @@ modal: {
 },
 text: {
    color: '#3f2949',
-   marginTop: 10
+   marginTop: 10,
+   fontFamily: 'Futura Medium'
 }
 });

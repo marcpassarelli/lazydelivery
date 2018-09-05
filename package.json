@@ -16,6 +16,9 @@
     "react-native-elements": "^0.18.2",
     "react-native-fbsdk": "^0.6.3",
     "react-native-keyboard-aware-scroll-view": "^0.3.0",
+    "react-native-rating-simple": "^1.0.1",
+    "react-native-responsive-screen": "^1.1.9",
+    "react-native-star-rating": "^1.0.9",
     "react-native-textinput-effects": "^0.4.0",
     "react-native-toast-native": "^1.2.1",
     "react-native-vector-icons": "^4.4.2",
@@ -33,5 +36,10 @@
   },
   "jest": {
     "preset": "react-native"
+  },
+  "rnpm": {
+    "assets": [
+      "./assets/fonts/"
+    ]
   }
 }

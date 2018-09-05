@@ -20,7 +20,7 @@ var todoCounter = 1;
 export async function login (email, pass, onLogin) {
 
     try {
-        await db
+        await auth
             .signInWithEmailAndPassword(email, pass);
             onLogin()
 
@@ -41,7 +41,7 @@ export async function login (email, pass, onLogin) {
 export async function signup (email, pass, onSignup) {
 
     try {
-        await db
+        await auth
             .createUserWithEmailAndPassword(email, pass);
 
         onSignup()
@@ -460,6 +460,7 @@ export async function getEstabelecimentoInfo(nomeEstabelecimento, callback){
         qua, qui, sex, sab, dom, cre, deb, din)
 
 
+
     })
   } catch(error){
     console.log(error)
@@ -520,7 +521,8 @@ export async function carregarPedidos(callback){
         estabelecimento: child.val().estabelecimento,
         formaPgto: child.val().formaPgto,
         formaPgtoDetalhe: child.val().formaPgtoDetalhe,
-        valorCompra: child.val().valorCompra
+        valorCompra: child.val().valorCompra,
+        key: child.val().key
       })
     })
   })

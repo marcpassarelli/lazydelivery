@@ -2,7 +2,7 @@ console.ignoredYellowBox = [
     'Setting a timer'
 ]
 import React, { Component } from 'react';
-import { Text, Image, View } from 'react-native';
+import { Text, Image, View,ImageBackground } from 'react-native';
 import FadeInOutView from '../animation/fadeinoutview'
 import { styles, images} from '../constants/constants'
 import {auth} from '../firebase/firebase'
@@ -48,13 +48,19 @@ export class SplashScreen extends Component {
 
    render() {
      return(
-       <FadeInOutView>
-         <Image
-          style={styles.logo}
-          source={require('../../img/delivery-truck-icon.png')}
-         />
-       <Text style={styles.developedBy}>desenvolvido por Marc Passarelli</Text>
-       </FadeInOutView>
+       <ImageBackground
+         source={images.backgroundSplash}
+         style={styles.backgroundImage}>
+         <FadeInOutView>
+           <View style={{justifyContent: 'center',alignItems: 'center'}}>
+             <Image
+              style={styles.logo}
+              source={images.iconSplash}
+             />
+           </View>
+         <Text style={styles.developedBy}>desenvolvido por Marc Passarelli</Text>
+         </FadeInOutView>
+       </ImageBackground>
      );
    }
 }

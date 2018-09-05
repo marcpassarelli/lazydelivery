@@ -123,28 +123,30 @@ async componentWillMount(){
         deb: debUp,
         din: dinUp
     },function(){
-      console.log("state.cre"+this.state.cre);
-      console.log("state.deb"+this.state.deb);
+      this.setState({
+        loading: false
+      });
     })
   })
   //Pegar informações usuário
   getUserProfile(user.uid, (nomeP,telefoneP,profilePicURLP)=>{
-    console.log("nomePPPP"+nomeP);
+
     this.setState({
       nome: nomeP,
       telefone: telefoneP,
     },function(){
-      console.log("state.nome"+this.state.nome);
+      console.log("dentro func getUserProfile");
     });
   })
   //Pegar endereço cadastrado
   getUserEndAtual((enderecoP,numeroEndP,bairroP,referenciaP)=>{
-    console.log("dentrogetUserEndAtul");
+
       this.setState({
         endereco:enderecoP+", "+numeroEndP,
         bairro:bairroP,
         referencia:referenciaP
       },function(){
+        console.log("dentro func getUserEndAtual"),
         this._callback()
       });
     })
@@ -155,10 +157,6 @@ async componentWillMount(){
 
 _callback(){
   console.log("inside callback"+this.state.nomeEstabelecimento);
-  this.setState({
-    loading:false
-  });
-
 }
 
 fazerPedido(){
@@ -232,6 +230,7 @@ fazerPedido(){
 }
 
 functionPicker(tipoPgto){
+  console.log("functionPickertipoPgto"+tipoPgto);
   if(Platform.OS==='ios'){
     return(
     <PickerIOS
@@ -246,14 +245,14 @@ functionPicker(tipoPgto){
   )
   }else{
     return(
-  <Picker
-    style={{width:350, height: 40}}
-    selectedValue={this.state.pgtoEscolhido}
-    onValueChange={this.updatePgtoEscolhido}>
-    {tipoPgto.map((item, index)=>{
-      return (<Picker.Item label={item.bandeira} value={item.bandeira} key={index} />)
-    })}
-  </Picker>)
+      <Picker
+        style={{width:350, height: 40}}
+        selectedValue={this.state.pgtoEscolhido}
+        onValueChange={this.updatePgtoEscolhido}>
+        {tipoPgto.map((item, index)=>{
+          return (<Picker.Item label={item.bandeira} value={item.bandeira} key={index} />)
+        })}
+      </Picker>)
 }
 }
 

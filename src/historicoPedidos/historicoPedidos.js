@@ -34,7 +34,7 @@ export class HistoricoPedidosScreen extends Component {
     super(props);
     //Estados para pegar as informações do Usuário
     this.state = {
-      loading:false,
+      loading:true,
       messages:[],
       refreshing: false
     }
@@ -42,6 +42,7 @@ export class HistoricoPedidosScreen extends Component {
   }
 
   componentDidMount(){
+      teste=[]
     carregarPedidos((message)=>{
       console.log("dentro carregapedidos");
       this.setState({
@@ -58,12 +59,13 @@ export class HistoricoPedidosScreen extends Component {
         valorCompra: message.valorCompra,
         createdAt: message.createdAt,
         logo: message.logo,
-        retirar: message.retirar
+        retirar: message.retirar,
+        key: message.key
         })
       this.setState({
         messages:teste
       },function(){
-        console.log("createdAt"+JSON.stringify(this.state.messages[0].createdAt));
+        console.log("createdAt"+JSON.stringify(this.state.messages));
         this.setState({
           loading:false
         });
@@ -71,10 +73,26 @@ export class HistoricoPedidosScreen extends Component {
     })
   }
 
+  renderSeparatorComponent = () => {
+    return (<View style={styles.renderSeparatorComponent}/>)
+  };
+
+
+  _renderItem=({item,index})=>{
+    return(
+      <HistoricoPedidosListItem
+        onPressSend={()=>this.onPressSend(item,index)}
+        avaliarPedido={()=>this.avaliarPedido(item,index)}
+        item={item}>
+      </HistoricoPedidosListItem>
+    )
+  }
+
   onPressSend=(item,index)=>{
     // const messages = [...this.state.messages]
     const { navigate } = this.props.navigation;
     navigate('DetalhesPedido',{
+      id: item.id,
       endereco:item.endereco,
       bairro: item.bairro,
       estabelecimento: item.estabelecimento,
@@ -88,22 +106,13 @@ export class HistoricoPedidosScreen extends Component {
   })
   }
 
-  _renderItem=({item,index})=>{
-    return(
-      <HistoricoPedidosListItem
-        onPressSend={()=>this.onPressSend(item,index)}
-        item={item}>
-      </HistoricoPedidosListItem>
-    )
-  }
-  renderSeparatorComponent = () => {
-    return (<View style={styles.renderSeparatorComponent}/>)
-  };
-
-  functionListaPedidos(){
-    // console.log("dentroFunctionListaPedidos");
-
-
+  avaliarPedido=(item,index)=>{
+    const {navigate} = this.props.navigation
+    navigate('Avaliacao',{
+      id: item.id,
+      key: item.key,
+      estabelecimento: item.estabelecimento
+    })
   }
 
   render() {
@@ -111,8 +120,6 @@ export class HistoricoPedidosScreen extends Component {
     console.ignoredYellowBox = [
       'Setting a timer'
     ]
-    console.log("loading: "+this.state.loading);
-
     const content = this.state.loading ?
 
     <View style={styles.containerIndicator}>
@@ -122,18 +129,21 @@ export class HistoricoPedidosScreen extends Component {
         style = {styles.activityIndicator}/>
     </View> :
 
-    <View onLayout={()=>console.log("dentro onlayout antes function")}>
-      {this.state.messages=[] ?
-        <View style={{marginTop: 10}}><Text style={styles.textAddProduto}>Sem pedidos realizados.</Text></View>
-        :
-        <FlatList
-          refreshing={this.state.refreshing}
-          ItemSeparatorComponent={this.renderSeparatorComponent}
-          data={this.state.messages}
-          extraData={this.state}
-          renderItem={this._renderItem}
-          keyExtractor={item => item.id.toString()}
-          />}
+    <View onLayout={()=>console.log(this.state.loading+"message"+this.state.messages)}>
+      {
+        this.state.messages ?
+        <View>
+          <FlatList
+            ItemSeparatorComponent={this.renderSeparatorComponent}
+            data={this.state.messages}
+            extraData={this.state}
+            renderItem={this._renderItem}
+            keyExtractor={item => item.id.toString()}
+          />
+        </View>
+            :
+      <View style={{marginTop: 10}}><Text style={styles.textAddProduto}>Sem pedidos realizados.</Text></View>
+      }
     </View>
 
     return (

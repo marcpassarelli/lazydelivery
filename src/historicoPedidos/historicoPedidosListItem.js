@@ -58,7 +58,7 @@ export default class HistoricoPedidosListItem extends Component {
                 <View style={{marginRight: 10}}>
                   <TouchableOpacity
                     style={[styles.buttons,{width: null, marginHorizontal: 10}]}
-                    onPress = { () => {this.props.loginToHome()} } >
+                    onPress = { () => {this.props.avaliarPedido()} } >
                     <Text style={[styles.textButtons,{marginHorizontal: 5}]}>AVALIAR PEDIDO</Text>
                   </TouchableOpacity>
                 </View>

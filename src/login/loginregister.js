@@ -172,15 +172,13 @@ export class LoginRegisterScreen extends Component {
   render(){
     return (
       <ImageBackground
-        source={images.imageBackground}
+        source={images.backgroundLogin}
         style={styles.backgroundImage}>
         <Loader
           loading={this.state.loading}
           message="Aguarde enquanto o login é completo..." />
         <StatusBar/>
         <ComponentsLoginRegister
-          updateEmail = {this.updateEmail}
-          updateSenha = {this.updateSenha}
           loginToHome = {this.loginToHome}
           logintToCadastro = {this.logintToCadastro}
           logintToCadastroFacebook = {this.logintToCadastroFacebook}

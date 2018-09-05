@@ -3,16 +3,22 @@ console.ignoredYellowBox = [
 ]
 
 import React, { Component } from 'react';
-import { Image, Alert, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'
-import { styles, images } from '../constants/constants'
+import { TextInput, Image, ImageBackground, Alert, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { styles, images, cores } from '../constants/constants'
 import { logout, getUserProfile } from '../firebase/database'
-
+import Rating from 'react-native-rating-simple';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export class AvaliacaoScreen extends Component {
 
   constructor(props) {
     super(props);
-
+    this.state = {
+      loading: false,
+      id:'',
+      key:'',
+      estabelecimento:''
+    }
   }
 
   static navigationOptions = ({navigation}) => ({
@@ -34,12 +40,37 @@ export class AvaliacaoScreen extends Component {
     headerRight: (<View></View>)
   })
 
-  async componentWillMount(){
+  componentWillMount(){
     this.setState({
             loading: true
           });
 
+      // CRIAR FUNÇÃO EM DATABASE PARA SALVAR EM MESSAGES/KEY E USER/PEDIDOS/ID
+      const {state} = this.props.navigation
+      //id do pedido dentro de user/pedidos/id
+      var id = state.params ? state.params.id : ""
+      //key da message dentro de messages/key
+      var key = state.params ? state.params.key : ""
+      var estabelecimento = state.params ? state.params.estabelecimento : ""
+      this.setState({
+        id: id,
+        key: key,
+        estabelecimento: estabelecimento
+      }, function(){
+        this.setState({
+          loading: false
+        });
+      });
+  }
 
+  avaliarPedido = () => {
+
+  }
+
+  onStarRatingPress(rating) {
+    this.setState({
+      starCount: rating
+    });
   }
 
 
@@ -48,6 +79,7 @@ export class AvaliacaoScreen extends Component {
      console.ignoredYellowBox = [
          'Setting a timer'
      ]
+     const {rating}=this.props
 
      const content = this.state.loading ?
 
@@ -58,8 +90,37 @@ export class AvaliacaoScreen extends Component {
          style = {styles.activityIndicator}/>
      </View> :
 
-     <View style={{flex:1}}>
+     <View style={{flex:1, marginHorizontal: 3}}>
+       <Text style={styles.textAddProduto}>Dê de 0 a 5 estrelas para o pedido feito para o {this.state.estabelecimento}:</Text>
+       <View style={{marginHorizontal: 2}}>
+         <Text>Tempo de Entrega:</Text>
+           <Rating
+             halfStar={
+               <Image source={halfStar} style={{ width: 40, height: 40 }} />
+             }
+             fullStar={
+               <Image source={fullStar} style={{ width: 40, height: 40 }} />
+             }
+             emptyStar={
+               <Image source={emptyStar} style={{ width: 40, height: 40 }} />
+             }
+             starSize={40}
+             onChange={rating => {
+               this.setState({ rating1: rating });
+             }}
+           />
+      </View>
+       <Text style={styles.textAddProduto}>Escreva algum comentário se desejar:</Text>
+       <TextInput>
 
+       </TextInput>
+       <View style={{marginRight: 10}}>
+         <TouchableOpacity
+           style={[styles.buttons,{width: null, marginHorizontal: 10}]}
+           onPress = { () => {this.avaliarPedido()} } >
+           <Text style={[styles.textButtons,{marginHorizontal: 5}]}>AVALIAR PEDIDO</Text>
+         </TouchableOpacity>
+         </View>
      </View>
 
      return (
