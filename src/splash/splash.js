@@ -51,8 +51,8 @@ export class SplashScreen extends Component {
        <ImageBackground
          source={images.backgroundSplash}
          style={styles.backgroundImage}>
-         <FadeInOutView>
-           <View style={{justifyContent: 'center',alignItems: 'center'}}>
+         <FadeInOutView style={{justifyContent: 'center',alignContent: 'center'}}>
+           <View >
              <Image
               style={styles.logo}
               source={images.iconSplash}

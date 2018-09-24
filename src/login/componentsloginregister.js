@@ -18,7 +18,7 @@ export default ComponentsLoginRegister = (props) => {
       <TouchableHighlight
         style={styles.buttons}
         onPress = { () => {props.loginToHome()} }>
-        <Text style={styles.textButtons}>LOGIN</Text>
+        <Text style={styles.textButtons}>LOGIN COM E-MAIL</Text>
       </TouchableHighlight>
 
       <TouchableHighlight
@@ -31,7 +31,7 @@ export default ComponentsLoginRegister = (props) => {
         style={styles.containerButtonFacebook}
         onPress = {()=>{props.loginWithFacebook()}} >
         <View style={{flexDirection: 'row'}}>
-        <Image source={images.logoFacebook} style={{marginLeft:10 ,height:'100%',width: '20%',resizeMode: 'contain'}}></Image>
+        <Image source={images.logoFacebook} style={styles.imglogoFB}></Image>
         <Text style={styles.textButtons}>LOGIN COM O FACEBOOK</Text>
         </View>
       </TouchableHighlight>

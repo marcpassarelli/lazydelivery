@@ -1,7 +1,7 @@
 console.ignoredYellowBox = [
     'Setting a timer'
 ]
-import { styles, images} from '../constants/constants'
+import { styles, images, cores} from '../constants/constants'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Text, View, Button, TouchableOpacity } from 'react-native';
 import React, { Component } from 'react';

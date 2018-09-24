@@ -8,6 +8,7 @@ import { SplashScreen } from './src/splash/splash'
 import { CadastroInicialScreen } from './src/cadastro/cadastroInicial'
 import { CompletaCadastroScreen } from './src/cadastro/completaCadastro'
 import { LoginRegisterScreen } from './src/login/loginregister'
+import { LoginEmailScreen } from './src/login/loginEmail'
 import { HomeScreen } from './src/home/home'
 import { CadastrarEnderecoScreen } from './src/cadastro/cadastrarEndereco'
 import { AtualizaCadastroScreen } from './src/cadastro/atualizaCadastro'
@@ -89,6 +90,7 @@ const TabEstabelecimento = TabNavigator({
 const DeliveryPassa = StackNavigator({
   Splash: { screen: SplashScreen },
   LoginRegister: { screen: LoginRegisterScreen },
+  LoginEmail: { screen: LoginEmailScreen },
   CadastroInicial: { screen: CadastroInicialScreen },
   CompletaCadastro: { screen: CompletaCadastroScreen },
   Home: { screen: TabHome },

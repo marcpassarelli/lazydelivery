@@ -3,7 +3,7 @@ console.ignoredYellowBox = [
 ]
 import React, { Component } from 'react';
 import { ImageBackground, Image, Text } from 'react-native';
-import { styles, images} from '../constants/constants'
+import { styles, images, cores } from '../constants/constants'
 import ComponentsCompletaCadastro from './componentsCompletaCadastro'
 import { cadastrarUsuario } from '../firebase/database'
 import { Hoshi } from 'react-native-textinput-effects';

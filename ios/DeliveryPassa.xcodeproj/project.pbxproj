@@ -52,6 +52,10 @@
 		C5863809ECCB425EA275C622 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3AC5D24A02C94ED8AEED2FB7 /* Octicons.ttf */; };
 		4372D1BA846B48F7970C5D10 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E6F21E46E8614E71A168C8D4 /* SimpleLineIcons.ttf */; };
 		4EC382AF6897496ABEB159AE /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D19EDEFC913042B88603C6AA /* Zocial.ttf */; };
+		C83BECF527204A8FB045B07C /* Futura Medium Italic BT.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 63C62D981D6743F0BF7FD924 /* Futura Medium Italic BT.ttf */; };
+		B95285C7F4A6482993A4F689 /* Futura PT Extra Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F99CAF5985C84618A8D22B64 /* Futura PT Extra Bold.otf */; };
+		181F9CD3A3F345DDA000C527 /* FuturaBookCTT Normal.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A251A81A98AE429981AD303C /* FuturaBookCTT Normal.ttf */; };
+		773B0B5CC21D4A22A8F7274E /* Futura Book.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DFF4D3999896462C92E1F8CC /* Futura Book.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -375,6 +379,10 @@
 		3AC5D24A02C94ED8AEED2FB7 /* Octicons.ttf */ = {isa = PBXFileReference; name = "Octicons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		E6F21E46E8614E71A168C8D4 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; name = "SimpleLineIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		D19EDEFC913042B88603C6AA /* Zocial.ttf */ = {isa = PBXFileReference; name = "Zocial.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		63C62D981D6743F0BF7FD924 /* Futura Medium Italic BT.ttf */ = {isa = PBXFileReference; name = "Futura Medium Italic BT.ttf"; path = "../assets/fonts/Futura Medium Italic BT.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F99CAF5985C84618A8D22B64 /* Futura PT Extra Bold.otf */ = {isa = PBXFileReference; name = "Futura PT Extra Bold.otf"; path = "../assets/fonts/Futura PT Extra Bold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A251A81A98AE429981AD303C /* FuturaBookCTT Normal.ttf */ = {isa = PBXFileReference; name = "FuturaBookCTT Normal.ttf"; path = "../assets/fonts/FuturaBookCTT Normal.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		DFF4D3999896462C92E1F8CC /* Futura Book.ttf */ = {isa = PBXFileReference; name = "Futura Book.ttf"; path = "../assets/fonts/Futura Book.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -658,6 +666,10 @@
 				3AC5D24A02C94ED8AEED2FB7 /* Octicons.ttf */,
 				E6F21E46E8614E71A168C8D4 /* SimpleLineIcons.ttf */,
 				D19EDEFC913042B88603C6AA /* Zocial.ttf */,
+				63C62D981D6743F0BF7FD924 /* Futura Medium Italic BT.ttf */,
+				F99CAF5985C84618A8D22B64 /* Futura PT Extra Bold.otf */,
+				A251A81A98AE429981AD303C /* FuturaBookCTT Normal.ttf */,
+				DFF4D3999896462C92E1F8CC /* Futura Book.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1121,6 +1133,10 @@
 				C5863809ECCB425EA275C622 /* Octicons.ttf in Resources */,
 				4372D1BA846B48F7970C5D10 /* SimpleLineIcons.ttf in Resources */,
 				4EC382AF6897496ABEB159AE /* Zocial.ttf in Resources */,
+				C83BECF527204A8FB045B07C /* Futura Medium Italic BT.ttf in Resources */,
+				B95285C7F4A6482993A4F689 /* Futura PT Extra Bold.otf in Resources */,
+				181F9CD3A3F345DDA000C527 /* FuturaBookCTT Normal.ttf in Resources */,
+				773B0B5CC21D4A22A8F7274E /* Futura Book.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
