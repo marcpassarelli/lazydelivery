@@ -10,38 +10,23 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { CheckBox } from 'react-native-elements'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/Feather'
+import LazyTextInput from '../constants/lazyTextInput';
 
 export default ComponentsLoginEmail = (props) => {
   return (
     <KeyboardAwareScrollView>
-        <Hideo
-          style={[styles.containerTextInput,{
-             marginBottom: hp('2.3%'), marginTop: hp('41%'),
-          }]}
-          iconClass={MaterialCommunityIcons}
-          iconName={'account-outline'}
-          iconBackgroundColor={'rgba(0,0,0,0)'}
-          inputStyle={{ color: '#464949',backgroundColor: '#d1d1d1',fontFamily: 'Futura Book',fontSize: wp('4%')}}
-          iconColor={'#d1d1d1'}
+        <LazyTextInput
+          style={{marginBottom: hp('2.3%'), marginTop: hp('41%')}}
+          nameIcon={'user'}
           placeholder={'E-MAIL'}
-          iconSize={wp('7%')}
-          onChangeText={props.textEmail}
-        />
-        <Hideo
-          style={[styles.containerTextInput,{marginBottom: hp('3%')}]}
-          iconClass={MaterialCommunityIcons}
-          iconName={'lock-outline'}
-          iconColor={'#d1d1d1'}
-          iconSize={wp('7%')}
-          iconBackgroundColor={'rgba(0,0,0,0)'}
-          inputStyle={{ color: '#464949',backgroundColor: '#d1d1d1',fontFamily: 'Futura Book',fontSize: wp('4%')}}
-          labelStyle={{color: '#FFFFFF'}}
-          placeholder={'SENHA'}
-          secureTextEntry={true}
-          onChangeText={props.textSenha}
-        />
-
+          onChangeText={props.textEmail}/>
+          <LazyTextInput
+            style={{marginBottom: hp('3%')}}
+            nameIcon={'lock'}
+            placeholder={'SENHA'}
+            secureTextEntry={true}
+            onChangeText={props.textSenha}/>
       <TouchableHighlight
         style={[styles.buttons,{marginBottom: hp('4.58%')}]}
         onPress = {()=>{props.loginToHome()}} >
@@ -52,7 +37,7 @@ export default ComponentsLoginEmail = (props) => {
         <View style={{flexDirection: 'row',alignItems: 'center'}}>
           <Icon
             color={'#d1d1d1'}
-            name={props.checked? 'checkbox-marked-outline':'checkbox-blank-outline'}
+            name={props.checked? 'check-square':'square'}
             size={24}
             onPress={()=>{props.functionCheck()}}
             ></Icon>

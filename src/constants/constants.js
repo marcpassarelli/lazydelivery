@@ -39,8 +39,9 @@ export const styles = StyleSheet.create({
   backgroundImage: {
 
     // resizeMode: 'cover', // or 'stretch'
-    height: hp('100%'),
-    width: wp('100%'),
+    flex:1,
+    height: null,
+    width: null
     // tintColor: cores.corSecundaria
   },
   containerButtonFacebook: {
@@ -70,7 +71,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 70
+    alignSelf: 'center'
   },
   containerListItem:{
     position: 'relative',
@@ -90,7 +91,7 @@ export const styles = StyleSheet.create({
     flex:1
   },
   containerTextInput:{
-    borderColor:'#FFFFFF',
+    borderColor:'#d1d1d1',
     borderWidth: 1,
     marginHorizontal: wp('12.31%'),
     height: hp('7%'),

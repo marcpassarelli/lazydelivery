@@ -3,10 +3,11 @@ console.ignoredYellowBox = [
 ]
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import React, { Component } from 'react';
-import { ImageBackground, Image, Text, View, ActivityIndicator, ScrollView } from 'react-native'
+import { ImageBackground, Image, Text, View, ScrollView } from 'react-native'
 import { styles,cores, images} from '../constants/constants'
 import { getEstabelecimentoInfo, estabelecimentoInfo } from '../firebase/database'
 import StatusBar from '../constants/statusBar'
+import LazyActivity from '../loadingModal/lazyActivity'
 
 export class EstabelecimentoInformacoesScreen extends Component {
 
@@ -115,10 +116,7 @@ export class EstabelecimentoInformacoesScreen extends Component {
      const content = this.state.loading ?
 
      <View style={styles.containerIndicator}>
-       <ActivityIndicator
-         color = {cores.corPrincipal}
-         size="large"
-         style = {styles.activityIndicator}/>
+       <LazyActivity/>
      </View> :
 
      <ScrollView style={{flex:1}}>

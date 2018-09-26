@@ -23,10 +23,6 @@ export class LoginEmailScreen extends Component {
   }
 
   componentDidMount() {
-    Animated.timing(this.animatedValue,{
-      toValue:1,
-      duration:1500
-    }).start()
     //Encerrar app se for android e se back for pressionado
     if (Platform.OS == "android" && listener == null) {
       listener = BackHandler.addEventListener("hardwareBackPress", () => {
@@ -94,24 +90,13 @@ export class LoginEmailScreen extends Component {
   }
 
   render(){
-    const interpolateRotation = this.animatedValue.interpolate({
-      inputRange:[0,1],
-      outputRange:['0deg','360deg']
-    })
-    const animatedStyle = {
-      transform:[{
-        rotate: interpolateRotation
-      }]
-    }
     return (
       <ImageBackground
         source={images.backgroundLoginEmail}
         style={styles.backgroundImage}>
         <Loader
           loading={this.state.loading}
-          message="Aguarde enquanto o login é completo..."
-          animatedStyle={animatedStyle} />
-
+          message="Aguarde enquanto a preguiça faz o seu login" />
         <StatusBar/>
         <ComponentsLoginEmail
           loginToHome = {this.loginToHome}

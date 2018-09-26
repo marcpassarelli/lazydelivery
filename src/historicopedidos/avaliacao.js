@@ -3,11 +3,12 @@ console.ignoredYellowBox = [
 ]
 
 import React, { Component } from 'react';
-import { TextInput, Image, ImageBackground, Alert, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { TextInput, Image, ImageBackground, Alert, Text, View, TouchableOpacity } from 'react-native'
 import { styles, images, cores } from '../constants/constants'
 import { logout, getUserProfile } from '../firebase/database'
 import Rating from 'react-native-rating-simple';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import LazyActivity from '../loadingModal/lazyActivity'
 
 export class AvaliacaoScreen extends Component {
 
@@ -84,10 +85,7 @@ export class AvaliacaoScreen extends Component {
      const content = this.state.loading ?
 
      <View style={styles.containerIndicator}>
-       <ActivityIndicator
-         color = {cores.corPrincipal}
-         size="large"
-         style = {styles.activityIndicator}/>
+       <LazyActivity/>
      </View> :
 
      <View style={{flex:1, marginHorizontal: 3}}>

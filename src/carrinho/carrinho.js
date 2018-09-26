@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { ImageBackground, Image, Alert, View, Text, Button, ActivityIndicator, FlatList } from 'react-native'
+import { ImageBackground, Image, Alert, View, Text, Button, FlatList } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
 import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
 import CarrinhoListItem from './carrinhoListItem'
@@ -8,6 +8,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import StatusBar from '../constants/statusBar'
 import { retiraLoja } from '../firebase/database'
 import { CheckBox } from 'react-native-elements'
+import LazyActivity from '../loadingModal/lazyActivity'
 import _ from 'lodash'
 let totalPrice =0
 const produtosCarrinho = []
@@ -277,10 +278,7 @@ export class CarrinhoScreen extends Component{
     const content = this.state.loading ?
 
     <View style={styles.containerIndicator}>
-      <ActivityIndicator
-        color = {cores.corPrincipal}
-        size="large"
-        style = {styles.activityIndicator}/>
+      <LazyActivity/>
     </View> :
 
     <View style={{flex:1}}>

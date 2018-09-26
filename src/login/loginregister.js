@@ -6,7 +6,7 @@ import StatusBar from '../constants/statusBar'
 import ComponentsLoginRegister from './componentsloginregister';
 import { login, checkUserDetails } from '../firebase/database'
 import React, { Component } from 'react';
-import { ImageBackground, Image, Alert, BackHandler, Platform, Animated, Easing } from 'react-native';
+import { ImageBackground, Image, Alert, BackHandler, Platform, Animated, Easing} from 'react-native';
 import { styles, images} from '../constants/constants'
 import FBSDK, { LoginManager, AccessToken, GraphRequestManager, GraphRequest } from 'react-native-fbsdk'
 import Loader from '../loadingModal/loadingModal';
@@ -15,29 +15,27 @@ let listener = null
 export class LoginRegisterScreen extends Component {
   componentWillMount(){
     this.animatedValue = new Animated.Value(0)
-
   }
-  componentDidMount() {
 
+  componentDidMount() {
+    this.runAnimation()
     //Encerrar app se for android e se back for pressionado
     if (Platform.OS == "android" && listener == null) {
       listener = BackHandler.addEventListener("hardwareBackPress", () => {
         BackHandler.exitApp()
       })
     }
-    this.runAnimation()
 
   }
 
   runAnimation() {
-  this.animatedValue.setValue(-3);
-  Animated.timing(this.animatedValue, {
-    toValue: -1,
-    duration: 3000,
-    easing:Easing.linear
-  }).start(() => this.runAnimation());
-}
-
+    this.animatedValue.setValue(-3);
+    Animated.timing(this.animatedValue, {
+      toValue: -1,
+      duration: 3000,
+      easing:Easing.linear
+    }).start(() => this.runAnimation());
+  }
 
   static navigationOptions = {
     header: null,
@@ -90,10 +88,6 @@ export class LoginRegisterScreen extends Component {
     navigate('CompletaCadastro', { name: nomeUsuario, profilePic: profilePicUrl })
     this.setState({
       loading: false
-    },function(){
-      Animated.timing(this.animatedValue,{
-        toValue:1
-      }).stop()
     })
   }
 
@@ -106,10 +100,6 @@ export class LoginRegisterScreen extends Component {
     navigate('Home')
     this.setState({
       loading: false
-    },function(){
-      Animated.timing(this.animatedValue,{
-        toValue:1
-      }).stop()
     })
   }
 
@@ -179,23 +169,13 @@ export class LoginRegisterScreen extends Component {
     })
   }
   render(){
-    const interpolateRotation = this.animatedValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: ['0deg', '360deg'],
-    })
-    const animatedStyle = {
-      transform: [
-        { rotate: interpolateRotation }
-      ]
-    }
     return (
       <ImageBackground
         source={images.backgroundLogin}
         style={styles.backgroundImage}>
         <Loader
           loading={this.state.loading}
-          message="Aguarde enquanto a preguiça faz o seu login"
-          animatedStyle={animatedStyle}/>
+          message="Aguarde enquanto a preguiça faz o seu login"/>
         <StatusBar/>
         <ComponentsLoginRegister
           loginToHome = {this.loginToHome}

@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { ImageBackground, Image, Alert, View, Text, ActivityIndicator, BackHandler, Platform, FlatList, Modal, AsyncStorage } from 'react-native'
+import { ImageBackground, Image, Alert, View, Text, BackHandler, Platform, FlatList, Modal, AsyncStorage } from 'react-native'
 import { styles, cores, images } from '../constants/constants'
 import { listaEnderecos, getUserListEnd, checkUserDetails, getUserEndAtual, getNomeEstabelecimentos, nomesEstabelecimentos } from '../firebase/database'
 import HomeListItem from './homeListItem'
@@ -11,7 +11,7 @@ import { SearchBar } from 'react-native-elements'
 import Loader from '../loadingModal/loadingModal';
 import ModalEnd from './modalEnd'
 import {auth} from '../firebase/firebase'
-
+import LazyActivity from '../loadingModal/lazyActivity'
 import _ from 'lodash'
 
 let listener = null
@@ -229,10 +229,8 @@ export class HomeScreen extends Component {
     const content = this.state.loadingList ?
 
     <View style={styles.containerIndicator}>
-      <ActivityIndicator
-        color = {cores.corPrincipal}
-        size="large"
-        style = {styles.activityIndicator}/>
+      <LazyActivity/>
+
     </View> :
 
     <View style={{flex:1}}>

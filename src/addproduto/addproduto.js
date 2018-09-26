@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { ImageBackground, Platform, BackHandler, Image, View, Text,TextInput, Button, ActivityIndicator, TouchableOpacity, Dimensions, ScrollView } from 'react-native'
+import { ImageBackground, Platform, BackHandler, Image, View, Text,TextInput, Button, TouchableOpacity, Dimensions, ScrollView } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
 import {getListaAdicionais, listaAdicionais} from '../firebase/database'
 import {adicionaisEscolhidos} from './adicionais'
@@ -8,6 +8,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Loader from '../loadingModal/loadingModal';
 import StatusBar from '../constants/statusBar'
 import { AndroidBackHandler } from 'react-navigation-backhandler';
+import LazyActivity from '../loadingModal/lazyActivity'
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -236,38 +237,49 @@ export class AddProdutoScreen extends Component{
    return true
  }
 
+ functionLoadImage(){
+   var {width, height} = Dimensions.get('window');
+   if(this.state.imgProduto){
+     return(
+     <Image
+       source={{uri:this.state.imgProduto}}
+       loadingIndicatorSource={images.iconSplash}
+       defaultSource={{uri:images.iconSplash,width:35,height:35}}
+       onLoadEnd={()=>{this.setState({
+         imageLoaded: false
+       });}}
+       style={[styles.imgProduto,{width: width*0.98, height: height*0.3}]}>
+     </Image>)
+     }
+     else{
+       return(
+       <View style={{marginVertical: 20, justifyContent: 'center',alignItems: 'center',alignSelf: 'center'}}>
+         <Text>Nenhuma imagem disponível para este produto</Text>
+       </View>
+       )
+   }
+
+ }
+
   render() {
     const {state} = this.props.navigation
     console.ignoredYellowBox = [
       'Setting a timer'
     ];
 
-    var {width, height} = Dimensions.get('window');
+
 
     const content = this.state.loading ?
 
     <View style={styles.containerIndicator}>
-      <ActivityIndicator
-        color = {cores.corPrincipal}
-        size="large"
-        style = {styles.activityIndicator}/>
+      <LazyActivity/>
     </View> :
 
     <AndroidBackHandler onBackPress={this.onBackButtonPressAndroid}>
     <View style={{flex: 1}}>
       <StatusBar/>
       <ScrollView>
-        {this.state.imgProduto ?
-          <Image
-            source={{uri:this.state.imgProduto}}
-            onLoadEnd={()=>{this.setState({
-              imageLoaded: false
-            });}}
-            style={[styles.imgProduto,{width: width*0.98, height: height*0.3}]}>
-          </Image>
-          :
-          <View style={{marginTop: 10}}></View>
-        }
+        {this.functionLoadImage()}
 
         <Text style={[styles.textAddProduto,{marginBottom: 0}]}>
             {this.state.nome}

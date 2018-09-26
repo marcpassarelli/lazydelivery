@@ -3,7 +3,8 @@ console.ignoredYellowBox = [
 ]
 
 import React, { Component } from 'react';
-import { ImageBackground, Image, Alert, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { ImageBackground, Image, Alert, Text, View, TouchableOpacity } from 'react-native'
+import LazyActivity from '../loadingModal/lazyActivity'
 import { styles, images, cores } from '../constants/constants'
 import { logout, getUserProfile } from '../firebase/database'
 import FBSDK, { AccessToken, GraphRequestManager, GraphRequest } from 'react-native-fbsdk'
@@ -123,10 +124,7 @@ export class ProfileScreen extends Component {
      const content = this.state.loading ?
 
      <View style={styles.containerIndicator}>
-       <ActivityIndicator
-         color = {cores.corPrincipal}
-         size="large"
-         style = {styles.activityIndicator}/>
+       <LazyActivity/>
      </View> :
 
      <View style={{flex:1}}>

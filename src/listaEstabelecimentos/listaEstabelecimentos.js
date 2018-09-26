@@ -1,11 +1,12 @@
 
 import React, { Component } from 'react';
-import { ImageBackground, Image, View, Text, ActivityIndicator, FlatList } from 'react-native'
+import { ImageBackground, Image, View, Text, FlatList } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
 import ListaEstabelecimentosListItem from './listaEstabelecimentosListItem'
 import {getListaEstabelecimentos, listaEstabelecimentos, limparEstabelecimentoProd} from '../firebase/database'
 import Loader from '../loadingModal/loadingModal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import LazyActivity from '../loadingModal/lazyActivity'
 
 var tipoEstabelecimentoUp ='';
 export class ListaEstabelecimentosScreen extends Component{
@@ -88,10 +89,7 @@ render() {
   const content = this.state.loadingList ?
 
   <View style={styles.containerIndicator}>
-    <ActivityIndicator
-      color = {cores.corPrincipal}
-      size="large"
-      style = {styles.activityIndicator}/>
+    <LazyActivity/>
   </View> :
 
   <View style={{flex:1}}>

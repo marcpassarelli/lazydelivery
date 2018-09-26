@@ -1,9 +1,9 @@
 import PizzaListItem from './pizzaListItem'
 
 import React, { Component } from 'react';
-import { ImageBackground, Platform, Image, Alert, View, Text, Button, ActivityIndicator, FlatList } from 'react-native'
+import { ImageBackground, Platform, Image, Alert, View, Text, Button, FlatList } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
-
+import LazyActivity from '../loadingModal/lazyActivity'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import StatusBar from '../constants/statusBar'
 
@@ -91,10 +91,7 @@ componentWillMount(){
     const content = this.state.loadingList ?
 
     <View style={styles.containerIndicator}>
-      <ActivityIndicator
-        color = {cores.corPrincipal}
-        size="large"
-        style = {styles.activityIndicator}/>
+      <LazyActivity/>
     </View> :
 
     <View style={{flex: 1}}>

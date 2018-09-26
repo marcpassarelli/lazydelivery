@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { ImageBackground, TextInput, Picker, PickerIOS, Platform, ScrollView, Dimensions, Image, Alert, View, Text, Button, ActivityIndicator, FlatList, Icon } from 'react-native'
+import { ImageBackground, TextInput, Picker, PickerIOS, Platform, ScrollView, Dimensions, Image, Alert, View, Text, Button, FlatList, Icon } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
+import LazyActivity from '../loadingModal/lazyActivity'
 import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
 import { getUserProfile, getUserEndAtual, getEstabelecimentoInfo,
   loadMessages, sendMessage, salvarPedido} from '../firebase/database'
@@ -317,10 +318,7 @@ render() {
   const content = this.state.loading ?
 
   <View style={styles.containerIndicator}>
-    <ActivityIndicator
-      color = {cores.corPrincipal}
-      size="large"
-      style = {styles.activityIndicator}/>
+    <LazyActivity/>
   </View> :
 
   <View style={{flex:1}}>

@@ -9,6 +9,8 @@ import {
   Text
 } from 'react-native';
 
+import LazyActivity from './lazyActivity'
+
 export default class Loader extends Component{
   render(){
     return(
@@ -20,10 +22,7 @@ export default class Loader extends Component{
         <View style={stylesLocal.modalBackground}>
           <View style={stylesLocal.activityIndicatorWrapper}>
             <Text style={{marginHorizontal: 10,fontFamily: 'Futura Book'}}>{this.props.message}</Text>
-            <Animated.Image source={images.iconSplash}
-              style={[this.props.animatedStyle,{
-              width: 40, height: 40}]}>
-            </Animated.Image>
+            <LazyActivity/>
           </View>
         </View>
       </Modal>
@@ -31,28 +30,6 @@ export default class Loader extends Component{
   }
 
 }
-// const Loader = props => {
-//   const {
-//     loading,
-//     message,
-//     animatedStyle,
-//     ...attributes
-//   } = props;
-//
-//   return (
-//
-//   )
-// }
-// <ActivityIndicator
-//   style = {styles.activityIndicator}
-//   animating={loading} />
-
-// <Animated.Image
-//   source={images.iconSplash}
-//   style={[this.props.animatedStyle,{
-//   width: 40, height: 40
-//   }]}>
-// </Animated.Image>
 
 const stylesLocal = StyleSheet.create({
   modalBackground: {
@@ -60,7 +37,7 @@ const stylesLocal = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
     justifyContent: 'space-around',
-    backgroundColor: 'rgba(0,131,139,0.9)'
+    backgroundColor: 'rgba(0,131,139,0.8)'
   },
   activityIndicatorWrapper: {
     backgroundColor: '#FFFFFF',

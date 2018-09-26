@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { ImageBackground, Platform, Image, Alert, View, Text, Button, ActivityIndicator, SectionList, Animated } from 'react-native'
+import { ImageBackground, Platform, Image, Alert, View, Text, Button, SectionList, Animated } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
 import {getEstabelecimentoProd, estabelecimentoProd, listaTamanhosPizzas, getTamanhosPizzas, numTamanhos} from '../firebase/database'
 import EstabelecimentoProdutosListItem from './estabelecimentoProdutosListItem'
+import LazyActivity from '../loadingModal/lazyActivity'
 import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
 import Toast from 'react-native-toast-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -307,10 +308,7 @@ functionButton(){
     const content = this.state.loadingList ?
 
     <View style={styles.containerIndicator}>
-      <ActivityIndicator
-        color = {cores.corPrincipal}
-        size="large"
-        style = {styles.activityIndicator}/>
+      <LazyActivity/>
     </View> :
 
     <View style={{flex: 1}}>

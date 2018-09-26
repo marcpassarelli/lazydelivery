@@ -1,7 +1,8 @@
 
 import React, { Component } from 'react';
-import { ImageBackground, FlatList, Image, View, Text, Button, ActivityIndicator, TouchableHighlight, YellowBox } from 'react-native'
+import { ImageBackground, FlatList, Image, View, Text, Button, TouchableHighlight, YellowBox } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
+import LazyActivity from '../loadingModal/lazyActivity'
 import { updateStatus, carregarPedidos } from '../firebase/database'
 import HistoricoPedidosListItem from './historicoPedidosListItem'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -123,10 +124,7 @@ export class HistoricoPedidosScreen extends Component {
     const content = this.state.loading ?
 
     <View style={styles.containerIndicator}>
-      <ActivityIndicator
-        color = {cores.corPrincipal}
-        size="large"
-        style = {styles.activityIndicator}/>
+      <LazyActivity/>
     </View> :
 
     <View onLayout={()=>console.log(this.state.loading+"message"+this.state.messages)}>

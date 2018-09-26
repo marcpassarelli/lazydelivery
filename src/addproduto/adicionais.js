@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { ImageBackground, Image, View, Text, Button, ActivityIndicator, FlatList } from 'react-native'
+import { ImageBackground, Image, View, Text, Button, FlatList } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
 import {listaAdicionais} from '../firebase/database'
 import AdicionaisListItem from './adicionaisListItem'
 import StatusBar from '../constants/statusBar'
+import LazyActivity from '../loadingModal/lazyActivity'
 
 import _ from 'lodash'
 export var adicionaisEscolhidos= []
@@ -167,10 +168,7 @@ export class AdicionaisScreen extends Component{
     const content = this.state.loading ?
 
     <View style={styles.containerIndicator}>
-      <ActivityIndicator
-        color = {cores.corPrincipal}
-        size="large"
-        style = {styles.activityIndicator}/>
+      <LazyActivity/>
     </View> :
 
     <View style={{flex: 1}}>
@@ -217,7 +215,7 @@ export class AdicionaisScreen extends Component{
     return (
       <ImageBackground
         source={images.imageBackground}
-        style={styles.backgroundImage}>
+        style={[styles.backgroundImage]}>
         {content}
       </ImageBackground>
     );

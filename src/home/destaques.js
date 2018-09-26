@@ -1,7 +1,8 @@
 
 import React, { Component } from 'react';
-import { ImageBackground, Image, Alert, View, Text, Button, ActivityIndicator,BackHandler, Platform, FlatList, TouchableOpacity, Modal, TouchableHighlight} from 'react-native'
+import { ImageBackground, Image, Alert, View, Text, Button,BackHandler, Platform, FlatList, TouchableOpacity, Modal, TouchableHighlight} from 'react-native'
 import { styles, cores, images} from '../constants/constants'
+import LazyActivity from '../loadingModal/lazyActivity'
 import { checkUserDetails, getUserDetails, atualizarProfilePicture, getNomeEstabelecimentos, nomesEstabelecimentos } from '../firebase/database'
 import HomeListItem from './homeListItem'
 import SearchEstabelecimentoListItem from './searchEstabelecimentoListItem'
@@ -173,41 +174,6 @@ export class DestaquesScreen extends Component {
     });
   }
 
-  // modalScreen(){
-  //   <View style={{top: 60, bottom: 60, left: 60, right: 60}}>
-  //     {this.state.modalLoaded && this.modalScreen()}
-  //   </View>
-  //   return(
-  //     <Modal
-  //       animationType={"slide"}
-  //       transparent={false}
-  //       visible={this.state.modalVisible}
-  //       onRequestClose={() => {alert("Modal has been closed.")}}
-  //       >
-  //      <View style={{marginTop: 22}}>
-  //       <View>
-  //         <View style={{flexDirection: 'row',alignItems: 'center', justifyContent: 'center'}}>
-  //           <Text style={styles.textEndHome}>{_.upperFirst(this.state.endereco)}, {this.state.numeroEnd} - </Text>
-  //           <Text
-  //             style={styles.textUpdateEnd}
-  //             onPress = { () => this.goToAtualizarEndereco(this.state.endereco,this.state.numeroEnd,this.state.bairro,this.state.referencia) }>
-  //           Trocar Endereço
-  //           </Text>
-  //         </View>
-  //         <TouchableHighlight onPress={() => {
-  //           this.setModalVisible(!this.state.modalVisible),
-  //           this.setState({
-  //             modalLoaded: false
-  //           });
-  //         }}>
-  //           <Text>Confirmar endereço</Text>
-  //         </TouchableHighlight>
-  //       </View>
-  //      </View>
-  //    </Modal>
-  //   )
-  // }
-
   loadingTrue(){
     console.log("dentroLoadingTrue");
     this.setState({loadingList:true})
@@ -231,10 +197,7 @@ export class DestaquesScreen extends Component {
     const content = this.state.loadingList ?
 
     <View style={styles.containerIndicator}>
-      <ActivityIndicator
-        color = {cores.corPrincipal}
-        size="large"
-        style = {styles.activityIndicator}/>
+      <LazyActivity/>
     </View> :
 
     <View style={{flex:1}}>
