@@ -5,15 +5,18 @@ import { StyleSheet, Alert, Navigator } from 'react-native';
 import React, { Component } from 'react';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-
 export const images ={
   imageBackground: require('../../img/transparent.png'),
   backgroundSplash: require('../../img/01-Front---background.png'),
   iconSplash: require('../../img/Icon---Roxo.png'),
+  iconYellow: require('../../img/Logo-amarelo.png'),
+  backgroundCadastro: require('../../img/cadastro-01-bg.png'),
   backgroundLogin: require('../../img/Login-background.png'),
   backgroundLoginEmail: require('../../img/Login-02-background.png'),
   logoLogin: require('../../img/Logo-White.png'),
   logoFacebook: require('../../img/facebook.png'),
+  seta1: require('../../img/Seta-01.png'),
+  seta2: require('../../img/Seta-02.png'),
 
 
 }
@@ -64,7 +67,6 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgb(252, 204, 60)',
-    marginBottom: hp('4.98%'),
     borderRadius: 3
   },
   containerIndicator:{
@@ -359,12 +361,11 @@ textAdicionais:{
   },
   titleCadastro: {
     backgroundColor:'transparent',
-    paddingBottom: 16,
     textAlign: 'center',
-    color: cores.corPrincipal,
+    color: 'white',
     fontSize: 24,
     opacity: 1,
-    fontFamily: 'Futura Book'
+    fontFamily: 'Futura PT Extra Bold'
   },
   container: {
    alignItems: 'center',

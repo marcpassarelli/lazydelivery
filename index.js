@@ -9,6 +9,7 @@ import { CadastroInicialScreen } from './src/cadastro/cadastroInicial'
 import { CompletaCadastroScreen } from './src/cadastro/completaCadastro'
 import { LoginRegisterScreen } from './src/login/loginregister'
 import { LoginEmailScreen } from './src/login/loginEmail'
+import { RedefinePasswordScreen } from './src/login/redefinePassword'
 import { HomeScreen } from './src/home/home'
 import { CadastrarEnderecoScreen } from './src/cadastro/cadastrarEndereco'
 import { AtualizaCadastroScreen } from './src/cadastro/atualizaCadastro'
@@ -91,6 +92,7 @@ const DeliveryPassa = StackNavigator({
   Splash: { screen: SplashScreen },
   LoginRegister: { screen: LoginRegisterScreen },
   LoginEmail: { screen: LoginEmailScreen },
+  RedefinePassword : { screen: RedefinePasswordScreen },
   CadastroInicial: { screen: CadastroInicialScreen },
   CompletaCadastro: { screen: CompletaCadastroScreen },
   Home: { screen: TabHome },

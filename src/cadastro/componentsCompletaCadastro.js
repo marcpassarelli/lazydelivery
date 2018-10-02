@@ -3,65 +3,68 @@ console.ignoredYellowBox = [
 ]
 import { styles, images, cores} from '../constants/constants'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { Text, View, Button, TouchableOpacity } from 'react-native';
+import { Text, View, Button, TouchableOpacity,Image } from 'react-native';
 import React, { Component } from 'react';
 import { Hoshi } from 'react-native-textinput-effects';
+import LazyTextInput from '../constants/lazyTextInput';
+import LazyYellowButton from '../constants/lazyYellowButton'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default ComponentsCompletaCadastro = (props) => {
   return (
     <KeyboardAwareScrollView>
-
-        <Hoshi
-          style={styles.labelCadastro}
-          label={'Telefone com DDD:'}
-          labelStyle={{ color: cores.corPrincipal }}
-          onChangeText = {props.updateTelefone}
-          returnKeyType="next"
+      <Text style={[styles.titleCadastro,{marginTop:hp('8%'),marginBottom: hp('3%')}]}>COMPLETE O SEU CADASTRO</Text>
+        <LazyTextInput
+          style={{marginBottom: hp('2.22%')}}
+          nameIcon={'user'}
+          placeholder={'NOME'}
+          value = {props.nome}
+          onChangeText={props.updateNome}
+          keyboardType="email-address"
+          autoCapitalize="words"
+          returnKeyType="next"/>
+        <LazyTextInput
+          style={{marginBottom: hp('2.22%')}}
+          value = {props.telefone}
+          nameIcon={'phone'}
+          placeholder={'TELEFONE COM DDD'}
+          onChangeText={props.updateTelefone}
           keyboardType="numeric"
-          borderColor={cores.corPrincipal}
-        />
-        <Hoshi
-          style={styles.labelCadastro}
-          label={'Endereço:'}
-          labelStyle={{ color: cores.corPrincipal }}
-          onChangeText = {props.updateEndereco}
-          returnKeyType="next"
+          returnKeyType="next"/>
+        <LazyTextInput
+          style={{marginBottom: hp('2.22%')}}
+          nameIcon={'home'}
+          placeholder={'ENDEREÇO'}
+          onChangeText={props.updateEndereco}
           autoCapitalize='words'
-          borderColor={cores.corPrincipal}
-        />
-        <Hoshi
-            style={styles.labelCadastro}
-            label={'Número Endereço:'}
-            labelStyle={{ color: cores.corPrincipal }}
-            onChangeText = {props.updateNumeroEnd}
-            returnKeyType="next"
-            keyboardType="numeric"
-            borderColor={cores.corPrincipal}
-        />
-        <Hoshi
-          style={styles.labelCadastro}
-          label={'Bairro:'}
-          labelStyle={{ color: cores.corPrincipal }}
-          onChangeText = {props.updateBairro}
+          returnKeyType="next"/>
+        <LazyTextInput
+          style={{marginBottom: hp('2.22%')}}
+          nameIcon={'home'}
+          placeholder={'NÚMERO ENDEREÇO'}
+          onChangeText={props.updateNumeroEnd}
+          keyboardType="numeric"
+          returnKeyType="next"/>
+        <LazyTextInput
+          style={{marginBottom: hp('2.22%')}}
+          nameIcon={'home'}
+          placeholder={'BAIRRO'}
+          onChangeText={props.updateBairro}
           returnKeyType="next"
-          autoCapitalize='words'
-          borderColor={cores.corPrincipal}
-        />
-        <Hoshi
-          style={styles.labelCadastro}
-          label={'Referência:'}
-          labelStyle={{ color: cores.corPrincipal }}
-          onChangeText = {props.updateReferencia}
+          autoCapitalize='words'/>
+        <LazyTextInput
+          style={{marginBottom: hp('2.22%')}}
+          nameIcon={'home'}
+          placeholder={'REFERÊNCIA'}
+          onChangeText={props.updateReferencia}
           returnKeyType="done"
-          autoCapitalize='words'
-          borderColor={cores.corPrincipal}
-        />
-        <View style={styles.separator}/>
-        <TouchableOpacity
-          style={styles.buttons}
-          onPress = { () => {props.cadastrarInformacoesBD()} } >
-          <Text style={styles.textButtons}>CADASTRAR</Text>
-        </TouchableOpacity>
+          autoCapitalize='words'/>
+        <LazyYellowButton
+          style={{marginBottom: hp('4.22%')}}
+          onPress = { () => {props.cadastrarInformacoesBD()} }
+          text={"CADASTRAR"}/>
+        <View style={{backgroundColor: '#FFFFFF',height: hp('0.1%'),marginHorizontal: wp('12.31%'),marginBottom: hp('4.4%')}}></View>
+        <Image source={images.iconYellow} style={{height: hp('7.81%'),width: wp('14.81%'),alignSelf: 'center'}}></Image>
     </KeyboardAwareScrollView>
   )
 }

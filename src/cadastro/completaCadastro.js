@@ -37,6 +37,10 @@ export class CompletaCadastroScreen extends Component {
     this.setState({nome: text})
   }
   updateTelefone = (text) => {
+    var x = text.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+    console.log("x"+x);
+    text = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+    console.log("text"+text);
     this.setState({telefone: text})
   }
   updateEndereco = (text) => {
@@ -99,22 +103,13 @@ export class CompletaCadastroScreen extends Component {
     ]
     return (
       <ImageBackground
-        source={images.imageBackground}
+        source={images.backgroundCadastro}
         style={styles.backgroundImage}>
         <StatusBar/>
-        <Text style={styles.titleCadastro}>Complete o seu cadastro</Text>
-        <Hoshi
-          style={styles.labelCadastro}
-          label={'Nome:'}
-          labelStyle={{ color: cores.corPrincipal }}
-          onChangeText = {this.updateNome}
-          returnKeyType="next"
-          autoCapitalize="words"
-          value = {this.state.nome}
-          borderColor={cores.corPrincipal}
-        />
         <ComponentsCompletaCadastro
           validateUserName = {this.validateUserName}
+          nome={this.state.nome}
+          telefone={this.state.telefone}
           updateNome = {this.updateNome}
           updateTelefone = {this.updateTelefone}
           updateEndereco = {this.updateEndereco}

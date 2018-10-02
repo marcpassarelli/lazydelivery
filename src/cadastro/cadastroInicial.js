@@ -8,7 +8,6 @@ import ComponentsCadastroInicial  from './componentsCadastroInicial'
 import { signup, cadastrarUsuario } from '../firebase/database'
 import StatusBar from '../constants/statusBar'
 
-
 export class CadastroInicialScreen extends Component {
 
   static navigationOptions = {
@@ -22,9 +21,11 @@ export class CadastroInicialScreen extends Component {
       confirmarEmail: '',
       senha: '',
       confirmarSenha: '',
+      checked:false
     }
 
     this.cadastrarUsuarioBD = this.cadastrarUsuarioBD.bind(this);
+
   }
 
   updateEmail = (text) => {
@@ -75,13 +76,19 @@ export class CadastroInicialScreen extends Component {
 
     }
 
+    functionCheck=()=>{
+      this.setState({
+        checked: !this.state.checked
+      });}
+
+
     render(){
       console.ignoredYellowBox = [
           'Setting a timer'
       ]
       return (
         <ImageBackground
-          source={images.imageBackground}
+          source={images.backgroundCadastro}
           style={styles.backgroundImage}>
           <StatusBar/>
           <ComponentsCadastroInicial
@@ -92,6 +99,8 @@ export class CadastroInicialScreen extends Component {
             checarEmail = {this.checarEmail}
             checarSenha = {this.checarSenha}
             cadastrarUsuarioBD = {this.cadastrarUsuarioBD}
+            functionCheck={this.functionCheck}
+            checked={this.state.checked}
             />
         </ImageBackground>
       )

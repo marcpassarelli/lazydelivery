@@ -12,28 +12,33 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import { CheckBox } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/Feather'
 import LazyTextInput from '../constants/lazyTextInput';
+import LazyBackButton from '../constants/lazyBackButton'
+import LazyYellowButton from '../constants/lazyYellowButton'
 
 export default ComponentsLoginEmail = (props) => {
   return (
     <KeyboardAwareScrollView>
-        <LazyTextInput
-          style={{marginBottom: hp('2.3%'), marginTop: hp('41%')}}
+      <LazyBackButton
+        goBack={props.goBack}/>
+      <LazyTextInput
+          style={{marginBottom: hp('2.3%'), marginTop: hp('37%')}}
           nameIcon={'user'}
           placeholder={'E-MAIL'}
           onChangeText={props.textEmail}/>
-          <LazyTextInput
-            style={{marginBottom: hp('3%')}}
-            nameIcon={'lock'}
-            placeholder={'SENHA'}
-            secureTextEntry={true}
-            onChangeText={props.textSenha}/>
-      <TouchableHighlight
-        style={[styles.buttons,{marginBottom: hp('4.58%')}]}
-        onPress = {()=>{props.loginToHome()}} >
-        <Text style={styles.textButtons}>LOGIN</Text>
-      </TouchableHighlight>
+      <LazyTextInput
+        style={{marginBottom: hp('3%')}}
+        nameIcon={'lock'}
+        placeholder={'SENHA'}
+        secureTextEntry={true}
+        onChangeText={props.textSenha}/>
+      <LazyYellowButton
+        onPress = {()=>{props.loginToHome()}}
+        text={"LOGIN"} >
+      </LazyYellowButton>
 
-      <View style={{flexDirection: 'row',alignItems: 'center', justifyContent: 'space-between',marginHorizontal: wp('12.31%'),marginBottom: hp('4.43%')}}>
+      <View style={{flexDirection: 'row',alignItems: 'center',
+        justifyContent: 'space-between',marginHorizontal: wp('12.31%'),
+        marginBottom: hp('4.43%')}}>
         <View style={{flexDirection: 'row',alignItems: 'center'}}>
           <Icon
             color={'#d1d1d1'}
@@ -45,7 +50,8 @@ export default ComponentsLoginEmail = (props) => {
             color: 'rgb(186,200,204)', marginLeft: 5}}>
             Lembrar</Text>
         </View>
-        <Text style={{fontFamily: 'Futura Medium Italic BT',color: 'white'}}>Esqueceu a senha?</Text>
+        <Text style={{fontFamily: 'Futura Medium Italic BT',color: 'white'}}
+          onPress={()=>{props.esqueciSenha()}}>Esqueceu a senha?</Text>
       </View>
       <View style={{backgroundColor: '#FFFFFF',height: hp('0.1%'),marginHorizontal: wp('12.31%')}}></View>
 </KeyboardAwareScrollView>

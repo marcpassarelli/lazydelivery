@@ -18,17 +18,9 @@ export class LoginEmailScreen extends Component {
     header: null,
   };
 
-  componentWillMount(){
-      this.animatedValue = new Animated.Value(0)
-  }
-
   componentDidMount() {
     //Encerrar app se for android e se back for pressionado
-    if (Platform.OS == "android" && listener == null) {
-      listener = BackHandler.addEventListener("hardwareBackPress", () => {
-        this.props.navigation.navigate('LoginRegister')
-      })
-    }
+
   }
 
 
@@ -99,6 +91,7 @@ export class LoginEmailScreen extends Component {
           message="Aguarde enquanto a preguiça faz o seu login" />
         <StatusBar/>
         <ComponentsLoginEmail
+          goBack={()=>{this.props.navigation.navigate('LoginRegister')}}
           loginToHome = {this.loginToHome}
           checked={this.state.checked}
           textEmail={this.updateEmail}
@@ -106,6 +99,7 @@ export class LoginEmailScreen extends Component {
           functionCheck={()=>{this.setState({
             checked: !this.state.checked
           });}}
+          esqueciSenha={()=>{this.props.navigation.navigate('RedefinePassword'),console.log("dentroesquecisenha");}}
           />
       </ImageBackground>
     )

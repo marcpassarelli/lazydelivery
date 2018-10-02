@@ -15,7 +15,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 let listener = null
 export var carrinho =[]
 var todoCounter = 1;
-var totalPrice=0;
+var totalPrecoAd=0;
 var tag=0
 
 export function atualizarCarrinho(carrinhoAtualizado){
@@ -70,7 +70,9 @@ export class AddProdutoScreen extends Component{
 }
 
   componentWillMount(){
-
+    this.setState({
+      loading: true
+    });
     const {state} = this.props.navigation
 
     var nome = state.params ? state.params.nome : ""
@@ -83,7 +85,7 @@ export class AddProdutoScreen extends Component{
 
     var telaAdicionais = state.params ? state.params.telaAdicionais : ""
     var tipoEstabelecimento = state.params ? state.params.tipoEstabelecimento : ""
-    this.totalPrice = state.params ? state.params.totalPreco : ""
+    this.totalPrecoAd = state.params ? state.params.totalPreco : ""
 
 
     //Se tiver vindo da lista de produtos zerará os adicionais
@@ -93,10 +95,8 @@ export class AddProdutoScreen extends Component{
       });
     }
     console.log("estabelecimento "+estabelecimento+"/ tipoProduto"+tipoProduto);
-    getListaAdicionais(estabelecimento, tipoProduto)
 
     this.setState({
-      loading: true,
       nome: nome,
       preco: preco,
       detalhes: detalhes,
@@ -106,10 +106,16 @@ export class AddProdutoScreen extends Component{
       estabelecimento: estabelecimento,
       tipoEstabelecimento: tipoEstabelecimento
     },function(){
-      this.setState({
-        loading:false
-      });
+      console.log("dentro callback setstate e estabelecimento:"+estabelecimento+"  tipoProduto:"+tipoProduto);
     });
+
+    getListaAdicionais(estabelecimento, tipoProduto,()=>{
+      this.setState({
+        loading: false
+      },function(){
+        console.log("dentro callback getlistadicionais");
+      });
+    })
 
   }
 
@@ -192,20 +198,20 @@ export class AddProdutoScreen extends Component{
   }
 
   checkAdicionais(){
-    var total = parseFloat(this.state.total) + parseFloat(this.totalPrice)
+    var total = parseFloat(this.state.total) + parseFloat(this.totalPrecoAd)
 
 
-    if(this.tipoProduto="Pizzas"&&this.totalPrice>=0){
+    if(this.tipoProduto="Pizzas"&&this.totalPrecoAd>0){
       return(
       <View style={{flex:1}}>
-        <Text style={[styles.textAddProduto,{fontSize: 12}]}>Valor Adicionais: R${this.totalPrice}</Text>
+        <Text style={[styles.textAddProduto,{fontSize: 12}]}>Valor Adicionais: R${this.totalPrecoAd}</Text>
         <Text style={styles.textAddProduto}>Total com Adicionais: R$ {total}</Text>
       </View>
       )
-    }else if(this.totalPrice>=0) {
+    }else if(this.totalPrecoAd>0) {
       return(
       <View style={{flex:1}}>
-        <Text style={[styles.textAddProduto,{fontSize: 12}]}>Valor Adicionais: R${this.totalPrice}</Text>
+        <Text style={[styles.textAddProduto,{fontSize: 12}]}>Valor Adicionais: R${this.totalPrecoAd}</Text>
         <Text style={styles.textAddProduto}>Total com Adicionais: R$ {total}</Text>
       </View>
       )
@@ -221,12 +227,6 @@ export class AddProdutoScreen extends Component{
         <Text style={styles.textAddProduto}>{res}</Text>
     )
   }
-
-
-  handleImageLoaded() {
-
-   this.setState({ loading: false });
- }
 
  onBackButtonPressAndroid = () =>{
    const {navigate} = this.props.navigation
@@ -372,7 +372,8 @@ export class AddProdutoScreen extends Component{
         source={images.imageBackground}
         style={styles.backgroundImage}>
         <Loader
-          loading={this.state.loadingAfter}/>
+          loading={this.state.loadingAfter}
+          message="Aguarde enquanto a preguiça adiciona o item ao carrinho."/>
         <KeyboardAwareScrollView>
           {content}
         </KeyboardAwareScrollView>

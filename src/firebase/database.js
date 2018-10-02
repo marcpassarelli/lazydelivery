@@ -467,7 +467,7 @@ export async function getEstabelecimentoInfo(nomeEstabelecimento, callback){
   }
 }
 
-export async function getListaAdicionais(nomeEstabelecimento, tipoProduto){
+export async function getListaAdicionais(nomeEstabelecimento, tipoProduto, onListLoad){
   try{
     listaAdicionais = []
     todoCounter=0
@@ -483,12 +483,16 @@ export async function getListaAdicionais(nomeEstabelecimento, tipoProduto){
             _id: todoCounter++
           });
         });
-        console.log("listaAdicionais"+listaAdicionais);
+        onListLoad()
+        console.log("DEPOIS FOR EACH");
       }
     })
   } catch(error){
-    console.log(error)
+    onListLoad()
+    console.log("error:"+error)
   }
+  onListLoad()
+  console.log("DEPOIS TRY CATCH");
 }
 
 export async function loadMessages(estabelecimento, chave, callback){

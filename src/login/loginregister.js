@@ -13,12 +13,10 @@ import Loader from '../loadingModal/loadingModal';
 import { auth} from '../firebase/firebase'
 let listener = null
 export class LoginRegisterScreen extends Component {
-  componentWillMount(){
-    this.animatedValue = new Animated.Value(0)
-  }
+
 
   componentDidMount() {
-    this.runAnimation()
+
     //Encerrar app se for android e se back for pressionado
     if (Platform.OS == "android" && listener == null) {
       listener = BackHandler.addEventListener("hardwareBackPress", () => {
@@ -28,14 +26,6 @@ export class LoginRegisterScreen extends Component {
 
   }
 
-  runAnimation() {
-    this.animatedValue.setValue(-3);
-    Animated.timing(this.animatedValue, {
-      toValue: -1,
-      duration: 3000,
-      easing:Easing.linear
-    }).start(() => this.runAnimation());
-  }
 
   static navigationOptions = {
     header: null,

@@ -3,9 +3,11 @@ console.ignoredYellowBox = [
 ]
 import { Text, View, TextInput, Image, Button, TouchableHighlight, TouchableOpacity, ImageBackground  } from 'react-native';
 import { styles, images, cores } from '../constants/constants'
-import { Hoshi } from 'react-native-textinput-effects';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import React, { Component } from 'react';
+import LazyYellowButton from '../constants/lazyYellowButton'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+
 
 export default ComponentsLoginRegister = (props) => {
   return (
@@ -15,17 +17,17 @@ export default ComponentsLoginRegister = (props) => {
         style={styles.logoLogin}
         />
 
-      <TouchableHighlight
-        style={styles.buttons}
-        onPress = { () => {props.loginToHome()} }>
-        <Text style={styles.textButtons}>LOGIN COM E-MAIL</Text>
-      </TouchableHighlight>
+      <LazyYellowButton
+        style={{marginBottom: hp('4.98%')}}
+        onPress = { () => {props.loginToHome()}}
+        text={"LOGIN COM E-MAIL"}>
+      </LazyYellowButton>
 
-      <TouchableHighlight
-        style={styles.buttons}
-        onPress = {()=>{props.logintToCadastro()}} >
-        <Text style={styles.textButtons}>CADASTRE-SE</Text>
-      </TouchableHighlight>
+      <LazyYellowButton
+            style={{marginBottom: hp('4.98%')}}
+        onPress = {()=>{props.logintToCadastro()}}
+        text={"CADASTRE-SE"}>
+      </LazyYellowButton>
 
       <TouchableHighlight
         style={styles.containerButtonFacebook}
