@@ -510,27 +510,46 @@ export async function loadMessages(estabelecimento, chave, callback){
 
 export async function carregarPedidos(callback){
   let userId = await auth.currentUser.uid
-  // console.log("dentro waitMessages");
-  db.ref("/user/"+userId+"/details/pedidos").once('value').then(function(snapshot){
-    snapshot.forEach((child)=>{
-      db.ref("/infoEstabelecimentos/"+child.val().estabelecimento+"/logo").once('value').then(function(logo){
-      callback({
-        logo: logo.val(),
-        _id:child.key,
-        carrinho: child.val().carrinho,
-        bairro: child.val().bairro,
-        frete: child.val().frete,
-        createdAt: new Date(child.val().createdAt),
-        endereco: child.val().endereco,
-        estabelecimento: child.val().estabelecimento,
-        formaPgto: child.val().formaPgto,
-        formaPgtoDetalhe: child.val().formaPgtoDetalhe,
-        valorCompra: child.val().valorCompra,
-        key: child.val().key
+
+  let exists = ""
+  db.ref("/user/"+userId+"/details/").once('value').then(function(snapshot){
+    exists = snapshot.child("pedidos").exists()
+
+    if(exists){
+
+      db.ref("/user/"+userId+"/details/pedidos/").once('value').then(function(snapshot){
+        snapshot.forEach((child)=>{
+          db.ref("/infoEstabelecimentos/"+child.val().estabelecimento+"/logo").once('value').then(function(logo){
+          callback({
+            logo: logo.val(),
+            _id:child.key,
+            carrinho: child.val().carrinho,
+            bairro: child.val().bairro,
+            frete: child.val().frete,
+            createdAt: new Date(child.val().createdAt),
+            endereco: child.val().endereco,
+            estabelecimento: child.val().estabelecimento,
+            formaPgto: child.val().formaPgto,
+            formaPgtoDetalhe: child.val().formaPgtoDetalhe,
+            valorCompra: child.val().valorCompra,
+            key: child.val().key
+          })
+        })
       })
-    })
+      })
+    }else{
+      callback({
+        _id:exists
+      })
+    }
+
   })
-  })
+
+
+
+
+
+
 }
 
 export var chaveMsg=""

@@ -10,11 +10,14 @@ import LazyTextInput from '../constants/lazyTextInput';
 import Icon from 'react-native-vector-icons/Feather'
 import LazyYellowButton from '../constants/lazyYellowButton'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import LazyBackButton from '../constants/lazyBackButton'
 
 export default ComponentsCadastroInicial = (props) => {
   return (
     <KeyboardAwareScrollView>
-        <Text style={[styles.titleCadastro,{marginTop: hp('16.7%'),marginBottom: hp('4.32%')}]}>CADASTRE E-MAIL E SENHA</Text>
+      <LazyBackButton
+        goBack={props.goBack}/>
+      <Text style={[styles.titleCadastro,{marginTop: hp('14.7%'),marginBottom: hp('4.32%')}]}>CADASTRE E-MAIL E SENHA</Text>
         <LazyTextInput
           style={{marginBottom: hp('2.22%')}}
           nameIcon={'user'}

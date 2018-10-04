@@ -74,7 +74,7 @@ export class HomeScreen extends Component {
           });
 
     this.user = await auth.currentUser;
-
+    console.log(this.user.uid);
 
     getNomeEstabelecimentos()
     getUserListEnd(this.user.uid,

@@ -41,14 +41,17 @@ export class LoginEmailScreen extends Component {
   }
 
   updateEmail = (text) => {
-    this.setState({email: text},function(){console.log(this.state.email);})
+    this.setState({email: text})
   }
   updateSenha = (text) => {
-    this.setState({senha: text},function(){console.log(this.state.senha);})
+    this.setState({senha: text})
   }
 
 
   loginToHome () {
+    this.setState({
+      loading: true
+    });
     if(this.state.email && this.state.senha){
 
       login(
@@ -56,6 +59,9 @@ export class LoginEmailScreen extends Component {
         this.state.senha,
         () => this.props.navigation.navigate('Home')
       )
+      this.setState({
+        loading: false
+      });
     }else{
 
       Alert.alert(

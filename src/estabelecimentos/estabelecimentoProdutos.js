@@ -222,7 +222,6 @@ renderItem = (item) =>{
       nomeProduto = {item.item.nomeProduto}
       preco = {()=>{
         let str = item.item.preco
-        console.log("str"+str);
         let res = str.toString().replace(".",",")
 
         if(item.item.tipo=="Pizzas"){
@@ -238,7 +237,6 @@ renderItem = (item) =>{
       navigation={()=>{
         if(item.item.tipo=="Pizzas"){
 
-          console.log("Pizzas do tamanho "+item.item.tamanho);
           this.props.navigation.navigate('Pizza',{nomeEstabelecimento: nomeEstabelecimentoUp,
           title:"Pizza "+item.item.nomeProduto, sabores: item.item.sabores,
           tamanhoPizza: item.item.tamanho, partePizza:1, tipoProduto: item.item.tipo, preco:parseInt(0),detalhes:""})

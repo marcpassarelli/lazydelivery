@@ -92,6 +92,7 @@ export class CadastroInicialScreen extends Component {
           style={styles.backgroundImage}>
           <StatusBar/>
           <ComponentsCadastroInicial
+            goBack={()=>{this.props.navigation.navigate('LoginRegister')}}
             updateEmail = {this.updateEmail}
             updateConfirmarEmail = {this.updateConfirmarEmail}
             updateSenha = {this.updateSenha}

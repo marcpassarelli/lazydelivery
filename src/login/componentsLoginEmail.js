@@ -21,7 +21,7 @@ export default ComponentsLoginEmail = (props) => {
       <LazyBackButton
         goBack={props.goBack}/>
       <LazyTextInput
-          style={{marginBottom: hp('2.3%'), marginTop: hp('37%')}}
+          style={{marginBottom: hp('2.3%'), marginTop: hp('34%')}}
           nameIcon={'user'}
           placeholder={'E-MAIL'}
           onChangeText={props.textEmail}/>
@@ -32,24 +32,14 @@ export default ComponentsLoginEmail = (props) => {
         secureTextEntry={true}
         onChangeText={props.textSenha}/>
       <LazyYellowButton
+        style={{marginBottom: hp('3%')}}
         onPress = {()=>{props.loginToHome()}}
         text={"LOGIN"} >
       </LazyYellowButton>
 
       <View style={{flexDirection: 'row',alignItems: 'center',
-        justifyContent: 'space-between',marginHorizontal: wp('12.31%'),
+        justifyContent: 'flex-end',marginHorizontal: wp('12.31%'),
         marginBottom: hp('4.43%')}}>
-        <View style={{flexDirection: 'row',alignItems: 'center'}}>
-          <Icon
-            color={'#d1d1d1'}
-            name={props.checked? 'check-square':'square'}
-            size={24}
-            onPress={()=>{props.functionCheck()}}
-            ></Icon>
-          <Text style={{fontFamily: 'Futura Book',fontSize: wp('4%'),
-            color: 'rgb(186,200,204)', marginLeft: 5}}>
-            Lembrar</Text>
-        </View>
         <Text style={{fontFamily: 'Futura Medium Italic BT',color: 'white'}}
           onPress={()=>{props.esqueciSenha()}}>Esqueceu a senha?</Text>
       </View>

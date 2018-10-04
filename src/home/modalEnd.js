@@ -9,7 +9,7 @@ import {
   AsyncStorage,
   Text
 } from 'react-native';
-import { listaEnderecos } from '../firebase/database'
+import { listaEnderecos, atualizarEndereco } from '../firebase/database'
 import ModalEndListItem from './modalEndListItem'
 
 

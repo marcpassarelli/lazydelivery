@@ -43,6 +43,8 @@ export class ProfileScreen extends Component {
             loading: true
           });
     let user = await auth.currentUser;
+    let provider = user.providerData[0].providerId
+    console.log("provider"+provider);
 
           getUserProfile(user.uid, (nomeP,telefoneP,profilePicURLP)=>{
             console.log("nomePPPP"+nomeP);
@@ -54,14 +56,16 @@ export class ProfileScreen extends Component {
             });
           })
 
-
-
+        if(provider=="facebook.com"){
+        console.log("AccessToken"+JSON.stringify(AccessToken.getCurrentAccessToken()));
         AccessToken.getCurrentAccessToken().then((accessTokenData) => {
+          console.log("AccessTokenData"+JSON.stringify(accessTokenData));
           let accessToken = accessTokenData.accessToken
+          console.log("dentroaccesstoken");
           const responseInfoCallback = (error, result) => {
             if (error) {
               error_json = JSON.stringify(error)
-              console.log(error_json)
+              console.log("error_json"+error_json)
               alert('Error fetching data: ' + error.toString());
             } else {
               this.setState({profilePicURL: result.picture.data.url})
@@ -91,7 +95,15 @@ export class ProfileScreen extends Component {
                 });
         }, (error) => {
           console.log("Some error occured: " + error)
+          this.setState({
+                  loading: false
+                });
         })
+      }else{
+        this.setState({
+          loading:false
+        });
+      }
 
   }
 
@@ -133,7 +145,7 @@ export class ProfileScreen extends Component {
        style={{height:100, width:100, borderWidth:1, borderRadius:30, alignSelf:'center'}}
        source={{uri:imageProfile.uri}}/>
        <Text style={styles.textProfileDetails}> {this.state.nome} </Text>
-       <Text style={styles.textProfileDetails}> {this.state.telefone} </Text>
+       <Text style={[styles.textProfileDetails,{marginBottom: 10}]}> {this.state.telefone} </Text>
        <TouchableOpacity
          style={styles.buttons}
          onPress = { () => {

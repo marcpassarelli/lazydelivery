@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 let todocount=0
 let listener = null
+let temPedidos=''
 let teste=[];
 export class HistoricoPedidosScreen extends Component {
 
@@ -42,13 +43,26 @@ export class HistoricoPedidosScreen extends Component {
 
   }
 
+  componentWillMount(){
+
+  }
+
   componentDidMount(){
       teste=[]
     carregarPedidos((message)=>{
-      console.log("dentro carregapedidos");
-      this.setState({
-        loading:true
-      });
+      console.log("dentro carregapedidos+message"+message._id)
+      temPedidos = message._id
+      if(temPedidos==false){
+        console.log("dentro if");
+        this.setState({
+          messages: false
+        },function(){
+          this.setState({
+            loading:false
+          });
+        });
+      }else{
+        console.log("dentro else");
       teste.push({
         id:message._id,
         endereco:message.endereco,
@@ -66,11 +80,12 @@ export class HistoricoPedidosScreen extends Component {
       this.setState({
         messages:teste
       },function(){
-        console.log("createdAt"+JSON.stringify(this.state.messages));
+
         this.setState({
           loading:false
         });
-      });
+      })
+    }
     })
   }
 
@@ -127,9 +142,9 @@ export class HistoricoPedidosScreen extends Component {
       <LazyActivity/>
     </View> :
 
-    <View onLayout={()=>console.log(this.state.loading+"message"+this.state.messages)}>
+    <View>
       {
-        this.state.messages ?
+        temPedidos ?
         <View>
           <FlatList
             ItemSeparatorComponent={this.renderSeparatorComponent}
@@ -139,8 +154,10 @@ export class HistoricoPedidosScreen extends Component {
             keyExtractor={item => item.id.toString()}
           />
         </View>
+
+
             :
-      <View style={{marginTop: 10}}><Text style={styles.textAddProduto}>Sem pedidos realizados.</Text></View>
+<View style={{marginTop: 10}}><Text style={styles.textAddProduto}>Sem pedidos realizados.</Text></View>
       }
     </View>
 
