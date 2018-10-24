@@ -9,8 +9,11 @@ import Loader from '../loadingModal/loadingModal';
 import StatusBar from '../constants/statusBar'
 import { AndroidBackHandler } from 'react-navigation-backhandler';
 import LazyActivity from '../loadingModal/lazyActivity'
-
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import LazyBackButton from '../constants/lazyBackButton'
+import LazyYellowButton from '../constants/lazyYellowButton'
+import _ from 'lodash'
+import Icon from 'react-native-vector-icons/Feather';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 let listener = null
 export var carrinho =[]
@@ -24,26 +27,20 @@ export function atualizarCarrinho(carrinhoAtualizado){
 
 export class AddProdutoScreen extends Component{
 
-  static navigationOptions = ({navigation}) => ({
-    title: navigation.state.params.nomeEstabelecimento,
-    headerTitleStyle: styles.headerText,
-    headerStyle: styles.header,
-    headerLeft: (
-      <Icon
-        style={{marginLeft: 15}}
-        name={'arrow-left'}
-        size={26}
-        color="#000000"
-        onPress={
-          ()=>{
-            navigation.navigate('Estabelecimento',
-            {nomeEstabelecimento:navigation.state.params.nomeEstabelecimento,
-            tipoEstabelecimento: navigation.state.params.tipoEstabelecimento})
-          }}>
-        </Icon>
+    static navigationOptions = ({navigation}) => ({
+      title: _.upperCase(navigation.state.params.nomeEstabelecimento),
+      headerTitleStyle: [styles.headerText,{alignSelf:'center'}],
+      headerStyle: styles.header,
+      headerLeft: (
+        <LazyBackButton
+          goBack={  ()=>{
+              navigation.navigate('Estabelecimento',
+              {nomeEstabelecimento:navigation.state.params.nomeEstabelecimento,
+              tipoEstabelecimento: navigation.state.params.tipoEstabelecimento})
+            }}/>
       ),
-    headerRight: (<View></View>)
-  });
+      headerRight:(<View style={styles.headerRight}></View>)
+    });
 
   constructor(props){
     super(props);
@@ -298,13 +295,19 @@ export class AddProdutoScreen extends Component{
         <View style={{flexDirection: 'row', alignSelf: 'center'}}>
 
           <TouchableOpacity style={{}} onPress={()=>{this.menosQtde()}}>
-            <Image source={require('../../img/minus.png')} style={styles.icon}/>
+            <Icon
+              name={'minus-circle'}
+              size={23}
+              color={cores.textDetalhes}/>
           </TouchableOpacity>
 
           <Text style={[styles.textAddProduto, {marginHorizontal: 10, fontSize: 16}]}>{this.state.qtde}</Text>
 
           <TouchableOpacity style={{}} onPress={()=>{this.maisQtde()}}>
-            <Image source={require('../../img/plus.png')} style={styles.icon}/>
+            <Icon
+              name={'plus-circle'}
+              size={23}
+              color={cores.textDetalhes}/>
           </TouchableOpacity>
 
         </View>
@@ -360,7 +363,7 @@ export class AddProdutoScreen extends Component{
           multiline = {true}
           onChangeText={(text) => this.setState({obs: text})}
           value={this.state.obs}
-          placeholder='Exemplos: Carne bem passada. Sem cebola. Sem salada, etc...'
+          placeholder='Indique o ponto da carne ou para tirar algum ingrediente.'
           >
         </TextInput>
       </ScrollView>
@@ -378,14 +381,12 @@ export class AddProdutoScreen extends Component{
           {content}
         </KeyboardAwareScrollView>
         <View>
-          <Button
-            style={{position: 'absolute', left: 0, right: 0, bottom: 0}}
-            disabled={this.state.imageLoaded}
+          <LazyYellowButton
+            styleButton={{width: wp('100%')}}
+            styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal, fontSize: 20}}
             onPress={()=>{this.adicionarAoCarrinho()}}
-            title="Adicionar ao Carrinho"
-            color={cores.corPrincipal}
-            accessibilityLabel="YourLabelHere"
-          />
+            text={"ADICIONAR AO CARRINHO"}
+            />
         </View>
       </ImageBackground>
     );

@@ -8,8 +8,11 @@ import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
 import Toast from 'react-native-toast-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import StatusBar from '../constants/statusBar'
-
+import ListItemSeparator from '../constants/listItemSeparator'
+import LazyBackButton from '../constants/lazyBackButton'
+import LazyYellowButton from '../constants/lazyYellowButton'
 import _ from 'lodash';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 let sectionData =[]
 let sectionName =[]
@@ -32,26 +35,22 @@ export class EstabelecimentoProdutosScreen extends Component{
 
 
   static navigationOptions = ({navigation}) => ({
-    title: navigation.state.params.nomeEstabelecimento,
+    title: _.upperCase(navigation.state.params.nomeEstabelecimento),
     headerTitleStyle: styles.headerText,
-    headerStyle: Platform.OS=="ios"? styles.headerIos : styles.headerAndroid,
+    headerStyle: Platform.OS=="ios"? styles.headerIos : styles.header,
     headerLeft: (
-      <Icon
-        style={{marginLeft: 15}}
-        name={'arrow-left'}
-        size={26}
-        color="#000000"
-        onPress={
-          ()=>{
+      <LazyBackButton
+        goBack={()=>{
             if(carrinho.length>0){
               Alert.alert(
                 'Sair do Estabelecimento',
                 'Tem certeza que deseja sair deste estabelecimento? Todos os items do carrinho serão perdido.',
                 [
                   {text: 'Sim', onPress: () => {
+                    console.log("tipoestabelecimento onPress:"+this.props.navigation.state.params.tipoEstabelecimento);
                     atualizarCarrinho([])
                     navigation.navigate('ListaEstabelecimentos',
-                    {tipoEstabelecimento:navigation.state.params.tipoEstabelecimento})
+                    {tipoEstabelecimento:this.props.navigation.state.params.tipoEstabelecimento})
                   }},
                   {text: 'Não', onPress: ()=>{
                     console.log("cancelado");
@@ -62,10 +61,9 @@ export class EstabelecimentoProdutosScreen extends Component{
             }else{
               navigation.navigate('Home')
             }
-          }}>
-        </Icon>
+          }}/>
       ),
-    headerRight: (<View></View>),
+    headerRight: (<View style={styles.headerRight}></View>),
     tabBarLabel: 'Produtos',
   });
 
@@ -83,13 +81,23 @@ constructor(props){
 
 }
 
-renderSeparatorComponent = () => {
- return (<View style={styles.renderSeparatorComponent}/>);
+renderSeparatorSection = () => {
+  return (<View style={{backgroundColor: cores.corSecundaria, height: 3}}/>);
 };
 
-renderSeparatorSection = () => {
-  return (<View style={{backgroundColor: cores.corPrincipal, height: 3}}/>);
-};
+renderListItemSeparator = () =>{
+  return (
+    <View
+      style={{
+        height: 2,
+        backgroundColor: cores.corSecundaria,
+        marginHorizontal: 5,
+        marginBottom: 7
+      }}
+    />
+
+)
+}
 
 sectionDataFunction(){
 
@@ -255,7 +263,7 @@ renderItem = (item) =>{
 renderHeader = (headerItem) => {
   return  (
       <View style={{flexDirection: 'row', alignItems: 'center',
-        backgroundColor: cores.corPrincipal}} >
+        backgroundColor: cores.corSecundaria}} >
             <Text style={styles.headerList}>{headerItem.section.key}</Text>
       </View>
     )
@@ -276,20 +284,20 @@ functionButton(){
   if(Platform.OS==='ios'){
     return (
     <View style={{marginBottom: 20}}>
-    <Button
-        onPress={()=>{this.goToCarrinho()}}
-        title="Carrinho"
-        color={cores.corPrincipal}
-        accessibilityLabel="YourLabelHere"
+    <LazyYellowButton
+      styleButton={{width: wp('100%'), }}
+      styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal}}
+      onPress={()=>{this.goToCarrinho()}}
+      text={"CARRINHO"}
       />
     </View>)
   }else{
     return(
-      <Button
-          onPress={()=>{this.goToCarrinho()}}
-          title="Carrinho"
-          color={cores.corPrincipal}
-          accessibilityLabel="YourLabelHere"
+      <LazyYellowButton
+        styleButton={{width: wp('100%'), }}
+        styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal, fontSize: 20}}
+        onPress={()=>{this.goToCarrinho()}}
+        text={"CARRINHO"}
         />
     )
   }
@@ -312,7 +320,7 @@ functionButton(){
     <View style={{flex: 1}}>
       <SectionList
         automaticallyAdjustContentInsets={false}
-        ItemSeparatorComponent={this.renderSeparatorComponent}
+        ItemSeparatorComponent={this.renderListItemSeparator}
         SectionSeparatorComponent={this.renderSeparatorSection}
         renderItem={this.renderItem}
         renderSectionHeader={this.renderHeader}

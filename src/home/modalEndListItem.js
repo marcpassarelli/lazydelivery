@@ -14,11 +14,14 @@ export default class ModalEndListItem extends Component {
     return(
       <View>
         <View style={{flex: 1, flexDirection: 'row',justifyContent:'space-between'}}>
-          <View style={{alignSelf: 'flex-start'}}>
+          <View style={{alignSelf: 'flex-start',flexDirection: 'column',}}>
             <Text style={[styles.textCarrinho,
                 {alignSelf:'center',
                 marginHorizontal: 10}]}>
-              {item.endereco}, {item.numeroEnd}
+              {item.endereco}
+            </Text>
+            <Text style={{alignSelf: 'center'}}>
+              {item.referencia}
             </Text>
           </View>
           <View style={{flexDirection: 'column', alignItems: 'flex-end'}}>

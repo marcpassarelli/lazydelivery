@@ -2,15 +2,14 @@ import React, { Component } from 'react';
 import { View, TouchableOpacity, Image, Text } from 'react-native';
 import { styles, images} from '../constants/constants'
 import { CheckBox } from 'react-native-elements'
-
+import Icon from 'react-native-vector-icons/Feather';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default class AdicionaisListItem extends Component {
   constructor(props) {
     super(props);
 
   }
-
-
 
   render() {
     const { item } = this.props;
@@ -19,15 +18,17 @@ export default class AdicionaisListItem extends Component {
       <View>
         {
           this.props.tipoProduto=="Pizzas" ?
-          <View style={{flex: 1, flexDirection: 'row', marginTop: 5, justifyContent: 'space-between'}}>
-            <View style={{flex:1}}>
-              <Text style={[styles.textAdicionais, {alignSelf: 'center', marginHorizontal: 10}]}>
+          <View style={{height: 50,flex: 1, flexDirection: 'row', marginTop: 5, justifyContent: 'space-between'}}>
+            <View style={{width:wp('38%'),marginLeft:wp('3.8%'),justifyContent: 'center'}}>
+              <Text style={[styles.textAdicionais, {alignSelf: 'flex-start', marginHorizontal: 5}]}>
                 {item.nome}
               </Text>
             </View>
-            <View style={{flex:1}}>
+
+            <View style={{flex:1, justifyContent: 'center'}}>
               {this.props.preco()}
             </View>
+
             <View style={{flexDirection: 'row', justifyContent: 'flex-end', marginRight: 10}}>
               <CheckBox
                 textStyle={{fontSize: 16}}
@@ -42,33 +43,39 @@ export default class AdicionaisListItem extends Component {
 
            :
 
-           <View style={{flex: 1, flexDirection: 'row', marginTop: 5, justifyContent: 'space-between'}}>
-             <View style={{flex:1}}>
-               <Text style={[styles.textAdicionais, {alignSelf: 'center', marginHorizontal: 10}]}>
+           <View style={{height: 50,flex: 1, flexDirection: 'row', marginTop: 5, justifyContent: 'space-between'}}>
+
+             <View style={{width:wp('38%'),marginLeft:wp('3.8%'),justifyContent: 'center'}}>
+               <Text style={[styles.textAdicionais,
+                   {marginHorizontal: 5,alignSelf: 'flex-start'}]}>
                  {item.nome}
                </Text>
              </View>
-             <View style={{flex:1}}>
+
+             <View style={{flex:1, justifyContent: 'center'}}>
                {this.props.preco()}
              </View>
-             <View style={{flex:1, flexDirection: 'row', justifyContent: 'flex-end', marginRight: 10}}>
+
+             <View style={{flex:1, flexDirection: 'row', justifyContent: 'flex-end', marginRight: wp('3.8%')}}>
                <TouchableOpacity
                  style={{justifyContent: 'center', alignSelf: 'center', marginBottom: 10}}
                  onPress={this.props.onSubtract}>
-                 <Image
-                   source={require('../../img/minus.png')}
-                   style={styles.icon}/>
+                 <Icon
+                   name={'minus-circle'}
+                   size={23}
+                   color={'rgb(43, 189, 204)'}/>
                </TouchableOpacity>
                <Text
-                 style={[styles.textAdicionais, {alignSelf: 'center', justifyContent: 'center', marginHorizontal: 10, fontSize: 16, lineHeight: 16}]}>
+                 style={[styles.textAdicionais, {alignSelf: 'center', justifyContent: 'center', marginHorizontal: 10, fontSize: 16}]}>
                  {item.quantidade}
                </Text>
                <TouchableOpacity
                  style={{justifyContent: 'center', alignSelf: 'center', marginBottom: 10}}
                  onPress={this.props.onAdd}>
-                 <Image
-                   source={require('../../img/plus.png')}
-                   style={styles.icon}/>
+                 <Icon
+                   name={'plus-circle'}
+                   size={23}
+                   color={'rgb(43, 189, 204)'}/>
                </TouchableOpacity>
              </View>
            </View>

@@ -59,7 +59,7 @@ export async function signup (email, pass, onSignup) {
 }
 
 export async function cadastrarUsuario(userId, nome, telefone, endereco,
-  numeroEnd, bairro, referencia, profilePicURL) {
+  bairro, referencia, profilePicURL) {
 
   let userInformationPath = "/user/" + userId + "/details";
   let userInformationPathEnd = "/user/" + userId + "/details/listaEnderecos";
@@ -72,13 +72,12 @@ export async function cadastrarUsuario(userId, nome, telefone, endereco,
 
   db.ref(userInformationPathEnd).push({
     endereco: endereco,
-    numeroEnd: numeroEnd,
     bairro: bairro,
     referencia: referencia
   })
 
   try {
-    await AsyncStorage.multiSet([['endAtual', endereco], ['numeroEnd', numeroEnd],
+    await AsyncStorage.multiSet([['endAtual', endereco],
                                 ['bairro', bairro], ['referencia', referencia]]);
 
   } catch (error) {
@@ -98,18 +97,18 @@ export function atualizarUsuario(userId, nome, telefone) {
 }
 
 export async function cadastrarEndereco(userId,  endereco,
-  numeroEnd, bairro, referencia){
+  bairro, referencia){
     let userInformationPath = "/user/" + userId + "/details/listaEnderecos/"
 
       db.ref(userInformationPath).push({
         endereco: endereco,
-        numeroEnd: numeroEnd,
+
         bairro: bairro,
         referencia: referencia
       })
 
       try {
-        await AsyncStorage.multiSet([['endAtual', endereco], ['numeroEnd', numeroEnd],
+        await AsyncStorage.multiSet([['endAtual', endereco],
                                     ['bairro', bairro], ['referencia', referencia]]);
 
       } catch (error) {
@@ -122,20 +121,18 @@ export async function cadastrarEndereco(userId,  endereco,
 
   }
 
-export async function atualizarEndereco(userId, key, endereco,
-  numeroEnd, bairro, referencia) {
+export async function atualizarEndereco(userId, key, endereco, bairro, referencia) {
 
   let userInformationPath = "/user/" + userId + "/details/listaEnderecos/"+key+"/";
 
   return db.ref(userInformationPath).update({
       endereco: endereco,
-      numeroEnd: numeroEnd,
       bairro: bairro,
       referencia: referencia,
   })
 
   try {
-    await AsyncStorage.multiSet([['endAtual', endereco], ['numeroEnd', numeroEnd],
+    await AsyncStorage.multiSet([['endAtual', endereco],
                                 ['bairro', bairro], ['referencia', referencia]]);
 
   } catch (error) {
@@ -204,20 +201,18 @@ export async function getUserEndAtual(callback){
   // let userPath = "/user/"+userID
   //
   var endereco = "";
-  var numeroEnd = "";
   var bairro = "";
   var referencia = "";
   // var key =""
 
   try {
 
-    await AsyncStorage.multiGet(['endAtual','numeroEnd','bairro', 'referencia']).then((response)=>{
+    await AsyncStorage.multiGet(['endAtual','bairro', 'referencia']).then((response)=>{
       endereco = response[0][1]
-      numeroEnd = response[1][1]
-      bairro = response[2][1]
-      referencia = response[3][1]
+      bairro = response[1][1]
+      referencia = response[2][1]
 
-      callback(endereco, numeroEnd, bairro, referencia)
+      callback(endereco, bairro, referencia)
     });
 
   } catch (error) {
@@ -235,7 +230,6 @@ export function getUserListEnd(userID, onListLoad){
       listaEnderecos.push({
         bairro: child.val().bairro,
         endereco: child.val().endereco,
-        numeroEnd: child.val().numeroEnd,
         referencia: child.val().referencia,
         key: child.key
       })

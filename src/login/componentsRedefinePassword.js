@@ -10,7 +10,8 @@ import LazyTextInput from '../constants/lazyTextInput';
 import LazyBackButton from '../constants/lazyBackButton'
 import LazyYellowButton from '../constants/lazyYellowButton'
 
-export default ComponentsRedefinePassword = (props) => {
+export default ComponentsRedefinePassword =(props)=> {
+
   return (
 
       <View style={{flexDirection: 'column', flex: 1}}>

@@ -34,16 +34,10 @@ export default class ModalEnd extends Component {
      );
    };
 
-   editEnd = (item, index) =>{
-
-   }
-
    selecionaEnd = async (item, index) =>{
      try {
-       await AsyncStorage.multiSet([['endAtual', item.endereco], ['numeroEnd', item.numeroEnd],
+       await AsyncStorage.multiSet([['endAtual', item.endereco],
                                    ['bairro', item.bairro], ['referencia', item.referencia]]);
-
-
      } catch (error) {
        console.log("error AsyncStorage"+error)
      }
@@ -65,7 +59,7 @@ render(){
               renderItem= {({item, index}) =>
               <ModalEndListItem
                 item = {item}
-                editEnd = {() => this.editEnd(item, index)}
+                editEnd = {() => this.props.editEnd(item, index)}
                 selecionaEnd = {() => this.selecionaEnd(item, index)}
                 showModal = {()=>{this.props.showModal()}}/>
               }

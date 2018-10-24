@@ -9,6 +9,7 @@ import { Hoshi } from 'react-native-textinput-effects';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import StatusBar from '../constants/statusBar'
 import {db, auth} from '../firebase/firebase'
+import ComponentsAtualizaCadastro from './componentsAtualizaCadastro'
 
 export class AtualizaCadastroScreen extends Component {
 
@@ -33,7 +34,6 @@ export class AtualizaCadastroScreen extends Component {
   updateTelefone = (text) => {
     this.setState({telefone: text})
   }
-
 
    async atualizarInformacoesBD () {
      const {navigate} = this.props.navigation
@@ -79,40 +79,16 @@ export class AtualizaCadastroScreen extends Component {
     ]
     return (
       <ImageBackground
-        source={images.imageBackground}
+        source={images.backgroundLazy}
         style={styles.backgroundImage}>
         <StatusBar/>
-        <KeyboardAwareScrollView>
-        <Text style={styles.titleCadastro}>Atualize o seu cadastro</Text>
-        <Hoshi
-          style={styles.labelCadastro}
-          label={'Nome:'}
-          labelStyle={{ color: cores.corPrincipal }}
-          onChangeText = {this.updateNome}
-          returnKeyType="next"
-          autoCapitalize="words"
-          value = {this.state.nome}
-          borderColor={cores.corPrincipal}
-        />
-        <Hoshi
-          style={styles.labelCadastro}
-          label={'Telefone:'}
-          labelStyle={{ color: cores.corPrincipal }}
-          onChangeText = {this.updateTelefone}
-          returnKeyType="next"
-          keyboardType="numeric"
-          value = {this.state.telefone}
-          borderColor={cores.corPrincipal}
-        />
-        <View>
-          <View style={styles.separator}/>
-          <TouchableOpacity
-            style={styles.buttons}
-            onPress = { ()=>this.atualizarInformacoesBD() } >
-            <Text style={styles.textButtons}>ATUALIZAR INFORMAÇÕES</Text>
-          </TouchableOpacity>
-        </View>
-        </KeyboardAwareScrollView>
+        <ComponentsAtualizaCadastro
+          updateNome={this.updateNome}
+          updateTelefone={this.updateTelefone}
+          nome={this.state.nome}
+          telefone={this.state.telefone}
+          atualizarInformacoesBD={() => {this.atualizarInformacoesBD()}}
+          />
       </ImageBackground>
     )
   }

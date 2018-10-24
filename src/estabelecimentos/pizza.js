@@ -6,7 +6,7 @@ import { styles, cores, images} from '../constants/constants'
 import LazyActivity from '../loadingModal/lazyActivity'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import StatusBar from '../constants/statusBar'
-
+import ListItemSeparator from '../constants/listItemSeparator'
 import { listaPizzas } from './estabelecimentoProdutos'
 
 import _ from 'lodash';
@@ -53,10 +53,6 @@ constructor(props){
 
 }
 
-renderSeparatorComponent = () => {
- return (<View style={styles.renderSeparatorComponent}/>);
-};
-
 componentWillMount(){
 
   this.setState({
@@ -96,7 +92,7 @@ componentWillMount(){
 
     <View style={{flex: 1}}>
       <FlatList
-        ItemSeparatorComponent={this.renderSeparatorComponent}
+        ItemSeparatorComponent={ListItemSeparator}
         data={listaPizzasTamanho}
         renderItem={({item})=>(
 

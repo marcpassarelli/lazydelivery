@@ -22,7 +22,6 @@ export class CompletaCadastroScreen extends Component {
          nome: '',
          telefone: '',
          endereco: '',
-         numeroEnd: '',
          bairro:'',
          referencia:'',
          uid: '',
@@ -46,9 +45,7 @@ export class CompletaCadastroScreen extends Component {
   updateEndereco = (text) => {
     this.setState({endereco: text})
   }
-  updateNumeroEnd = (text) => {
-    this.setState({numeroEnd: text})
-  }
+
   updateBairro = (text) => {
     this.setState({bairro: text})
   }
@@ -60,15 +57,14 @@ export class CompletaCadastroScreen extends Component {
 
      if(this.state.nome && this.state.telefone &&
         this.state.endereco && this.state.bairro &&
-        this.state.numeroEnd && this.state.referencia){
+         this.state.referencia){
 
           let user = await auth.currentUser;
 
           this.setState({uid: user.uid})
 
           cadastrarUsuario(this.state.uid, this.state.nome,
-            this.state.telefone, this.state.endereco,
-            this.state.numeroEnd, this.state.bairro,
+            this.state.telefone, this.state.endereco, this.state.bairro,
             this.state.referencia, this.state.profilePicURL)
 
         this.props.navigation.navigate('Home')
@@ -103,7 +99,7 @@ export class CompletaCadastroScreen extends Component {
     ]
     return (
       <ImageBackground
-        source={images.backgroundCadastro}
+        source={images.backgroundLazy}
         style={styles.backgroundImage}>
         <StatusBar/>
         <ComponentsCompletaCadastro
@@ -113,7 +109,6 @@ export class CompletaCadastroScreen extends Component {
           updateNome = {this.updateNome}
           updateTelefone = {this.updateTelefone}
           updateEndereco = {this.updateEndereco}
-          updateNumeroEnd = {this.updateNumeroEnd}
           updateBairro = {this.updateBairro}
           updateReferencia = {this.updateReferencia}
           cadastrarInformacoesBD = {this.cadastrarInformacoesBD}

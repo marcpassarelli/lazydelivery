@@ -17,7 +17,7 @@ export default ComponentsCadastroInicial = (props) => {
     <KeyboardAwareScrollView>
       <LazyBackButton
         goBack={props.goBack}/>
-      <Text style={[styles.titleCadastro,{marginTop: hp('14.7%'),marginBottom: hp('4.32%')}]}>CADASTRE E-MAIL E SENHA</Text>
+      <Text style={[styles.titleCadastro,{marginTop: hp('10%'),marginBottom: hp('4.32%')}]}>CADASTRE E-MAIL E SENHA</Text>
         <LazyTextInput
           style={{marginBottom: hp('2.22%')}}
           nameIcon={'user'}
@@ -65,7 +65,7 @@ export default ComponentsCadastroInicial = (props) => {
             Lembrar login e senha</Text>
         </View>
         <View style={{backgroundColor: '#FFFFFF',height: hp('0.1%'),marginHorizontal: wp('12.31%'),marginBottom: hp('4.4%')}}></View>
-        <Image source={images.iconYellow} style={{height: hp('7.81%'),width: wp('14.81%'),alignSelf: 'center'}}></Image>
+        <Image source={images.iconYellow} style={{height: 50,width: 50,alignSelf: 'center'}}></Image>
       </KeyboardAwareScrollView>
   )
 }

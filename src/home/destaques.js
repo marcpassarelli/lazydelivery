@@ -18,12 +18,12 @@ let listener = null
 export class DestaquesScreen extends Component {
   static navigationOptions = {
     header: null,
-    tabBarLabel: 'Destaques',
+    tabBarLabel: 'DESTAQUES',
     // Note: By default the icon is only shown on iOS. Search the showIcon option below.
     tabBarIcon: ({ tintColor }) => (
       <Image
-        source={require('../../img/icon-ofertas.png')}
-        style={[styles.icon, {tintColor: tintColor}]}
+        source={require('../../img/destaques.png')}
+        style={[styles.icon, {height: 70,width: 70,tintColor: cores.corPrincipal}]}
         />
     ),
   };
@@ -35,7 +35,6 @@ export class DestaquesScreen extends Component {
       nome:'',
       telefone:'',
       endereco:'',
-      numeroEnd:'',
       bairro:'',
       referencia:'',
       profilePicURL:'',
@@ -70,21 +69,6 @@ export class DestaquesScreen extends Component {
           });
     let user = await auth.currentUser;
 
-    // getUserDetails(user.uid, (nomeP,telefoneP,enderecoP,numeroEndP,bairroP,referenciaP,profilePicURLP)=>{
-    //   this.setState({
-    //     nome: nomeP,
-    //     telefone: telefoneP,
-    //     endereco:enderecoP,
-    //     numeroEnd:numeroEndP,
-    //     bairro:bairroP,
-    //     referencia:referenciaP,
-    //     profilePicURL:profilePicURLP
-    //   });
-    //   this.setState({
-    //           loadingList: false
-    //         });
-    // })
-
     getNomeEstabelecimentos()
 
     this.setState({
@@ -93,9 +77,9 @@ export class DestaquesScreen extends Component {
 
   }
 
-  goToAtualizarEndereco (endereco, numeroEnd, bairro, referencia){
+  goToAtualizarEndereco (endereco, bairro, referencia){
     const { navigate } = this.props.navigation;
-    navigate('AtualizaEndereco', {enderecoUp: endereco, numeroEndUp: numeroEnd, bairroUp: bairro,
+    navigate('AtualizaEndereco', {enderecoUp: endereco, bairroUp: bairro,
     referenciaUp: referencia})
   }
 

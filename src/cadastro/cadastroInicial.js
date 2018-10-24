@@ -88,7 +88,7 @@ export class CadastroInicialScreen extends Component {
       ]
       return (
         <ImageBackground
-          source={images.backgroundCadastro}
+          source={images.backgroundLazy}
           style={styles.backgroundImage}>
           <StatusBar/>
           <ComponentsCadastroInicial

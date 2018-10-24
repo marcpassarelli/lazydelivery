@@ -11,9 +11,9 @@ export default class LazyYellowButton extends Component {
   return (
         <View style={this.props.style}>
           <TouchableHighlight
-            style={[styles.buttons]}
+            style={[styles.buttons,this.props.styleButton]}
             onPress = { () => {this.props.onPress()} }>
-            <Text style={styles.textButtons}>{this.props.text}</Text>
+            <Text style={[styles.textButtons,this.props.styleText]}>{this.props.text}</Text>
           </TouchableHighlight>
         </View>
 

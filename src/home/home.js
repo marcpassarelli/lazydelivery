@@ -12,7 +12,9 @@ import Loader from '../loadingModal/loadingModal';
 import ModalEnd from './modalEnd'
 import {auth} from '../firebase/firebase'
 import LazyActivity from '../loadingModal/lazyActivity'
+import LazyTextInput from '../constants/lazyTextInput'
 import _ from 'lodash'
+import ListItemSeparator from '../constants/listItemSeparator'
 
 let listener = null
 let user =''
@@ -20,12 +22,13 @@ let user =''
 export class HomeScreen extends Component {
   static navigationOptions = {
     header: null,
-    tabBarLabel: 'Delivery',
+    tabBarLabel: 'DELIVERY',
+    headerTintColor: cores.corPrincipal,
     // Note: By default the icon is only shown on iOS. Search the showIcon option below.
     tabBarIcon: ({ tintColor }) => (
       <Image
-        source={require('../../img/shop-building.png')}
-        style={[styles.icon, {tintColor: tintColor}]}
+        source={require('../../img/delivery.png')}
+        style={[styles.icon, {height: 60,width: 60,tintColor: cores.corPrincipal}]}
         />
     ),
   };
@@ -37,7 +40,6 @@ export class HomeScreen extends Component {
       nome:'',
       telefone:'',
       endereco:'',
-      numeroEnd:'',
       bairro:'',
       referencia:'',
       profilePicURL:'',
@@ -53,21 +55,6 @@ export class HomeScreen extends Component {
     }
 
   }
-
-  renderSeparator = () => {
-   return (
-     <View
-       style={{
-         height: 1,
-         width: "100%",
-         backgroundColor: "#CED0CE",
-         marginLeft: 5,
-         marginBottom: 7
-       }}
-     />
-   );
- };
-
   async componentWillMount(){
     this.setState({
             loadingList: true
@@ -79,12 +66,11 @@ export class HomeScreen extends Component {
     getNomeEstabelecimentos()
     getUserListEnd(this.user.uid,
     ()=>{
-      getUserEndAtual((enderecoP,numeroEndP,bairroP,referenciaP)=>{
+      getUserEndAtual((enderecoP,bairroP,referenciaP)=>{
         if(enderecoP){
           console.log("dentro do if");
           this.setState({
             endereco: enderecoP,
-            numeroEnd:numeroEndP,
             bairro:bairroP,
             referencia:referenciaP
           },function(){
@@ -97,12 +83,11 @@ export class HomeScreen extends Component {
           console.log("dentro do else");
           this.setState({
             endereco: listaEnderecos[0].endereco,
-            numeroEnd:listaEnderecos[0].numeroEnd,
             bairro:listaEnderecos[0].bairro,
             referencia:listaEnderecos[0].referencia
           },async function(){
             try {
-              await AsyncStorage.multiSet([['endAtual', this.state.endereco], ['numeroEnd', this.state.numeroEnd],
+              await AsyncStorage.multiSet([['endAtual', this.state.endereco],
                                           ['bairro', this.state.bairro], ['referencia', this.state.referencia]]);
 
             } catch (error) {
@@ -156,10 +141,10 @@ export class HomeScreen extends Component {
 
   procuraEstabelecimento(){
     return (
-      <View style = {{marginLeft:10, height:130}}>
+      <View style = {{height:130}}>
         <FlatList
           keyboardShouldPersistTaps={'always'}
-          ItemSeparatorComponent={this.renderSeparator}
+          ItemSeparatorComponent={ListItemSeparator}
           data= {this.state.nomesEstabSearch}
           renderItem= {({item}) =>
           <SearchEstabelecimentoListItem
@@ -200,11 +185,10 @@ export class HomeScreen extends Component {
       loadingList: false
     });
 
-    getUserEndAtual((enderecoP,numeroEndP,bairroP,referenciaP)=>{
+    getUserEndAtual((enderecoP,bairroP,referenciaP)=>{
 
         this.setState({
           endereco:enderecoP,
-          numeroEnd:numeroEndP,
           bairro:bairroP,
           referencia:referenciaP
         },function(){
@@ -221,6 +205,10 @@ export class HomeScreen extends Component {
      this.showModal()
    }
 
+   editEnd = (item, index) =>{
+     this.props.navigation.navigate('')
+   }
+
   render() {
     console.ignoredYellowBox = [
       'Setting a timer'
@@ -235,8 +223,8 @@ export class HomeScreen extends Component {
 
     <View style={{flex:1}}>
     <StatusBar/>
-      <View style={{flexDirection: 'row',alignItems: 'center', justifyContent: 'center'}}>
-        <Text style={styles.textEndHome}>{_.upperFirst(this.state.endereco)}, {this.state.numeroEnd} - </Text>
+      <View style={{marginBottom: 10,flexDirection: 'row',alignItems: 'center', justifyContent: 'center'}}>
+        <Text style={styles.textEndHome}>{_.upperFirst(this.state.endereco)} - </Text>
         <Text
           style={styles.textUpdateEnd}
           onPress = {()=>{
@@ -249,25 +237,21 @@ export class HomeScreen extends Component {
         </Text>
       </View>
       <View>
-        <SearchBar
+        <LazyTextInput
           onChangeText={(text) => {this.filterSearch(text)}}
           onClearText={() => this.setState({showProcura: false, opacity: 1})}
-          containerStyle={styles.searchBarContainer}
-          style={styles.searchBar}
-          inputStyle={styles.searchBarInput}
-          placeholder='Procurar estabelecimento...'
-          placeholderTextColor={cores.corPrincipal}
           returnKeyType="search"
-          clearIcon={{color:cores.corPrincipal}}/>
-        <View style={{backgroundColor: '#e6e4e6', opacity: 0.8}}>
+          nameIcon={'search'}
+          placeholder={'PROCURAR ESTABELECIMENTO'}/>
+        <View style={{marginHorizontal: 50,backgroundColor: '#e6e4e6', opacity: 0.8}}>
           {this.state.showProcura && this.procuraEstabelecimento() }
         </View>
       </View>
 
       <View style={{opacity: this.state.opacity, flex:1}}>
-        <Text style={styles.nomeAppHome}>Opções Delivery</Text>
+        <Text style={[styles.nomeAppHome,{marginBottom: 15}]}>ESCOLHA A CATEGORIA</Text>
         <FlatList
-          ItemSeparatorComponent={this.renderSeparator}
+          ItemSeparatorComponent={ListItemSeparator}
           data= {dadosTipoEstabelecimento}
           renderItem= {({item}) =>
           <HomeListItem
@@ -287,6 +271,7 @@ export class HomeScreen extends Component {
         <Loader
           loading = {this.state.loading}/>
         <ModalEnd
+          editEnd = {()=>{this.editEnd()}}
           loading = {this.state.modalEnd}
           showModal = {()=>{this.showModal()}}
           adicionaEnd = {()=>{this.adicionaEnd()}}/>

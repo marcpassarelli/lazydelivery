@@ -9,6 +9,8 @@ import { styles, images, cores } from '../constants/constants'
 import { logout, getUserProfile } from '../firebase/database'
 import FBSDK, { AccessToken, GraphRequestManager, GraphRequest } from 'react-native-fbsdk'
 import { auth} from '../firebase/firebase'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import LazyYellowButton from '../constants/lazyYellowButton'
 
 export class ProfileScreen extends Component {
 
@@ -18,7 +20,6 @@ export class ProfileScreen extends Component {
       nome:'',
       telefone:'',
       endereco:'',
-      numeroEnd:'',
       bairro:'',
       referencia:'',
       profilePicURL:'',
@@ -28,12 +29,12 @@ export class ProfileScreen extends Component {
 
   static navigationOptions = {
      header: null,
-     tabBarLabel: 'Meu Cadastro',
+     tabBarLabel: 'MEU CADASTRO',
      // Note: By default the icon is only shown on iOS. Search the showIcon option below.
      tabBarIcon: ({ tintColor }) => (
      <Image
-       source={require('../../img/makefg.png')}
-       style={[styles.icon, {tintColor: tintColor}]}
+       source={require('../../img/cadastro.png')}
+       style={[styles.icon, {height: 70,width: 70,tintColor: cores.corPrincipal}]}
      />
    ),
   };
@@ -78,7 +79,7 @@ export class ProfileScreen extends Component {
             {
               parameters: {
                 fields: {
-                  string: 'picture.width(100).height(100)' // what you want to get
+                  string: 'picture.width(150).height(150)' // what you want to get
                 },
                 access_token: {
                   string: accessToken.toString() // put your accessToken here
@@ -130,7 +131,7 @@ export class ProfileScreen extends Component {
      ]
 
      let imageProfile = {
-       uri: this.state.profilePicURL ? this.state.profilePicURL : 'require(../../img/makefg.png)'
+       uri: this.state.profilePicURL!="" ? this.state.profilePicURL : 'require(../../img/makefg.png)'
      }
 
      const content = this.state.loading ?
@@ -140,55 +141,45 @@ export class ProfileScreen extends Component {
      </View> :
 
      <View style={{flex:1}}>
-       <Text style={styles.titleCadastro}>Perfil</Text>
+       <Text style={[styles.titleCadastro,{marginTop: hp('4%'),marginBottom: hp('2%')}]}>PERFIL</Text>
        <Image
-       style={{height:100, width:100, borderWidth:1, borderRadius:30, alignSelf:'center'}}
+       style={{height:150, width:150, borderWidth:1, borderRadius:80, alignSelf:'center',
+         borderColor: cores.corPrincipal,borderWidth: 3}}
        source={{uri:imageProfile.uri}}/>
-       <Text style={styles.textProfileDetails}> {this.state.nome} </Text>
-       <Text style={[styles.textProfileDetails,{marginBottom: 10}]}> {this.state.telefone} </Text>
-       <TouchableOpacity
-         style={styles.buttons}
-         onPress = { () => {
+     <Text style={[styles.textProfileDetails,{color: 'white',fontSize: 20}]}> {this.state.nome} </Text>
+       <Text style={[styles.textProfileDetails,{marginBottom: 25,color: 'white',fontFamily: 'Futura Medium Italic BT'}]}> {this.state.telefone} </Text>
+       <LazyYellowButton
+         style={{marginBottom: hp('4%')}}
+         onPress={() => {
            this.goToAtualizarCadastro(
            this.state.nome, this.state.telefone, this.state.endereco,
-           this.state.numeroEnd, this.state.bairro, this.state.referencia,
+           this.state.bairro, this.state.referencia,
            this.state.profilePicURL)
-         }}>
-         <Text style={styles.textButtons}>ATUALIZAR INFORMAÇÕES</Text>
-       </TouchableOpacity>
-
-       <View style={styles.separator}></View>
-
-       <TouchableOpacity
-         style={styles.buttons}
-         onPress = { () => {
+         }}
+         text={"ATUALIZAR INFORMAÇÕES"}/>
+       <LazyYellowButton
+         style={{marginBottom: hp('4%')}}
+         onPress={() => {
            logout()
-           this.goToLogin()
-         }
-         }>
-         <Text style={styles.textButtons}> LOGOUT </Text>
-       </TouchableOpacity>
+           this.goToLogin() }}
+           text={'LOGOUT'}/>
+       <LazyYellowButton
+         style={{marginBottom: hp('2%')}}
+         onPress={ () => {
+            this.goToHistoricoPedidos()}}
+          text={"HISTÓRICO DE PEDIDOS"}/>
 
-       <View style={styles.separator}></View>
-
-       <TouchableOpacity
-         style={styles.buttons}
-         onPress = { () => {
-           this.goToHistoricoPedidos()
-         }
-         }>
-         <Text style={styles.textButtons}> HISTÓRICO DE PEDIDOS </Text>
-       </TouchableOpacity>
+        <Image
+          source={images.iconYellow}
+          style={{height: 70,width: 70,alignSelf: 'center',marginTop:35}}/>
      </View>
 
      return (
        <ImageBackground
-         source={images.imageBackground}
+         source={images.backgroundLazy}
          style={styles.backgroundImage}>
          {content}
        </ImageBackground>
      );
      }
 }
-
-//export default Home

@@ -8,6 +8,9 @@ import { getUserProfile, getUserEndAtual, getEstabelecimentoInfo,
 import ResumoCarrinhoListItem from './resumoCarrinhoListItem'
 import ResumoInformacoes from './resumoInformacoes'
 import Loader from '../loadingModal/loadingModal';
+import LazyBackButton from '../constants/lazyBackButton'
+import LazyYellowButton from '../constants/lazyYellowButton'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {auth} from '../firebase/firebase'
 import { CheckBox } from 'react-native-elements'
 import _ from 'lodash'
@@ -19,13 +22,18 @@ const produtosCarrinho = []
 
 export class ResumoPgtoScreen extends Component{
 
-
   static navigationOptions = ({navigation}) => ({
-    title: "Resumo Pedido - "+navigation.state.params.nomeEstabelecimento,
-    headerTitleStyle: styles.headerText,
+    title: "RESUMO PEDIDO",
+    headerTitleStyle: [styles.headerText,{alignSelf:'center'}],
     headerStyle: styles.header,
-    headerRight: (<View></View>)
-  })
+    headerLeft: (
+      <LazyBackButton
+        goBack={  ()=>{
+            navigation.navigate('Carrinho')
+          }}/>
+    ),
+    headerRight:(<View style={styles.headerRight}></View>)
+  });
 
 constructor(props){
   super(props);
@@ -140,10 +148,10 @@ async componentWillMount(){
     });
   })
   //Pegar endereço cadastrado
-  getUserEndAtual((enderecoP,numeroEndP,bairroP,referenciaP)=>{
+  getUserEndAtual((enderecoP,bairroP,referenciaP)=>{
 
       this.setState({
-        endereco:enderecoP+", "+numeroEndP,
+        endereco:enderecoP,
         bairro:bairroP,
         referencia:referenciaP
       },function(){
@@ -325,7 +333,7 @@ render() {
     <Loader
             loading={this.state.esperandoConfirmacao}
             message="Aguarde enquanto o estabelecimento confirma o recebimento do pedido..." />
-    <Text style={[styles.textResumoPgto, {alignSelf: 'center', fontSize: 15}]}>Resumo do Pedido</Text>
+          <Text style={[styles.textResumoPgto, {alignSelf: 'center', fontSize: 15}]}>Resumo do Pedido - {this.estabelecimento}</Text>
     <View style={{height: 100, borderWidth: 1,borderColor: cores.corPrincipal,marginHorizontal: 3}}>
 
       {/* Resumo Carrinho */}
@@ -435,13 +443,12 @@ render() {
         referencia={this.state.referencia}/>
 
       </ScrollView>
-
-      <Button
+      <LazyYellowButton
+        styleButton={{width: wp('100%')}}
+        styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal, fontSize: 20}}
         onPress={()=>{this.fazerPedido()}}
-        title="Fazer Pedido"
-        color={cores.corPrincipal}
-        accessibilityLabel="YourLabelHere"
-      />
+        text={"FINALIZAR PEDIDO"}
+        />
   </View>
 
   return (

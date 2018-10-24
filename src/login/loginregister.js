@@ -148,7 +148,7 @@ export class LoginRegisterScreen extends Component {
           }, (error) => {
 
             //Promise was rejected
-            console.log(error)
+            console.log("promise rejected"+error)
           })
         }, (error) => {
           console.log("Some error occured: " + error)

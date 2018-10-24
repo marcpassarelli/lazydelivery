@@ -6,6 +6,7 @@ import LazyActivity from '../loadingModal/lazyActivity'
 import { updateStatus, carregarPedidos } from '../firebase/database'
 import DetalhesPedidoListItem from './detalhesPedidoListItem'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import ListItemSeparator from '../constants/listItemSeparator'
 
 var endereco = ''
 var bairro = ''
@@ -98,10 +99,6 @@ export class DetalhesPedidoScreen extends Component {
     console.log("loading false");
   }
 
-  renderSeparatorComponent = () => {
-    return (<View style={styles.renderSeparatorComponent}/>)
-  };
-
   valorVirgula(valor){
     var str = (valor).toFixed(2)
     var res = str.toString().replace(".",",")
@@ -130,7 +127,7 @@ export class DetalhesPedidoScreen extends Component {
       <Text style={[styles.textResumoPgto, {alignSelf: 'center', fontSize: 15}]}>Resumo do Pedido</Text>
       <View style={{height: 100, borderWidth: 1,borderColor: cores.corPrincipal,marginHorizontal: 3}}>
         <FlatList
-          ItemSeparatorComponent={this.renderSeparatorComponent}
+          ItemSeparatorComponent={ListItemSeparator}
           data= {this.carrinho}
           extraData={this.state}
           renderItem= {

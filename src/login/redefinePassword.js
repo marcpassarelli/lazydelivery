@@ -24,9 +24,9 @@ export class RedefinePasswordScreen extends Component {
     }
 
   }
-  static navigationOptions = {
+  static navigationOptions  = ({navigation}) =>({
     header: null,
-  };
+  });
 
   constructor(props) {
     super(props);
@@ -34,14 +34,100 @@ export class RedefinePasswordScreen extends Component {
       email: '',
       loading: false
     }
-
+    this.updateEmail = this.updateEmail.bind(this)
 
   }
 
   updateEmail = (text) => {
     this.setState({email: text})
+    console.log("this.state.email"+this.state.email);
   }
 
+
+   sendEmailRedefinition= ()=>{
+    console.log("sendEmailRedefinition");
+    const { navigate } = this.props.navigation
+    let email = this.state.email
+    // let user = await auth.currentUser;
+    // log
+    // let provider = user.providerData[0].providerId
+    console.log("this.state.email"+this.state.email);
+    if(this.state.email){
+    auth.fetchSignInMethodsForEmail(email).then(function(signInMethods){
+      let metodoLogin = signInMethods
+      if(metodoLogin==""){
+        console.log("metodoLogin e-mail nao cadastrado"+metodoLogin);
+        Alert.alert(
+          "E-mail não cadastrado",
+          "Este e-mail não consta em nossa base de dados. Verifique se o e-mail está correto ou volte à tela inicial e faça um cadastro com e-mail ou login com o Facebook.",
+          [
+           {text: 'OK', onPress: ()=>{}}
+          ],
+          { cancelable: false }
+        )
+      }else if(metodoLogin=="password"){
+        console.log("metodoLogin password"+metodoLogin);
+
+        auth.sendPasswordResetEmail(email).then(function() {
+          // Email sent.
+          Alert.alert(
+           'E-mail Redefinição de Senha.',
+           'Um e-mail foi enviado para o e-mail cadastrado. Basta seguir as instruções para o cadastramento de uma nova senha.',
+           [
+             {text: 'OK', onPress: ()=>{
+               navigate('LoginEmail')}}
+           ],
+           { cancelable: false }
+          )
+        }).catch(function(error){
+          console.log("error sendPasswordResetEmail"+error);
+        })
+      }else if(metodoLogin=="facebook.com"){
+        console.log("metodoLogin facebook"+metodoLogin);
+        Alert.alert(
+          "E-mail já usado por uma conta Facebook",
+          "O e-mail informado já é usado por uma conta do Facebook. Faça o login usando o botão Login com o Facebook ou então cadastre um novo e-mail.",
+          [
+           {text: 'OK', onPress: ()=>{}}
+          ],
+          { cancelable: false }
+        )
+      }else{
+        console.log("metodoLogin email nao cadastrado"+metodoLogin);
+        Alert.alert(
+          "E-mail não cadastrado",
+          "Este e-mail não consta em nossa base de dados. Verifique se o e-mail está correto ou volte à tela inicial e faça um cadastro com e-mail ou login com o Facebook.",
+          [
+           {text: 'OK', onPress: ()=>{}}
+          ],
+          { cancelable: false }
+        )
+      }
+    }).catch(function(error){
+      console.log("error  "+error);
+      Alert.alert(
+        "E-mail incorreto",
+        "O e-mail informado está mal formatado. Verifique se o e-mail digitado está correto.",
+        [
+         {text: 'OK', onPress: ()=>{}}
+        ],
+        { cancelable: false }
+      )
+    })
+
+  }else{
+    Alert.alert(
+      'Campo vazio',
+      'Por favor, inserir o e-mail',
+      [
+        {text: 'OK', onPress:()=>{
+
+        }}
+      ],
+      {cancelable : false }
+    )
+  }
+}
 
   render(){
     return (
@@ -55,56 +141,7 @@ export class RedefinePasswordScreen extends Component {
         <ComponentsRedefinePassword
           goBack={()=>{this.props.navigation.navigate('LoginEmail')}}
           sendEmailRedefinition={()=>{
-            if(this.state.email){
-            console.log("this.state.email"+this.state.email);
-            auth.sendPasswordResetEmail(this.state.email).then(function() {
-                console.log("email sent");
-                // Email sent.
-                Alert.alert(
-                 'E-mail Redefinição de Senha.',
-                 'Um e-mail foi enviado para o e-mail cadastrado. Basta seguir as instruções para o cadastramento de uma nova senha.',
-                 [
-                   {text: 'OK', onPress: () => {
-                     this.props.navigation.navigate('LoginRegister')
-                   }},
-                 ],
-                 { cancelable: false }
-               )
-              }).catch(function(error) {
-                let erro =""
-                if(error.code=="auth/invalid-email"){
-                  erro = "E-mail inserido é invalido. Verifique se o e-mail inserido está correto."
-                }else if(error.code=="auth/user-not-found"){
-                  erro = "E-mail não cadastrado na base de dados."
-                }else{
-                  erro = "Ocorreu um erro. Verifique se o e-mail inserido está correto."
-                }
-                  // An error happened.
-
-                  Alert.alert(
-                   'Ocorreu um erro',
-                    erro,
-                   [
-                     {text: 'OK', onPress: () => {
-
-                     }},
-                   ],
-                   { cancelable: false }
-                 )
-              });
-          }else {
-            Alert.alert(
-              'Campo vazio',
-              'Por favor, inserir o e-mail',
-              [
-                {text: 'OK', onPress:()=>{
-
-                }}
-              ],
-              {cancelable : false }
-            )
-          }
-        }}
+            this.sendEmailRedefinition()}}
           textEmail={this.updateEmail}
           />
       </ImageBackground>

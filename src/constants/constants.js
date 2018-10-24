@@ -10,7 +10,7 @@ export const images ={
   backgroundSplash: require('../../img/01-Front---background.png'),
   iconSplash: require('../../img/Icon---Roxo.png'),
   iconYellow: require('../../img/Logo-amarelo.png'),
-  backgroundCadastro: require('../../img/cadastro-01-bg.png'),
+  backgroundLazy: require('../../img/cadastro-01-bg.png'),
   backgroundLogin: require('../../img/Login-background.png'),
   backgroundLoginEmail: require('../../img/Login-02-background.png'),
   logoLogin: require('../../img/Logo-White.png'),
@@ -22,7 +22,7 @@ export const images ={
 }
 export const cores = {
     corPrincipal: '#472c82',
-    corSecundaria: 'rgba(252, 204, 60,0.85)',
+    corSecundaria: 'rgb(252, 204, 60)',
     textDetalhes:'rgb(43, 189, 204)',
 };
 
@@ -80,7 +80,7 @@ export const styles = StyleSheet.create({
     flexDirection:'row',
     height:60,
     alignItems:'center',
-    marginLeft:15,
+    marginLeft:35,
     marginRight:5,
     marginBottom:10,
     flex:1
@@ -90,7 +90,8 @@ export const styles = StyleSheet.create({
     flexDirection:'row',
     height:40,
     alignItems:'center',
-    flex:1
+    flex:1,
+    marginLeft:30,
   },
   containerTextInput:{
     borderColor:'#d1d1d1',
@@ -112,41 +113,45 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   header:{
-
+    height:60,
+    backgroundColor: cores.corPrincipal
   },
   headerText:{
-    color: cores.corPrincipal,
-    textAlign: 'center',
-    alignSelf:'center',
-    fontSize:18,
+    flex:1,
+    fontFamily: 'Futura PT Bold',
+    color: cores.corSecundaria,
+    textAlign: "center",
+    fontSize:22,
+    fontWeight:'200',
   },
   headerList:{
-    color: '#FFFFFF',
+    fontFamily: 'Futura Book',
+    color: cores.corPrincipal,
     fontSize:17,
     marginLeft:10,
     flex:1
   },
+  headerRight:{
+    marginRight: 20
+  },
   icon: {
     width: 20,
-    height: 20
+    height: 20,
+    tintColor: cores.textDetalhes
   },
   imagemEstabInfo:{
     height: 100,
     width: 100,
     alignSelf: 'center',
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor:cores.corPrincipal,
-    resizeMode:'cover'
+    resizeMode:'cover',
+    marginBottom: 20
   },
   imagemTipoEstabelecimento:{
-    height: 60,
-    width: 60,
+    height: 65,
+    width: 65,
     alignSelf: 'center',
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor:cores.corPrincipal,
-    resizeMode:'cover'
+    resizeMode:'cover',
+    tintColor:'rgb(0,192,197)'
   },
   imagemListSearch:{
     height: 30,
@@ -186,13 +191,6 @@ export const styles = StyleSheet.create({
     backgroundColor:'transparent',
     fontFamily: 'Futura Book'
   },
-  renderSeparatorComponent:{
-    height: 3,
-    width: "100%",
-    backgroundColor: "#CED0CE",
-    marginLeft: 5,
-    marginBottom: 7
-  },
   renderSeparatorSection:{
     height: 2,
     width: "100%",
@@ -217,7 +215,7 @@ export const styles = StyleSheet.create({
     fontFamily: 'Futura Book'
   },
   separator:{
-    height:15
+    height:25
   },
   textAddProduto:{
     backgroundColor:'transparent',
@@ -231,6 +229,7 @@ export const styles = StyleSheet.create({
 textAdicionais:{
   backgroundColor:'transparent',
   alignSelf: 'center',
+  justifyContent: 'center',
   color: cores.corPrincipal,
   fontSize: 16,
   marginBottom: 15,
@@ -245,7 +244,6 @@ textAdicionais:{
   },
   textCarrinho:{
     backgroundColor:'transparent',
-    alignSelf: 'center',
     color: cores.corPrincipal,
     fontSize: 15,
     fontFamily: 'Futura Book'
@@ -260,7 +258,7 @@ textAdicionais:{
     backgroundColor:'transparent',
     marginLeft: 5,
     fontSize: 13,
-    color: cores.textDetalhes,
+
     fontFamily: 'Futura Book'
   },
   textEndHome:{
@@ -275,7 +273,7 @@ textAdicionais:{
     marginLeft: 5,
     fontSize: 17,
     color: cores.corPrincipal,
-    fontFamily: 'Futura Book'
+    fontFamily: 'Futura Medium Italic BT'
   },
   textHistoricoPedidos: {
     backgroundColor:'transparent',
@@ -290,20 +288,19 @@ textAdicionais:{
     marginLeft:15,
     fontSize: 18,
     color:cores.corPrincipal,
-    fontFamily: 'Futura Book'
+    fontFamily: 'Futura Medium Italic BT'
   },
   textInformacoes2:{
     backgroundColor:'transparent',
     marginLeft:20,
     fontSize:17,
-    color:cores.textDetalhes,
     fontFamily: 'Futura Book'
   },
   textInformacoesD: {
     backgroundColor:'transparent',
     marginLeft:30,
     fontSize: 16,
-    color:cores.textDetalhes,
+
     fontFamily: 'Futura Book'
   },
   textInputs:{
@@ -312,17 +309,17 @@ textAdicionais:{
   },
   textPreco:{
     backgroundColor:'transparent',
-    fontSize: 15,
+    fontSize: 16,
     marginRight: 15,
-    color: cores.corPrincipal,
-    fontFamily: 'Futura Book'
+    color: cores.textDetalhes,
+    fontFamily: 'Futura Medium Italic BT'
   },
   textProdutos:{
     backgroundColor:'transparent',
-    marginLeft: 10,
-    fontSize: 15,
+    marginLeft: 15,
+    fontSize: 16,
     color: cores.corPrincipal,
-    fontFamily: 'Futura Book'
+    fontFamily: 'Futura Medium Italic BT'
   },
   textProfileDetails:{
     backgroundColor:'transparent',
@@ -350,7 +347,7 @@ textAdicionais:{
     fontSize: 17,
     backgroundColor:'transparent',
     color: cores.corPrincipal,
-    fontFamily: 'Futura Book'
+    fontFamily: 'Futura Medium Italic BT'
   },
   textUpdateEnd:{
     backgroundColor:'transparent',

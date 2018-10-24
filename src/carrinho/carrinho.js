@@ -10,17 +10,28 @@ import { retiraLoja } from '../firebase/database'
 import { CheckBox } from 'react-native-elements'
 import LazyActivity from '../loadingModal/lazyActivity'
 import _ from 'lodash'
+import LazyBackButton from '../constants/lazyBackButton'
+import LazyYellowButton from '../constants/lazyYellowButton'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import ListItemSeparator from '../constants/listItemSeparator'
 let totalPrice =0
 const produtosCarrinho = []
 
 export class CarrinhoScreen extends Component{
 
-
   static navigationOptions = ({navigation}) => ({
-    title: "Carrinho - "+navigation.state.params.nomeEstabelecimento,
-    headerTitleStyle: styles.headerText,
+    title: "CARRINHO",
+    headerTitleStyle: [styles.headerText,{alignSelf:'center'}],
     headerStyle: styles.header,
-    headerRight: (<View></View>)
+    headerLeft: (
+      <LazyBackButton
+        goBack={()=>{
+            navigation.navigate('Estabelecimento',
+            {nomeEstabelecimento:navigation.state.params.nomeEstabelecimento,
+            tipoEstabelecimento: navigation.state.params.tipoEstabelecimento})
+          }}/>
+    ),
+    headerRight:(<View style={styles.headerRight}></View>)
   });
 
   constructor(props){
@@ -66,10 +77,6 @@ export class CarrinhoScreen extends Component{
     }
 
   }
-
-  renderSeparatorComponent = () => {
-   return (<View style={styles.renderSeparatorComponent}/>);
-  };
 
   onSubtract = (item, index) =>{
     const produtosCarrinho = [...this.state.produtosCarrinho];
@@ -162,7 +169,7 @@ export class CarrinhoScreen extends Component{
       return(
         <View style={{flex: 1}}>
           <FlatList
-            ItemSeparatorComponent={this.renderSeparatorComponent}
+            ItemSeparatorComponent={ListItemSeparator}
             data= {this.state.produtosCarrinho}
             extraData={this.state}
             renderItem={({ item, index }) => (
@@ -174,7 +181,12 @@ export class CarrinhoScreen extends Component{
                   var str = (item.preco*item.quantidade).toFixed(2)
                   var res = str.toString().replace(".",",")
                   return(
-                      <Text style={styles.textCarrinho}>R$ {res}</Text>
+                      <Text style={[styles.textCarrinho,{
+                          color: cores.corSecundaria,
+                          fontFamily: "Futura Medium Italic BT",
+                          alignSelf: 'center', fontSize: 18}]}>
+                        R$ {res}
+                      </Text>
                   )
                 }}/>
             )}
@@ -246,18 +258,18 @@ export class CarrinhoScreen extends Component{
                 R$ {this.valorVirgula(this.totalPrice+this.state.frete)}
             </Text>
           </View>
-        <Button
-          onPress={()=>{
-            if(this.state.produtosCarrinho.length>0){
-              this.props.navigation.navigate('ResumoPgto',{
-                nomeEstabelecimento: this.props.navigation.state.params.nomeEstabelecimento,
-                retirarLoja: this.state.retirar})
-            }
-          }}
-          title="Encerrar Pedido"
-          color= {cores.corPrincipal}
-          accessibilityLabel="YourLabelHere"
-        />
+          <LazyYellowButton
+            styleButton={{width: wp('100%')}}
+            styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal, fontSize: 20}}
+            onPress={()=>{
+              if(this.state.produtosCarrinho.length>0){
+                this.props.navigation.navigate('ResumoPgto',{
+                  nomeEstabelecimento: this.props.navigation.state.params.nomeEstabelecimento,
+                  retirarLoja: this.state.retirar})
+              }
+            }}
+            text={"CONTINUAR"}
+            />
       </View>)
 
     }else{

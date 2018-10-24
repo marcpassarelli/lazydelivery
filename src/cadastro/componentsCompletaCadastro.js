@@ -34,16 +34,9 @@ export default ComponentsCompletaCadastro = (props) => {
         <LazyTextInput
           style={{marginBottom: hp('2.22%')}}
           nameIcon={'home'}
-          placeholder={'ENDEREÇO'}
+          placeholder={'ENDEREÇO COM NÚMERO'}
           onChangeText={props.updateEndereco}
           autoCapitalize='words'
-          returnKeyType="next"/>
-        <LazyTextInput
-          style={{marginBottom: hp('2.22%')}}
-          nameIcon={'home'}
-          placeholder={'NÚMERO ENDEREÇO'}
-          onChangeText={props.updateNumeroEnd}
-          keyboardType="numeric"
           returnKeyType="next"/>
         <LazyTextInput
           style={{marginBottom: hp('2.22%')}}

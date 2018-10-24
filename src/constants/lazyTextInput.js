@@ -23,7 +23,7 @@ export default class LazyTextInput extends Component {
               underlineColorAndroid='transparent'
               style={[styles.containerTextInput,{paddingLeft: 15,color: '#464949',
                 marginHorizontal: 0,width: wp('63.30%'),borderWidth: 0.5,borderColor: '#d1d1d1',
-                fontFamily: 'Futura Book',fontSize: wp('4%'),backgroundColor: '#d1d1d1'}]}
+                fontFamily: 'Futura Book',fontSize: wp('3.5%'),backgroundColor: '#d1d1d1'}]}
               >
             </TextInput>
         </View>

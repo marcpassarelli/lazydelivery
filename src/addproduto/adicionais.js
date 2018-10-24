@@ -5,8 +5,11 @@ import {listaAdicionais} from '../firebase/database'
 import AdicionaisListItem from './adicionaisListItem'
 import StatusBar from '../constants/statusBar'
 import LazyActivity from '../loadingModal/lazyActivity'
-
+import ListItemSeparator from '../constants/listItemSeparator'
+import LazyBackButton from '../constants/lazyBackButton'
 import _ from 'lodash'
+import LazyYellowButton from '../constants/lazyYellowButton'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 export var adicionaisEscolhidos= []
 let totalPrice =0
 var todoCounter = 1;
@@ -20,12 +23,12 @@ var tipoProduto=""
 const adicionais = listaAdicionais
 
 export class AdicionaisScreen extends Component{
-
   static navigationOptions = ({navigation}) => ({
-    title: "Adicionais",
-    headerTitleStyle: styles.headerText,
+    title: "ADICIONAIS",
+    headerTitleStyle: [styles.headerText,{alignSelf:'center'}],
+    headerStyle: styles.header,
     headerLeft: null,
-    headerRight: (<View></View>)
+    headerRight:null
   });
 
   constructor(props){
@@ -52,20 +55,6 @@ export class AdicionaisScreen extends Component{
       adicionais: listaAdicionais
     });
   }
-
-  renderSeparator = () => {
-   return (
-     <View
-       style={{
-         height: 1,
-         width: "100%",
-         backgroundColor: "#CED0CE",
-         marginLeft: 5,
-         marginBottom: 7
-       }}
-     />
-   );
-  };
 
   adicionarAdicionais(){
     const { navigate } = this.props.navigation;
@@ -102,15 +91,6 @@ export class AdicionaisScreen extends Component{
         }
       })
     }
-    console.log("adicionaisEscolhidos"+JSON.stringify(adicionaisEscolhidos))
-    console.log("nomeEstabelecimento"+nomeEstabelecimento)
-    console.log("this.totalPrice"+this.totalPrice)
-    console.log("this.nome"+this.nome)
-    console.log("this.preco"+this.preco)
-    console.log("this.detalhes"+this.detalhes)
-    console.log("this.imgProduto"+this.imgProduto)
-    console.log("this.tipoProduto"+this.tipoProduto)
-    console.log("this.props.navigation.state.params.tipoEstabelecimento"+this.props.navigation.state.params.tipoEstabelecimento)
 
     navigate('AddProduto',{
       adicionais:adicionaisEscolhidos,
@@ -174,7 +154,7 @@ export class AdicionaisScreen extends Component{
     <View style={{flex: 1}}>
       <StatusBar/>
       <FlatList
-        ItemSeparatorComponent={this.renderSeparator}
+        ItemSeparatorComponent={ListItemSeparator}
         data= {this.state.adicionais}
         extraData={this.state.checkBoxChecked}
         renderItem={({ item, index }) => (
@@ -191,7 +171,9 @@ export class AdicionaisScreen extends Component{
               }
 
               return(
-                  <Text style={styles.textAdicionais}>R$ {res}</Text>
+                  <Text style={[styles.textAdicionais],{alignSelf: 'center', fontSize: 18,
+                    marginBottom: 10,
+                    fontFamily:'Futura Medium Italic BT',color: cores.textDetalhes}}>R$ {res}</Text>
               )
             }}
 
@@ -204,12 +186,12 @@ export class AdicionaisScreen extends Component{
         )}
         keyExtractor={item => item._id.toString()}
       />
-    <Button
-      onPress={()=>{this.adicionarAdicionais()}}
-      title="Voltar"
-      color={cores.corPrincipal}
-      accessibilityLabel="YourLabelHere"
-    />
+      <LazyYellowButton
+        styleButton={{width: wp('100%')}}
+        styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal, fontSize: 20}}
+        onPress={()=>{this.adicionarAdicionais()}}
+        text={"VOLTAR / ADICIONAR"}
+        />
     </View>
 
     return (

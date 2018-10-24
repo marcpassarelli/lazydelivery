@@ -7,28 +7,24 @@ import {getListaEstabelecimentos, listaEstabelecimentos, limparEstabelecimentoPr
 import Loader from '../loadingModal/loadingModal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LazyActivity from '../loadingModal/lazyActivity'
-
+import LazyBackButton from '../constants/lazyBackButton'
+import ListItemSeparator from '../constants/listItemSeparator'
+import _ from 'lodash'
 var tipoEstabelecimentoUp ='';
 export class ListaEstabelecimentosScreen extends Component{
 
 
   static navigationOptions = ({navigation}) => ({
-    title: navigation.state.params.tipoEstabelecimento,
-    headerTitleStyle: styles.headerText,
+    title: _.upperCase(navigation.state.params.tipoEstabelecimento),
+    headerTitleStyle: [styles.headerText,{alignSelf:'center'}],
     headerStyle: styles.header,
     headerLeft: (
-      <Icon
-        style={{marginLeft: 15}}
-        name={'arrow-left'}
-        size={26}
-        color="#000000"
-        onPress={
-          ()=>{
-          navigation.navigate('Home')
-          }}>
-        </Icon>
-      ),
-    headerRight: (<View></View>)
+      <LazyBackButton
+        goBack={()=>{
+        navigation.navigate('Home')
+      }}/>
+    ),
+    headerRight:(<View style={styles.headerRight}></View>)
   });
 
 constructor(props){
@@ -42,21 +38,6 @@ constructor(props){
   }
 }
 
-renderSeparator = () => {
- return (
-   <View
-     style={{
-       height: 1,
-       width: "100%",
-       backgroundColor: "#CED0CE",
-       marginLeft: 5,
-       marginBottom: 7
-     }}
-   />
- );
-};
-
-
  componentWillMount(){
    this.setState({
       loadingList: true
@@ -66,11 +47,13 @@ renderSeparator = () => {
   limparEstabelecimentoProd()
   const {state} = this.props.navigation;
   this.tipoEstabelecimentoUp = state.params ? state.params.tipoEstabelecimento : ""
-  console.log("tipoEstabelecimento"+this.tipoEstabelecimentoUp);
+
   getListaEstabelecimentos(this.tipoEstabelecimentoUp,
   ()=> {
     this.setState({
       loadingList: false
+    },function(){
+      console.log("lista");
     });
   })
 
@@ -95,7 +78,7 @@ render() {
   <View style={{flex:1}}>
   <View style={styles.separator}></View>
   <FlatList
-    ItemSeparatorComponent={this.renderSeparator}
+    ItemSeparatorComponent={ListItemSeparator}
     data= {listaEstabelecimentos}
     extraData={this.state}
     renderItem= {

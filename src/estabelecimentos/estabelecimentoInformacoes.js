@@ -3,32 +3,48 @@ console.ignoredYellowBox = [
 ]
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import React, { Component } from 'react';
-import { ImageBackground, Image, Text, View, ScrollView } from 'react-native'
+import { ImageBackground, Image, Text, View, ScrollView,Platform } from 'react-native'
 import { styles,cores, images} from '../constants/constants'
 import { getEstabelecimentoInfo, estabelecimentoInfo } from '../firebase/database'
+import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
 import StatusBar from '../constants/statusBar'
 import LazyActivity from '../loadingModal/lazyActivity'
+import LazyBackButton from '../constants/lazyBackButton'
+import LazyYellowButton from '../constants/lazyYellowButton'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import _ from 'lodash';
 
 export class EstabelecimentoInformacoesScreen extends Component {
 
   static navigationOptions = ({navigation}) => ({
-    title: navigation.state.params.nomeEstabelecimento,
+    title: _.upperCase(navigation.state.params.nomeEstabelecimento),
     headerTitleStyle: styles.headerText,
-    headerStyle: styles.header,
+    headerStyle: Platform.OS=="ios"? styles.headerIos : styles.header,
     headerLeft: (
-      <Icon
-        style={{marginLeft: 15}}
-        name={'arrow-left'}
-        size={26}
-        color="#000000"
-        onPress={
-          ()=>{
-          navigation.navigate('ListaEstabelecimentos',
-          {tipoEstabelecimento:navigation.state.params.tipoEstabelecimento})
-          }}>
-        </Icon>
+      <LazyBackButton
+        goBack={()=>{
+            if(carrinho.length>0){
+              Alert.alert(
+                'Sair do Estabelecimento',
+                'Tem certeza que deseja sair deste estabelecimento? Todos os items do carrinho serão perdido.',
+                [
+                  {text: 'Sim', onPress: () => {
+                    atualizarCarrinho([])
+                    navigation.navigate('ListaEstabelecimentos',
+                    {tipoEstabelecimento:navigation.state.params.tipoEstabelecimento})
+                  }},
+                  {text: 'Não', onPress: ()=>{
+                    console.log("cancelado");
+                  }},
+                ],
+                {cancelable: false}
+              )
+            }else{
+              navigation.navigate('Home')
+            }
+          }}/>
       ),
-    headerRight: (<View></View>),
+    headerRight: (<View style={styles.headerRight}></View>),
     tabBarLabel: 'Informações',
   });
 
@@ -126,12 +142,12 @@ export class EstabelecimentoInformacoesScreen extends Component {
          style={styles.imagemEstabInfo}
          source={{uri:imageProfile.uri}}/>
 
-       <View style={styles.separator}></View>
+       <Text style={{backgroundColor: 'transparent',alignSelf: 'center',
+         fontSize:26,fontFamily: 'Futura Medium Italic BT',color:cores.corPrincipal}}>{this.state.nomeEstabelecimento} </Text>
 
-       <Text style={styles.textInformacoes}>Taxa Delivery: {this.state.precoDelivery} </Text>
-       <Text style={styles.textInformacoes}>Tempo Estimado de Entrega: {this.state.tempoEntrega} </Text>
+       <Text style={[styles.textInformacoes,{alignSelf: 'center',marginLeft: 0,color: cores.textDetalhes}]}>Tempo de Entrega:{this.state.tempoEntrega} </Text>
 
-       <View style={styles.separator}></View>
+       <View style={{height: 2,backgroundColor: cores.corSecundaria,marginVertical: 15, marginHorizontal: 10}}></View>
 
        <Text style={styles.textInformacoes}>Horários de Funcionamento</Text>
        <Text style={styles.textInformacoesD}>Segunda-Feira: {this.state.seg}</Text>

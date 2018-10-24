@@ -1,9 +1,9 @@
 import React from 'react';
 import { cores } from './src/constants/constants'
 import {
-  AppRegistry, Easing, Animated
+  AppRegistry, Easing, Animated, View, Text
 } from 'react-native';
-import { StackNavigator, TabNavigator } from 'react-navigation';
+import { StackNavigator, TabNavigator,TabBarBottom, } from 'react-navigation';
 import { SplashScreen } from './src/splash/splash'
 import { CadastroInicialScreen } from './src/cadastro/cadastroInicial'
 import { CompletaCadastroScreen } from './src/cadastro/completaCadastro'
@@ -35,30 +35,33 @@ const TabHome = TabNavigator({
     screen: HomeScreen,
   },
   Destaques:{
-    screen: DestaquesScreen,
+    screen: DestaquesScreen
   },
   Profile: {
     screen: ProfileScreen,
   },
 }, {
   tabBarOptions: {
-    activeTintColor: '#FFFFFF',
+    activeTintColor: cores.corPrincipal,
     labelStyle: {
-      fontSize: 11,
-    },
-    iconStyle:{
-      marginTop:9,
+      fontSize: 15,
+      fontFamily:'FuturaBookCTT Normal',
+      color:cores.corPrincipal,
+
     },
     style: {
-      backgroundColor: cores.corPrincipal,
-      height:50
+      backgroundColor: cores.corSecundaria,
+      height:65,
+      paddingVertical: 5,
     },
     showIcon: true,
-    tabStyle: {
-      height: 50,
-    },
+    indicatorStyle:{
+      backgroundColor:cores.corPrincipal,
+    }
+
   },
   tabBarPosition:'bottom',
+  tabBarComponent:TabBarBottom
 })
 
 const TabEstabelecimento = TabNavigator({
@@ -73,8 +76,10 @@ const TabEstabelecimento = TabNavigator({
     activeTintColor: '#FFFFFF',
     inactiveTintColor: '#000000',
     labelStyle: {
-      fontSize: 16,
-      marginBottom:10
+      fontSize: 18,
+      marginBottom:10,
+      fontFamily: 'Futura Book',
+      color: cores.corSecundaria
     },
     style: {
       backgroundColor: cores.corPrincipal,
