@@ -11,6 +11,7 @@ import { AndroidBackHandler } from 'react-navigation-backhandler';
 import LazyActivity from '../loadingModal/lazyActivity'
 import LazyBackButton from '../constants/lazyBackButton'
 import LazyYellowButton from '../constants/lazyYellowButton'
+import { NavigationActions } from 'react-navigation';
 import _ from 'lodash'
 import Icon from 'react-native-vector-icons/Feather';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -33,7 +34,7 @@ export class AddProdutoScreen extends Component{
       headerStyle: styles.header,
       headerLeft: (
         <LazyBackButton
-          goBack={  ()=>{
+          goBack={ ()=>{
               navigation.navigate('Estabelecimento',
               {nomeEstabelecimento:navigation.state.params.nomeEstabelecimento,
               tipoEstabelecimento: navigation.state.params.tipoEstabelecimento})
@@ -67,10 +68,12 @@ export class AddProdutoScreen extends Component{
 }
 
   componentWillMount(){
+    console.log("WILLMOUNT");
     this.setState({
       loading: true
     });
     const {state} = this.props.navigation
+    const {navigation} = this.props
 
     var nome = state.params ? state.params.nome : ""
     var preco = state.params.tipoProduto=="Pizzas" ? state.params.precoPizza : state.params.preco
@@ -82,8 +85,8 @@ export class AddProdutoScreen extends Component{
 
     var telaAdicionais = state.params ? state.params.telaAdicionais : ""
     var tipoEstabelecimento = state.params ? state.params.tipoEstabelecimento : ""
-    this.totalPrecoAd = state.params ? state.params.totalPreco : ""
-
+    this.totalPrecoAd = navigation.getParam('totalPreco','')
+    console.log("totalPrecoAd"+totalPrecoAd);
 
     //Se tiver vindo da lista de produtos zerará os adicionais
     if(!telaAdicionais){
@@ -91,7 +94,6 @@ export class AddProdutoScreen extends Component{
         listaAdicionais: []
       });
     }
-    console.log("estabelecimento "+estabelecimento+"/ tipoProduto"+tipoProduto);
 
     this.setState({
       nome: nome,
@@ -103,14 +105,14 @@ export class AddProdutoScreen extends Component{
       estabelecimento: estabelecimento,
       tipoEstabelecimento: tipoEstabelecimento
     },function(){
-      console.log("dentro callback setstate e estabelecimento:"+estabelecimento+"  tipoProduto:"+tipoProduto);
+
     });
 
     getListaAdicionais(estabelecimento, tipoProduto,()=>{
       this.setState({
         loading: false
       },function(){
-        console.log("dentro callback getlistadicionais");
+
       });
     })
 
@@ -186,8 +188,10 @@ export class AddProdutoScreen extends Component{
     })
 
     const { navigate } = this.props.navigation;
-    navigate('Estabelecimento',{toast:this.state.nome, nomeEstabelecimento: estabelecimento,
-  tipoEstabelecimento: state.params.tipoEstabelecimento })
+    navigate({routeName:'Estabelecimento',
+      params:{toast:this.state.nome, nomeEstabelecimento: estabelecimento,
+      tipoEstabelecimento: state.params.tipoEstabelecimento },
+      key:Math.random () * 10000})
   this.setState({
     loadingAfter:false
   })
@@ -201,8 +205,22 @@ export class AddProdutoScreen extends Component{
     if(this.tipoProduto="Pizzas"&&this.totalPrecoAd>0){
       return(
       <View style={{flex:1}}>
-        <Text style={[styles.textAddProduto,{fontSize: 12}]}>Valor Adicionais: R${this.totalPrecoAd}</Text>
-        <Text style={styles.textAddProduto}>Total com Adicionais: R$ {total}</Text>
+        <View style={{flexDirection: 'row',justifyContent: 'center',alignContent: 'center'}}>
+          <Text style={[styles.textAddProduto,
+              {marginVertical: hp('1.5%')}]}>
+              Valor Adicionais: </Text>
+          <Text style={[styles.textAddProduto,
+              {marginVertical: hp('1.5%'),color:cores.textDetalhes}]}>
+              R$ {this.valorVirgula(this.totalPrecoAd)}</Text>
+        </View>
+        <View style={{flexDirection: 'row',justifyContent: 'center',alignContent: 'center'}}>
+          <Text style={[styles.textAddProduto,
+              {marginBottom:hp('1.5%')}]}>
+              Total com Adicionais: </Text>
+          <Text style={[styles.textAddProduto,
+              {marginBottom:hp('1.5%'),color:cores.textDetalhes}]}>
+              R$ {this.valorVirgula(total)}</Text>
+        </View>
       </View>
       )
     }else if(this.totalPrecoAd>0) {
@@ -221,7 +239,7 @@ export class AddProdutoScreen extends Component{
     str = (str).toFixed(2)
     var res = str.toString().replace(".",",")
     return(
-        <Text style={styles.textAddProduto}>{res}</Text>
+        <Text style={[styles.textAddProduto,{color:cores.textDetalhes}]}>{res}</Text>
     )
   }
 
@@ -273,26 +291,27 @@ export class AddProdutoScreen extends Component{
     </View> :
 
     <AndroidBackHandler onBackPress={this.onBackButtonPressAndroid}>
-    <View style={{flex: 1}}>
+    <View style={{flex:1}}>
       <StatusBar/>
-      <ScrollView>
-        {this.functionLoadImage()}
-
-        <Text style={[styles.textAddProduto,{marginBottom: 0}]}>
+      <ScrollView contentContainerStyle={{flexGrow: 1}}>
+        <Text style={[styles.textAddProduto,{marginTop:hp('13%') ,marginHorizontal: wp('14.5%'),textAlign:'center', fontSize: 24}]}>
             {this.state.nome}
         </Text>
 
-        <Text style={[styles.textAddProduto,{fontSize: 13, marginHorizontal: 10,color: '#2F4F4F'}]}>
+        <Text style={[styles.textAddProduto,{textAlign: 'center',fontSize: 14 ,marginHorizontal: wp('14%'),color:'rgb(240,242,242)'}]}>
           {this.state.detalhes}
         </Text>
 
-        <Text style={styles.textAddProduto}>
-          Preço Unitário: R$ {this.valorVirgula(this.state.preco)}
-        </Text>
+        <View style={{height:4,backgroundColor: cores.textDetalhes,marginHorizontal: wp('14%'),marginVertical: hp('4.6%')}}></View>
+
+        <View style={{flexDirection: 'row',justifyContent: 'center',alignContent: 'center',marginBottom: hp('1.5%')}}>
+        <Text style={[styles.textAddProduto]}>Preço Unitário: </Text>
+        <Text style={[styles.textAddProduto,{color:cores.textDetalhes}]}>R$ {this.valorVirgula(this.state.preco)}</Text>
+        </View>
 
         <Text style={[styles.textAddProduto,{marginBottom: 5}]}>Quantidade:</Text>
 
-        <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+        <View style={{flexDirection: 'row', alignSelf: 'center',marginVertical: hp('1.5%')}}>
 
           <TouchableOpacity style={{}} onPress={()=>{this.menosQtde()}}>
             <Icon
@@ -317,15 +336,18 @@ export class AddProdutoScreen extends Component{
         </Text>
         {listaAdicionais.length>0 ?
         <TouchableOpacity onPress={()=>{
-            console.log("this.state.tipoProduto"+this.state.tipoProduto);
-            this.props.navigation.navigate('Adicionais',{nome:this.state.nome,
+            this.props.navigation.navigate({routeName:'Adicionais',
+            params:{nome:this.state.nome,
                   preco:this.state.preco,
                   detalhes:this.state.detalhes,
                   imgProduto:this.state.imgProduto,
                   tipoProduto:this.state.tipoProduto,
                   nomeEstabelecimento: this.state.estabelecimento,
-                  tipoEstabelecimento: this.state.tipoEstabelecimento})
-          }}>
+                  tipoEstabelecimento: this.state.tipoEstabelecimento },
+            key:Math.random () * 10000})
+
+          }}
+          style={{marginVertical: hp('1.5%')}}>
           <Text style={[styles.textAddProduto,{marginBottom: 10,textDecorationLine:'underline'}]}>
             Adicionais?
           </Text>
@@ -337,43 +359,45 @@ export class AddProdutoScreen extends Component{
             });
           }}></View>
       }
-        <Text style={[styles.textAddProduto,{fontSize: 12}]}>{
+        <View style={{marginHorizontal:wp('14.5%'),flexDirection: 'row',flexWrap: 'wrap',justifyContent: 'center',alignContent: 'center'}}>{
             this.state.tipoProduto == "Pizzas" ?
               this.state.listaAdicionais.map((item,i)=>{
-                return <Text key={i}>{item.nome}</Text>
+                return <Text key={i} style={[styles.textAddProduto,{fontSize: 12,textAlign: 'center'}]}>{item.nome}</Text>
               })
             :
             this.state.listaAdicionais.map((item, i, arr)=>{
                 if(arr.length === i + 1 ){
-                  return (<Text key={i}>{item.quantidade}x {item.nome} (R$ {item.preco*item.quantidade})</Text>)
+                  return (<View key={i} style={{flexDirection: 'row'}}>
+                            <Text style={[styles.textAddProduto,{fontSize: 12,textAlign: 'center'}]} >{item.quantidade}x {item.nome} </Text>
+                            <Text style={[styles.textAddProduto,{fontSize: 12,textAlign: 'center',color:cores.textDetalhes}]}>(R$ {item.preco*item.quantidade})</Text>
+                          </View>)
                 }else{
-                  return (<Text key={i}>{item.quantidade}x {item.nome} (R$ {item.preco*item.quantidade}), </Text>)
+                  return (
+                    <View key={i} style={{flexDirection: 'row'}}>
+                      <Text style={[styles.textAddProduto,
+                          {fontSize: 12,textAlign: 'center'}]} >{item.quantidade}x {item.nome}
+                      </Text>
+                      <Text  style={[styles.textAddProduto,
+                          {fontSize: 12,textAlign: 'center',color:cores.textDetalhes}]}>
+                          (R$ {item.preco*item.quantidade}), </Text>
+                    </View>)
                 }
               })
               }
-        </Text>
+        </View>
         <View>
           {this.checkAdicionais()}
         </View>
-        <Text></Text>
 
-        <Text style={[styles.textAddProduto,{marginBottom: 0, alignSelf: 'flex-start'}]}>Observações:</Text>
-        <TextInput
-          style={{}}
-          multiline = {true}
-          onChangeText={(text) => this.setState({obs: text})}
-          value={this.state.obs}
-          placeholder='Indique o ponto da carne ou para tirar algum ingrediente.'
-          >
-        </TextInput>
+
       </ScrollView>
     </View>
     </AndroidBackHandler>
 
     return (
       <ImageBackground
-        source={images.imageBackground}
-        style={styles.backgroundImage}>
+        source={{uri:this.state.imgProduto}}
+        style={styles.backgroundImageAddProduto}>
         <Loader
           loading={this.state.loadingAfter}
           message="Aguarde enquanto a preguiça adiciona o item ao carrinho."/>
@@ -381,6 +405,25 @@ export class AddProdutoScreen extends Component{
           {content}
         </KeyboardAwareScrollView>
         <View>
+          <Text style={[styles.textAddProduto,{
+              marginBottom: 0,
+              marginLeft:wp('4.45$'),
+              alignSelf: 'flex-start',color:cores.textDetalhes}]}>Observações:</Text>
+          <TextInput
+            style={{backgroundColor: 'rgba(240,240,240,0.5)',
+              marginLeft:wp('4.38%'),
+              marginRight: 8,
+              marginVertical: 8,
+              borderRadius: 10,
+              color:'#FFFFFF',
+              fontFamily: 'Futura Medium',
+              height:hp('5%')}}
+            onChangeText={(text) => this.setState({obs: text})}
+            value={this.state.obs}
+            placeholder='Indique o ponto da carne ou para tirar algum ingrediente.'
+            placeholderTextColor='#FFFFFF'
+            >
+          </TextInput>
           <LazyYellowButton
             styleButton={{width: wp('100%')}}
             styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal, fontSize: 20}}

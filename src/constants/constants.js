@@ -47,6 +47,10 @@ export const styles = StyleSheet.create({
     width: null
     // tintColor: cores.corSecundaria
   },
+  backgroundImageAddProduto:{
+    alignSelf: 'center',
+    justifyContent: 'center'
+  },
   containerButtonFacebook: {
     height: hp('5.94%'),
     width: wp('75.28%'),
@@ -120,7 +124,7 @@ export const styles = StyleSheet.create({
     flex:1,
     fontFamily: 'Futura PT Bold',
     color: cores.corSecundaria,
-    textAlign: "center",
+    textAlign: 'center',
     fontSize:22,
     fontWeight:'200',
   },
@@ -220,11 +224,9 @@ export const styles = StyleSheet.create({
   textAddProduto:{
     backgroundColor:'transparent',
     alignSelf: 'center',
-    color: cores.corPrincipal,
-    marginLeft:5,
+    color: cores.corSecundaria,
     fontSize: 18,
-    marginBottom: 15,
-    fontFamily: 'Futura Book'
+    fontFamily: 'Futura Medium Italic BT'
 },
 textAdicionais:{
   backgroundColor:'transparent',

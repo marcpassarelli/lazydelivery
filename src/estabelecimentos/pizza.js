@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import StatusBar from '../constants/statusBar'
 import ListItemSeparator from '../constants/listItemSeparator'
 import { listaPizzas } from './estabelecimentoProdutos'
+import LazyBackButton from '../constants/lazyBackButton'
 
 import _ from 'lodash';
 
@@ -20,23 +21,18 @@ export class PizzaScreen extends Component{
 
   static navigationOptions = ({navigation}) => ({
     title: navigation.state.params.title,
-    headerTitleStyle: styles.headerText,
+    headerTitleStyle: [styles.headerText,{textAlign: 'right',marginRight:20}],
     headerStyle: styles.header,
     headerLeft: (
-      <Icon
-        style={{marginLeft: 15}}
-        name={'arrow-left'}
-        size={26}
-        color="#000000"
-        onPress={
-          ()=>{
-          navigation.navigate('Estabelecimento',
-          {nomeEstabelecimento:navigation.state.params.nomeEstabelecimento,
-          tipoEstabelecimento: navigation.state.params.tipoEstabelecimento})
-          }}>
-        </Icon>
-      ),
-    headerRight: (<View></View>)
+      <View style={{}}>
+        <LazyBackButton
+          goBack={()=>{
+            navigation.navigate('Estabelecimento',
+            {nomeEstabelecimento:navigation.state.params.nomeEstabelecimento,
+            tipoEstabelecimento: navigation.state.params.tipoEstabelecimento})
+            }}/>
+      </View>
+    ),
   });
 
 constructor(props){
@@ -78,6 +74,20 @@ componentWillMount(){
 
 }
 
+_renderSeparator(){
+  return (
+    <View
+      style={{
+        height: 3,
+        backgroundColor: cores.corSecundaria,
+        marginHorizontal: 8,
+        marginBottom: 7
+      }}
+    />
+
+)
+}
+
   render() {
 
     console.ignoredYellowBox = [
@@ -92,7 +102,7 @@ componentWillMount(){
 
     <View style={{flex: 1}}>
       <FlatList
-        ItemSeparatorComponent={ListItemSeparator}
+        ItemSeparatorComponent={this._renderSeparator}
         data={listaPizzasTamanho}
         renderItem={({item})=>(
 
@@ -104,7 +114,7 @@ componentWillMount(){
                 )
               }else{
                 return(
-                  <Text style={styles.textProdutos}>{this.partePizza}/{this.qtdeSabores} {item.nomeProduto}</Text>
+                  <Text style={styles.textProdutos}>{item.nomeProduto}</Text>
                 )
               }
             }}
@@ -113,7 +123,7 @@ componentWillMount(){
 
               var res = preco.replace(".",",")
               return(
-                <Text style={styles.textProdutos}>R$ {res}</Text>
+                <Text style={[styles.textProdutos,{marginRight: 10}]}>R$ {res}</Text>
               )
             }}
             item={item}
@@ -126,20 +136,25 @@ componentWillMount(){
               let precoParams = state.params.precoPizza ? state.params.precoPizza : 0
               precoParams = (parseFloat(precoParams)).toFixed(2)
               let precoPizza = parseFloat(preco) + parseFloat(precoParams)
-              console.log("partepizza"+state.params.partePizza+"parseFloat(preco)"+parseFloat(preco));
-              console.log("partepizza"+state.params.partePizza+"parseFloat(precoParams)"+parseFloat(precoParams));
-              console.log("partepizza"+state.params.partePizza+"precoPizza"+precoPizza);
+
+              let numSabor = state.params.partePizza+1
+              let sabores=""
+              if(state.params.sabores==1){
+                sabores = "Sabor"
+              }else{
+                sabores = "Sabores"
+              }
 
               if(state.params.partePizza==state.params.sabores){
                 this.props.navigation.navigate('AddProduto',{nomeEstabelecimento: state.params.nomeEstabelecimento,
-                nome: state.params.title, preco: preco, precoPizza: precoPizza,
+                nome: "Pizza "+_.upperFirst(state.params.tamanhoPizza)+" "+state.params.sabores+" "+sabores, preco: preco, precoPizza: precoPizza,
                 detalhes: "Sabores da Pizza: "+state.params.detalhes+item.nomeProduto+"("+preco+")",
                 imgProduto: "https://firebasestorage.googleapis.com/v0/b/deliveryaltamira.appspot.com/o/produtos%2FCasa%20Nova%2Fdiversos-tamanhos-varios.jpg?alt=media&token=a548a5f5-14a9-47a4-9a30-0fd56e838e0c" , tipoProduto: state.params.tipoProduto ,
                 tipoEstabelecimento: state.params.tipoEstabelecimento,
                 tipoProduto: state.params.tipoProduto})
               }else{
                 this.props.navigation.push('Pizza',{nomeEstabelecimento: state.params.tipoEstabelecimento,
-                title:state.params.title, preco: preco, precoPizza: precoPizza,
+                title:"Escolha o "+numSabor+"º sabor da pizza", preco: preco, precoPizza: precoPizza,
                 detalhes:state.params.detalhes+item.nomeProduto+"("+preco+"), ",
                 sabores: state.params.sabores, tipoProduto: state.params.tipoProduto,
                 tamanhoPizza: state.params.tamanhoPizza, partePizza: state.params.partePizza+1,

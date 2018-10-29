@@ -10,12 +10,15 @@ import { retiraLoja } from '../firebase/database'
 import { CheckBox } from 'react-native-elements'
 import LazyActivity from '../loadingModal/lazyActivity'
 import _ from 'lodash'
+import Icon from 'react-native-vector-icons/Feather'
 import LazyBackButton from '../constants/lazyBackButton'
 import LazyYellowButton from '../constants/lazyYellowButton'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import ListItemSeparator from '../constants/listItemSeparator'
+import ModalItem from './modalItem'
 let totalPrice =0
 const produtosCarrinho = []
+const detalhesModal = ""
 
 export class CarrinhoScreen extends Component{
 
@@ -42,7 +45,8 @@ export class CarrinhoScreen extends Component{
       produtosCarrinho:[],
       frete:6,
       retiraNaLoja:'',
-      retirar:false
+      retirar:false,
+      modalItem: false
     }
 
   }
@@ -62,12 +66,15 @@ export class CarrinhoScreen extends Component{
     this.setState({
       loading: true
     })
+    console.log("carrinho"+carrinho);
     if(carrinho.length>0){
       this.setState({
         produtosCarrinho: carrinho
       }, function(){
           this.setState({
             loading: false
+          },function(){
+            console.log("this.state.produtosCarrinho"+JSON.stringify(this.state.produtosCarrinho));
           })
       })
     }else{
@@ -160,16 +167,62 @@ export class CarrinhoScreen extends Component{
     var str = (valor).toFixed(2)
     var res = str.toString().replace(".",",")
     return(
-        <Text style={styles.textAddProduto}>{res}</Text>
+        <Text style={[styles.textAddProduto,{color: cores.textDetalhes}]}>{res}</Text>
     )
   }
 
+  showModal(obs,detalhes){
+    this.setState({
+      modalItem: !this.state.modalItem,
+    });
+    this.detalhesModal =
+      <View>
+        <Text style={{flex:1, color:'#666666', fontSize: 12}}>{detalhes}</Text>
+        <Text style={{flex:1, color:'#666666', fontSize: 12}}>Observação: {obs}</Text>
+      </View>
+  }
+
+  closeModal(){
+    this.setState({
+      modalItem:!this.state.modalItem
+    });
+  }
+
+  renderHeader=()=>{
+    return (
+      <View style={{marginBottom: 10,shadowOpacity: 0.5,
+          borderWidth: 0.8,backgroundColor: cores.corPrincipal,
+          height:50, flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center'}}>
+          <View style={{width:wp('54%'),height:50, justifyContent: 'center',marginLeft: 10,
+            borderRightColor: cores.corSecundaria,borderRightWidth: 0.5}}>
+            <Text style={{marginLeft: 5,color:cores.corSecundaria,fontFamily: 'Futura Medium'}}>ITEM</Text>
+          </View>
+
+          <View style={{width: wp('24%'),height: 50,
+            borderRightColor: cores.corSecundaria,borderRightWidth: 0.5,justifyContent: 'center'}}>
+            <Text style={{color:cores.corSecundaria,fontFamily: 'Futura Medium',alignSelf: 'center'}}>PREÇO</Text>
+          </View>
+
+          <View style={
+              {width:wp('18%'),height:50,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems:'center',
+              marginRight: 10}}>
+              <Text style={{color:cores.corSecundaria,fontFamily: 'Futura Medium'}}>QTD.</Text>
+          </View>
+      </View>)
+  }
+
+
+            // ItemSeparatorComponent={ListItemSeparator}
   functionCarrinho=()=>{
     if(Object.keys(this.state.produtosCarrinho).length>0){
       return(
         <View style={{flex: 1}}>
           <FlatList
-            ItemSeparatorComponent={ListItemSeparator}
+            stickyHeaderIndices={[0]}
+            ListHeaderComponent={this.renderHeader}
             data= {this.state.produtosCarrinho}
             extraData={this.state}
             renderItem={({ item, index }) => (
@@ -180,52 +233,56 @@ export class CarrinhoScreen extends Component{
                 preco={() => {
                   var str = (item.preco*item.quantidade).toFixed(2)
                   var res = str.toString().replace(".",",")
+                  let fontSize=0
+                  if(item.adicional==true){
+                    fontSize=16
+                  }else{
+                    fontSize=18
+                  }
                   return(
                       <Text style={[styles.textCarrinho,{
-                          color: cores.corSecundaria,
+                          color: cores.textDetalhes,
                           fontFamily: "Futura Medium Italic BT",
-                          alignSelf: 'center', fontSize: 18}]}>
+                          alignSelf: 'center', fontSize: fontSize}]}>
                         R$ {res}
                       </Text>
                   )
+                }}
+                detalhes={()=>{
+                  this.showModal(item.obs,item.detalhes)
                 }}/>
             )}
             keyExtractor={item => item._id.toString()}
           />
-        <View style={{backgroundColor: cores.corPrincipal, height: 1}}></View>
+        <View style={{backgroundColor: cores.corSecundaria,marginHorizontal: 5,marginTop:5,height: 2}}></View>
           <View>
             {this.state.retiraNaLoja ?
-              <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10}}>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10,marginVertical: 15}}>
                 <Text style={[styles.textAdicionais,{fontSize: 16,marginBottom: 3}]}>Retirar na loja?</Text>
-                <CheckBox
-                  checked={this.state.retirar}
+                <Icon
+                  color={'#d1d1d1'}
+                  name={this.state.retirar? 'check-square':'square'}
+                  size={24}
                   onPress={()=>{
                     if(this.state.retirar){
-                      console.log("this.frete"+this.frete);
                       this.setState({
                         frete: 6.00,
                         retirar: false
                       });
-                      console.log("this.totalPrice"+this.totalPrice);
-                      console.log("this.state.frete"+this.state.frete);
                     }else{
                       this.setState({
                         frete:0.00,
                         retirar: true
                       })
-                      console.log("this.totalPrice"+this.totalPrice);
-                      console.log("this.state.frete"+this.state.frete);
                     }
                   }}
-                  textStyle={{fontSize: 10}}
-                  containerStyle={{backgroundColor: 'rgba(0,0,0,0.1)'}}
-                />
+                  ></Icon>
               </View>
             :
               <View></View>
             }
           </View>
-        <View style={{backgroundColor: cores.corPrincipal, height: 1}}></View>
+        <View style={{backgroundColor: cores.corSecundaria,marginHorizontal: 5,height: 2}}></View>
         {this.state.retirar ?
             <View></View>
             :
@@ -248,13 +305,13 @@ export class CarrinhoScreen extends Component{
             </View>
             </View>
           }
-          <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10,marginVertical: 10}}>
             <Text style={[styles.textAdicionais,
                 {fontSize: 18,marginBottom: 3}]}>
-                Valor Total Pedido:
+                Total:
             </Text>
             <Text style={[styles.textAdicionais,
-                {alignItems:'flex-end', fontSize: 18,marginBottom: 3}]}>
+                {alignItems:'flex-end', fontSize: 18,marginBottom: 3,color:cores.textDetalhes}]}>
                 R$ {this.valorVirgula(this.totalPrice+this.state.frete)}
             </Text>
           </View>
@@ -273,7 +330,7 @@ export class CarrinhoScreen extends Component{
       </View>)
 
     }else{
-      return(<Text style={styles.textAddProduto}>Não há itens no carrinho.</Text>)
+      return(<Text style={[styles.textAddProduto,{marginTop: 10}]}>Não há itens no carrinho.</Text>)
     }
   }
 
@@ -302,7 +359,10 @@ export class CarrinhoScreen extends Component{
       <ImageBackground
         source={images.imageBackground}
         style={styles.backgroundImage}>
-        <View style={styles.separator}></View>
+        <ModalItem
+          detalhes={this.detalhesModal}
+          loading = {this.state.modalItem}
+          showModal = {()=>{this.closeModal()}}/>
         {content}
       </ImageBackground>
     );

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Image, Text } from 'react-native';
-import { styles, images} from '../constants/constants'
+import { styles, images,cores} from '../constants/constants'
 import { CheckBox } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/Feather';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -8,7 +8,14 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 export default class AdicionaisListItem extends Component {
   constructor(props) {
     super(props);
-
+    // <CheckBox
+    //   textStyle={{fontSize: 16}}
+    //   containerStyle={{backgroundColor: 'rgba(0,0,0,0.1)'}}
+    //   checkedIcon='dot-circle-o'
+    //   uncheckedIcon='circle-o'
+    //   checked={this.props.checkBoxChecked}
+    //   onPress={this.props.onCheckBoxPress}
+    // />
   }
 
   render() {
@@ -29,15 +36,14 @@ export default class AdicionaisListItem extends Component {
               {this.props.preco()}
             </View>
 
-            <View style={{flexDirection: 'row', justifyContent: 'flex-end', marginRight: 10}}>
-              <CheckBox
-                textStyle={{fontSize: 16}}
-                containerStyle={{backgroundColor: 'rgba(0,0,0,0.1)'}}
-                checkedIcon='dot-circle-o'
-                uncheckedIcon='circle-o'
-                checked={this.props.checkBoxChecked}
-                onPress={this.props.onCheckBoxPress}
-              />
+            <View style={{flexDirection: 'row', justifyContent: 'flex-end', marginRight: wp('3.8%')}}>
+              <Icon
+                style={{alignSelf: 'center',justifyContent: 'center',marginBottom:10}}
+                color={cores.corPrincipal}
+                name={this.props.checkBoxChecked? 'check-circle':'circle'}
+                size={24}
+                onPress={()=>{this.props.onCheckBoxPress()}}
+                ></Icon>
             </View>
           </View>
 

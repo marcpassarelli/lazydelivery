@@ -26,8 +26,12 @@ export default class EstabelecimentoProdutosListItem extends Component {
         this.props.navigation()
         }}>
         <View style={{flexDirection: 'row',justifyContent: 'space-between'}}>
-          <Text style={styles.textProdutos}>{this.props.nomeProduto}</Text>
+          <View style={{}}>
+          <Text style={[styles.textProdutos,{flex: 1, flexWrap: 'wrap'}]}>{this.props.nomeProduto}</Text>
+          </View>
+          <View>
           {this.props.preco()}
+          </View>
         </View>
         <View style={{flexDirection: 'column', marginLeft:10}}>
           <Text style={styles.textDetalhesEstabelecimento}>{this.props.detalhes}</Text>

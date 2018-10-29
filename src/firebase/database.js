@@ -461,6 +461,10 @@ export async function getEstabelecimentoInfo(nomeEstabelecimento, callback){
   }
 }
 
+export function zerarAdicionais(){
+  listaAdicionais=[]
+}
+
 export async function getListaAdicionais(nomeEstabelecimento, tipoProduto, onListLoad){
   try{
     listaAdicionais = []

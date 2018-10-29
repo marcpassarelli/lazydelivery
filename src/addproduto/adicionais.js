@@ -91,8 +91,11 @@ export class AdicionaisScreen extends Component{
         }
       })
     }
-
-    navigate('AddProduto',{
+    console.log("this.totalPrice"+this.totalPrice);
+    navigate({
+      routeName: 'AddProduto',
+      params:
+      {
       adicionais:adicionaisEscolhidos,
       nomeEstabelecimento:nomeEstabelecimento,
       totalPreco: this.totalPrice,
@@ -103,7 +106,9 @@ export class AdicionaisScreen extends Component{
       imgProduto:this.imgProduto,
       tipoProduto:this.tipoProduto,
       telaAdicionais:true,
-      tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento})
+      tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento},
+      key:Math.random () * 10000
+    })
   }
 
   onSubtract = (item, index) =>{

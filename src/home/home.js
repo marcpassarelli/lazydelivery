@@ -21,9 +21,7 @@ let user =''
 
 export class HomeScreen extends Component {
   static navigationOptions = {
-    header: null,
     tabBarLabel: 'DELIVERY',
-    headerTintColor: cores.corPrincipal,
     // Note: By default the icon is only shown on iOS. Search the showIcon option below.
     tabBarIcon: ({ tintColor }) => (
       <Image

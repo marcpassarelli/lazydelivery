@@ -1,9 +1,12 @@
 import React from 'react';
-import { cores } from './src/constants/constants'
+import { cores,styles } from './src/constants/constants'
 import {
-  AppRegistry, Easing, Animated, View, Text
+  AppRegistry, Easing, Animated, View, Text, Platform,YellowBox,Alert
 } from 'react-native';
-import { StackNavigator, TabNavigator,TabBarBottom, } from 'react-navigation';
+import _ from 'lodash';
+import {carrinho, atualizarCarrinho} from './src/addproduto/addproduto'
+import LazyBackButton from './src/constants/lazyBackButton'
+import { createStackNavigator, createBottomTabNavigator,createMaterialTopTabNavigator} from 'react-navigation';
 import { SplashScreen } from './src/splash/splash'
 import { CadastroInicialScreen } from './src/cadastro/cadastroInicial'
 import { CompletaCadastroScreen } from './src/cadastro/completaCadastro'
@@ -27,12 +30,13 @@ import { DestaquesScreen } from './src/home/destaques'
 import { HistoricoPedidosScreen } from './src/historicoPedidos/historicoPedidos'
 import { DetalhesPedidoScreen } from './src/historicoPedidos/detalhesPedido'
 import { AvaliacaoScreen } from './src/historicoPedidos/avaliacao'
-import { YellowBox } from 'react-native';
+
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader', 'Setting a timer for a long']);
 
-const TabHome = TabNavigator({
+const TabHome = createBottomTabNavigator({
   Home: {
     screen: HomeScreen,
+
   },
   Destaques:{
     screen: DestaquesScreen
@@ -58,13 +62,19 @@ const TabHome = TabNavigator({
     indicatorStyle:{
       backgroundColor:cores.corPrincipal,
     }
-
+  },
+  navigationOptions: {
+    title: 'NoHeader!',
+    header: null
   },
   tabBarPosition:'bottom',
-  tabBarComponent:TabBarBottom
 })
 
-const TabEstabelecimento = TabNavigator({
+TabHome.navigationOptions = {
+  header: null
+}
+
+const TabEstabelecimento = createMaterialTopTabNavigator({
   EstabelecimentoProdutos: {
     screen: EstabelecimentoProdutosScreen,
   },
@@ -93,7 +103,40 @@ const TabEstabelecimento = TabNavigator({
   backBehavior: 'none',
 })
 
-const DeliveryPassa = StackNavigator({
+TabEstabelecimento.navigationOptions = ({navigation}) =>{
+  return{
+  title: _.upperCase(navigation.state.params.nomeEstabelecimento),
+  headerTitleStyle: styles.headerText,
+  headerStyle: Platform.OS=="ios"? styles.headerIos : styles.header,
+  headerLeft: (
+    <LazyBackButton
+      goBack={()=>{
+          if(carrinho.length>0){
+            Alert.alert(
+              'Sair do Estabelecimento',
+              'Tem certeza que deseja sair deste estabelecimento? Todos os items do carrinho serão perdido.',
+              [
+                {text: 'Sim', onPress: () => {
+                  console.log("tipoestabelecimento onPress:"+navigation.state.params.tipoEstabelecimento);
+                  atualizarCarrinho([])
+                  navigation.navigate('ListaEstabelecimentos',
+                  {tipoEstabelecimento:navigation.state.params.tipoEstabelecimento})
+                }},
+                {text: 'Não', onPress: ()=>{
+                  console.log("cancelado");
+                }},
+              ],
+              {cancelable: false}
+            )
+          }else{
+            navigation.navigate('Home')
+          }
+        }}/>
+    ),
+  headerRight: (<View style={styles.headerRight}></View>),}
+}
+
+const DeliveryPassa = createStackNavigator({
   Splash: { screen: SplashScreen },
   LoginRegister: { screen: LoginRegisterScreen },
   LoginEmail: { screen: LoginEmailScreen },
@@ -115,7 +158,7 @@ const DeliveryPassa = StackNavigator({
   DetalhesPedido: { screen: DetalhesPedidoScreen },
   Avaliacao: { screen: AvaliacaoScreen }
 },
-  { headerMode: 'float',},
+  { headerMode: 'float'},
 
 );
 

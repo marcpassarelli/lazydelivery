@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ImageBackground, Platform, Image, Alert, View, Text, Button, SectionList, Animated } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
-import {getEstabelecimentoProd, estabelecimentoProd, listaTamanhosPizzas, getTamanhosPizzas, numTamanhos} from '../firebase/database'
+import {getEstabelecimentoProd, zerarAdicionais,estabelecimentoProd, listaTamanhosPizzas, getTamanhosPizzas, numTamanhos} from '../firebase/database'
 import EstabelecimentoProdutosListItem from './estabelecimentoProdutosListItem'
 import LazyActivity from '../loadingModal/lazyActivity'
 import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
@@ -9,8 +9,8 @@ import Toast from 'react-native-toast-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import StatusBar from '../constants/statusBar'
 import ListItemSeparator from '../constants/listItemSeparator'
-import LazyBackButton from '../constants/lazyBackButton'
 import LazyYellowButton from '../constants/lazyYellowButton'
+import { NavigationActions } from 'react-navigation';
 import _ from 'lodash';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
@@ -18,52 +18,12 @@ let sectionData =[]
 let sectionName =[]
 export var listaPizzas = []
 
-const style={
-                             backgroundColor: "#4ADDFB",
-                             width: 160,
-                             height: Platform.OS === ("ios") ? 50 : 80,
-                             color: "#ffffff",
-                             fontSize: 15,
-                             lineHeight: 2,
-                             lines: 4,
-                             borderRadius: 15,
-                             fontWeight: "bold",
-                             yOffset: 40,
-                         };
+
 
 export class EstabelecimentoProdutosScreen extends Component{
 
 
   static navigationOptions = ({navigation}) => ({
-    title: _.upperCase(navigation.state.params.nomeEstabelecimento),
-    headerTitleStyle: styles.headerText,
-    headerStyle: Platform.OS=="ios"? styles.headerIos : styles.header,
-    headerLeft: (
-      <LazyBackButton
-        goBack={()=>{
-            if(carrinho.length>0){
-              Alert.alert(
-                'Sair do Estabelecimento',
-                'Tem certeza que deseja sair deste estabelecimento? Todos os items do carrinho serão perdido.',
-                [
-                  {text: 'Sim', onPress: () => {
-                    console.log("tipoestabelecimento onPress:"+this.props.navigation.state.params.tipoEstabelecimento);
-                    atualizarCarrinho([])
-                    navigation.navigate('ListaEstabelecimentos',
-                    {tipoEstabelecimento:this.props.navigation.state.params.tipoEstabelecimento})
-                  }},
-                  {text: 'Não', onPress: ()=>{
-                    console.log("cancelado");
-                  }},
-                ],
-                {cancelable: false}
-              )
-            }else{
-              navigation.navigate('Home')
-            }
-          }}/>
-      ),
-    headerRight: (<View style={styles.headerRight}></View>),
     tabBarLabel: 'Produtos',
   });
 
@@ -185,12 +145,14 @@ sectionDataFunction(){
 
 componentWillMount(){
 
+  zerarAdicionais()
   this.setState({
           loadingList: true
         });
   const {state} = this.props.navigation
   var estabelecimento = state.params ? state.params.nomeEstabelecimento : ""
   var toast = state.params ? state.params.toast : ""
+  console.log("toast"+toast);
   var telaAnterior = state.params ? state.params.telaAnterior : ""
 
   if(telaAnterior=="listaEstabelecimentos" || telaAnterior=="home" ){
@@ -214,7 +176,16 @@ componentWillMount(){
   }
 
   if(toast){
-    Toast.show(toast+" foi adicionado ao carrinho",Toast.SHORT, Toast.BOTTOM, this.style)
+    Toast.show(toast+" foi adicionado ao carrinho",Toast.SHORT, Toast.BOTTOM, {
+      backgroundColor: '#472c82',
+      height: Platform.OS === ("ios") ? hp('20%') : hp('25%'),
+      color: '#fccc3c',
+      fontSize: 14,
+      borderRadius: 25,
+      yOffset: 30,
+      paddingLeft: 20,
+      paddingRight: 20
+    })
   }
 
 }
@@ -238,21 +209,41 @@ renderItem = (item) =>{
           )
         }else{
         return(
-            <Text style={styles.textPreco}>R$ {res}</Text>
+            <Text style={[styles.textPreco]}>R$ {res}</Text>
         )}
       }}
       detalhes = {item.item.detalhes}
       navigation={()=>{
-        if(item.item.tipo=="Pizzas"){
 
-          this.props.navigation.navigate('Pizza',{nomeEstabelecimento: nomeEstabelecimentoUp,
-          title:"Pizza "+item.item.nomeProduto, sabores: item.item.sabores,
-          tamanhoPizza: item.item.tamanho, partePizza:1, tipoProduto: item.item.tipo, preco:parseInt(0),detalhes:""})
+        let titleHeader= ""
+        if(item.item.tipo=="Pizzas"){
+          if(item.item.sabores==1){
+            titleHeader = "Escolha o sabor da pizza"
+          }else{
+            titleHeader = "Escolha o 1º sabor da pizza"
+          }
+          const navigateAction = NavigationActions.navigate({
+              routeName: 'Pizza',
+              params: {nomeEstabelecimento: nomeEstabelecimentoUp,
+              title:titleHeader, sabores: item.item.sabores,
+              tamanhoPizza: item.item.tamanho, partePizza:1, tipoProduto: item.item.tipo,
+              preco:parseInt(0),detalhes:""},
+              key:Math.random()*100000
+            });
+          this.props.navigation.dispatch(navigateAction);
+
         }else{
-          this.props.navigation.navigate('AddProduto',{nomeEstabelecimento: nomeEstabelecimentoUp,
-          nome: item.item.nomeProduto, preco: item.item.preco, detalhes: item.item.detalhes,
-          imgProduto: item.item.imgProduto, tipoProduto: item.item.tipo,
-          tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento})
+          const navigateAction = NavigationActions.navigate({
+              routeName: 'AddProduto',
+              params: {
+                nomeEstabelecimento: nomeEstabelecimentoUp,
+                nome: item.item.nomeProduto, preco: item.item.preco,
+                detalhes: item.item.detalhes, imgProduto: item.item.imgProduto,
+                tipoProduto: item.item.tipo,
+                tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento},
+              key:Math.random()*100000
+            });
+          this.props.navigation.dispatch(navigateAction);
         }
     }}>
     </EstabelecimentoProdutosListItem>

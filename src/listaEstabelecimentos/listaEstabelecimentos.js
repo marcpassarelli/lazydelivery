@@ -15,16 +15,20 @@ export class ListaEstabelecimentosScreen extends Component{
 
 
   static navigationOptions = ({navigation}) => ({
+    headerMode:'float',
     title: _.upperCase(navigation.state.params.tipoEstabelecimento),
     headerTitleStyle: [styles.headerText,{alignSelf:'center'}],
     headerStyle: styles.header,
     headerLeft: (
+      <View style={{flex:1}}>
       <LazyBackButton
         goBack={()=>{
         navigation.navigate('Home')
       }}/>
+      </View>
     ),
-    headerRight:(<View style={styles.headerRight}></View>)
+    headerRight:(<View></View>),
+
   });
 
 constructor(props){
