@@ -10,6 +10,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import StatusBar from '../constants/statusBar'
 import ListItemSeparator from '../constants/listItemSeparator'
 import LazyYellowButton from '../constants/lazyYellowButton'
+import { AndroidBackHandler } from 'react-navigation-backhandler';
 import { NavigationActions } from 'react-navigation';
 import _ from 'lodash';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -52,7 +53,7 @@ renderListItemSeparator = () =>{
         height: 2,
         backgroundColor: cores.corSecundaria,
         marginHorizontal: 5,
-        marginBottom: 7
+        marginBottom:hp('0.77%')
       }}
     />
 
@@ -180,7 +181,7 @@ componentWillMount(){
       backgroundColor: '#472c82',
       height: Platform.OS === ("ios") ? hp('20%') : hp('25%'),
       color: '#fccc3c',
-      fontSize: 14,
+      fontSize: wp('3.5%'),
       borderRadius: 25,
       yOffset: 30,
       paddingLeft: 20,
@@ -227,7 +228,8 @@ renderItem = (item) =>{
               params: {nomeEstabelecimento: nomeEstabelecimentoUp,
               title:titleHeader, sabores: item.item.sabores,
               tamanhoPizza: item.item.tamanho, partePizza:1, tipoProduto: item.item.tipo,
-              preco:parseInt(0),detalhes:""},
+              preco:parseInt(0),detalhes:"",
+            tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento},
               key:Math.random()*100000
             });
           this.props.navigation.dispatch(navigateAction);
@@ -268,13 +270,14 @@ renderFooter=()=>{
 
 goToCarrinho(){
   const { navigate } = this.props.navigation;
-    navigate('Carrinho',{nomeEstabelecimento: this.props.navigation.state.params.nomeEstabelecimento})
+    navigate('Carrinho',{nomeEstabelecimento: this.props.navigation.state.params.nomeEstabelecimento,
+    tipoEstabelecimento:this.props.navigation.state.params.tipoEstabelecimento})
 }
 
 functionButton(){
   if(Platform.OS==='ios'){
     return (
-    <View style={{marginBottom: 20}}>
+    <View style={{marginBottom: hp('2.22%')}}>
     <LazyYellowButton
       styleButton={{width: wp('100%'), }}
       styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal}}
@@ -286,12 +289,40 @@ functionButton(){
     return(
       <LazyYellowButton
         styleButton={{width: wp('100%'), }}
-        styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal, fontSize: 20}}
+        styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal, fontSize: wp('5%')}}
         onPress={()=>{this.goToCarrinho()}}
         text={"CARRINHO"}
         />
     )
   }
+}
+
+onBackButtonPressAndroid = () =>{
+  const {navigate} = this.props.navigation
+  const {state} = this.props.navigation
+  if(carrinho.length>0){
+    Alert.alert(
+      'Sair do Estabelecimento',
+      'Tem certeza que deseja sair deste estabelecimento? Todos os items do carrinho serão perdido.',
+      [
+        {text: 'Sim', onPress: () => {
+          console.log("tipoestabelecimento onPress:"+navigation.state.params.tipoEstabelecimento);
+          atualizarCarrinho([])
+          navigation.navigate('ListaEstabelecimentos',
+          {tipoEstabelecimento:navigation.state.params.tipoEstabelecimento})
+          return true
+        }},
+        {text: 'Não', onPress: ()=>{
+          console.log("cancelado");
+        }},
+      ],
+      {cancelable: false}
+    )
+  }else{
+    navigation.navigate('Home')
+    return true
+  }
+
 }
 
 
@@ -308,6 +339,7 @@ functionButton(){
       <LazyActivity/>
     </View> :
 
+    <AndroidBackHandler onBackPress={this.onBackButtonPressAndroid}>
     <View style={{flex: 1}}>
       <SectionList
         automaticallyAdjustContentInsets={false}
@@ -320,6 +352,7 @@ functionButton(){
         />
       <View>{this.functionButton()}</View>
     </View>
+  </AndroidBackHandler>
 
     return (
       <ImageBackground

@@ -6,6 +6,7 @@ import { styles, images, cores } from '../constants/constants'
 import { Hoshi } from 'react-native-textinput-effects';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import React, { Component } from 'react';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import LazyTextInput from '../constants/lazyTextInput';
 import LazyBackButton from '../constants/lazyBackButton'
 import LazyYellowButton from '../constants/lazyYellowButton'
@@ -17,11 +18,11 @@ export default ComponentsRedefinePassword =(props)=> {
       <View style={{flexDirection: 'column', flex: 1}}>
         <LazyBackButton
           goBack={props.goBack}/>
-        <Text style={{marginTop: 180,
+        <Text style={{marginTop: hp('19.98%'),
             fontFamily: 'Futura PT Extra Bold',color: 'white',alignSelf:'center',
-            fontSize: 20}}>INFORME O E-MAIL CADASTRADO</Text>
+            fontSize: wp('5%')}}>INFORME O E-MAIL CADASTRADO</Text>
         <LazyTextInput
-          style={{marginVertical: 40}}
+          style={{marginVertical: hp('4.44%')}}
           nameIcon={'user'}
           placeholder={"E-MAIL"}
           onChangeText={props.textEmail}/>

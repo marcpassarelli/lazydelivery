@@ -30,6 +30,7 @@ import { DestaquesScreen } from './src/home/destaques'
 import { HistoricoPedidosScreen } from './src/historicoPedidos/historicoPedidos'
 import { DetalhesPedidoScreen } from './src/historicoPedidos/detalhesPedido'
 import { AvaliacaoScreen } from './src/historicoPedidos/avaliacao'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader', 'Setting a timer for a long']);
 
@@ -48,15 +49,15 @@ const TabHome = createBottomTabNavigator({
   tabBarOptions: {
     activeTintColor: cores.corPrincipal,
     labelStyle: {
-      fontSize: 15,
+      fontSize: wp('3.75%'),
       fontFamily:'FuturaBookCTT Normal',
       color:cores.corPrincipal,
 
     },
     style: {
       backgroundColor: cores.corSecundaria,
-      height:65,
-      paddingVertical: 5,
+      height:hp('9.1%'),
+
     },
     showIcon: true,
     indicatorStyle:{
@@ -86,7 +87,7 @@ const TabEstabelecimento = createMaterialTopTabNavigator({
     activeTintColor: '#FFFFFF',
     inactiveTintColor: '#000000',
     labelStyle: {
-      fontSize: 18,
+      fontSize: wp('4.5%'),
       marginBottom:10,
       fontFamily: 'Futura Book',
       color: cores.corSecundaria
@@ -119,8 +120,12 @@ TabEstabelecimento.navigationOptions = ({navigation}) =>{
                 {text: 'Sim', onPress: () => {
                   console.log("tipoestabelecimento onPress:"+navigation.state.params.tipoEstabelecimento);
                   atualizarCarrinho([])
-                  navigation.navigate('ListaEstabelecimentos',
-                  {tipoEstabelecimento:navigation.state.params.tipoEstabelecimento})
+                  if(navigation.state.params.telaAnterior=="home"){
+                    navigation.navigate('Home')
+                  }else{
+                    navigation.navigate('ListaEstabelecimentos',
+                    {tipoEstabelecimento:navigation.state.params.tipoEstabelecimento})
+                  }
                 }},
                 {text: 'Não', onPress: ()=>{
                   console.log("cancelado");
@@ -129,7 +134,12 @@ TabEstabelecimento.navigationOptions = ({navigation}) =>{
               {cancelable: false}
             )
           }else{
-            navigation.navigate('Home')
+            if(navigation.state.params.telaAnterior=="home"){
+              navigation.navigate('Home')
+            }else{
+              navigation.navigate('ListaEstabelecimentos',
+              {tipoEstabelecimento:navigation.state.params.tipoEstabelecimento})
+            }
           }
         }}/>
     ),

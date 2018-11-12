@@ -17,36 +17,8 @@ import _ from 'lodash';
 export class EstabelecimentoInformacoesScreen extends Component {
 
   static navigationOptions = ({navigation}) => ({
-    title: _.upperCase(navigation.state.params.nomeEstabelecimento),
-    headerTitleStyle: styles.headerText,
-    headerStyle: Platform.OS=="ios"? styles.headerIos : styles.header,
-    headerLeft: (
-      <LazyBackButton
-        goBack={()=>{
-            if(carrinho.length>0){
-              Alert.alert(
-                'Sair do Estabelecimento',
-                'Tem certeza que deseja sair deste estabelecimento? Todos os items do carrinho serão perdido.',
-                [
-                  {text: 'Sim', onPress: () => {
-                    atualizarCarrinho([])
-                    navigation.navigate('ListaEstabelecimentos',
-                    {tipoEstabelecimento:navigation.state.params.tipoEstabelecimento})
-                  }},
-                  {text: 'Não', onPress: ()=>{
-                    console.log("cancelado");
-                  }},
-                ],
-                {cancelable: false}
-              )
-            }else{
-              navigation.navigate('Home')
-            }
-          }}/>
-      ),
-    headerRight: (<View style={styles.headerRight}></View>),
     tabBarLabel: 'Informações',
-  });
+  })
 
   constructor(props) {
     super(props);
@@ -147,7 +119,7 @@ export class EstabelecimentoInformacoesScreen extends Component {
 
        <Text style={[styles.textInformacoes,{alignSelf: 'center',marginLeft: 0,color: cores.textDetalhes}]}>Tempo de Entrega:{this.state.tempoEntrega} </Text>
 
-       <View style={{height: 2,backgroundColor: cores.corSecundaria,marginVertical: 15, marginHorizontal: 10}}></View>
+       <View style={{height: 2,backgroundColor: cores.corSecundaria,marginVertical:hp('1.66%'), marginHorizontal: 10}}></View>
 
        <Text style={styles.textInformacoes}>Horários de Funcionamento</Text>
        <Text style={styles.textInformacoesD}>Segunda-Feira: {this.state.seg}</Text>

@@ -4,6 +4,7 @@ import { ImageBackground, FlatList, Image, View, Text, Button, TouchableHighligh
 import { styles, cores, images} from '../constants/constants'
 import LazyActivity from '../loadingModal/lazyActivity'
 import { updateStatus, carregarPedidos } from '../firebase/database'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import HistoricoPedidosListItem from './historicoPedidosListItem'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -157,7 +158,7 @@ export class HistoricoPedidosScreen extends Component {
 
 
             :
-<View style={{marginTop: 10}}><Text style={styles.textAddProduto}>Sem pedidos realizados.</Text></View>
+<View style={{marginTop:hp('1.11%')}}><Text style={styles.textAddProduto}>Sem pedidos realizados.</Text></View>
       }
     </View>
 

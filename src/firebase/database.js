@@ -355,7 +355,8 @@ export async function getNomeEstabelecimentos(){
         snapshot.forEach((child) =>{
           nomesEstabelecimentos.push({
             nome: child.val().nome,
-            logo: child.val().logo
+            logo: child.val().logo,
+            tipoEstabelecimento: child.val().tipoEstabelecimento
           });
         });
       }

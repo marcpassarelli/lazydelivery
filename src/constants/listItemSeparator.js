@@ -4,6 +4,7 @@ console.ignoredYellowBox = [
 import { View } from 'react-native';
 import { styles, images, cores } from '../constants/constants'
 import React, { Component } from 'react';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default class ListItemSeparator extends Component {
 
@@ -14,7 +15,7 @@ export default class ListItemSeparator extends Component {
         height: 3,
         backgroundColor: cores.corSecundaria,
         marginHorizontal: 15,
-        marginBottom: 7
+        marginBottom:hp('0.77%')
       }}
     />
 

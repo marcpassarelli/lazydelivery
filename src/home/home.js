@@ -4,6 +4,7 @@ import { ImageBackground, Image, Alert, View, Text, BackHandler, Platform, FlatL
 import { styles, cores, images } from '../constants/constants'
 import { listaEnderecos, getUserListEnd, checkUserDetails, getUserEndAtual, getNomeEstabelecimentos, nomesEstabelecimentos } from '../firebase/database'
 import HomeListItem from './homeListItem'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import StatusBar from '../constants/statusBar'
 import SearchEstabelecimentoListItem from './searchEstabelecimentoListItem'
 import {dadosTipoEstabelecimento} from './dadosTipoEstabelecimento'
@@ -12,7 +13,7 @@ import Loader from '../loadingModal/loadingModal';
 import ModalEnd from './modalEnd'
 import {auth} from '../firebase/firebase'
 import LazyActivity from '../loadingModal/lazyActivity'
-import LazyTextInput from '../constants/lazyTextInput'
+import LazySearchBar from '../constants/lazySearchBar'
 import _ from 'lodash'
 import ListItemSeparator from '../constants/listItemSeparator'
 
@@ -26,7 +27,7 @@ export class HomeScreen extends Component {
     tabBarIcon: ({ tintColor }) => (
       <Image
         source={require('../../img/delivery.png')}
-        style={[styles.icon, {height: 60,width: 60,tintColor: cores.corPrincipal}]}
+        style={[styles.icon]}
         />
     ),
   };
@@ -139,7 +140,7 @@ export class HomeScreen extends Component {
 
   procuraEstabelecimento(){
     return (
-      <View style = {{height:130}}>
+      <View style = {{height:130,width:wp('80%')}}>
         <FlatList
           keyboardShouldPersistTaps={'always'}
           ItemSeparatorComponent={ListItemSeparator}
@@ -147,6 +148,7 @@ export class HomeScreen extends Component {
           renderItem= {({item}) =>
           <SearchEstabelecimentoListItem
             estabelecimento = {item.nome}
+            tipoEstabelecimento = {item.tipoEstabelecimento}
             imglogo = {item.logo}
             navigation={this.props.navigation}>
           </SearchEstabelecimentoListItem>}
@@ -221,7 +223,7 @@ export class HomeScreen extends Component {
 
     <View style={{flex:1}}>
     <StatusBar/>
-      <View style={{marginBottom: 10,flexDirection: 'row',alignItems: 'center', justifyContent: 'center'}}>
+      <View style={{marginBottom: hp('1.11%'),flexDirection: 'row',alignItems: 'center', justifyContent: 'center'}}>
         <Text style={styles.textEndHome}>{_.upperFirst(this.state.endereco)} - </Text>
         <Text
           style={styles.textUpdateEnd}
@@ -235,19 +237,24 @@ export class HomeScreen extends Component {
         </Text>
       </View>
       <View>
-        <LazyTextInput
+        <LazySearchBar
+          value={this.state.text}
+          clearText={()=>{this.setState({
+            text:"",
+            showProcura:false,
+            opacity:1
+          });}}
           onChangeText={(text) => {this.filterSearch(text)}}
           onClearText={() => this.setState({showProcura: false, opacity: 1})}
           returnKeyType="search"
-          nameIcon={'search'}
           placeholder={'PROCURAR ESTABELECIMENTO'}/>
-        <View style={{marginHorizontal: 50,backgroundColor: '#e6e4e6', opacity: 0.8}}>
+        <View style={{marginHorizontal: 40,backgroundColor: '#e6e4e6', opacity: 0.8}}>
           {this.state.showProcura && this.procuraEstabelecimento() }
         </View>
       </View>
 
       <View style={{opacity: this.state.opacity, flex:1}}>
-        <Text style={[styles.nomeAppHome,{marginBottom: 15}]}>ESCOLHA A CATEGORIA</Text>
+        <Text style={[styles.nomeAppHome]}>ESCOLHA A CATEGORIA</Text>
         <FlatList
           ItemSeparatorComponent={ListItemSeparator}
           data= {dadosTipoEstabelecimento}

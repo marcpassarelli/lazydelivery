@@ -34,7 +34,7 @@ export class ProfileScreen extends Component {
      tabBarIcon: ({ tintColor }) => (
      <Image
        source={require('../../img/cadastro.png')}
-       style={[styles.icon, {height: 70,width: 70,tintColor: cores.corPrincipal}]}
+       style={[styles.icon]}
      />
    ),
   };
@@ -141,13 +141,15 @@ export class ProfileScreen extends Component {
      </View> :
 
      <View style={{flex:1}}>
-       <Text style={[styles.titleCadastro,{marginTop: hp('4%'),marginBottom: hp('2%')}]}>PERFIL</Text>
+       <Text style={[styles.titleCadastro,{marginTop: hp('3.5%'),marginBottom: hp('2%')}]}>PERFIL</Text>
        <Image
-       style={{height:150, width:150, borderWidth:1, borderRadius:80, alignSelf:'center',
+       style={{height:120, width:120, borderWidth:1, borderRadius:80, alignSelf:'center',
          borderColor: cores.corPrincipal,borderWidth: 3}}
        source={{uri:imageProfile.uri}}/>
-     <Text style={[styles.textProfileDetails,{color: 'white',fontSize: 20}]}> {this.state.nome} </Text>
-       <Text style={[styles.textProfileDetails,{marginBottom: 25,color: 'white',fontFamily: 'Futura Medium Italic BT'}]}> {this.state.telefone} </Text>
+     <Text style={[styles.textProfileDetails,{color: 'white',fontSize: wp('4.5%')}]}> {this.state.nome} </Text>
+       <Text style={[styles.textProfileDetails,
+           {marginBottom: hp('2.77%'),color: 'white',fontFamily: 'Futura Medium Italic BT'}
+         ]}> {this.state.telefone} </Text>
        <LazyYellowButton
          style={{marginBottom: hp('4%')}}
          onPress={() => {
@@ -164,14 +166,14 @@ export class ProfileScreen extends Component {
            this.goToLogin() }}
            text={'LOGOUT'}/>
        <LazyYellowButton
-         style={{marginBottom: hp('2%')}}
+         style={{marginBottom: hp('1.5%')}}
          onPress={ () => {
             this.goToHistoricoPedidos()}}
           text={"HISTÓRICO DE PEDIDOS"}/>
 
         <Image
           source={images.iconYellow}
-          style={{height: 70,width: 70,alignSelf: 'center',marginTop:35}}/>
+          style={{height: 80,width: 80,alignSelf: 'center',marginTop:hp('3.5%')}}/>
      </View>
 
      return (

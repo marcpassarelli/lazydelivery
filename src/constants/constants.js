@@ -34,11 +34,6 @@ export const styles = StyleSheet.create({
     marginBottom: hp('13%'),
     alignSelf: 'center'
   },
-  activityIndicator:{
-    justifyContent:'center',
-    alignItems:'center',
-    height:70
-  },
   backgroundImage: {
 
     // resizeMode: 'cover', // or 'stretch'
@@ -80,19 +75,19 @@ export const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   containerListItem:{
-    position: 'relative',
     flexDirection:'row',
-    height:60,
+    height:hp('9%'),
     alignItems:'center',
-    marginLeft:35,
-    marginRight:5,
-    marginBottom:10,
+    marginLeft:wp('9.31%'),//35
+    marginRight:wp('9.31%'),
+    marginBottom: 5,
+    marginTop:3,
     flex:1
   },
   containerSearchListItem:{
     position: 'relative',
     flexDirection:'row',
-    height:40,
+    height:hp('5.73%'),
     alignItems:'center',
     flex:1,
     marginLeft:30,
@@ -106,18 +101,18 @@ export const styles = StyleSheet.create({
   },
   containerListItemProdutos:{
     flex:1,
-    height:60,
+    height:hp('8.61%'),
     justifyContent:'center'
 
     // alignItems:'center'
   },
   developedBy: {
     fontFamily: 'Futura Medium',
-    fontSize: 10,
+    fontSize: wp('2.5%'),//10
     alignSelf: 'center',
   },
   header:{
-    height:60,
+    height:hp('8%'),
     backgroundColor: cores.corPrincipal
   },
   headerText:{
@@ -125,55 +120,46 @@ export const styles = StyleSheet.create({
     fontFamily: 'Futura PT Bold',
     color: cores.corSecundaria,
     textAlign: 'center',
-    fontSize:22,
+    fontSize:wp('5%'),
     fontWeight:'200',
   },
   headerList:{
     fontFamily: 'Futura Book',
     color: cores.corPrincipal,
-    fontSize:17,
-    marginLeft:10,
+    fontSize:wp('4.25%'),//17
+    marginLeft:wp('2.66%'),
     flex:1
   },
   headerRight:{
-    marginRight: 20
+    marginRight: wp('5.32%')
   },
   icon: {
-    width: 20,
-    height: 20,
-    tintColor: cores.textDetalhes
+    width: wp('17.36%'),
+    height: hp('8.68%'),
+    tintColor: cores.corPrincipal
   },
   imagemEstabInfo:{
-    height: 100,
-    width: 100,
+    height: hp('11.97%'),
+    width: wp('23.96%'),
     alignSelf: 'center',
     resizeMode:'cover',
-    marginBottom: 20
+    marginBottom: hp('3.42%')
   },
   imagemTipoEstabelecimento:{
-    height: 65,
-    width: 65,
+    height: hp('8.68%'),
+    width: wp('17.36%'),
     alignSelf: 'center',
     resizeMode:'cover',
     tintColor:'rgb(0,192,197)'
   },
   imagemListSearch:{
-    height: 30,
-    width: 30,
+    height: 40,
+    width: 40,
     alignSelf: 'center',
     borderRadius: 20,
     borderWidth: 1,
     borderColor:cores.corPrincipal,
     resizeMode:'cover'
-  },
-  imgProduto:{
-    top: 10,
-    marginBottom: 10,
-    alignSelf: 'center',
-    resizeMode: 'stretch',
-    borderColor: cores.corPrincipal,
-    borderWidth: 1,
-    marginBottom: 15
   },
   labelCadastro: {
     opacity: 1,
@@ -189,43 +175,20 @@ export const styles = StyleSheet.create({
   nomeAppHome:{
     alignSelf:'center',
     color: cores.corPrincipal,
-    marginTop: 15,
-    marginBottom: 15,
-    fontSize: 20,
+    marginTop: hp('2.54%'),
+    marginBottom: hp('2.54%'),
+    fontSize: wp('5%'),
     backgroundColor:'transparent',
     fontFamily: 'Futura Book'
   },
-  renderSeparatorSection:{
-    height: 2,
-    width: "100%",
-    backgroundColor: "#550000",
-    marginLeft: 5,
-    marginBottom: 7
-  },
-  searchBar:{
-    height:60,
-    color: 'rgba(0,0,0,0.5)',
-  },
-  searchBarContainer:{
-    borderColor:'rgba(139,0,0,0.1)',
-    marginHorizontal: 10,
-    borderRadius:6,
-    backgroundColor:'rgba(139,0,0,0.1)'
-  },
-  searchBarInput:{
-    fontSize: 16,
-    backgroundColor: 'rgba(0,0,0,0.1)',
-    color:'rgba(139,0,0,1)',
-    fontFamily: 'Futura Book'
-  },
   separator:{
-    height:25
+    height:hp('3.4%')
   },
   textAddProduto:{
     backgroundColor:'transparent',
     alignSelf: 'center',
     color: cores.corSecundaria,
-    fontSize: 18,
+    fontSize: wp('4.5%'),
     fontFamily: 'Futura Medium Italic BT'
 },
 textAdicionais:{
@@ -233,8 +196,8 @@ textAdicionais:{
   alignSelf: 'center',
   justifyContent: 'center',
   color: cores.corPrincipal,
-  fontSize: 16,
-  marginBottom: 15,
+  fontSize: wp('4%'),
+  marginBottom: hp('1.66%'),
   fontFamily: 'Futura Book'
 },
   textButtons:{
@@ -247,62 +210,59 @@ textAdicionais:{
   textCarrinho:{
     backgroundColor:'transparent',
     color: cores.corPrincipal,
-    fontSize: 15,
+    fontSize: wp('3.75%'),
     fontFamily: 'Futura Book'
   },
   textCarrinhoAdicionais:{
     backgroundColor:'transparent',
     alignSelf: 'center',
-    fontSize: 14,
+    fontSize: wp('3.5%'),
     fontFamily: 'Futura Book'
   },
   textDetalhesEstabelecimento:{
     backgroundColor:'transparent',
-    marginLeft: 5,
-    fontSize: 13,
-
+    marginLeft: wp('1.11%'),
+    fontSize: wp('3.25%'),
     fontFamily: 'Futura Book'
   },
   textEndHome:{
     backgroundColor:'transparent',
-    fontSize: 13,
-    marginTop:5,
+    fontSize: wp('3.25%'),
     color: cores.corPrincipal,
     fontFamily: 'Futura Book'
   },
   textEstabelecimento:{
     backgroundColor:'transparent',
-    marginLeft: 5,
-    fontSize: 17,
+    marginLeft: wp('1.11%'),
+    fontSize: wp('4.25%'),
     color: cores.corPrincipal,
     fontFamily: 'Futura Medium Italic BT'
   },
   textHistoricoPedidos: {
     backgroundColor:'transparent',
-    fontSize: 15,
+    fontSize: wp('3.75%'),
     color: cores.corPrincipal,
-    marginBottom:5,
-    marginLeft: 5,
+    marginBottom:hp('0.55%'),
+    marginLeft: wp('1.11%'),
     fontFamily: 'Futura Book'
   },
   textInformacoes:{
     backgroundColor:'transparent',
-    marginLeft:15,
-    fontSize: 18,
+    marginLeft:wp('3.33%'),
+    fontSize: wp('4.5%'),
     color:cores.corPrincipal,
     fontFamily: 'Futura Medium Italic BT'
   },
   textInformacoes2:{
     backgroundColor:'transparent',
-    marginLeft:20,
-    fontSize:17,
+    marginLeft:wp('4.44%'),
+    fontSize:wp('4.25%'),
     fontFamily: 'Futura Book'
   },
   textInformacoesD: {
     backgroundColor:'transparent',
-    marginLeft:30,
-    fontSize: 16,
-
+    marginLeft:wp('6.66%'),
+    fontSize: wp('4%'),
     fontFamily: 'Futura Book'
   },
   textInputs:{
@@ -311,21 +271,21 @@ textAdicionais:{
   },
   textPreco:{
     backgroundColor:'transparent',
-    fontSize: 16,
-    marginRight: 15,
+    fontSize: wp('4%'),
+    marginRight: wp('3.33%'),
     color: cores.textDetalhes,
     fontFamily: 'Futura Medium Italic BT'
   },
   textProdutos:{
     backgroundColor:'transparent',
-    marginLeft: 15,
-    fontSize: 16,
+    marginLeft: wp('3.33%'),
+    fontSize: wp('4%'),
     color: cores.corPrincipal,
     fontFamily: 'Futura Medium Italic BT'
   },
   textProfileDetails:{
     backgroundColor:'transparent',
-    fontSize:18,
+    fontSize:wp('4%'),
     alignSelf:'center',
     color: cores.corPrincipal,
     fontFamily: 'Futura Book'
@@ -333,28 +293,28 @@ textAdicionais:{
   textResumoPgto:{
     backgroundColor:'transparent',
     color: cores.corPrincipal,
-    fontSize: 14,
-    marginBottom: 3,
+    fontSize: wp('3.5%'),
+    marginBottom: hp('0.33%'),
     fontFamily: 'Futura Book'
   },
   textTelaCadastro: {
     backgroundColor:'transparent',
     fontFamily: 'Cochin',
-    fontSize: 18,
+    fontSize: wp('4.5%'),
     textAlign: 'left',
     fontFamily: 'Futura Book'
   },
   textTipoEstabelecimento:{
-    marginLeft: 10,
-    fontSize: 17,
+    marginLeft: wp('2.22%'),
+    fontSize: wp('4.25%'),
     backgroundColor:'transparent',
     color: cores.corPrincipal,
     fontFamily: 'Futura Medium Italic BT'
   },
   textUpdateEnd:{
     backgroundColor:'transparent',
-    fontSize: 13,
-    marginVertical: 5,
+    fontSize: wp('3.25%'),
+    marginVertical: hp('0.55%'),
     color:'#0000FF',
     fontFamily: 'Futura Book'
   },
@@ -362,24 +322,8 @@ textAdicionais:{
     backgroundColor:'transparent',
     textAlign: 'center',
     color: 'white',
-    fontSize: 24,
+    fontSize: wp('6%'),
     opacity: 1,
     fontFamily: 'Futura PT Extra Bold'
-  },
-  container: {
-   alignItems: 'center',
-   backgroundColor: '#ede3f2',
-   padding: 100
-},
-modal: {
-   flex: 1,
-   alignItems: 'center',
-   backgroundColor: '#f7021a',
-   padding: 100
-},
-text: {
-   color: '#3f2949',
-   marginTop: 10,
-   fontFamily: 'Futura Book'
-}
+  }
 });

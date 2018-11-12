@@ -6,6 +6,7 @@ import { styles, cores, images} from '../constants/constants'
 import LazyActivity from '../loadingModal/lazyActivity'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import StatusBar from '../constants/statusBar'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import ListItemSeparator from '../constants/listItemSeparator'
 import { listaPizzas } from './estabelecimentoProdutos'
 import LazyBackButton from '../constants/lazyBackButton'
@@ -81,7 +82,7 @@ _renderSeparator(){
         height: 3,
         backgroundColor: cores.corSecundaria,
         marginHorizontal: 8,
-        marginBottom: 7
+        marginBottom:hp('0.77%')
       }}
     />
 
@@ -146,14 +147,17 @@ _renderSeparator(){
               }
 
               if(state.params.partePizza==state.params.sabores){
-                this.props.navigation.navigate('AddProduto',{nomeEstabelecimento: state.params.nomeEstabelecimento,
-                nome: "Pizza "+_.upperFirst(state.params.tamanhoPizza)+" "+state.params.sabores+" "+sabores, preco: preco, precoPizza: precoPizza,
+                this.props.navigation.navigate('AddProduto',{
+                nomeEstabelecimento: state.params.nomeEstabelecimento,
+                nome: "Pizza "+_.upperFirst(state.params.tamanhoPizza)+" "+state.params.sabores+" "+sabores,
+                preco: preco, precoPizza: precoPizza,
                 detalhes: "Sabores da Pizza: "+state.params.detalhes+item.nomeProduto+"("+preco+")",
                 imgProduto: "https://firebasestorage.googleapis.com/v0/b/deliveryaltamira.appspot.com/o/produtos%2FCasa%20Nova%2Fdiversos-tamanhos-varios.jpg?alt=media&token=a548a5f5-14a9-47a4-9a30-0fd56e838e0c" , tipoProduto: state.params.tipoProduto ,
                 tipoEstabelecimento: state.params.tipoEstabelecimento,
                 tipoProduto: state.params.tipoProduto})
               }else{
                 this.props.navigation.push('Pizza',{nomeEstabelecimento: state.params.tipoEstabelecimento,
+                tipoEstabelecimento: state.params.tipoEstabelecimento,
                 title:"Escolha o "+numSabor+"º sabor da pizza", preco: preco, precoPizza: precoPizza,
                 detalhes:state.params.detalhes+item.nomeProduto+"("+preco+"), ",
                 sabores: state.params.sabores, tipoProduto: state.params.tipoProduto,

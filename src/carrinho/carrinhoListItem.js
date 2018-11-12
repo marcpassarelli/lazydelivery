@@ -12,8 +12,8 @@ export default class CarrinhoListItem extends Component {
 
     if(item.adicional==false){
       return (
-        <View style={{marginBottom: 2,height:50, flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center',flex:1}}>
-            <View style={{width:wp('54%'),height:50,justifyContent: 'center',marginLeft: 10,
+        <View style={{marginBottom: hp('0.22%'),height:55, flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center',flex:1}}>
+            <View style={{width:wp('54%'),height:55,justifyContent: 'center',marginLeft: 10,
               borderWidth: 1,borderColor:cores.corSecundaria}}>
               <TouchableOpacity onPress={()=>this.props.detalhes()}>
               <Text style={[styles.textCarrinho,{marginLeft: 5}]}>
@@ -23,7 +23,7 @@ export default class CarrinhoListItem extends Component {
             </View>
 
             <View style={{width: wp('24%'),marginHorizontal: 1.5,justifyContent: 'center',
-              height:50,borderWidth: 1,borderColor:cores.corSecundaria}}>
+              height:55,borderWidth: 1,borderColor:cores.corSecundaria}}>
               {this.props.preco()}
             </View>
 
@@ -31,7 +31,7 @@ export default class CarrinhoListItem extends Component {
                 {width:wp('18%'),
                 flexDirection: 'row',
                 justifyContent: 'center',
-                alignItems:'center',height:50,
+                alignItems:'center',height:55,
                 marginRight: 10,borderWidth: 1,borderColor:cores.corSecundaria}}>
               <TouchableOpacity
                 onPress={()=>{this.props.onSubtract()}}>
@@ -45,7 +45,7 @@ export default class CarrinhoListItem extends Component {
                   {alignSelf: 'center',
                   justifyContent: 'center',
                   marginHorizontal: 3,
-                  fontSize: 16}]}>
+                  fontSize: wp('4%')}]}>
                 {item.quantidade}
               </Text>
               <TouchableOpacity
@@ -63,24 +63,24 @@ export default class CarrinhoListItem extends Component {
 
       return (
 
-        <View style={{marginBottom: 2,height:45, flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center',flex:1}}>
-            <View style={{backgroundColor:'rgba(252, 204, 60,0.8)',width:wp('54%'),height:45,justifyContent: 'center',marginLeft: 10,
+        <View style={{marginBottom: hp('0.22%'),height:50, flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center',flex:1}}>
+            <View style={{backgroundColor:'rgba(252, 204, 60,0.5)',width:wp('54%'),height:50,justifyContent: 'center',marginLeft: 10,
               borderWidth: 1,borderColor:cores.corSecundaria}}>
-              <Text style={[styles.textCarrinho,{fontSize: 14,marginLeft: 5}]}>
+              <Text style={[styles.textCarrinho,{fontSize: wp('3.5%'),marginLeft: 5}]}>
                 {item.nome} (adicional)
               </Text>
             </View>
 
-            <View style={{backgroundColor:'rgba(252, 204, 60,0.8)',width: wp('24%'),marginHorizontal: 1.5,justifyContent: 'center',
-              height:45,borderWidth: 1,borderColor:cores.corSecundaria}}>
+            <View style={{backgroundColor:'rgba(252, 204, 60,0.5)',width: wp('24%'),marginHorizontal: 1.5,justifyContent: 'center',
+              height:50,borderWidth: 1,borderColor:cores.corSecundaria}}>
               {this.props.preco()}
             </View>
 
             <View style={
-                {backgroundColor:'rgba(252, 204, 60,0.8)',width:wp('18%'),
+                {backgroundColor:'rgba(252, 204, 60,0.5)',width:wp('18%'),
                 flexDirection: 'row',
                 justifyContent: 'center',
-                alignItems:'center',height:45,
+                alignItems:'center',height:50,
                 marginRight: 10,borderWidth: 1,borderColor:cores.corSecundaria}}>
               <TouchableOpacity
                 onPress={()=>{this.props.onSubtract()}}>
@@ -94,7 +94,7 @@ export default class CarrinhoListItem extends Component {
                   {alignSelf: 'center',
                   justifyContent: 'center',
                   marginHorizontal: 3,
-                  fontSize: 16}]}>
+                  fontSize: wp('4%')}]}>
                 {item.quantidade}
               </Text>
               {item.tipoProduto=="Pizzas" ?
@@ -111,7 +111,7 @@ export default class CarrinhoListItem extends Component {
               }
             </View>
             <View>
-              <Text style={{color:'#666666', marginLeft: 15, fontSize: 15}}>{item.obs}</Text>
+              <Text style={{color:'#666666', marginLeft: 15, fontSize: wp('3.75%')}}>{item.obs}</Text>
             </View>
         </View>
       );

@@ -16,11 +16,11 @@ import _ from 'lodash'
 import Icon from 'react-native-vector-icons/Feather';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-let listener = null
 export var carrinho =[]
 var todoCounter = 1;
 var totalPrecoAd=0;
 var tag=0
+let marginTop = 50
 
 export function atualizarCarrinho(carrinhoAtualizado){
   carrinho = carrinhoAtualizado
@@ -226,7 +226,7 @@ export class AddProdutoScreen extends Component{
     }else if(this.totalPrecoAd>0) {
       return(
       <View style={{flex:1}}>
-        <Text style={[styles.textAddProduto,{fontSize: 12}]}>Valor Adicionais: R${this.totalPrecoAd}</Text>
+        <Text style={[styles.textAddProduto,{fontSize: wp('3%')}]}>Valor Adicionais: R${this.totalPrecoAd}</Text>
         <Text style={styles.textAddProduto}>Total com Adicionais: R$ {total}</Text>
       </View>
       )
@@ -252,30 +252,6 @@ export class AddProdutoScreen extends Component{
    return true
  }
 
- functionLoadImage(){
-   var {width, height} = Dimensions.get('window');
-   if(this.state.imgProduto){
-     return(
-     <Image
-       source={{uri:this.state.imgProduto}}
-       loadingIndicatorSource={images.iconSplash}
-       defaultSource={{uri:images.iconSplash,width:35,height:35}}
-       onLoadEnd={()=>{this.setState({
-         imageLoaded: false
-       });}}
-       style={[styles.imgProduto,{width: width*0.98, height: height*0.3}]}>
-     </Image>)
-     }
-     else{
-       return(
-       <View style={{marginVertical: 20, justifyContent: 'center',alignItems: 'center',alignSelf: 'center'}}>
-         <Text>Nenhuma imagem disponível para este produto</Text>
-       </View>
-       )
-   }
-
- }
-
   render() {
     const {state} = this.props.navigation
     console.ignoredYellowBox = [
@@ -294,11 +270,11 @@ export class AddProdutoScreen extends Component{
     <View style={{flex:1}}>
       <StatusBar/>
       <ScrollView contentContainerStyle={{flexGrow: 1}}>
-        <Text style={[styles.textAddProduto,{marginTop:hp('13%') ,marginHorizontal: wp('14.5%'),textAlign:'center', fontSize: 24}]}>
+        <Text style={[styles.textAddProduto,this.totalPrecoAd>0?{marginTop:20}:{marginTop: 60},{marginHorizontal: wp('14.5%'),textAlign:'center', fontSize: wp('6%')}]}>
             {this.state.nome}
         </Text>
 
-        <Text style={[styles.textAddProduto,{textAlign: 'center',fontSize: 14 ,marginHorizontal: wp('14%'),color:'rgb(240,242,242)'}]}>
+        <Text style={[styles.textAddProduto,{textAlign: 'center',fontSize: wp('3.5%') ,marginHorizontal: wp('14%'),color:'rgb(240,242,242)'}]}>
           {this.state.detalhes}
         </Text>
 
@@ -309,7 +285,7 @@ export class AddProdutoScreen extends Component{
         <Text style={[styles.textAddProduto,{color:cores.textDetalhes}]}>R$ {this.valorVirgula(this.state.preco)}</Text>
         </View>
 
-        <Text style={[styles.textAddProduto,{marginBottom: 5}]}>Quantidade:</Text>
+        <Text style={[styles.textAddProduto,{marginBottom: hp('0.55%')}]}>Quantidade:</Text>
 
         <View style={{flexDirection: 'row', alignSelf: 'center',marginVertical: hp('1.5%')}}>
 
@@ -320,7 +296,7 @@ export class AddProdutoScreen extends Component{
               color={cores.textDetalhes}/>
           </TouchableOpacity>
 
-          <Text style={[styles.textAddProduto, {marginHorizontal: 10, fontSize: 16}]}>{this.state.qtde}</Text>
+          <Text style={[styles.textAddProduto, {marginHorizontal: 10, fontSize: wp('4%')}]}>{this.state.qtde}</Text>
 
           <TouchableOpacity style={{}} onPress={()=>{this.maisQtde()}}>
             <Icon
@@ -348,7 +324,7 @@ export class AddProdutoScreen extends Component{
 
           }}
           style={{marginVertical: hp('1.5%')}}>
-          <Text style={[styles.textAddProduto,{marginBottom: 10,textDecorationLine:'underline'}]}>
+          <Text style={[styles.textAddProduto,{marginBottom: hp('1.11%'),textDecorationLine:'underline'}]}>
             Adicionais?
           </Text>
         </TouchableOpacity>
@@ -362,23 +338,23 @@ export class AddProdutoScreen extends Component{
         <View style={{marginHorizontal:wp('14.5%'),flexDirection: 'row',flexWrap: 'wrap',justifyContent: 'center',alignContent: 'center'}}>{
             this.state.tipoProduto == "Pizzas" ?
               this.state.listaAdicionais.map((item,i)=>{
-                return <Text key={i} style={[styles.textAddProduto,{fontSize: 12,textAlign: 'center'}]}>{item.nome}</Text>
+                return <Text key={i} style={[styles.textAddProduto,{fontSize: wp('3%'),textAlign: 'center'}]}>{item.nome}</Text>
               })
             :
             this.state.listaAdicionais.map((item, i, arr)=>{
                 if(arr.length === i + 1 ){
                   return (<View key={i} style={{flexDirection: 'row'}}>
-                            <Text style={[styles.textAddProduto,{fontSize: 12,textAlign: 'center'}]} >{item.quantidade}x {item.nome} </Text>
-                            <Text style={[styles.textAddProduto,{fontSize: 12,textAlign: 'center',color:cores.textDetalhes}]}>(R$ {item.preco*item.quantidade})</Text>
+                            <Text style={[styles.textAddProduto,{fontSize: wp('3%'),textAlign: 'center'}]} >{item.quantidade}x {item.nome} </Text>
+                            <Text style={[styles.textAddProduto,{fontSize: wp('3%'),textAlign: 'center',color:cores.textDetalhes}]}>(R$ {item.preco*item.quantidade})</Text>
                           </View>)
                 }else{
                   return (
                     <View key={i} style={{flexDirection: 'row'}}>
                       <Text style={[styles.textAddProduto,
-                          {fontSize: 12,textAlign: 'center'}]} >{item.quantidade}x {item.nome}
+                          {fontSize: wp('3%'),textAlign: 'center'}]} >{item.quantidade}x {item.nome}
                       </Text>
                       <Text  style={[styles.textAddProduto,
-                          {fontSize: 12,textAlign: 'center',color:cores.textDetalhes}]}>
+                          {fontSize: wp('3%'),textAlign: 'center',color:cores.textDetalhes}]}>
                           (R$ {item.preco*item.quantidade}), </Text>
                     </View>)
                 }
@@ -388,7 +364,28 @@ export class AddProdutoScreen extends Component{
         <View>
           {this.checkAdicionais()}
         </View>
-
+        <View style={{}}>
+          <Text style={[styles.textAddProduto,{
+              marginBottom: 0,
+              marginLeft:wp('4.45%'),
+              alignSelf: 'flex-start',color:cores.textDetalhes}]}>Observações:</Text>
+          <TextInput
+            style={{backgroundColor: 'rgba(240,240,240,0.5)',
+              marginLeft:wp('4.38%'),
+              marginRight: 8,
+              marginVertical: hp('0.88%'),
+              borderRadius: 10,
+              fontSize: wp('3%'),
+              color:'#FFFFFF',
+              fontFamily: 'Futura Medium',
+              height:hp('5.5%')}}
+            onChangeText={(text) => this.setState({obs: text})}
+            value={this.state.obs}
+            placeholder='Indique o ponto da carne ou para tirar algum ingrediente.'
+            placeholderTextColor='#FFFFFF'
+            >
+          </TextInput>
+        </View>
 
       </ScrollView>
     </View>
@@ -404,33 +401,12 @@ export class AddProdutoScreen extends Component{
         <KeyboardAwareScrollView>
           {content}
         </KeyboardAwareScrollView>
-        <View>
-          <Text style={[styles.textAddProduto,{
-              marginBottom: 0,
-              marginLeft:wp('4.45$'),
-              alignSelf: 'flex-start',color:cores.textDetalhes}]}>Observações:</Text>
-          <TextInput
-            style={{backgroundColor: 'rgba(240,240,240,0.5)',
-              marginLeft:wp('4.38%'),
-              marginRight: 8,
-              marginVertical: 8,
-              borderRadius: 10,
-              color:'#FFFFFF',
-              fontFamily: 'Futura Medium',
-              height:hp('5%')}}
-            onChangeText={(text) => this.setState({obs: text})}
-            value={this.state.obs}
-            placeholder='Indique o ponto da carne ou para tirar algum ingrediente.'
-            placeholderTextColor='#FFFFFF'
-            >
-          </TextInput>
-          <LazyYellowButton
-            styleButton={{width: wp('100%')}}
-            styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal, fontSize: 20}}
-            onPress={()=>{this.adicionarAoCarrinho()}}
-            text={"ADICIONAR AO CARRINHO"}
-            />
-        </View>
+        <LazyYellowButton
+          styleButton={{width: wp('100%')}}
+          styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal, fontSize: wp('5%')}}
+          onPress={()=>{this.adicionarAoCarrinho()}}
+          text={"ADICIONAR AO CARRINHO"}
+          />
       </ImageBackground>
     );
   }

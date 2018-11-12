@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Image, View, Text, TouchableOpacity } from 'react-native'
 import { styles, images} from '../constants/constants'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default class PizzaListItem extends Component {
 

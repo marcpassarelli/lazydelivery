@@ -29,7 +29,7 @@ export default class DetalhesPedidoListItem extends Component {
               <Text style={[styles.textCarrinho,
                   {alignSelf: 'flex-start',
                   marginHorizontal: 10,
-                fontSize: 13}]}>
+                fontSize: wp('3.25%')}]}>
               {item.quantidade}x {item.nome}
               </Text>
             </View>
@@ -38,7 +38,7 @@ export default class DetalhesPedidoListItem extends Component {
             </View>
           </View>
           <View>
-            <Text style={{color:'#666666', marginLeft: 15, fontSize: 12}}>{this.functionObservacao(item)}</Text>
+            <Text style={{color:'#666666', marginLeft: 15, fontSize: wp('3%')}}>{this.functionObservacao(item)}</Text>
           </View>
         </View>
       );

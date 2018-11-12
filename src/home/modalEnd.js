@@ -28,7 +28,7 @@ export default class ModalEnd extends Component {
            width: "100%",
            backgroundColor: "#CED0CE",
            marginLeft: 5,
-           marginBottom: 7
+           marginBottom:hp('0.77%')
          }}
        />
      );

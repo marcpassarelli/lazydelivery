@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Image, View, Text, TouchableOpacity } from 'react-native'
 import { styles, images} from '../constants/constants'
-
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default class ListaEstabelecimentosListItem extends Component {
 
@@ -14,7 +14,7 @@ export default class ListaEstabelecimentosListItem extends Component {
     return (
       <View style={{}}>
       <TouchableOpacity
-        style={styles.containerListItem}
+        style={[styles.containerListItem]}
         onPress = {() => {
           this.props.navigation.navigate('Estabelecimento',
           {nomeEstabelecimento: this.props.estabelecimento,

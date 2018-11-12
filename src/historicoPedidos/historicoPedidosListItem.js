@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, TouchableOpacity, Image, Text, Button } from 'react-native';
 import { styles, cores, images} from '../constants/constants'
 import _ from 'lodash'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default class HistoricoPedidosListItem extends Component {
   constructor(props) {
@@ -30,9 +31,9 @@ export default class HistoricoPedidosListItem extends Component {
         <View>
 
             <View style={{flex: 1, flexDirection: 'column'}}>
-              <View style={{flexDirection: 'row',justifyContent: 'space-between',marginVertical: 10}}>
+              <View style={{flexDirection: 'row',justifyContent: 'space-between',marginVertical:hp('1.11%')}}>
                 <View>
-                  <Text style={[styles.textHistoricoPedidos,{fontSize: 22, marginTop:5}]}>
+                  <Text style={[styles.textHistoricoPedidos,{fontSize: wp('5.5%'), marginTop:hp('0.55%')}]}>
                     {item.estabelecimento}
                   </Text>
                   <Text style={[styles.textHistoricoPedidos]}>
@@ -46,7 +47,7 @@ export default class HistoricoPedidosListItem extends Component {
                     />
                 </View>
               </View>
-              <View style={{flexDirection: 'row',justifyContent: 'space-between',marginVertical: 10}}>
+              <View style={{flexDirection: 'row',justifyContent: 'space-between',marginVertical:hp('1.11%')}}>
                 <View>
                   <Text style={[styles.textHistoricoPedidos]}>
                     Data do Pedido: {day+"/"+month+"/"+year}
@@ -64,7 +65,7 @@ export default class HistoricoPedidosListItem extends Component {
                 </View>
               </View>
               <TouchableOpacity
-                style={[styles.buttons,{width: null, marginBottom: 5}]}
+                style={[styles.buttons,{width: null, marginBottom: hp('0.55%')}]}
                 onPress={this.props.onPressSend}>
                 <Text style={[styles.textButtons,{marginHorizontal: 5}]}>
                   CLIQUE PARA MAIS DETALHES SOBRE O PEDIDO

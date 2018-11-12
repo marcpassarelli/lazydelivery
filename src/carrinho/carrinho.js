@@ -177,8 +177,8 @@ export class CarrinhoScreen extends Component{
     });
     this.detalhesModal =
       <View>
-        <Text style={{flex:1, color:'#666666', fontSize: 12}}>{detalhes}</Text>
-        <Text style={{flex:1, color:'#666666', fontSize: 12}}>Observação: {obs}</Text>
+        <Text style={{flex:1, color:'#666666', fontSize: wp('3%')}}>{detalhes}</Text>
+        <Text style={{flex:1, color:'#666666', fontSize: wp('3%')}}>Observação: {obs}</Text>
       </View>
   }
 
@@ -190,7 +190,7 @@ export class CarrinhoScreen extends Component{
 
   renderHeader=()=>{
     return (
-      <View style={{marginBottom: 10,shadowOpacity: 0.5,
+      <View style={{marginBottom: hp('1.11%'),shadowOpacity: 0.5,
           borderWidth: 0.8,backgroundColor: cores.corPrincipal,
           height:50, flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center'}}>
           <View style={{width:wp('54%'),height:50, justifyContent: 'center',marginLeft: 10,
@@ -254,11 +254,11 @@ export class CarrinhoScreen extends Component{
             )}
             keyExtractor={item => item._id.toString()}
           />
-        <View style={{backgroundColor: cores.corSecundaria,marginHorizontal: 5,marginTop:5,height: 2}}></View>
+        <View style={{backgroundColor: cores.corSecundaria,marginHorizontal: 5,marginTop:hp('0.55%'),height: 2}}></View>
           <View>
             {this.state.retiraNaLoja ?
               <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10,marginVertical: 15}}>
-                <Text style={[styles.textAdicionais,{fontSize: 16,marginBottom: 3}]}>Retirar na loja?</Text>
+                <Text style={[styles.textAdicionais,{fontSize: wp('4%'),marginBottom:hp('0.33%')}]}>Retirar na loja?</Text>
                 <Icon
                   color={'#d1d1d1'}
                   name={this.state.retirar? 'check-square':'square'}
@@ -288,18 +288,18 @@ export class CarrinhoScreen extends Component{
             :
             <View>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 3}}>
-              <Text style={[styles.textAdicionais,{fontSize: 16,marginBottom: 3}]}>
+              <Text style={[styles.textAdicionais,{fontSize: wp('4%'),marginBottom:hp('0.33%')}]}>
                 Valor Pedido:
               </Text>
               <Text style={[styles.textAdicionais,
-                  {alignItems:'flex-end', fontSize: 16,marginBottom: 3}]}>
+                  {alignItems:'flex-end', fontSize: wp('4%'),marginBottom:hp('0.33%')}]}>
                   R$ {this.valorVirgula(this.totalPrice)}
               </Text>
             </View>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10}}>
-              <Text style={[styles.textAdicionais,{fontSize: 16, marginBottom: 3}]}>Frete:</Text>
+              <Text style={[styles.textAdicionais,{fontSize: wp('4%'), marginBottom:hp('0.33%')}]}>Frete:</Text>
               <Text style={[styles.textAdicionais,
-                  {alignItems:'flex-end', fontSize: 16,marginBottom: 3}]}>
+                  {alignItems:'flex-end', fontSize: wp('4%'),marginBottom:hp('0.33%')}]}>
                   R$ {this.valorVirgula(this.state.frete)}
               </Text>
             </View>
@@ -307,17 +307,17 @@ export class CarrinhoScreen extends Component{
           }
           <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10,marginVertical: 10}}>
             <Text style={[styles.textAdicionais,
-                {fontSize: 18,marginBottom: 3}]}>
+                {fontSize: wp('4.5%'),marginBottom:hp('0.33%')}]}>
                 Total:
             </Text>
             <Text style={[styles.textAdicionais,
-                {alignItems:'flex-end', fontSize: 18,marginBottom: 3,color:cores.textDetalhes}]}>
+                {alignItems:'flex-end', fontSize: wp('4.5%'),marginBottom:hp('0.33%'),color:cores.textDetalhes}]}>
                 R$ {this.valorVirgula(this.totalPrice+this.state.frete)}
             </Text>
           </View>
           <LazyYellowButton
             styleButton={{width: wp('100%')}}
-            styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal, fontSize: 20}}
+            styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal, fontSize: wp('5%')}}
             onPress={()=>{
               if(this.state.produtosCarrinho.length>0){
                 this.props.navigation.navigate('ResumoPgto',{

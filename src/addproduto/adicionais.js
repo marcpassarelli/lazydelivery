@@ -176,8 +176,8 @@ export class AdicionaisScreen extends Component{
               }
 
               return(
-                  <Text style={[styles.textAdicionais],{alignSelf: 'center', fontSize: 18,
-                    marginBottom: 10,
+                  <Text style={[styles.textAdicionais],{alignSelf: 'center', fontSize: wp('4.5%'),
+                    marginBottom: hp('1.11%'),
                     fontFamily:'Futura Medium Italic BT',color: cores.textDetalhes}}>R$ {res}</Text>
               )
             }}
@@ -193,7 +193,7 @@ export class AdicionaisScreen extends Component{
       />
       <LazyYellowButton
         styleButton={{width: wp('100%')}}
-        styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal, fontSize: 20}}
+        styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal, fontSize: wp('5%')}}
         onPress={()=>{this.adicionarAdicionais()}}
         text={"VOLTAR / ADICIONAR"}
         />

@@ -9,7 +9,9 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LazyActivity from '../loadingModal/lazyActivity'
 import LazyBackButton from '../constants/lazyBackButton'
 import ListItemSeparator from '../constants/listItemSeparator'
+import { AndroidBackHandler } from 'react-navigation-backhandler';
 import _ from 'lodash'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 var tipoEstabelecimentoUp ='';
 export class ListaEstabelecimentosScreen extends Component{
 
@@ -63,9 +65,11 @@ constructor(props){
 
 }
 
-componentDidMount(){
-
-
+onBackButtonPressAndroid = () =>{
+  const {navigate} = this.props.navigation
+  const {state} = this.props.navigation
+  navigate('Home')
+  return true
 }
 
 render() {
@@ -79,8 +83,9 @@ render() {
     <LazyActivity/>
   </View> :
 
+  <AndroidBackHandler onBackPress={this.onBackButtonPressAndroid}>
   <View style={{flex:1}}>
-  <View style={styles.separator}></View>
+  <View style={{marginTop:10}}></View>
   <FlatList
     ItemSeparatorComponent={ListItemSeparator}
     data= {listaEstabelecimentos}
@@ -98,9 +103,10 @@ render() {
     keyExtractor={item => item._id.toString()}
     />
   </View>
+  </AndroidBackHandler>
 
   return (
-
+    <AndroidBackHandler onBackPress={this.onBackButtonPressAndroid}>
     <ImageBackground
       source={images.imageBackground}
       style={styles.backgroundImage}>
@@ -108,6 +114,7 @@ render() {
           loading = {this.state.loading}/>
       {content}
     </ImageBackground>
+    </AndroidBackHandler>
 );
 }
 }

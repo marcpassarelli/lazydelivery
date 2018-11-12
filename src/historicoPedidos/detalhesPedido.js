@@ -7,6 +7,7 @@ import { updateStatus, carregarPedidos } from '../firebase/database'
 import DetalhesPedidoListItem from './detalhesPedidoListItem'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ListItemSeparator from '../constants/listItemSeparator'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 var endereco = ''
 var bairro = ''
@@ -110,9 +111,9 @@ export class DetalhesPedidoScreen extends Component {
   functionListaPedidos(){
     return(
     <View style={{flexDirection: 'column'}}>
-      <View style={{flexDirection: 'row',justifyContent: 'space-between',marginVertical: 10}}>
+      <View style={{flexDirection: 'row',justifyContent: 'space-between',marginVertical:hp('1.11%')}}>
         <View>
-          <Text style={[styles.textHistoricoPedidos,{fontSize: 22, marginTop:5}]}>
+          <Text style={[styles.textHistoricoPedidos,{fontSize: wp('5.5%'), marginTop:hp('0.55%')}]}>
             {this.estabelecimento}
           </Text>
         </View>
@@ -124,7 +125,7 @@ export class DetalhesPedidoScreen extends Component {
         </View>
       </View>
 
-      <Text style={[styles.textResumoPgto, {alignSelf: 'center', fontSize: 15}]}>Resumo do Pedido</Text>
+      <Text style={[styles.textResumoPgto, {alignSelf: 'center', fontSize: wp('3.75%')}]}>Resumo do Pedido</Text>
       <View style={{height: 100, borderWidth: 1,borderColor: cores.corPrincipal,marginHorizontal: 3}}>
         <FlatList
           ItemSeparatorComponent={ListItemSeparator}
@@ -138,36 +139,36 @@ export class DetalhesPedidoScreen extends Component {
                 var str = (item.preco*item.quantidade).toFixed(2)
                 var res = str.toString().replace(".",",")
                 return(
-                    <Text style={[styles.textCarrinho, {fontSize: 13, alignSelf: 'flex-end', marginRight: 15}]}>R$ {res}</Text>
+                    <Text style={[styles.textCarrinho, {fontSize: wp('3.25%'), alignSelf: 'flex-end', marginRight: 15}]}>R$ {res}</Text>
                 )
               }}>
             </DetalhesPedidoListItem>}
           keyExtractor={item => item._id.toString()}
           />
       </View>
-      <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5}}>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: hp('0.55%')}}>
         <Text style={[styles.textResumoPgto]}>Valor Pedido:</Text>
         <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ {this.valorVirgula(this.valorCompra)}</Text>
       </View>
-      <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5}}>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: hp('0.55%')}}>
         <Text style={[styles.textResumoPgto]}>Valor Frete:</Text>
         <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ {this.frete}</Text>
       </View>
-      <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5}}>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: hp('0.55%')}}>
         <Text style={[styles.textResumoPgto]}>Valor Total Pedido:</Text>
         <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ {this.valorVirgula(this.valorCompra+this.frete)}</Text>
       </View>
-      <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5}}>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: hp('0.55%')}}>
         <Text style={[styles.textResumoPgto]}>Forma de Pagamento Utilizada:</Text>
         <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>{this.formaPgto}</Text>
       </View>
 
 
         {this.retirar?
-          <View style={{marginTop: 10}}></View>
+          <View style={{marginTop:hp('1.11%')}}></View>
         :
-          <View style={{marginTop: 10}}>
-          <Text style={[styles.textAdicionais,{fontSize: 16}]}>Informações da entrega</Text>
+          <View style={{marginTop:hp('1.11%')}}>
+          <Text style={[styles.textAdicionais,{fontSize: wp('4%')}]}>Informações da entrega</Text>
           <View style={{flexDirection: 'row'}}>
             <Text style={styles.textHistoricoPedidos}>Entregue no endereço: </Text>
             <Text>{this.endereco}</Text>

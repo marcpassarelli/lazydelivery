@@ -23,7 +23,7 @@ export class DestaquesScreen extends Component {
     tabBarIcon: ({ tintColor }) => (
       <Image
         source={require('../../img/destaques.png')}
-        style={[styles.icon, {height: 70,width: 70,tintColor: cores.corPrincipal}]}
+        style={[styles.icon]}
         />
     ),
   };
@@ -57,7 +57,7 @@ export class DestaquesScreen extends Component {
          width: "100%",
          backgroundColor: "#CED0CE",
          marginLeft: 5,
-         marginBottom: 7
+         marginBottom:hp('0.77%')
        }}
      />
    );
@@ -185,7 +185,7 @@ export class DestaquesScreen extends Component {
     </View> :
 
     <View style={{flex:1}}>
-      <Text style={{fontSize: 20, marginTop: 30}}>Em breve...</Text>
+      <Text style={{fontSize: wp('5%'), marginTop: hp('3.33%')}}>Em breve...</Text>
     </View>
 
     return (

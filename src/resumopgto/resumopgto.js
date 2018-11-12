@@ -82,7 +82,7 @@ renderSeparator = () => {
        width: "100%",
        backgroundColor: "#CED0CE",
        marginLeft: 5,
-       marginBottom: 7
+       marginBottom:hp('0.77%')
      }}
    />
  );
@@ -243,7 +243,7 @@ functionPicker(tipoPgto){
   if(Platform.OS==='ios'){
     return(
     <PickerIOS
-      itemStyle={{color: cores.corPrincipal,height:80, fontSize: 20,right: 10}}
+      itemStyle={{color: cores.corPrincipal,height:80, fontSize: wp('5%'),right: 10}}
       style={{height: 80}}
       selectedValue={this.state.pgtoEscolhido}
       onValueChange={this.updatePgtoEscolhido}>
@@ -268,7 +268,7 @@ functionPicker(tipoPgto){
 funcaoCredito(){
   return(
     <View style={{marginLeft: 25}}>
-      <Text style={{fontSize: 15}}>Selecione a bandeira do seu cartão de crédito:</Text>
+      <Text style={{fontSize: wp('3.75%')}}>Selecione a bandeira do seu cartão de crédito:</Text>
       <View>{this.functionPicker(this.state.cre)}</View>
     </View>
   )
@@ -277,7 +277,7 @@ funcaoCredito(){
 funcaoDebito(){
   return(
     <View style={{marginLeft: 25}}>
-      <Text style={{fontSize: 15}}>Selecione a bandeira do seu cartão de débito:</Text>
+      <Text style={{fontSize: wp('3.75%')}}>Selecione a bandeira do seu cartão de débito:</Text>
       <View>{this.functionPicker(this.state.deb)}</View>
     </View>
   )
@@ -286,9 +286,9 @@ funcaoDebito(){
 funcaoTroco(){
   return(
     <View style={{marginLeft: 25,flexDirection: 'row',alignItems: 'center'}}>
-      <Text style={{fontSize: 15}}>Troco para:</Text>
+      <Text style={{fontSize: wp('3.75%')}}>Troco para:</Text>
       <TextInput
-        style={[styles.textInputs,{width: 250, fontSize: 15}]}
+        style={[styles.textInputs,{width: 250, fontSize: wp('3.75%')}]}
         onChangeText = {this.updateTroco}
         labelStyle={{ color: cores.corPrincipal }}
         borderColor={cores.corPrincipal}
@@ -333,7 +333,7 @@ render() {
     <Loader
             loading={this.state.esperandoConfirmacao}
             message="Aguarde enquanto o estabelecimento confirma o recebimento do pedido..." />
-          <Text style={[styles.textResumoPgto, {alignSelf: 'center', fontSize: 15}]}>Resumo do Pedido - {this.estabelecimento}</Text>
+          <Text style={[styles.textResumoPgto, {alignSelf: 'center', fontSize: wp('3.75%')}]}>Resumo do Pedido - {this.estabelecimento}</Text>
     <View style={{height: 100, borderWidth: 1,borderColor: cores.corPrincipal,marginHorizontal: 3}}>
 
       {/* Resumo Carrinho */}
@@ -349,7 +349,7 @@ render() {
             var str = (item.preco*item.quantidade).toFixed(2)
             var res = str.toString().replace(".",",")
             return(
-                <Text style={[styles.textCarrinho, {fontSize: 13, alignSelf: 'flex-end', marginRight: 15}]}>R$ {res}</Text>
+                <Text style={[styles.textCarrinho, {fontSize: wp('3.25%'), alignSelf: 'flex-end', marginRight: 15}]}>R$ {res}</Text>
             )
           }}>
         </ResumoCarrinhoListItem>}
@@ -360,17 +360,17 @@ render() {
       <View></View>
     :
       <View>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5}}>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: hp('0.55%')}}>
           <Text style={[styles.textResumoPgto]}>Valor Pedido:</Text>
           <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ {this.valorVirgula(this.totalPrice)}</Text>
         </View>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5}}>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: hp('0.55%')}}>
           <Text style={[styles.textResumoPgto]}>Valor Frete:</Text>
           <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ {this.valorVirgula(this.state.frete)}</Text>
         </View>
       </View>
     }
-    <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: 5}}>
+    <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: hp('0.55%')}}>
       <Text style={[styles.textResumoPgto]}>Valor Total Pedido:</Text>
       <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ {this.valorVirgula(this.totalPrice+this.state.frete)}</Text>
     </View>
@@ -379,10 +379,10 @@ render() {
     <ScrollView>
     <View style={{height:2, backgroundColor: cores.corPrincipal}}></View>
 
-    <Text style={[styles.textAdicionais,{fontSize: 16, marginBottom: 0,marginLeft: 5}]}>Selecione a forma de pagamento:</Text>
+    <Text style={[styles.textAdicionais,{fontSize: wp('4%'), marginBottom: 0,marginLeft: 5}]}>Selecione a forma de pagamento:</Text>
     <View style={{}}>
       <CheckBox
-        textStyle={{fontSize: 16}}
+        textStyle={{fontSize: wp('4%')}}
         containerStyle={{backgroundColor: 'rgba(0,0,0,0.1)'}}
         title='Cartão de Crédito'
         checkedIcon='dot-circle-o'
@@ -398,7 +398,7 @@ render() {
         {this.state.checked && this.funcaoCredito()}
       </View>
       <CheckBox
-        textStyle={{fontSize: 16}}
+        textStyle={{fontSize: wp('4%')}}
         containerStyle={{backgroundColor: 'rgba(0,0,0,0.1)'}}
         title='Cartão de Débito'
         checkedIcon='dot-circle-o'
@@ -414,7 +414,7 @@ render() {
         {this.state.checked2 && this.funcaoDebito()}
       </View>
       <CheckBox
-        textStyle={{fontSize: 16}}
+        textStyle={{fontSize: wp('4%')}}
         containerStyle={{backgroundColor: 'rgba(0,0,0,0.1)'}}
         title='Dinheiro'
         checkedIcon='dot-circle-o'
@@ -445,7 +445,7 @@ render() {
       </ScrollView>
       <LazyYellowButton
         styleButton={{width: wp('100%')}}
-        styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal, fontSize: 20}}
+        styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal, fontSize: wp('5%')}}
         onPress={()=>{this.fazerPedido()}}
         text={"FINALIZAR PEDIDO"}
         />
