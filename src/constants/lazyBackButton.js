@@ -12,14 +12,16 @@ export default class LazyBackButton extends Component {
   return (
     <View style={{flexDirection: 'row',alignItems: 'center'}}>
       <TouchableHighlight onPress={()=>{this.props.goBack()}}
-        style={{width: 30,height: 30,marginLeft: 10,
+        style={{width: 20,height: 20,marginLeft: 10,
           marginTop:hp('0.33%'),alignSelf: 'center',justifyContent: 'center'}}>
         <Image
-          style={{width: 30,height: 30}}
+          style={{width: 20,height: 20}}
           source={images.seta2}>
         </Image>
       </TouchableHighlight>
-      <Text style={{marginTop:hp('0.55%'),justifyContent: 'center',alignSelf: 'center',fontSize:wp('4.5%') ,fontFamily: 'Futura Medium Italic BT',color: 'white'}}> Voltar </Text>
+      <Text style={{marginTop:hp('0.55%'),justifyContent: 'center',
+        alignSelf: 'center',fontSize:wp('2.5%') ,
+        fontFamily: 'Futura Medium Italic BT',color: 'white'}}> VOLTAR </Text>
     </View>
 
 )

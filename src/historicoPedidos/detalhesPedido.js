@@ -8,6 +8,7 @@ import DetalhesPedidoListItem from './detalhesPedidoListItem'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ListItemSeparator from '../constants/listItemSeparator'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import LazyBackButton from '../constants/lazyBackButton'
 
 var endereco = ''
 var bairro = ''
@@ -29,20 +30,14 @@ var seconds = ''
 export class DetalhesPedidoScreen extends Component {
 
   static navigationOptions = ({navigation}) => ({
-    title: "Detalhes do Pedido",
+    title: "DETALHES DO PEDIDO",
     headerTitleStyle: styles.headerText,
     headerStyle: styles.header,
     headerLeft: (
-      <Icon
-        style={{marginLeft: 15}}
-        name={'arrow-left'}
-        size={26}
-        color="#000000"
-        onPress={
-          ()=>{
+      <LazyBackButton
+        goBack={()=>{
           navigation.navigate('HistoricoPedidos')
-          }}>
-        </Icon>
+        }}/>
       ),
     headerRight: (<View></View>)
   })

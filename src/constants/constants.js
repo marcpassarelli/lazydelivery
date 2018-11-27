@@ -17,6 +17,7 @@ export const images ={
   logoFacebook: require('../../img/facebook.png'),
   seta1: require('../../img/Seta-01.png'),
   seta2: require('../../img/Seta-02.png'),
+  preguicaRating:require('../../img/Preguica-contorno.png')
 
 
 }
@@ -101,7 +102,7 @@ export const styles = StyleSheet.create({
   },
   containerListItemProdutos:{
     flex:1,
-    height:hp('8.61%'),
+    height:hp('10.5%'),
     justifyContent:'center'
 
     // alignItems:'center'
@@ -134,8 +135,8 @@ export const styles = StyleSheet.create({
     marginRight: wp('5.32%')
   },
   icon: {
-    width: wp('17.36%'),
-    height: hp('8.68%'),
+    width: wp('18.36%'),
+    height: hp('9%'),
     tintColor: cores.corPrincipal
   },
   imagemEstabInfo:{
@@ -153,8 +154,8 @@ export const styles = StyleSheet.create({
     tintColor:'rgb(0,192,197)'
   },
   imagemListSearch:{
-    height: 40,
-    width: 40,
+    height: 35,
+    width: 35,
     alignSelf: 'center',
     borderRadius: 20,
     borderWidth: 1,
@@ -241,7 +242,6 @@ textAdicionais:{
   textHistoricoPedidos: {
     backgroundColor:'transparent',
     fontSize: wp('3.75%'),
-    color: cores.corPrincipal,
     marginBottom:hp('0.55%'),
     marginLeft: wp('1.11%'),
     fontFamily: 'Futura Book'

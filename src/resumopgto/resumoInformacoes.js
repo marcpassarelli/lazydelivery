@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Image, Text } from 'react-native';
-import { styles, images} from '../constants/constants'
-
+import { styles, images,cores} from '../constants/constants'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default class ResumoInformacoes extends Component {
   constructor(props) {
@@ -15,27 +15,27 @@ export default class ResumoInformacoes extends Component {
         {this.props.retirar ?
           <View></View>
         :
-        <View>
-          <Text style={[styles.textAdicionais,{fontSize: wp('4%')}]}>Informações para Entrega</Text>
+        <View style={{marginLeft:5,marginTop:5}}>
+          <Text style={[styles.textAdicionais,{fontFamily:'Futura Medium Italic BT',fontSize: wp('4.5%')}]}>Informações para Entrega:</Text>
           <View style={{flexDirection: 'row'}}>
-            <Text style={styles.textResumoPgto}>Entregar para: </Text>
-            <Text>{this.props.nome}</Text>
+            <Text style={[styles.textResumoPgto,{color: cores.textDetalhes}]}>Entregar para: </Text>
+            <Text style={[styles.textResumoPgto,{color:'#616161'}]}>{this.props.nome}</Text>
           </View>
           <View style={{flexDirection: 'row'}}>
-            <Text style={styles.textResumoPgto}>Telefone para Contato: </Text>
-            <Text>{this.props.telefone}</Text>
+            <Text style={[styles.textResumoPgto,{color: cores.textDetalhes}]}>Telefone para Contato: </Text>
+            <Text style={[styles.textResumoPgto,{color:'#616161'}]}>{this.props.telefone}</Text>
           </View>
           <View style={{flexDirection: 'row'}}>
-            <Text style={styles.textResumoPgto}>Endereço: </Text>
-            <Text>{this.props.endereco}</Text>
+            <Text style={[styles.textResumoPgto,{color: cores.textDetalhes}]}>Endereço: </Text>
+            <Text style={[styles.textResumoPgto,{color:'#616161'}]}>{this.props.endereco}</Text>
           </View>
           <View style={{flexDirection: 'row'}}>
-            <Text style={styles.textResumoPgto}>Bairro: </Text>
-            <Text>{this.props.bairro}</Text>
+            <Text style={[styles.textResumoPgto,{color: cores.textDetalhes}]}>Bairro: </Text>
+            <Text style={[styles.textResumoPgto,{color:'#616161'}]}>{this.props.bairro}</Text>
           </View>
           <View style={{flexDirection: 'row'}}>
-            <Text style={styles.textResumoPgto}>Referência: </Text>
-            <Text>{this.props.referencia}</Text>
+            <Text style={[styles.textResumoPgto,{color: cores.textDetalhes}]}>Referência: </Text>
+            <Text style={[styles.textResumoPgto,{color:'#616161'}]}>{this.props.referencia}</Text>
           </View>
         </View>
       }

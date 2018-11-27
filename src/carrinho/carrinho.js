@@ -177,8 +177,8 @@ export class CarrinhoScreen extends Component{
     });
     this.detalhesModal =
       <View>
-        <Text style={{flex:1, color:'#666666', fontSize: wp('3%')}}>{detalhes}</Text>
-        <Text style={{flex:1, color:'#666666', fontSize: wp('3%')}}>Observação: {obs}</Text>
+        <Text style={{marginHorizontal: 10,marginBottom:15 ,color:'#666666', fontSize: wp('4.5%')}}>{detalhes}</Text>
+        {obs?<Text style={{marginHorizontal: 10,marginBottom:15 ,color:'#666666', fontSize: wp('4.5%')}}>Observação: {obs}</Text>:<View></View>}
       </View>
   }
 
@@ -193,6 +193,7 @@ export class CarrinhoScreen extends Component{
       <View style={{marginBottom: hp('1.11%'),shadowOpacity: 0.5,
           borderWidth: 0.8,backgroundColor: cores.corPrincipal,
           height:50, flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center'}}>
+
           <View style={{width:wp('54%'),height:50, justifyContent: 'center',marginLeft: 10,
             borderRightColor: cores.corSecundaria,borderRightWidth: 0.5}}>
             <Text style={{marginLeft: 5,color:cores.corSecundaria,fontFamily: 'Futura Medium'}}>ITEM</Text>
@@ -205,7 +206,6 @@ export class CarrinhoScreen extends Component{
 
           <View style={
               {width:wp('18%'),height:50,
-              flexDirection: 'row',
               justifyContent: 'center',
               alignItems:'center',
               marginRight: 10}}>
@@ -235,9 +235,9 @@ export class CarrinhoScreen extends Component{
                   var res = str.toString().replace(".",",")
                   let fontSize=0
                   if(item.adicional==true){
-                    fontSize=16
+                    fontSize=wp('3.75%')
                   }else{
-                    fontSize=18
+                    fontSize=wp('4.25%')
                   }
                   return(
                       <Text style={[styles.textCarrinho,{
@@ -260,7 +260,7 @@ export class CarrinhoScreen extends Component{
               <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10,marginVertical: 15}}>
                 <Text style={[styles.textAdicionais,{fontSize: wp('4%'),marginBottom:hp('0.33%')}]}>Retirar na loja?</Text>
                 <Icon
-                  color={'#d1d1d1'}
+                  color={cores.textDetalhes}
                   name={this.state.retirar? 'check-square':'square'}
                   size={24}
                   onPress={()=>{

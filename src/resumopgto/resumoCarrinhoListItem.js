@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Image, Text } from 'react-native';
-import { styles, images} from '../constants/constants'
-
+import { styles, images,cores} from '../constants/constants'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default class ResumoCarrinhoListItem extends Component {
   constructor(props) {
@@ -23,42 +23,78 @@ export default class ResumoCarrinhoListItem extends Component {
   functionCarrinhoListItem=(item)=>{
     if(item.adicional==false){
       return (
-        <View>
-          <View style={{flex: 1, flexDirection: 'row', alignSelf: 'center'}}>
-            <View style={{width: 200}}>
+        <View style={{flex:1,
+            height:35, flexDirection: 'row',justifyContent: 'space-between',
+            alignItems: 'center'}}>
+
+          <View style={
+              {
+              borderColor: cores.corSecundaria,
+              borderWidth: 1,
+              height:35,
+              marginLeft:10,
+              justifyContent: 'center',
+              width:wp('18%')}}>
+              <Text style={[styles.textCarrinho,
+                  {alignSelf: 'center',
+                  marginLeft: 5,
+                fontSize: wp('3.75%')}]}>{item.quantidade}
+              </Text>
+            </View>
+
+            <View style={{width:wp('54%'),height:35, justifyContent: 'center',
+              borderColor: cores.corSecundaria,borderWidth: 1}}>
               <Text style={[styles.textCarrinho,
                   {alignSelf: 'flex-start',
                   marginHorizontal: 10,
                 fontSize: wp('3.25%')}]}>
-              {item.quantidade}x {item.nome}
+              {item.nome}
               </Text>
             </View>
-            <View style={{flex:1}}>
+
+            <View style={{width: wp('24%'),height: 35,marginRight: 10,
+              justifyContent: 'center',borderColor: cores.corSecundaria,borderWidth: 1}}>
               {this.props.preco()}
             </View>
-          </View>
-          <View>
-            <Text style={{color:'#666666', marginLeft: 15, fontSize: wp('3%')}}>{this.functionObservacao(item)}</Text>
-          </View>
+
         </View>
       );
     }else{
       return (
-        <View style={{marginLeft:20}}>
-          <View style={{flex: 1, flexDirection: 'row', alignSelf: 'center'}}>
-            <View style={{width: 180}}>
-              <Text
-                style={[styles.textCarrinhoAdicionais,
-                  {alignSelf: 'flex-start', marginHorizontal: 10, fontSize: 11}]}>
-                {item.quantidade}x {item.nome}
+        <View style={{flex:1,
+            height:30, flexDirection: 'row',justifyContent: 'space-between',
+            alignItems: 'center'}}>
+
+          <View style={
+              {backgroundColor:'rgba(252, 204, 60,0.5)',
+              borderColor: cores.corSecundaria,
+              borderWidth: 1,
+              height:30,
+              marginLeft:10,
+              justifyContent: 'center',
+              width:wp('18%')}}>
+              <Text style={[styles.textCarrinho,
+                  {alignSelf: 'center',
+                  marginLeft: 5,
+                fontSize: wp('3.75%')}]}>{item.quantidade}
               </Text>
             </View>
-            <View style={{flex:1}}>
-              <Text style={[styles.textCarrinhoAdicionais, {alignSelf: 'flex-end', fontSize: 11, marginRight: 18}]}>
-                R$ {item.preco*item.quantidade}
+
+            <View style={{backgroundColor:'rgba(252, 204, 60,0.5)',width:wp('54%'),height:30, justifyContent: 'center',
+              borderColor: cores.corSecundaria,borderWidth: 1}}>
+              <Text style={[styles.textCarrinho,
+                  {alignSelf: 'flex-start',
+                  marginHorizontal: 10,
+                fontSize: wp('3.25%')}]}>
+              {item.nome}
               </Text>
             </View>
-          </View>
+
+            <View style={{backgroundColor:'rgba(252, 204, 60,0.5)',width: wp('24%'),height: 30,marginRight: 10,
+              justifyContent: 'center',borderColor: cores.corSecundaria,borderWidth: 1}}>
+              {this.props.preco()}
+            </View>
+
         </View>
       );
     }

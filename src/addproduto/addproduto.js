@@ -22,6 +22,8 @@ var totalPrecoAd=0;
 var tag=0
 let marginTop = 50
 
+
+
 export function atualizarCarrinho(carrinhoAtualizado){
   carrinho = carrinhoAtualizado
 }
@@ -59,7 +61,8 @@ export class AddProdutoScreen extends Component{
       imageLoaded: true,
       loadingAfter: false,
       obs:'',
-      tipoEstabelecimento:''
+      tipoEstabelecimento:'',
+      moreContent:true
     }
 
   updateAdicionais = (adicionais) => {
@@ -67,7 +70,12 @@ export class AddProdutoScreen extends Component{
   }
 }
 
+// componentDidMount(){
+//   window.addEventListener('scroll', this.handleScroll);
+// }
+
   componentWillMount(){
+    // window.removeEventListener('scroll', this.handleScroll);
     console.log("WILLMOUNT");
     this.setState({
       loading: true
@@ -252,6 +260,35 @@ export class AddProdutoScreen extends Component{
    return true
  }
 
+ handleScroll=(e)=>{
+
+     console.log("inside onScroll");
+     if (this.isCloseToBottom(e.nativeEvent.layoutMeasurement,e.nativeEvent.contentOffset,e.nativeEvent.contentSize)) {
+       console.log("end reached");
+       this.setState({
+         moreContent:false
+       });
+     }
+ }
+
+ isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
+   console.log("inside isCloseToBottom");
+   return layoutMeasurement.height + contentOffset.y >= contentSize.height - 1;
+ };
+
+   // onLayout={(e) => {
+   //   // console.log("nativeEvent.layout.width"+e.nativeEvent.layout.width);
+   //   // console.log("nativeEvent.layout.height"+e.nativeEvent.layout.height);
+   //   // console.log("nativeEvent.layout.x"+e.nativeEvent.layout.x);
+   //   // console.log("nativeEvent.layout.y"+e.nativeEvent.layout.y);
+   //   // if (this.isCloseToBottom(nativeEvent)) {
+   //   //   console.log("end reached");
+   //   //   this.setState({
+   //   //     moreContent:false
+   //   //   });
+   //   // }
+   // }}
+
   render() {
     const {state} = this.props.navigation
     console.ignoredYellowBox = [
@@ -270,7 +307,7 @@ export class AddProdutoScreen extends Component{
     <View style={{flex:1}}>
       <StatusBar/>
       <ScrollView contentContainerStyle={{flexGrow: 1}}>
-        <Text style={[styles.textAddProduto,this.totalPrecoAd>0?{marginTop:20}:{marginTop: 60},{marginHorizontal: wp('14.5%'),textAlign:'center', fontSize: wp('6%')}]}>
+        <Text style={[styles.textAddProduto,this.totalPrecoAd>0?{marginTop:hp('5.38%')}:{marginTop: hp('9.9%')},{marginHorizontal: wp('14.5%'),textAlign:'center', fontSize: wp('6%')}]}>
             {this.state.nome}
         </Text>
 
@@ -364,7 +401,24 @@ export class AddProdutoScreen extends Component{
         <View>
           {this.checkAdicionais()}
         </View>
+
+
+      </ScrollView>
+    </View>
+    </AndroidBackHandler>
+
+    return (
+      <ImageBackground
+        source={{uri:this.state.imgProduto}}
+        style={styles.backgroundImageAddProduto}>
+        <Loader
+          loading={this.state.loadingAfter}
+          message="Aguarde enquanto a preguiça adiciona o item ao carrinho."/>
+        <KeyboardAwareScrollView>
+          {content}
+        </KeyboardAwareScrollView>
         <View style={{}}>
+
           <Text style={[styles.textAddProduto,{
               marginBottom: 0,
               marginLeft:wp('4.45%'),
@@ -386,21 +440,6 @@ export class AddProdutoScreen extends Component{
             >
           </TextInput>
         </View>
-
-      </ScrollView>
-    </View>
-    </AndroidBackHandler>
-
-    return (
-      <ImageBackground
-        source={{uri:this.state.imgProduto}}
-        style={styles.backgroundImageAddProduto}>
-        <Loader
-          loading={this.state.loadingAfter}
-          message="Aguarde enquanto a preguiça adiciona o item ao carrinho."/>
-        <KeyboardAwareScrollView>
-          {content}
-        </KeyboardAwareScrollView>
         <LazyYellowButton
           styleButton={{width: wp('100%')}}
           styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal, fontSize: wp('5%')}}
@@ -411,3 +450,12 @@ export class AddProdutoScreen extends Component{
     );
   }
 }
+
+
+// {this.state.moreContent?
+// <Icon
+//   name={'arrow-down'}
+//   size={23}
+//   color={cores.corPrincipal}
+//   /> :
+// <View></View>}

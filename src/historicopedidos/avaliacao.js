@@ -6,9 +6,10 @@ import React, { Component } from 'react';
 import { TextInput, Image, ImageBackground, Alert, Text, View, TouchableOpacity } from 'react-native'
 import { styles, images, cores } from '../constants/constants'
 import { logout, getUserProfile } from '../firebase/database'
-import Rating from 'react-native-rating-simple';
+import { Rating } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LazyActivity from '../loadingModal/lazyActivity'
+import LazyBackButton from '../constants/lazyBackButton'
 
 export class AvaliacaoScreen extends Component {
 
@@ -23,20 +24,14 @@ export class AvaliacaoScreen extends Component {
   }
 
   static navigationOptions = ({navigation}) => ({
-    title: "Avaliar o Pedido",
+    title: "AVALIAÇÃO DO PEDIDO",
     headerTitleStyle: styles.headerText,
     headerStyle: styles.header,
     headerLeft: (
-      <Icon
-        style={{marginLeft: 15}}
-        name={'arrow-left'}
-        size={26}
-        color="#000000"
-        onPress={
-          ()=>{
+      <LazyBackButton
+        goBack={()=>{
           navigation.navigate('HistoricoPedidos')
-          }}>
-        </Icon>
+        }}/>
       ),
     headerRight: (<View></View>)
   })
@@ -67,20 +62,16 @@ export class AvaliacaoScreen extends Component {
   avaliarPedido = () => {
 
   }
+  ratingCompleted(rating){
+    console.log("rating"+rating);
 
-  onStarRatingPress(rating) {
-    this.setState({
-      starCount: rating
-    });
   }
-
 
    render() {
 
      console.ignoredYellowBox = [
          'Setting a timer'
      ]
-     const {rating}=this.props
 
      const content = this.state.loading ?
 
@@ -93,19 +84,14 @@ export class AvaliacaoScreen extends Component {
        <View style={{marginHorizontal: 2}}>
          <Text>Tempo de Entrega:</Text>
            <Rating
-             halfStar={
-               <Image source={halfStar} style={{ width: 40, height: 40 }} />
-             }
-             fullStar={
-               <Image source={fullStar} style={{ width: 40, height: 40 }} />
-             }
-             emptyStar={
-               <Image source={emptyStar} style={{ width: 40, height: 40 }} />
-             }
-             starSize={40}
-             onChange={rating => {
-               this.setState({ rating1: rating });
-             }}
+             showRating
+             type='custom'
+             style={{alignSelf: 'center'}}
+             ratingImage={images.preguicaRating}
+             ratingColor={cores.corSecundaria}
+             ratingBackgroundColor={'rgba(0,0,0,0)'}
+             fractions={1}
+             onFinishRating={this.ratingCompleted}
            />
       </View>
        <Text style={styles.textAddProduto}>Escreva algum comentário se desejar:</Text>

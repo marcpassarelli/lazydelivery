@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { styles, cores, images} from '../constants/constants'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {
   StyleSheet,
   View,
@@ -34,14 +35,6 @@ export default class ModalEnd extends Component {
      );
    };
 
-   selecionaEnd = async (item, index) =>{
-     try {
-       await AsyncStorage.multiSet([['endAtual', item.endereco],
-                                   ['bairro', item.bairro], ['referencia', item.referencia]]);
-     } catch (error) {
-       console.log("error AsyncStorage"+error)
-     }
-   }
 
 render(){
     return (
@@ -52,28 +45,29 @@ render(){
         onRequestClose={() => {this.props.showModal()}}>
         <View style={stylesLocal.modalBackground}>
           <View style={stylesLocal.activityIndicatorWrapper}>
-            <Text>Lista de Endereços</Text>
+            <Text style={{fontSize:wp('5%'),color: cores.corPrincipal,marginVertical: 10,fontFamily: 'Futura Medium Italic BT'}}>Lista de Endereços</Text>
             <FlatList
               ItemSeparatorComponent={this.renderSeparator}
-              data= {listaEnderecos}
+              data= {this.props.listaEnderecos}
+              extraData={this.props.listaEnderecos}
               renderItem= {({item, index}) =>
               <ModalEndListItem
                 item = {item}
-                editEnd = {() => this.props.editEnd(item, index)}
-                selecionaEnd = {() => this.selecionaEnd(item, index)}
+                deleteEnd = {() => this.props.deleteEnd(item)}
+                selecionaEnd = {() => this.props.selecionaEnd(item)}
                 showModal = {()=>{this.props.showModal()}}/>
               }
               keyExtractor={item => item.key}/>
               <View>
                 <TouchableOpacity
                   onPress={()=>{this.props.adicionaEnd()}}>
-                  <Text>Adicionar Endereço</Text>
+                  <Text style={{color: cores.textDetalhes,marginBottom: 5,marginTop: 10,fontFamily:'Futura Book' }}>Adicionar Novo Endereço</Text>
                 </TouchableOpacity>
               </View>
               <View>
                 <TouchableOpacity
                   onPress={()=>{this.props.showModal()}}>
-                  <Text>Fechar</Text>
+                  <Text style={{fontSize:wp('4%'),marginVertical: 10}}>Fechar</Text>
                 </TouchableOpacity>
               </View>
           </View>
@@ -90,15 +84,15 @@ const stylesLocal = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
     justifyContent: 'space-around',
-    backgroundColor: '#8b000040'
+    backgroundColor: 'rgba(252, 204, 60,0.3)'
   },
   activityIndicatorWrapper: {
     backgroundColor: '#FFFFFF',
-    width: 400,
-    height: 200,
+    width: wp('97%'),
+    height: hp('50%'),
     borderRadius: 10,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-around'
+    justifyContent: 'space-between'
   }
 });

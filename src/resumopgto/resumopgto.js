@@ -13,6 +13,7 @@ import LazyYellowButton from '../constants/lazyYellowButton'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {auth} from '../firebase/firebase'
 import { CheckBox } from 'react-native-elements'
+
 import _ from 'lodash'
 
 let totalPrice =0
@@ -74,25 +75,6 @@ updateTroco = (text) => {
   this.setState({troco: text})
 }
 
-renderSeparator = () => {
- return (
-   <View
-     style={{
-       height: 1,
-       width: "100%",
-       backgroundColor: "#CED0CE",
-       marginLeft: 5,
-       marginBottom:hp('0.77%')
-     }}
-   />
- );
-};
-
-componentDidMount(){
-
-
-
-}
 
 async componentWillMount(){
   let userId = await auth.currentUser.uid
@@ -254,21 +236,25 @@ functionPicker(tipoPgto){
   )
   }else{
     return(
+      <View style={{marginRight: wp('5%')}}>
       <Picker
-        style={{width:350, height: 40}}
+        style={{flex:1, height: 40}}
         selectedValue={this.state.pgtoEscolhido}
         onValueChange={this.updatePgtoEscolhido}>
         {tipoPgto.map((item, index)=>{
-          return (<Picker.Item label={item.bandeira} value={item.bandeira} key={index} />)
+          return (<Picker.Item label={item.bandeira}
+            value={item.bandeira} key={index}color={cores.textDetalhes} />)
         })}
-      </Picker>)
+      </Picker>
+      </View>
+    )
 }
 }
 
 funcaoCredito(){
   return(
     <View style={{marginLeft: 25}}>
-      <Text style={{fontSize: wp('3.75%')}}>Selecione a bandeira do seu cartão de crédito:</Text>
+      <Text style={{fontSize: wp('3.75%'),fontFamily: 'Futura Medium'}}>Selecione a bandeira do seu cartão de crédito:</Text>
       <View>{this.functionPicker(this.state.cre)}</View>
     </View>
   )
@@ -277,7 +263,7 @@ funcaoCredito(){
 funcaoDebito(){
   return(
     <View style={{marginLeft: 25}}>
-      <Text style={{fontSize: wp('3.75%')}}>Selecione a bandeira do seu cartão de débito:</Text>
+      <Text style={{fontSize: wp('3.75%'),fontFamily: 'Futura Medium'}}>Selecione a bandeira do seu cartão de débito:</Text>
       <View>{this.functionPicker(this.state.deb)}</View>
     </View>
   )
@@ -286,10 +272,11 @@ funcaoDebito(){
 funcaoTroco(){
   return(
     <View style={{marginLeft: 25,flexDirection: 'row',alignItems: 'center'}}>
-      <Text style={{fontSize: wp('3.75%')}}>Troco para:</Text>
+      <Text style={{fontSize: wp('3.75%'),fontFamily: 'Futura Medium'}}>Troco para:</Text>
       <TextInput
-        style={[styles.textInputs,{width: 250, fontSize: wp('3.75%')}]}
+        style={[styles.textInputs,{width: wp('25%'), fontSize: wp('3.75%')}]}
         onChangeText = {this.updateTroco}
+        underlineColorAndroid= "#d1d1d1"
         labelStyle={{ color: cores.corPrincipal }}
         borderColor={cores.corPrincipal}
         returnKeyType="next"
@@ -304,8 +291,42 @@ valorVirgula(valor){
   var str = (valor).toFixed(2)
   var res = str.toString().replace(".",",")
   return(
-      <Text style={styles.textResumoPgto}>{res}</Text>
+      <Text>{res}</Text>
   )
+}
+
+renderHeader=()=>{
+  return (
+    <View style={{marginBottom: hp('1.11%'),shadowOpacity: 0.5,
+        borderWidth: 0.8,backgroundColor: cores.corPrincipal,
+        height:35, flexDirection: 'row',justifyContent: 'space-between',
+        alignItems: 'center'}}>
+        <View style={
+            {height:35,
+            justifyContent: 'center',alignItems:'center',
+            marginLeft:10,
+            borderRightColor: cores.corSecundaria,
+            borderRightWidth: 0.5,
+            width:wp('18%')}}>
+            <Text style={{color:cores.corSecundaria,
+                marginLeft: 5,fontFamily: 'Futura Medium'}}>QTD.</Text>
+        </View>
+
+        <View style={{width:wp('54%'),height:35, justifyContent: 'center',
+          borderRightColor: cores.corSecundaria,borderRightWidth: 0.5}}>
+          <Text style={{
+              marginLeft: 5,color:cores.corSecundaria,fontFamily: 'Futura Medium'}}
+              >ITEM</Text>
+        </View>
+
+        <View style={{width: wp('24%'),height: 35,
+          justifyContent: 'center',alignItems:'center' ,marginRight:10}}>
+          <Text style={{color:cores.corSecundaria,
+              fontFamily: 'Futura Medium',alignSelf: 'center'}}>PREÇO</Text>
+        </View>
+
+
+    </View>)
 }
 
 render() {
@@ -333,14 +354,15 @@ render() {
     <Loader
             loading={this.state.esperandoConfirmacao}
             message="Aguarde enquanto o estabelecimento confirma o recebimento do pedido..." />
-          <Text style={[styles.textResumoPgto, {alignSelf: 'center', fontSize: wp('3.75%')}]}>Resumo do Pedido - {this.estabelecimento}</Text>
-    <View style={{height: 100, borderWidth: 1,borderColor: cores.corPrincipal,marginHorizontal: 3}}>
+          <View style={{maxHeight: 150}}>
 
       {/* Resumo Carrinho */}
     <FlatList
+      ListHeaderComponent={this.renderHeader}
       ItemSeparatorComponent={this.renderSeparator}
       data= {this.state.produtosCarrinho}
       extraData={this.state}
+      stickyHeaderIndices={[0]}
       renderItem= {
         ({item}) =>
         <ResumoCarrinhoListItem
@@ -348,8 +370,19 @@ render() {
           preco={() => {
             var str = (item.preco*item.quantidade).toFixed(2)
             var res = str.toString().replace(".",",")
+            let fontSize=0
+            if(item.adicional==true){
+              fontSize=13
+            }else{
+              fontSize=15
+            }
             return(
-                <Text style={[styles.textCarrinho, {fontSize: wp('3.25%'), alignSelf: 'flex-end', marginRight: 15}]}>R$ {res}</Text>
+                <Text style={[styles.textCarrinho,{
+                    color: cores.textDetalhes,
+                    fontFamily: "Futura Medium Italic BT",
+                    alignSelf: 'center', fontSize: fontSize}]}>
+                  R$ {res}
+                </Text>
             )
           }}>
         </ResumoCarrinhoListItem>}
@@ -372,21 +405,23 @@ render() {
     }
     <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: hp('0.55%')}}>
       <Text style={[styles.textResumoPgto]}>Valor Total Pedido:</Text>
-      <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ {this.valorVirgula(this.totalPrice+this.state.frete)}</Text>
+      <Text style={[styles.textResumoPgto,{color:cores.textDetalhes ,alignItems:'flex-end'}]}>R$ {this.valorVirgula(this.totalPrice+this.state.frete)}</Text>
     </View>
 
       {/* Resumo Formas Pgto */}
     <ScrollView>
-    <View style={{height:2, backgroundColor: cores.corPrincipal}}></View>
+    <View style={{height:2, backgroundColor: cores.corSecundaria}}></View>
 
-    <Text style={[styles.textAdicionais,{fontSize: wp('4%'), marginBottom: 0,marginLeft: 5}]}>Selecione a forma de pagamento:</Text>
+    <Text style={[styles.textAdicionais,{fontFamily:'Futura Medium Italic BT' ,fontSize: wp('4.5%'), marginVertical: 5,marginLeft: 5}]}>Selecione a forma de pagamento:</Text>
     <View style={{}}>
       <CheckBox
-        textStyle={{fontSize: wp('4%')}}
-        containerStyle={{backgroundColor: 'rgba(0,0,0,0.1)'}}
+        textStyle={{marginLeft: 10,fontSize: wp('5%'),fontFamily: 'Futura Medium',fontWeight: 'normal'}}
+        containerStyle={{backgroundColor: 'rgba(0,0,0,0.2)'}}
         title='Cartão de Crédito'
-        checkedIcon='dot-circle-o'
-        uncheckedIcon='circle-o'
+        checkedIcon='check-square-o'
+        uncheckedIcon='square-o'
+        checkedColor={cores.textDetalhes}
+        uncheckedColor={cores.textDetalhes}
         checked={this.state.checked}
         onPress={() => {
           this.setState({checked: true})
@@ -398,11 +433,13 @@ render() {
         {this.state.checked && this.funcaoCredito()}
       </View>
       <CheckBox
-        textStyle={{fontSize: wp('4%')}}
-        containerStyle={{backgroundColor: 'rgba(0,0,0,0.1)'}}
+        textStyle={{marginLeft: 10,fontSize: wp('5%'),fontFamily: 'Futura Medium',fontWeight: 'normal'}}
+        containerStyle={{backgroundColor: 'rgba(0,0,0,0.2)'}}
         title='Cartão de Débito'
-        checkedIcon='dot-circle-o'
-        uncheckedIcon='circle-o'
+        checkedIcon='check-square-o'
+        uncheckedIcon='square-o'
+        checkedColor={cores.textDetalhes}
+        uncheckedColor={cores.textDetalhes}
         checked={this.state.checked2}
         onPress={() => {
           this.setState({checked: false})
@@ -414,11 +451,13 @@ render() {
         {this.state.checked2 && this.funcaoDebito()}
       </View>
       <CheckBox
-        textStyle={{fontSize: wp('4%')}}
-        containerStyle={{backgroundColor: 'rgba(0,0,0,0.1)'}}
+        textStyle={{marginLeft: 10,fontSize: wp('5%'),fontFamily: 'Futura Medium',fontWeight: 'normal'}}
+        containerStyle={{backgroundColor: 'rgba(0,0,0,0.2)'}}
         title='Dinheiro'
-        checkedIcon='dot-circle-o'
-        uncheckedIcon='circle-o'
+        checkedIcon='check-square-o'
+        uncheckedIcon='square-o'
+        checkedColor={cores.textDetalhes}
+        uncheckedColor={cores.textDetalhes}
         checked={this.state.checked3}
         onPress={() => {
           this.setState({checked: false})
@@ -432,7 +471,7 @@ render() {
     </View>
 
     {/* Resumo Informações */}
-    <View style={{height:2, backgroundColor: cores.corPrincipal}}></View>
+    <View style={{height:2, backgroundColor: cores.corSecundaria}}></View>
 
       <ResumoInformacoes
         retirar={this.state.retirar}
@@ -456,7 +495,6 @@ render() {
     <ImageBackground
       source={images.imageBackground}
       style={styles.backgroundImage}>
-      <View style={styles.separator}></View>
       {content}
     </ImageBackground>
 );

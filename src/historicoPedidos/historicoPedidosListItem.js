@@ -3,6 +3,7 @@ import { View, TouchableOpacity, Image, Text, Button } from 'react-native';
 import { styles, cores, images} from '../constants/constants'
 import _ from 'lodash'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import Icon from 'react-native-vector-icons/Feather';
 
 export default class HistoricoPedidosListItem extends Component {
   constructor(props) {
@@ -28,53 +29,78 @@ export default class HistoricoPedidosListItem extends Component {
     seconds = (seconds < 10) ? '0' + seconds: seconds;
 
       return (
-        <View>
-
-            <View style={{flex: 1, flexDirection: 'column'}}>
-              <View style={{flexDirection: 'row',justifyContent: 'space-between',marginVertical:hp('1.11%')}}>
-                <View>
-                  <Text style={[styles.textHistoricoPedidos,{fontSize: wp('5.5%'), marginTop:hp('0.55%')}]}>
-                    {item.estabelecimento}
-                  </Text>
-                  <Text style={[styles.textHistoricoPedidos]}>
-                    Valor Compra: R${(item.valorCompra+item.frete).toFixed(2)}
-                  </Text>
-                </View>
-                <View style={{marginRight: 10}}>
-                  <Image
-                    source={{uri:item.logo}}
-                    style={styles.imagemTipoEstabelecimento}
-                    />
-                </View>
-              </View>
-              <View style={{flexDirection: 'row',justifyContent: 'space-between',marginVertical:hp('1.11%')}}>
-                <View>
-                  <Text style={[styles.textHistoricoPedidos]}>
-                    Data do Pedido: {day+"/"+month+"/"+year}
-                  </Text>
-                  <Text style={[styles.textHistoricoPedidos]}>
-                    Horário do Pedido: {hours+":"+minutes+":"+seconds}
-                  </Text>
-                </View>
-                <View style={{marginRight: 10}}>
-                  <TouchableOpacity
-                    style={[styles.buttons,{width: null, marginHorizontal: 10}]}
-                    onPress = { () => {this.props.avaliarPedido()} } >
-                    <Text style={[styles.textButtons,{marginHorizontal: 5}]}>AVALIAR PEDIDO</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <TouchableOpacity
-                style={[styles.buttons,{width: null, marginBottom: hp('0.55%')}]}
-                onPress={this.props.onPressSend}>
-                <Text style={[styles.textButtons,{marginHorizontal: 5}]}>
-                  CLIQUE PARA MAIS DETALHES SOBRE O PEDIDO
+        <View style={{marginHorizontal: wp('2.5%'),flex: 1, flexDirection: 'row'}}>
+          <View>
+          <View style={{flexDirection: 'row',justifyContent: 'space-between',marginTop:hp('1.11%')}}>
+            <View>
+              <Text style={[styles.textHistoricoPedidos,{color:cores.corPrincipal,
+                  fontFamily: 'Futura PT Bold',fontSize: wp('5.5%'), marginTop:hp('0.55%')}]}>
+                {_.upperCase(item.estabelecimento)}
+              </Text>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={[styles.textHistoricoPedidos,{color:cores.textDetalhes}]}>
+                  Valor Compra:
                 </Text>
-                </TouchableOpacity>
+                <Text style={[styles.textHistoricoPedidos]}>
+                  R${(item.valorCompra+item.frete).toFixed(2)}
+                </Text>
+              </View>
+            </View>
+
+          </View>
+          <View style={{flexDirection: 'row',justifyContent: 'space-between',marginVertical:hp('1.11%')}}>
+            <View>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={[styles.textHistoricoPedidos,{color:cores.textDetalhes}]}>
+                  Data do Pedido:
+                </Text>
+                <Text style={[styles.textHistoricoPedidos]}>{day+"/"+month+"/"+year}</Text>
+              </View>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={[styles.textHistoricoPedidos,{color:cores.textDetalhes}]}>
+                  Horário do Pedido:
+                </Text>
+                <Text style={[styles.textHistoricoPedidos]}>{hours+":"+minutes}</Text>
+              </View>
+            </View>
+          </View>
+            <View style={{flexDirection: 'row',flex:1}}>
+            <Text
+              onPress={this.props.onPressSend}
+              style={{fontFamily:'Futura Medium',marginHorizontal: 5,fontSize:wp('3%'),textDecorationLine:'underline'}}>
+              Mais detalhes sobre o pedido
+            </Text>
+            <Icon
+              name={'chevron-down'}
+              size={wp('5%')}
+              color={cores.textDetalhes}>
+            </Icon>
+            </View>
+            </View>
+
+            <View style={{flexDirection: 'column',flex:1,justifyContent:'center',alignContent: 'center',alignItems:'center' }}>
+              <Image
+                source={{uri:item.logo}}
+                style={{height: hp('12%'),
+                    width: wp('25%'),
+                    justifyContent: 'center',
+                    alignSelf: 'center'}}
+                />
             </View>
         </View>
       );
   }
+
+  // Botão Avaliar Pedido
+  // <View style={{marginRight:wp('3%')}}>
+  //   <TouchableOpacity
+  //     style={[styles.buttons,{width:wp('25%') ,marginHorizontal: 10,borderRadius: 20}]}
+  //     onPress = { () => {this.props.avaliarPedido()} } >
+  //     <Text style={[styles.textButtons,{textAlign: 'center',
+  //         fontFamily: 'Futura PT Bold',marginHorizontal: 5,
+  //         fontSize:wp('3%') ,color:cores.corPrincipal}]}>AVALIAR PEDIDO</Text>
+  //   </TouchableOpacity>
+  // </View>
 
   //this.functionButton(item,this.props.onPressSend)
 

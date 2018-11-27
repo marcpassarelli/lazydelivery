@@ -2,12 +2,13 @@ console.ignoredYellowBox = [
     'Setting a timer'
 ]
 import React, { Component } from 'react';
-import { ImageBackground, Image, Text } from 'react-native';
+import { ImageBackground, Image, Text,View,BackHandler } from 'react-native';
 import { styles, images, cores } from '../constants/constants'
 import ComponentsCompletaCadastro from './componentsCompletaCadastro'
-import { cadastrarUsuario } from '../firebase/database'
+import { cadastrarUsuario, getBairros, listaBairros } from '../firebase/database'
 import { Hoshi } from 'react-native-textinput-effects';
 import StatusBar from '../constants/statusBar'
+import LazyActivity from '../loadingModal/lazyActivity/'
 import {db, auth} from '../firebase/firebase'
 
 export class CompletaCadastroScreen extends Component {
@@ -22,11 +23,12 @@ export class CompletaCadastroScreen extends Component {
          nome: '',
          telefone: '',
          endereco: '',
-         bairro:'',
+         bairroSelecionado:'',
          referencia:'',
          uid: '',
          nameUser: '',
-         profilePicURL:''
+         profilePicURL:'',
+         loading: false
       }
 
       this.cadastrarInformacoesBD = this.cadastrarInformacoesBD.bind(this);
@@ -47,7 +49,7 @@ export class CompletaCadastroScreen extends Component {
   }
 
   updateBairro = (text) => {
-    this.setState({bairro: text})
+    this.setState({bairroSelecionado: text})
   }
   updateReferencia = (text) => {
     this.setState({referencia: text})
@@ -56,7 +58,7 @@ export class CompletaCadastroScreen extends Component {
    async cadastrarInformacoesBD () {
 
      if(this.state.nome && this.state.telefone &&
-        this.state.endereco && this.state.bairro &&
+        this.state.endereco && this.state.bairroSelecionado &&
          this.state.referencia){
 
           let user = await auth.currentUser;
@@ -64,10 +66,10 @@ export class CompletaCadastroScreen extends Component {
           this.setState({uid: user.uid})
 
           cadastrarUsuario(this.state.uid, this.state.nome,
-            this.state.telefone, this.state.endereco, this.state.bairro,
+            this.state.telefone, this.state.endereco, this.state.bairroSelecionado,
             this.state.referencia, this.state.profilePicURL)
 
-        this.props.navigation.navigate('Home')
+        this.props.navigation.push('Home')
 
       }else{
         alert('Preencha todos os campos')
@@ -80,6 +82,9 @@ export class CompletaCadastroScreen extends Component {
     }
 
     componentWillMount() {
+      this.setState({
+        loading:true
+      });
       const {state} = this.props.navigation;
       var name = state.params ? state.params.name : ""
       var profilePic = state.params ? state.params.profilePic : ""
@@ -91,28 +96,46 @@ export class CompletaCadastroScreen extends Component {
         this.validateUserName();
       })
       }
+
+      getBairros(()=>{
+        this.setState({
+          loading:false
+        });
+      })
     }
 
   render(){
     console.ignoredYellowBox = [
         'Setting a timer'
     ]
+
+    const content = this.state.loading?
+
+    <View style={styles.containerIndicator}>
+      <LazyActivity/>
+    </View> :
+
+    <ComponentsCompletaCadastro
+      fecharApp={()=>{BackHandler.exitApp()}}
+      validateUserName = {this.validateUserName}
+      nome={this.state.nome}
+      bairros={listaBairros}
+      bairroSelecionado={this.state.bairroSelecionado}
+      telefone={this.state.telefone}
+      updateNome = {this.updateNome}
+      updateTelefone = {this.updateTelefone}
+      updateEndereco = {this.updateEndereco}
+      updateBairro = {this.updateBairro}
+      updateReferencia = {this.updateReferencia}
+      cadastrarInformacoesBD = {this.cadastrarInformacoesBD}
+      />
+
     return (
       <ImageBackground
         source={images.backgroundLazy}
         style={styles.backgroundImage}>
         <StatusBar/>
-        <ComponentsCompletaCadastro
-          validateUserName = {this.validateUserName}
-          nome={this.state.nome}
-          telefone={this.state.telefone}
-          updateNome = {this.updateNome}
-          updateTelefone = {this.updateTelefone}
-          updateEndereco = {this.updateEndereco}
-          updateBairro = {this.updateBairro}
-          updateReferencia = {this.updateReferencia}
-          cadastrarInformacoesBD = {this.cadastrarInformacoesBD}
-          />
+        {content}
       </ImageBackground>
     )
   }

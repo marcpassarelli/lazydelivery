@@ -4,12 +4,14 @@ console.ignoredYellowBox = [
 import React, { Component } from 'react';
 import { ImageBackground, Image, Text, TouchableOpacity, View } from 'react-native';
 import { styles, images,cores} from '../constants/constants'
-import { cadastrarEndereco } from '../firebase/database'
+import { cadastrarEndereco,getBairros, listaBairros } from '../firebase/database'
 import { Hoshi } from 'react-native-textinput-effects';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import StatusBar from '../constants/statusBar'
 import {db, auth} from '../firebase/firebase'
 import ComponentsCadastrarEndereco from './componentsCadastrarEndereco'
+import LazyActivity from '../loadingModal/lazyActivity/'
+import { NavigationActions } from 'react-navigation';
 
 export class CadastrarEnderecoScreen extends Component {
 
@@ -23,10 +25,11 @@ export class CadastrarEnderecoScreen extends Component {
          nome: '',
          telefone: '',
          endereco: '',
-         bairro:'',
+         bairroSelecionado:'',
          referencia:'',
          uid: '',
-         profilePicURL:''
+         profilePicURL:'',
+         loading:false
       }
   }
 
@@ -34,24 +37,43 @@ export class CadastrarEnderecoScreen extends Component {
     this.setState({endereco: text})
   }
   updateBairro = (text) => {
-    this.setState({bairro: text})
+    this.setState({bairroSelecionado: text})
   }
   updateReferencia = (text) => {
     this.setState({referencia: text})
   }
 
+  componentWillMount(){
+    this.setState({
+      loading: true
+    });
+
+    getBairros(()=>{
+      this.setState({
+        loading:false
+      });
+    })
+
+  }
+
    async cadastrarEnderecoBD () {
-     const {navigate} = this.props.navigation
-     if(this.state.endereco && this.state.bairro && this.state.referencia){
+     const {push} = this.props.navigation
+     if(this.state.endereco && this.state.bairroSelecionado && this.state.referencia){
 
           let user = await auth.currentUser;
 
           this.setState({uid: user.uid})
 
           cadastrarEndereco(this.state.uid, this.state.endereco,
-           this.state.bairro,this.state.referencia)
+           this.state.bairroSelecionado,this.state.referencia,
+         ()=>{
+           setTimeout (() => {
+             push('Home')
+          }, 1000);
 
-        navigate('Home')
+         })
+
+
 
 
       }else{
@@ -66,20 +88,29 @@ export class CadastrarEnderecoScreen extends Component {
 
   render(){
 
+    const content = this.state.loading?
+
+    <View style={styles.containerIndicator}>
+      <LazyActivity/>
+    </View> :
+
+    <ComponentsCadastrarEndereco
+      goBack={()=>{this.props.navigation.navigate('Home')}}
+      endereco={this.state.endereco}
+      bairros={listaBairros}
+      bairroSelecionado={this.state.bairroSelecionado}
+      referencia={this.state.referencia}
+      updateEndereco={this.updateEndereco}
+      updateBairro={this.updateBairro}
+      updateReferencia={this.updateReferencia}
+      cadastrarEnderecoBD={()=>this.cadastrarEnderecoBD()}/>
+
     return (
       <ImageBackground
         source={images.backgroundLazy}
         style={styles.backgroundImage}>
         <StatusBar/>
-        <ComponentsCadastrarEndereco
-          goBack={()=>{this.props.navigation.navigate('Home')}}
-          endereco={this.state.endereco}
-          bairro={this.state.bairro}
-          referencia={this.state.referencia}
-          updateEndereco={this.updateEndereco}
-          updateBairro={this.updateBairro}
-          updateReferencia={this.updateReferencia}
-          cadastrarEnderecoBD={()=>this.cadastrarEnderecoBD()}/>
+        {content}
       </ImageBackground>
     )
   }

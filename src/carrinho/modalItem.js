@@ -45,13 +45,13 @@ const stylesLocal = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',
     justifyContent: 'space-around',
-    backgroundColor: '#8b000040'
+    backgroundColor: 'rgba(252, 204, 60,0.3)'
   },
   activityIndicatorWrapper: {
     backgroundColor: '#FFFFFF',
-    width: 400,
     height: 200,
     borderRadius: 10,
+    marginHorizontal: 10,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-around'

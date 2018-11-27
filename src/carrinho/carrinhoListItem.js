@@ -12,11 +12,19 @@ export default class CarrinhoListItem extends Component {
 
     if(item.adicional==false){
       return (
-        <View style={{marginBottom: hp('0.22%'),height:55, flexDirection: 'row',justifyContent: 'space-between',alignItems: 'center',flex:1}}>
-            <View style={{width:wp('54%'),height:55,justifyContent: 'center',marginLeft: 10,
-              borderWidth: 1,borderColor:cores.corSecundaria}}>
+        <View style={{marginBottom: hp('0.22%'),height:55, flexDirection: 'row',
+          justifyContent: 'space-between',alignItems: 'center',flex:1}}>
+
+            <View style={{
+              borderWidth: 1,
+              borderColor:cores.corSecundaria,
+              height:55,
+              justifyContent: 'center',
+              marginLeft: 10,
+              width:wp('54%'),
+            }}>
               <TouchableOpacity onPress={()=>this.props.detalhes()}>
-              <Text style={[styles.textCarrinho,{marginLeft: 5}]}>
+              <Text style={[styles.textCarrinho,{textDecorationLine:'underline',marginLeft: 5}]}>
                 {item.nome}
               </Text>
               </TouchableOpacity>
@@ -37,7 +45,7 @@ export default class CarrinhoListItem extends Component {
                 onPress={()=>{this.props.onSubtract()}}>
                 <Icon
                   name={'minus-circle'}
-                  size={23}
+                  size={20}
                   color={'rgb(43, 189, 204)'}/>
               </TouchableOpacity>
               <Text
@@ -53,7 +61,7 @@ export default class CarrinhoListItem extends Component {
                 onPress={()=>{this.props.onAdd()}}>
                 <Icon
                   name={'plus-circle'}
-                  size={23}
+                  size={20}
                   color={'rgb(43, 189, 204)'}/>
               </TouchableOpacity>
             </View>
@@ -86,7 +94,7 @@ export default class CarrinhoListItem extends Component {
                 onPress={()=>{this.props.onSubtract()}}>
                 <Icon
                   name={'minus-circle'}
-                  size={23}
+                  size={20}
                   color={'rgb(43, 189, 204)'}/>
               </TouchableOpacity>
               <Text
@@ -105,7 +113,7 @@ export default class CarrinhoListItem extends Component {
                   onPress={()=>{this.props.onAdd()}}>
                   <Icon
                     name={'plus-circle'}
-                    size={23}
+                    size={20}
                     color={'rgb(43, 189, 204)'}/>
                 </TouchableOpacity>
               }

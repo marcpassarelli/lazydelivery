@@ -4,6 +4,7 @@ console.ignoredYellowBox = [
 import { AsyncStorage } from 'react-native';
 import {db, auth} from './firebase'
 import firebase from 'firebase'
+import _ from 'lodash';
 
 export var listaEstabelecimentos = []
 export var listaAdicionais = []
@@ -14,6 +15,7 @@ export var allDatabase = []
 export var listaEnderecos = []
 export var numTamanhos = 0
 export var listaPedidos=[]
+export var listaBairros=[]
 var todoCounter = 1;
 
 
@@ -97,28 +99,32 @@ export function atualizarUsuario(userId, nome, telefone) {
 }
 
 export async function cadastrarEndereco(userId,  endereco,
-  bairro, referencia){
+  bairro, referencia,cadastroEfetuado){
     let userInformationPath = "/user/" + userId + "/details/listaEnderecos/"
 
       db.ref(userInformationPath).push({
         endereco: endereco,
-
         bairro: bairro,
         referencia: referencia
       })
 
+
       try {
         await AsyncStorage.multiSet([['endAtual', endereco],
                                     ['bairro', bairro], ['referencia', referencia]]);
-
+        cadastroEfetuado()
+        console.log("cadastrarEndereco");
       } catch (error) {
         console.log("error AsyncStorage cadastrarEndereco"+error)
       }
 
   }
 
-  export function selecionarEndereco(userId){
+  export function deleteEnd(userId,keyEnd,onEndDeleted){
+      let userInformationPath = "/user/" + userId + "/details/listaEnderecos/"+keyEnd+"/";
 
+      db.ref(userInformationPath).remove()
+      onEndDeleted()
   }
 
 export async function atualizarEndereco(userId, key, endereco, bairro, referencia) {
@@ -206,7 +212,6 @@ export async function getUserEndAtual(callback){
   // var key =""
 
   try {
-
     await AsyncStorage.multiGet(['endAtual','bairro', 'referencia']).then((response)=>{
       endereco = response[0][1]
       bairro = response[1][1]
@@ -222,6 +227,7 @@ export async function getUserEndAtual(callback){
 }
 
 export function getUserListEnd(userID, onListLoad){
+  console.log("inside getUserListEnd");
   let userPath = "/user/"+userID
 
   db.ref(userPath+"/details/listaEnderecos/").once('value').then(function(snapshot){
@@ -243,17 +249,36 @@ export function addEndereco(userID){
 
 }
 
+export function getBairros(onListLoad){
+  listaBairros=[]
+  db.ref("/bairros/Altamira/").once('value').then(function(snapshot){
+    snapshot.forEach((child)=>{
+      listaBairros.push({
+        label:_.upperFirst(child.val().nome),
+        value:child.val().nome
+      })
+    })
+    onListLoad()
+  })
+}
+
 
 export async function checkUserDetails(userExiste, userNaoExiste){
 
   try {
     let userId = await auth.currentUser.uid
+    console.log("userId"+userId);
     db.ref("/user/"+userId).once('value').then(function(snapshot) {
       var userData = snapshot.val()
+      console.log("userdata"+JSON.stringify(userData));
 
-  //Se userData não for nulo, isso quer dizer que o usuário já existe e não precisa completar cadastro
+  // Se userData não for nulo, isso quer dizer que o usuário já existe e não precisa completar cadastro
       if(userData){
-        userExiste()
+        if(userData.details.listaEnderecos){
+          userExiste()
+        }else{
+          userNaoExiste()
+        }
       }else{
         userNaoExiste()
       }

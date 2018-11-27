@@ -7,6 +7,7 @@ import { updateStatus, carregarPedidos } from '../firebase/database'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import HistoricoPedidosListItem from './historicoPedidosListItem'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import LazyBackButton from '../constants/lazyBackButton'
 
 let todocount=0
 let listener = null
@@ -15,22 +16,16 @@ let teste=[];
 export class HistoricoPedidosScreen extends Component {
 
   static navigationOptions = ({navigation}) => ({
-    title: "Histórico de Pedidos",
+    title: "HISTÓRICO DE PEDIDOS",
     headerTitleStyle: styles.headerText,
     headerStyle: styles.header,
     headerLeft: (
-      <Icon
-        style={{marginLeft: 15}}
-        name={'arrow-left'}
-        size={26}
-        color="#000000"
-        onPress={
-          ()=>{
+      <LazyBackButton
+        goBack={()=>{
           navigation.navigate('Home')
-          }}>
-        </Icon>
+          }}/>
       ),
-    headerRight: (<View></View>)
+      headerRight:(<View style={styles.headerRight}></View>)
   })
 
   constructor(props) {

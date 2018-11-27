@@ -11,6 +11,12 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import LazyBackButton from '../constants/lazyBackButton'
 
 export default ComponentsAtualizaEndereco= (props) => {
+
+
+
+
+
+
   return (
     <KeyboardAwareScrollView>
       <Text style={[styles.titleCadastro,{marginTop: hp('15%'),marginBottom: hp('2.22%')}]}>ATUALIZE ESTE ENDEREÇO</Text>
@@ -35,7 +41,7 @@ export default ComponentsAtualizaEndereco= (props) => {
     <LazyTextInput
       style={{marginBottom: hp('2.22%')}}
       nameIcon={'home'}
-      placeholder={'REFERÊNCIA'}
+      placeholder={'REFERÊNCIA / COMPLEMENTO'}
       onChangeText = {props.updateReferencia}
       returnKeyType="done"
       value = {props.referencia}

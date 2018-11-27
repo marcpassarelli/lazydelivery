@@ -179,7 +179,7 @@ componentWillMount(){
   if(toast){
     Toast.show(toast+" foi adicionado ao carrinho",Toast.SHORT, Toast.BOTTOM, {
       backgroundColor: '#472c82',
-      height: Platform.OS === ("ios") ? hp('20%') : hp('25%'),
+      height: Platform.OS === ("ios") ? hp('25%') : hp('30%'),
       color: '#fccc3c',
       fontSize: wp('3.5%'),
       borderRadius: 25,
@@ -200,6 +200,7 @@ renderItem = (item) =>{
   <View>
     <EstabelecimentoProdutosListItem
       nomeProduto = {item.item.nomeProduto}
+      tipoProduto = {item.item.tipo}
       preco = {()=>{
         let str = item.item.preco
         let res = str.toString().replace(".",",")

@@ -6,6 +6,7 @@ import { Text, Image, View,ImageBackground } from 'react-native';
 import FadeInOutView from '../animation/fadeinoutview'
 import { styles, images} from '../constants/constants'
 import {auth} from '../firebase/firebase'
+import { checkUserDetails } from '../firebase/database'
 
 /*import { Home } from './home'*/
 
@@ -30,7 +31,17 @@ export class SplashScreen extends Component {
     })
     console.log("LOGGEDIN:"+this.state.loggedIn);
     if(this.state.loggedIn){
-      navigate('Home')
+      checkUserDetails(
+        //se já tiver cadastro completo
+        ()=> {
+          navigate('Home')
+        },
+        //se não tiver cadastro completo
+        ()=> {
+          navigate('LoginRegister')
+        }
+      )
+
     }else{
       navigate('LoginRegister')
     }

@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { ImageBackground, Image, Alert, View, Text, BackHandler, Platform, FlatList, Modal, AsyncStorage } from 'react-native'
 import { styles, cores, images } from '../constants/constants'
-import { listaEnderecos, getUserListEnd, checkUserDetails, getUserEndAtual, getNomeEstabelecimentos, nomesEstabelecimentos } from '../firebase/database'
+import { listaEnderecos, getUserListEnd, checkUserDetails,deleteEnd, getUserEndAtual, getNomeEstabelecimentos, nomesEstabelecimentos } from '../firebase/database'
 import HomeListItem from './homeListItem'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import StatusBar from '../constants/statusBar'
@@ -54,57 +54,6 @@ export class HomeScreen extends Component {
     }
 
   }
-  async componentWillMount(){
-    this.setState({
-            loadingList: true
-          });
-
-    this.user = await auth.currentUser;
-    console.log(this.user.uid);
-
-    getNomeEstabelecimentos()
-    getUserListEnd(this.user.uid,
-    ()=>{
-      getUserEndAtual((enderecoP,bairroP,referenciaP)=>{
-        if(enderecoP){
-          console.log("dentro do if");
-          this.setState({
-            endereco: enderecoP,
-            bairro:bairroP,
-            referencia:referenciaP
-          },function(){
-            console.log("state.endereco"+this.state.endereco);
-          });
-          this.setState({
-                  loadingList: false
-                });
-        }else{
-          console.log("dentro do else");
-          this.setState({
-            endereco: listaEnderecos[0].endereco,
-            bairro:listaEnderecos[0].bairro,
-            referencia:listaEnderecos[0].referencia
-          },async function(){
-            try {
-              await AsyncStorage.multiSet([['endAtual', this.state.endereco],
-                                          ['bairro', this.state.bairro], ['referencia', this.state.referencia]]);
-
-            } catch (error) {
-              console.log("error AsyncStorage cadastrarEndereco"+error)
-            }
-          });
-          this.setState({
-                  loadingList: false
-                });
-        }
-        })
-    })
-
-    this.setState({
-      nomesEstabSearch: nomesEstabelecimentos
-    });
-
-  }
 
   usuarioCompleto(){
     console.log('usuario com cadastro completo')
@@ -122,7 +71,8 @@ export class HomeScreen extends Component {
     )
   }
 
-  componentDidMount(){
+  async componentDidMount(){
+
 
     if (Platform.OS == "android" && listener == null) {
       listener = BackHandler.addEventListener("hardwareBackPress", () => {
@@ -136,6 +86,57 @@ export class HomeScreen extends Component {
       //se não tiver cadastro completo
       ()=> this.usuarioNaoCompleto()
     )
+
+    this.setState({
+            loadingList: true
+          });
+
+    this.user = await auth.currentUser;
+    console.log('rendered again');
+
+    getNomeEstabelecimentos()
+    getUserListEnd(this.user.uid,
+    ()=>{
+      getUserEndAtual((enderecoP,bairroP,referenciaP)=>{
+        if(enderecoP){
+          this.setState({
+            endereco: enderecoP,
+            bairro:bairroP,
+            referencia:referenciaP
+          },function(){
+            console.log("state.endereco"+this.state.endereco);
+          });
+          this.setState({
+                  loadingList: false,
+                  listaModalEnd: listaEnderecos
+                });
+        }else{
+          this.setState({
+            endereco: listaEnderecos[0].endereco,
+            bairro:listaEnderecos[0].bairro,
+            referencia:listaEnderecos[0].referencia
+          },async function(){
+            try {
+              await AsyncStorage.multiSet([['endAtual', this.state.endereco],
+                                          ['bairro', this.state.bairro], ['referencia', this.state.referencia]]);
+
+            } catch (error) {
+              console.log("error AsyncStorage cadastrarEndereco"+error)
+            }
+          });
+          this.setState({
+                  loadingList: false,
+                  listaModalEnd: listaEnderecos
+                });
+        }
+        })
+    })
+
+    this.setState({
+      nomesEstabSearch: nomesEstabelecimentos
+    });
+
+
   }
 
   procuraEstabelecimento(){
@@ -185,28 +186,132 @@ export class HomeScreen extends Component {
       loadingList: false
     });
 
-    getUserEndAtual((enderecoP,bairroP,referenciaP)=>{
+    getUserListEnd(this.user.uid,
+    ()=>{
+      getUserEndAtual((enderecoP,bairroP,referenciaP)=>{
+        if(enderecoP){
+          this.setState({
+            endereco: enderecoP,
+            bairro:bairroP,
+            referencia:referenciaP
+          },function(){
+            console.log("state.endereco"+this.state.endereco);
+          });
+          this.setState({
+                  loadingList: false,
+                  listaModalEnd: listaEnderecos
+                });
+        }else{
+          this.setState({
+            endereco: listaEnderecos[0].endereco,
+            bairro:listaEnderecos[0].bairro,
+            referencia:listaEnderecos[0].referencia
+          },async function(){
+            try {
+              await AsyncStorage.multiSet([['endAtual', this.state.endereco],
+                                          ['bairro', this.state.bairro], ['referencia', this.state.referencia]]);
 
-        this.setState({
-          endereco:enderecoP,
-          bairro:bairroP,
-          referencia:referenciaP
-        },function(){
-          console.log("state.endereco"+this.state.endereco);
-        });
-        this.setState({
-                loadingList: false
-              });
-      })
+            } catch (error) {
+              console.log("error AsyncStorage cadastrarEndereco"+error)
+            }
+          });
+          this.setState({
+                  loadingList: false,
+                  listaModalEnd: listaEnderecos
+                });
+        }
+        })
+    })
   }
 
   adicionaEnd = () => {
-     this.props.navigation.navigate('CadastrarEndereco')
+     this.props.navigation.push('CadastrarEndereco')
      this.showModal()
    }
 
-   editEnd = (item, index) =>{
-     this.props.navigation.navigate('')
+   // editEnd = (item, index) =>{
+   //   this.props.navigation.navigate('AtualizaEndereco',{
+   //     enderecoUp: ,
+   //     bairroUp: ,
+   //     referenciaUp: ,
+   //     keyUp:
+   //   })
+   // }
+
+   deleteEnd = (item)=>{
+     console.log("listaenderecos"+JSON.stringify(listaEnderecos));
+     if(listaEnderecos.length>1){
+       Alert.alert(
+         'Deletar Endereço',
+         'Deseja confirmar a deleção do endereço?',
+         [
+           {text: 'Sim', onPress: () => {
+             //se endereço deletado for o selecionado
+             if(this.state.endereco==item.endereco){
+               console.log("dentro if");
+               deleteEnd(this.user.uid,item.key,
+               ()=>{
+                 getUserListEnd(this.user.uid,
+                 async()=>{
+                   console.log("endereco"+listaEnderecos[0].endereco);
+                   console.log("bairro"+listaEnderecos[0].bairro);
+                   console.log("referencia"+listaEnderecos[0].referencia);
+                   try {
+                     await AsyncStorage.multiSet([['endAtual', listaEnderecos[0].endereco],
+                                                 ['bairro', listaEnderecos[0].bairro], ['referencia', listaEnderecos[0].referencia]]);
+                   } catch (error) {
+                     console.log("error AsyncStorage"+error)
+                   }
+                   this.setState({
+                     listaModalEnd:listaEnderecos,
+                     endereco: listaEnderecos[0].endereco,
+                     bairro:listaEnderecos[0].bairro,
+                     referencia:listaEnderecos[0].referencia
+                   });
+                 })
+               })
+             }
+             //se endereco deletado NÃO for o selecionado
+             else{
+               console.log("dentro else");
+               deleteEnd(this.user.uid,item.key,
+               ()=>{
+                 getUserListEnd(this.user.uid,
+                 ()=>{
+                   this.setState({
+                     listaModalEnd: listaEnderecos
+                   });
+                 })
+               })
+             }
+
+
+          }},
+           {text: 'Não', onPress: ()=>{
+             console.log("cancelado");
+           }},
+         ],
+         {cancelable: false}
+       )
+     }else{
+       Alert.alert(
+         'Apenas um endereço cadastrado',
+         'Você precisa adicionar um novo endereço para não ficar sem endereços cadastrados.',
+         [
+           {text: 'OK', onPress: () => {}},
+         ],
+         { cancelable: false }
+       )
+     }
+   }
+
+   selecionaEnd = async (item) =>{
+     try {
+       await AsyncStorage.multiSet([['endAtual', item.endereco],
+                                   ['bairro', item.bairro], ['referencia', item.referencia]]);
+     } catch (error) {
+       console.log("error AsyncStorage"+error)
+     }
    }
 
   render() {
@@ -276,8 +381,10 @@ export class HomeScreen extends Component {
         <Loader
           loading = {this.state.loading}/>
         <ModalEnd
-          editEnd = {()=>{this.editEnd()}}
+          listaEnderecos={this.state.listaModalEnd}
+          deleteEnd = {this.deleteEnd}
           loading = {this.state.modalEnd}
+          selecionaEnd={this.selecionaEnd}
           showModal = {()=>{this.showModal()}}
           adicionaEnd = {()=>{this.adicionaEnd()}}/>
         {content}
