@@ -4,7 +4,7 @@ console.ignoredYellowBox = [
 import React, { Component } from 'react';
 import { Text, Image, View,ImageBackground } from 'react-native';
 import FadeInOutView from '../animation/fadeinoutview'
-import { styles, images} from '../constants/constants'
+import { styles, images,cores} from '../constants/constants'
 import {auth} from '../firebase/firebase'
 import { checkUserDetails } from '../firebase/database'
 
@@ -50,7 +50,7 @@ export class SplashScreen extends Component {
   componentWillMount() {
       setTimeout (() => {
         this.getUser()
-      }, 3000);
+      }, 4000);
   }
 
   static navigationOptions = {
@@ -60,16 +60,16 @@ export class SplashScreen extends Component {
    render() {
      return(
        <ImageBackground
-         source={images.backgroundSplash}
+         source={images.backgroundSplashAzul}
          style={styles.backgroundImage}>
          <FadeInOutView style={{justifyContent: 'center',alignContent: 'center'}}>
            <View >
              <Image
               style={styles.logo}
-              source={images.iconSplash}
+              source={images.iconYellow}
              />
            </View>
-         <Text style={styles.developedBy}>desenvolvido por Marc Passarelli</Text>
+         <Text style={[styles.developedBy,{color:cores.corPrincipal}]}>desenvolvido por Marc Passarelli</Text>
          </FadeInOutView>
        </ImageBackground>
      );

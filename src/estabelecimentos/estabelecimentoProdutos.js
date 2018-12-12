@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ImageBackground, Platform, Image, Alert, View, Text, Button, SectionList, Animated } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
-import {getEstabelecimentoProd, zerarAdicionais,estabelecimentoProd, listaTamanhosPizzas, getTamanhosPizzas, numTamanhos} from '../firebase/database'
+import {getDay, getEstabelecimentoProd, zerarAdicionais,estabelecimentoProd, listaTamanhosPizzas, getTamanhosPizzas, numTamanhos} from '../firebase/database'
 import EstabelecimentoProdutosListItem from './estabelecimentoProdutosListItem'
 import LazyActivity from '../loadingModal/lazyActivity'
 import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
@@ -18,7 +18,7 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 let sectionData =[]
 let sectionName =[]
 export var listaPizzas = []
-
+export var frete = 0
 
 
 export class EstabelecimentoProdutosScreen extends Component{
@@ -62,7 +62,7 @@ renderListItemSeparator = () =>{
 
 sectionDataFunction(){
 
-  var newEstabelecimentoProd = _.orderBy(estabelecimentoProd, ['tipo', 'nomeProduto'], ['asc','asc'])
+  var newEstabelecimentoProd = _.orderBy(estabelecimentoProd, ['ordem','nomeProduto'], ['asc','asc'])
 
   var indexToRemove = []
   listaPizzas = []
@@ -146,15 +146,20 @@ sectionDataFunction(){
 
 componentWillMount(){
 
+
+  console.log("frete estabelecimento produtos"+frete);
   zerarAdicionais()
   this.setState({
           loadingList: true
         });
   const {state} = this.props.navigation
   var estabelecimento = state.params ? state.params.nomeEstabelecimento : ""
+  frete = state.params ? state.params.frete : ""
   var toast = state.params ? state.params.toast : ""
   console.log("toast"+toast);
   var telaAnterior = state.params ? state.params.telaAnterior : ""
+
+  getDay(estabelecimento)
 
   if(telaAnterior=="listaEstabelecimentos" || telaAnterior=="home" ){
     getTamanhosPizzas(estabelecimento)
@@ -343,7 +348,6 @@ onBackButtonPressAndroid = () =>{
     <AndroidBackHandler onBackPress={this.onBackButtonPressAndroid}>
     <View style={{flex: 1}}>
       <SectionList
-        automaticallyAdjustContentInsets={false}
         ItemSeparatorComponent={this.renderListItemSeparator}
         SectionSeparatorComponent={this.renderSeparatorSection}
         renderItem={this.renderItem}

@@ -6,6 +6,7 @@ import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
 import { getUserProfile, getUserEndAtual, getEstabelecimentoInfo,
   loadMessages, sendMessage, salvarPedido} from '../firebase/database'
 import ResumoCarrinhoListItem from './resumoCarrinhoListItem'
+import {frete} from '../listaEstabelecimentos/listaEstabelecimentosListItem'
 import ResumoInformacoes from './resumoInformacoes'
 import Loader from '../loadingModal/loadingModal';
 import LazyBackButton from '../constants/lazyBackButton'
@@ -53,7 +54,7 @@ constructor(props){
     checked:true,
     checked2:false,
     checked3:false,
-    frete:6,
+    frete:frete,
     troco:'',
     esperandoConfirmacao:false,
     key:"",
@@ -180,6 +181,7 @@ fazerPedido(){
           formaPgtoDetalhe = this.state.troco
         }
         //mandar informação do pedido para o banco de dados do pedido
+        console.log("state.produtosCarrinho"+JSON.stringify(this.state.produtosCarrinho));
         sendMessage(this.state.retirar, this.state.produtosCarrinho, formaPgto, formaPgtoDetalhe,
            this.state.nome, this.state.telefone, this.state.endereco, this.state.bairro,
            this.state.referencia, this.state.nomeEstabelecimento, "Aguardando Confirmação",(key)=>{

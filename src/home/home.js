@@ -94,7 +94,7 @@ export class HomeScreen extends Component {
     this.user = await auth.currentUser;
     console.log('rendered again');
 
-    getNomeEstabelecimentos()
+
     getUserListEnd(this.user.uid,
     ()=>{
       getUserEndAtual((enderecoP,bairroP,referenciaP)=>{
@@ -104,7 +104,7 @@ export class HomeScreen extends Component {
             bairro:bairroP,
             referencia:referenciaP
           },function(){
-            console.log("state.endereco"+this.state.endereco);
+            getNomeEstabelecimentos(this.state.bairro)
           });
           this.setState({
                   loadingList: false,
@@ -148,6 +148,7 @@ export class HomeScreen extends Component {
           data= {this.state.nomesEstabSearch}
           renderItem= {({item}) =>
           <SearchEstabelecimentoListItem
+            frete={item.frete}
             estabelecimento = {item.nome}
             tipoEstabelecimento = {item.tipoEstabelecimento}
             imglogo = {item.logo}
@@ -171,6 +172,7 @@ export class HomeScreen extends Component {
       nomesEstabSearch: newData,
       text: text
     }, function(){
+      console.log("nomesEstabSearch"+this.state.nomesEstabSearch);
       if(!this.state.text){
         this.setState({
           showProcura:false,
@@ -305,10 +307,20 @@ export class HomeScreen extends Component {
      }
    }
 
-   selecionaEnd = async (item) =>{
+   selecionaEnd =  (item) =>{
+     getNomeEstabelecimentos(item.bairro)
      try {
-       await AsyncStorage.multiSet([['endAtual', item.endereco],
-                                   ['bairro', item.bairro], ['referencia', item.referencia]]);
+       this.setState({
+         endereco:item.endereco,
+         bairro:item.bairro,
+         referencia:item.referencia,
+         nomesEstabSearch:nomesEstabelecimentos
+       }, async function(){
+         await AsyncStorage.multiSet([['endAtual', item.endereco],
+                                     ['bairro', item.bairro], ['referencia', item.referencia]]);
+
+       });
+
      } catch (error) {
        console.log("error AsyncStorage"+error)
      }
@@ -366,6 +378,7 @@ export class HomeScreen extends Component {
           renderItem= {({item}) =>
           <HomeListItem
             tipoEstabelecimento = {item.tipoEstabelecimento}
+            bairro={this.state.bairro}
             imglogo = {item.logo}
             navigation = {this.props.navigation}>
           </HomeListItem>}

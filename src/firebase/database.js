@@ -17,6 +17,7 @@ export var numTamanhos = 0
 export var listaPedidos=[]
 export var listaBairros=[]
 var todoCounter = 1;
+let aberto=''
 
 
 export async function login (email, pass, onLogin) {
@@ -249,6 +250,11 @@ export function addEndereco(userID){
 
 }
 
+export function getValorFrete(){
+
+  db.ref("/"+tipoEstabelecimento+"/")
+}
+
 export function getBairros(onListLoad){
   listaBairros=[]
   db.ref("/bairros/Altamira/").once('value').then(function(snapshot){
@@ -270,7 +276,6 @@ export async function checkUserDetails(userExiste, userNaoExiste){
     console.log("userId"+userId);
     db.ref("/user/"+userId).once('value').then(function(snapshot) {
       var userData = snapshot.val()
-      console.log("userdata"+JSON.stringify(userData));
 
   // Se userData não for nulo, isso quer dizer que o usuário já existe e não precisa completar cadastro
       if(userData){
@@ -290,22 +295,26 @@ export async function checkUserDetails(userExiste, userNaoExiste){
 
 }
 
-export async function getListaEstabelecimentos(tipoEstabelecimento, onListLoad){
+export async function getListaEstabelecimentos(tipoEstabelecimento, bairro, onListLoad){
   try{
     listaEstabelecimentos = []
     db.ref("/tiposEstabelecimentos/"+tipoEstabelecimento).once('value').then(function(snapshot){
       var estabelecimentoData = snapshot.val()
       if(estabelecimentoData){
         snapshot.forEach((child) =>{
+          console.log("aberto"+aberto);
           listaEstabelecimentos.push({
             logo: child.val().Logo,
             nome: child.val().Nome,
             precoDelivery: child.val().PreçoDelivery,
             tempoEntrega: child.val().TempoEntrega,
+            aberto:aberto,
+            frete:child.val().frete[bairro].valor,
             _id:todoCounter++
           });
         })
         onListLoad()
+        console.log("listaEstabelecimentos"+JSON.stringify(listaEstabelecimentos));
       }
 
     })
@@ -329,6 +338,7 @@ export async function getEstabelecimentoProd(nomeEstabelecimento, sectionDataFun
             tipo: child.val().tipo,
             sabores: child.val().sabores,
             tamanho: child.val().tamanho,
+            ordem: child.val().ordem,
             _id:todoCounter++
           });
         })
@@ -364,6 +374,66 @@ export async function getTamanhosPizzas(nomeEstabelecimento){
   }
 }
 
+export function getDay(estabelecimento, onGetDay){
+
+  var d = new Date()
+  var weekday = ["domingo","segunda","terca","quarta","quinta","sexta","sabado"]
+  var months = ["January","February","March","April","May","June","July","August","September","October","November","December"]
+  var currentDay = weekday[d.getDay()];
+  var day = d.getDate()
+  var month = months[d.getMonth()]
+  var year = d.getFullYear()
+  var atual = Date.parse(d)
+
+  //detectar se é madrugada e diminuir um dia
+    if(d.getHours()>=0  && d.getHours()<7){
+        if(d.getDay()==0){
+          currentDay = weekday[6]
+        }else{
+          currentDay = weekday[d.getDay()-1]
+        }
+    }
+
+    try{
+  db.ref("/infoEstabelecimentos/"+estabelecimento+"/horarioFuncionamento/"+currentDay+"/").once('value').then(function(snapshot){
+    //determina valores para abertura e fechamento
+    var abertura = Date.parse(month+" "+day+", "+year+" "+snapshot.val().abertura)
+    var fechamento = Date.parse(month+" "+day+", "+year+" "+snapshot.val().fechamento)
+
+    //se fechamento for menor que abertura quer dizer que o estabelecimento fecha de madrugada
+    if(fechamento<abertura){
+      // tiro um dia da abertura pois ela é o no dia anterior
+      var dayAbertura = new Date(month+" "+day+", "+year+" "+snapshot.val().abertura)
+      var dayBefore = dayAbertura.getDate()-1
+      dayAbertura.setDate(dayBefore)
+      abertura = Date.parse(dayAbertura)
+
+      if(atual>abertura&&atual<fechamento){
+        aberto = true
+        console.log(aberto);
+      }else{
+        aberto = false
+        console.log(aberto);
+      }
+
+    }
+
+    else{
+      if(atual>abertura&&atual<fechamento){
+        aberto = true
+        console.log(aberto);
+      }else{
+        aberto = false
+        console.log(aberto);
+      }
+    }
+  })
+  onGetDay()
+}catch(error){
+  console.log(error);
+}
+}
+
 
 
 export async function limparEstabelecimentoProd(){
@@ -371,19 +441,24 @@ export async function limparEstabelecimentoProd(){
   estabelecimentoProd = []
 }
 
-export async function getNomeEstabelecimentos(){
+export async function getNomeEstabelecimentos(bairro){
   try{
     nomesEstabelecimentos = []
     db.ref("/nomeEstabelecimentos/").once('value').then(function(snapshot){
       var estabelecimentoTiposProdData = snapshot.val()
       if(estabelecimentoTiposProdData){
         snapshot.forEach((child) =>{
-          nomesEstabelecimentos.push({
-            nome: child.val().nome,
-            logo: child.val().logo,
-            tipoEstabelecimento: child.val().tipoEstabelecimento
-          });
-        });
+          console.log("childa.val().nome"+child.val().nome);
+          getDay(child.val().nome,()=>{
+            nomesEstabelecimentos.push({
+              nome: child.val().nome,
+              logo: child.val().logo,
+              frete:child.val().frete[bairro].valor,
+              tipoEstabelecimento: child.val().tipoEstabelecimento
+            });
+          })
+        })
+        console.log("nomeEstsbelecimentos"+JSON.stringify(nomesEstabelecimentos));;
       }
     })
   } catch(error){
@@ -580,8 +655,8 @@ export var chaveMsg=""
 export async function sendMessage(retirarNovo, carrinhoNovo, formaPgtoNovo, formaPgtoDetalheNovo,
    nomeNovo, telefoneNovo, enderecoNovo, bairroNovo, referenciaNovo,
    estabelecimento, statusNovo, key) {
+     console.log("carrinhoNovo"+JSON.stringify(carrinhoNovo));
     this.messageRef = db.ref("/messages/"+estabelecimento+"/")
-    this.messageRef.off();
     this.messageRef.push({
       retirar: retirarNovo,
       carrinho: carrinhoNovo,

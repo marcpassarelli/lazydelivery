@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { ImageBackground, Image, Alert, View, Text, Button, FlatList } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
 import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
+import {frete} from '../estabelecimentos/estabelecimentoProdutos'
 import CarrinhoListItem from './carrinhoListItem'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import StatusBar from '../constants/statusBar'
@@ -43,7 +44,7 @@ export class CarrinhoScreen extends Component{
       tipoEstabelecimento:'',
       loading: false,
       produtosCarrinho:[],
-      frete:6,
+      frete:0,
       retiraNaLoja:'',
       retirar:false,
       modalItem: false
@@ -53,10 +54,11 @@ export class CarrinhoScreen extends Component{
 
 
   componentWillMount(){
-
+    console.log("frete carrinho"+frete);
+    console.log("state.frete"+this.state.frete);
     const {state} = this.props.navigation
     var nomeEstabelecimento = state.params ? state.params.nomeEstabelecimento : ""
-
+    var frete = state.params ? state.params.frete:""
     retiraLoja(nomeEstabelecimento,(callback)=>{
       this.setState({
         retiraNaLoja: callback.retiraLoja
@@ -65,6 +67,10 @@ export class CarrinhoScreen extends Component{
 
     this.setState({
       loading: true
+    },function(){
+      this.setState({
+        frete: frete
+      });
     })
     console.log("carrinho"+carrinho);
     if(carrinho.length>0){
@@ -266,12 +272,12 @@ export class CarrinhoScreen extends Component{
                   onPress={()=>{
                     if(this.state.retirar){
                       this.setState({
-                        frete: 6.00,
+                        frete: frete,
                         retirar: false
                       });
                     }else{
                       this.setState({
-                        frete:0.00,
+                        frete:0,
                         retirar: true
                       })
                     }

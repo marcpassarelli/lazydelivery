@@ -8,6 +8,7 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 export const images ={
   imageBackground: require('../../img/transparent.png'),
   backgroundSplash: require('../../img/01-Front---background.png'),
+  backgroundSplashAzul: require('../../img/01-Front---background-azul.png'),
   iconSplash: require('../../img/Icon---Roxo.png'),
   iconYellow: require('../../img/Logo-amarelo.png'),
   backgroundLazy: require('../../img/cadastro-01-bg.png'),
@@ -18,8 +19,6 @@ export const images ={
   seta1: require('../../img/Seta-01.png'),
   seta2: require('../../img/Seta-02.png'),
   preguicaRating:require('../../img/Preguica-contorno.png')
-
-
 }
 export const cores = {
     corPrincipal: '#472c82',
@@ -77,10 +76,19 @@ export const styles = StyleSheet.create({
   },
   containerListItem:{
     flexDirection:'row',
-    height:hp('9%'),
+    height:hp('10%'),
     alignItems:'center',
-    marginLeft:wp('9.31%'),//35
-    marginRight:wp('9.31%'),
+    marginHorizontal: wp('7%'),
+    marginBottom: 5,
+    marginTop:3,
+    flex:1
+  },
+  containerListItemDisabled:{
+    opacity: 0.5,
+    flexDirection:'row',
+    height:hp('11%'),
+    alignItems:'center',
+    marginHorizontal: wp('7%'),
     marginBottom: 5,
     marginTop:3,
     flex:1
@@ -106,6 +114,11 @@ export const styles = StyleSheet.create({
     justifyContent:'center'
 
     // alignItems:'center'
+  },
+  estabOpenClosed:{
+    fontFamily: 'Futura Medium',
+    fontSize: wp('4%'),
+    marginLeft: wp('7%')
   },
   developedBy: {
     fontFamily: 'Futura Medium',
@@ -150,8 +163,16 @@ export const styles = StyleSheet.create({
     height: hp('8.68%'),
     width: wp('17.36%'),
     alignSelf: 'center',
+    resizeMode:'cover'
+  },
+  imagemListaEstabelecimento:{
+    height: 60,
+    width: 60,
+    alignSelf: 'center',
     resizeMode:'cover',
-    tintColor:'rgb(0,192,197)'
+    borderWidth: 1.5,
+    borderRadius: 60,
+    borderColor: cores.textDetalhes
   },
   imagemListSearch:{
     height: 35,
@@ -222,7 +243,8 @@ textAdicionais:{
   },
   textDetalhesEstabelecimento:{
     backgroundColor:'transparent',
-    marginLeft: wp('1.11%'),
+    marginLeft: wp('1.51%'),
+    marginVertical: wp('0.5%'),
     fontSize: wp('3.25%'),
     fontFamily: 'Futura Book'
   },
@@ -234,7 +256,7 @@ textAdicionais:{
   },
   textEstabelecimento:{
     backgroundColor:'transparent',
-    marginLeft: wp('1.11%'),
+    marginLeft: wp('1.51%'),
     fontSize: wp('4.25%'),
     color: cores.corPrincipal,
     fontFamily: 'Futura Medium Italic BT'

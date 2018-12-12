@@ -16,9 +16,11 @@ export default class HomeListItem extends Component {
       <TouchableOpacity
         style={styles.containerListItem}
         onPress = {() => {
-          this.props.navigation.navigate(
+          console.log("props.bairro"+this.props.bairro);
+          this.props.navigation.push(
             'ListaEstabelecimentos',
-            {tipoEstabelecimento: this.props.tipoEstabelecimento})
+            {tipoEstabelecimento: this.props.tipoEstabelecimento,
+            bairro:this.props.bairro})
         }}>
         <Image
           source={this.props.imglogo}

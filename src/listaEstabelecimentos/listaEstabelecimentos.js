@@ -12,7 +12,11 @@ import ListItemSeparator from '../constants/listItemSeparator'
 import { AndroidBackHandler } from 'react-navigation-backhandler';
 import _ from 'lodash'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+var todoCounter=0
 var tipoEstabelecimentoUp ='';
+var bairro=''
+var newListaEstabelecimentosOpen=[]
+var newListaEstabelecimentosClosed=[]
 export class ListaEstabelecimentosScreen extends Component{
 
 
@@ -39,7 +43,9 @@ constructor(props){
     tipoEstabelecimento:'',
     listaEstabelecimentosUp:'',
     loading: false,
-    loadingList: false
+    loadingList: false,
+    estabAbertos:[],
+    estabFechados:[]
 
   }
 }
@@ -53,13 +59,43 @@ constructor(props){
   limparEstabelecimentoProd()
   const {state} = this.props.navigation;
   this.tipoEstabelecimentoUp = state.params ? state.params.tipoEstabelecimento : ""
+  this.bairro = state.params ? state.params.bairro:""
 
-  getListaEstabelecimentos(this.tipoEstabelecimentoUp,
+  getListaEstabelecimentos(this.tipoEstabelecimentoUp, this.bairro,
   ()=> {
+    newListaEstabelecimentosOpen=[]
+    newListaEstabelecimentosClosed=[]
+    listaEstabelecimentos.map((item,index)=>{
+      if(item.aberto==true&&item.frete!='n'){
+        newListaEstabelecimentosOpen.push({
+          logo: item.logo,
+          nome: item.nome,
+          precoDelivery: item.precoDelivery,
+          tempoEntrega: item.tempoEntrega,
+          aberto:item.aberto,
+          frete:item.frete,
+          _id:todoCounter++
+        })
+      }else if(item.aberto==false&&item.frete!='n'){
+        newListaEstabelecimentosOpen.push({
+          logo: item.logo,
+          nome: item.nome,
+          precoDelivery: item.precoDelivery,
+          tempoEntrega: item.tempoEntrega,
+          aberto:item.aberto,
+          frete:item.frete,
+          _id:todoCounter++
+        })
+      }
+    })
+    newListaEstabelecimentosOpen = _.orderBy(newListaEstabelecimentosOpen, ['aberto','nome'], ['desc','asc'])
     this.setState({
-      loadingList: false
+      estabAbertos:newListaEstabelecimentosOpen,
     },function(){
-      console.log("lista");
+
+      this.setState({
+        loadingList: false
+      });
     });
   })
 
@@ -88,14 +124,15 @@ render() {
   <View style={{marginTop:10}}></View>
   <FlatList
     ItemSeparatorComponent={ListItemSeparator}
-    data= {listaEstabelecimentos}
+    data= {this.state.estabAbertos}
     extraData={this.state}
     renderItem= {
       ({item}) =>
       <ListaEstabelecimentosListItem
+        aberto={item.aberto}
         estabelecimento = {item.nome}
         imglogoEstabelecimento = {item.logo}
-        valorDelivery = {item.precoDelivery}
+        valorDelivery = {item.frete}
         tempoEntrega = {item.tempoEntrega}
         navigation={this.props.navigation}
         tipoEstabelecimento={this.tipoEstabelecimentoUp}>
@@ -118,3 +155,30 @@ render() {
 );
 }
 }
+// {
+//   Object.keys(this.state.estabFechados).length>0?
+// <View>
+//   <Text style={{fontFamily: 'Futura Medium',fontSize: wp('4%'),
+//     marginLeft: wp('7%'),color: 'red',marginBottom: hp('1%')}}>Fechado</Text>
+//     <FlatList
+//       ItemSeparatorComponent={ListItemSeparator}
+//       data= {newListaEstabelecimentosClosed}
+//       extraData={this.state}
+//       renderItem= {
+//         ({item}) =>
+//         <ListaEstabelecimentosListItem
+//           aberto={false}
+//           estabelecimento = {item.nome}
+//           imglogoEstabelecimento = {item.logo}
+//           valorDelivery = {item.frete}
+//           tempoEntrega = {item.tempoEntrega}
+//           navigation={this.props.navigation}
+//           tipoEstabelecimento={this.tipoEstabelecimentoUp}>
+//         </ListaEstabelecimentosListItem>}
+//       keyExtractor={item => item._id.toString()}
+//       />
+//     </View>
+//     :
+//   <View></View>
+//
+//   }
