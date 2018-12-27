@@ -87,10 +87,10 @@ sectionDataFunction(){
 
   // organiza por qtde de fatias para definir ordem das pizzas no cardápio
   newListaTamanhosPizzas = _.orderBy(listaTamanhosPizzas, ['fatias'], ['asc'])
-
+  var ordemPizza = listaPizzas[0].ordem
   //array de sabores de pizza agrupados por tamanhos
   listaPizzas = _.groupBy(listaPizzas,'tamanho')
-  // console.log("listaPizzas"+JSON.stringify(listaPizzas.broto));
+  console.log("listaPizzas"+JSON.stringify(listaPizzas));
 
 //Cria lista baseado na qtde de sabores q um tamanho aceita, tamanho, qtde fatias e o preco mínimo
   //id para itens da lista
@@ -114,6 +114,7 @@ sectionDataFunction(){
               tipo: "Pizzas",
               fatias: item.fatias,
               _id: id++,
+              ordem:ordemPizza,
               sabores: j
             })
           }else{
@@ -124,6 +125,7 @@ sectionDataFunction(){
               tipo: "Pizzas",
               fatias: item.fatias,
               _id: id++,
+              ordem:ordemPizza,
               sabores: j
             })
           }
@@ -131,9 +133,10 @@ sectionDataFunction(){
     })
 
 //Separa lista por tipo de produto
-  sectionData = _.groupBy(newEstabelecimentoProd, p => p.tipo)
 
-  sectionName = sectionData
+  sectionData = _.orderBy(newEstabelecimentoProd, ['ordem','nomeProduto'], ['asc','asc'])
+
+  sectionData = _.groupBy(sectionData, p => p.tipo)
 
   sectionData = _.reduce(sectionData, (acc, next, index) =>{
     acc.push({
@@ -142,6 +145,8 @@ sectionDataFunction(){
     })
     return acc
   }, [])
+
+
 
 }
 

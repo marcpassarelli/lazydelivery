@@ -360,30 +360,22 @@ export function getDay(estabelecimento,onListLoad){
   var year = d.getFullYear()
   var atual = Date.parse(d)
   var madrugada;
-  console.log("d.getHours estabelecimento"+d.getHours()+" "+estabelecimento);
 
   //detectar se é madrugada e diminuir um dia
     if(d.getHours()>=0  && d.getHours()<6){
         if(d.getDay()==0){
           madrugada= true
-          console.log("madrugada"+madrugada);
           currentDay = weekday[6]
         }else{
           currentDay = weekday[d.getDay()-1]
           madrugada= true
-          console.log("madrugada"+madrugada);
         }
     }else{
       madrugada= false
-      console.log("madrugada"+madrugada);
     }
 try{
   db.ref("/infoEstabelecimentos/"+estabelecimento+"/horarioFuncionamento/"+currentDay+"/").once('value').then(function(snapshot){
     //determina valores para abertura e fechamento
-    console.log("estabelecimento"+estabelecimento);
-    console.log("currentDay"+currentDay);
-    console.log("abertura "+estabelecimento+": "+snapshot.val().abertura)
-    console.log("fechamento "+estabelecimento+": "+snapshot.val().fechamento)
 
     var abertura = Date.parse(month+" "+day+", "+year+" "+snapshot.val().abertura)
     var fechamento = Date.parse(month+" "+day+", "+year+" "+snapshot.val().fechamento)
@@ -396,11 +388,6 @@ try{
       var dayBefore = dayAbertura.getDate()-1
       dayAbertura.setDate(dayBefore)
       abertura = Date.parse(dayAbertura)
-      console.log("INICIO estabelecimento-----"+estabelecimento);
-      console.log("atual"+atual);
-      console.log("abertura"+abertura);
-      console.log("fechamento"+fechamento);
-      console.log("FIM estabelecimento-----"+estabelecimento);
       if(atual>abertura&&atual<fechamento){
         aberto = true
       }else{
@@ -412,11 +399,7 @@ try{
       var dayAfter = dayFechamento.getDate()+1
       dayFechamento.setDate(dayAfter)
       fechamento = Date.parse(dayFechamento)
-      console.log("INICIO estabelecimento-----"+estabelecimento);
-      console.log("atual"+atual);
-      console.log("abertura"+abertura);
-      console.log("fechamento"+fechamento);
-      console.log("FIM estabelecimento-----"+estabelecimento);
+
       if(atual>abertura&&atual<fechamento){
         aberto = true
       }else{
@@ -469,15 +452,14 @@ export function getListaEstabelecimentos(tipoEstabelecimento, bairro,onListLoad)
     abertoFechado=[]
     numChildrenLista=0
     db.ref("/tiposEstabelecimentos/"+tipoEstabelecimento).once('value').then(function(snapshot){
-      console.log("snapshot.val()"+snapshot.val());
+
       var estabelecimentoData = snapshot.val()
 
       if(estabelecimentoData){
         semEstabelecimentos=false
         numChildrenLista= snapshot.numChildren()
         snapshot.forEach((child) =>{
-          console.log("nome"+child.val().Nome);
-          console.log("frete"+child.val().frete[bairro].valor);
+
           listaEstabelecimentos.push({
             logo: child.val().Logo,
             nome: child.val().Nome,
@@ -493,7 +475,7 @@ export function getListaEstabelecimentos(tipoEstabelecimento, bairro,onListLoad)
       }else{
         semEstabelecimentos=true
         onListLoad()
-        console.log("dentro else estabelecimentodata");
+
       }
 
     })
@@ -653,7 +635,7 @@ export async function getListaAdicionais(nomeEstabelecimento, tipoProduto, onLis
           });
         });
         onListLoad()
-        console.log("DEPOIS FOR EACH");
+
       }
     })
   } catch(error){
@@ -661,7 +643,7 @@ export async function getListaAdicionais(nomeEstabelecimento, tipoProduto, onLis
     console.log("error:"+error)
   }
   onListLoad()
-  console.log("DEPOIS TRY CATCH");
+
 }
 
 export async function loadMessages(estabelecimento, chave, callback){
@@ -677,7 +659,7 @@ export async function loadMessages(estabelecimento, chave, callback){
 export async function deleteMessages(estabelecimento, chave){
   // console.log("dentro loadMessages"+estabelecimento);
   this.messageRef = db.ref("/messages/"+estabelecimento+"/"+chave)
-  console.log("messageRef"+this.messageRef);
+
   this.messageRef.remove()
   this.messageRef.off()
 }
@@ -723,7 +705,7 @@ export var chaveMsg=""
 export async function sendMessage(retirarNovo, carrinhoNovo, formaPgtoNovo, formaPgtoDetalheNovo,
    nomeNovo, telefoneNovo, enderecoNovo, bairroNovo, referenciaNovo,
    estabelecimento, statusNovo, key) {
-     console.log("carrinhoNovo"+JSON.stringify(carrinhoNovo));
+
     this.messageRef = db.ref("/messages/"+estabelecimento+"/")
     this.messageRef.push({
       retirar: retirarNovo,
@@ -746,7 +728,7 @@ export async function sendMessage(retirarNovo, carrinhoNovo, formaPgtoNovo, form
   export async function salvarPedido(retirarNovo, carrinhoNovo, totalPriceNovo, freteNovo, formaPgtoNovo, formaPgtoDetalheNovo,
      enderecoNovo, bairroNovo, estabelecimentoNovo, keyNovo){
        let userId = await auth.currentUser.uid
-       console.log("userId"+userId);
+
        this.historicoPedidos = db.ref("/user/"+userId+"/details/pedidos/")
        this.historicoPedidos.off();
        this.historicoPedidos.push({
