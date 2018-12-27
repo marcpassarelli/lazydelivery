@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
-import { ImageBackground, Platform, Image, Alert, View, Text, Button, SectionList, Animated } from 'react-native'
+import { BackHandler,ImageBackground, Platform, Image, Alert, View, Text, Button, SectionList, Animated } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
 import {getDay, getEstabelecimentoProd, zerarAdicionais,estabelecimentoProd, listaTamanhosPizzas, getTamanhosPizzas, numTamanhos} from '../firebase/database'
 import EstabelecimentoProdutosListItem from './estabelecimentoProdutosListItem'
 import LazyActivity from '../loadingModal/lazyActivity'
+import {aberto,frete,fechando,horarioFechamento} from '../home/home'
 import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
 import Toast from 'react-native-toast-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import StatusBar from '../constants/statusBar'
 import ListItemSeparator from '../constants/listItemSeparator'
 import LazyYellowButton from '../constants/lazyYellowButton'
-import { AndroidBackHandler } from 'react-navigation-backhandler';
 import { NavigationActions } from 'react-navigation';
 import _ from 'lodash';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -18,7 +18,8 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 let sectionData =[]
 let sectionName =[]
 export var listaPizzas = []
-export var frete = 0
+
+
 
 
 export class EstabelecimentoProdutosScreen extends Component{
@@ -144,8 +145,18 @@ sectionDataFunction(){
 
 }
 
-componentWillMount(){
+componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+}
 
+handleBackButtonClick=()=> {
+  console.log("handleButtonClick");
+  this.props.navigation.dispatch(NavigationActions.back());
+  return true;
+}
+
+componentWillMount(){
+BackHandler.addEventListener('hardwareBackPress', ()=>this.handleBackButtonClick)
 
   console.log("frete estabelecimento produtos"+frete);
   zerarAdicionais()
@@ -154,12 +165,37 @@ componentWillMount(){
         });
   const {state} = this.props.navigation
   var estabelecimento = state.params ? state.params.nomeEstabelecimento : ""
-  frete = state.params ? state.params.frete : ""
+  if(!aberto){
+    Alert.alert(
+     'ESTABELECIMENTO FECHADO',
+     ''+estabelecimento+' encontra-se fechado no momento. Você poderá ver os produtos mas sem adicionar ao carrinho ou encaminhar o pedido. Acesse a aba INFORMAÇÕES para saber o horário de funcionamento.',
+     [
+       {text: 'OK', onPress: () => {
+
+       }},
+     ],
+     { cancelable: false }
+   )
+ }else if(fechando){
+    Alert.alert(
+     'ESTABELECIMENTO QUASE FECHANDO',
+     ''+estabelecimento+' está próximo de fechar por hoje. O horário normal de encerramento hoje é '+horarioFechamento+".",
+     [
+       {text: 'OK', onPress: () => {
+
+       }},
+     ],
+     { cancelable: false }
+   )
+  }
+
+
+
+
   var toast = state.params ? state.params.toast : ""
   console.log("toast"+toast);
   var telaAnterior = state.params ? state.params.telaAnterior : ""
 
-  getDay(estabelecimento)
 
   if(telaAnterior=="listaEstabelecimentos" || telaAnterior=="home" ){
     getTamanhosPizzas(estabelecimento)
@@ -207,7 +243,8 @@ renderItem = (item) =>{
       nomeProduto = {item.item.nomeProduto}
       tipoProduto = {item.item.tipo}
       preco = {()=>{
-        let str = item.item.preco
+
+        let str = item.item.preco.toFixed(2)
         let res = str.toString().replace(".",",")
 
         if(item.item.tipo=="Pizzas"){
@@ -241,6 +278,7 @@ renderItem = (item) =>{
           this.props.navigation.dispatch(navigateAction);
 
         }else{
+          console.log("item.item.preco"+item.item.preco);
           const navigateAction = NavigationActions.navigate({
               routeName: 'AddProduto',
               params: {
@@ -303,33 +341,33 @@ functionButton(){
   }
 }
 
-onBackButtonPressAndroid = () =>{
-  const {navigate} = this.props.navigation
-  const {state} = this.props.navigation
-  if(carrinho.length>0){
-    Alert.alert(
-      'Sair do Estabelecimento',
-      'Tem certeza que deseja sair deste estabelecimento? Todos os items do carrinho serão perdido.',
-      [
-        {text: 'Sim', onPress: () => {
-          console.log("tipoestabelecimento onPress:"+navigation.state.params.tipoEstabelecimento);
-          atualizarCarrinho([])
-          navigation.navigate('ListaEstabelecimentos',
-          {tipoEstabelecimento:navigation.state.params.tipoEstabelecimento})
-          return true
-        }},
-        {text: 'Não', onPress: ()=>{
-          console.log("cancelado");
-        }},
-      ],
-      {cancelable: false}
-    )
-  }else{
-    navigation.navigate('Home')
-    return true
-  }
-
-}
+// onBackButtonPressAndroid = () =>{
+//   const {navigate} = this.props.navigation
+//   const {state} = this.props.navigation
+//   if(carrinho.length>0){
+//     Alert.alert(
+//       'Sair do Estabelecimento',
+//       'Tem certeza que deseja sair deste estabelecimento? Todos os items do carrinho serão perdido.',
+//       [
+//         {text: 'Sim', onPress: () => {
+//           console.log("tipoestabelecimento onPress:"+navigation.state.params.tipoEstabelecimento);
+//           atualizarCarrinho([])
+//           navigation.navigate('ListaEstabelecimentos',
+//           {tipoEstabelecimento:navigation.state.params.tipoEstabelecimento})
+//           return true
+//         }},
+//         {text: 'Não', onPress: ()=>{
+//           console.log("cancelado");
+//         }},
+//       ],
+//       {cancelable: false}
+//     )
+//   }else{
+//     navigation.navigate('Home')
+//     return true
+//   }
+//
+// }
 
 
 
@@ -345,7 +383,7 @@ onBackButtonPressAndroid = () =>{
       <LazyActivity/>
     </View> :
 
-    <AndroidBackHandler onBackPress={this.onBackButtonPressAndroid}>
+
     <View style={{flex: 1}}>
       <SectionList
         ItemSeparatorComponent={this.renderListItemSeparator}
@@ -357,7 +395,7 @@ onBackButtonPressAndroid = () =>{
         />
       <View>{this.functionButton()}</View>
     </View>
-  </AndroidBackHandler>
+
 
     return (
       <ImageBackground

@@ -1,9 +1,9 @@
 
 import React, { Component } from 'react';
-import { ImageBackground, Image, Alert, View, Text, Button, FlatList } from 'react-native'
+import { ImageBackground, Image, Alert, View, Text, Button, FlatList,BackHandler } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
 import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
-import {frete} from '../estabelecimentos/estabelecimentoProdutos'
+import {frete} from '../home/home'
 import CarrinhoListItem from './carrinhoListItem'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import StatusBar from '../constants/statusBar'
@@ -52,13 +52,22 @@ export class CarrinhoScreen extends Component{
 
   }
 
+  componentWillUnmount() {
+      BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+
+  handleBackButtonClick=()=> {
+    this.props.navigation.goBack();
+    return true;
+  }
+
 
   componentWillMount(){
-    console.log("frete carrinho"+frete);
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick)
     console.log("state.frete"+this.state.frete);
     const {state} = this.props.navigation
     var nomeEstabelecimento = state.params ? state.params.nomeEstabelecimento : ""
-    var frete = state.params ? state.params.frete:""
+    console.log("depois state params"+frete);
     retiraLoja(nomeEstabelecimento,(callback)=>{
       this.setState({
         retiraNaLoja: callback.retiraLoja
@@ -170,7 +179,8 @@ export class CarrinhoScreen extends Component{
 
   valorVirgula(valor){
     console.log("valor"+valor);
-    var str = (valor).toFixed(2)
+    var str = parseFloat(valor)
+    str = str.toFixed(2)
     var res = str.toString().replace(".",",")
     return(
         <Text style={[styles.textAddProduto,{color: cores.textDetalhes}]}>{res}</Text>

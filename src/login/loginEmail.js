@@ -87,6 +87,19 @@ export class LoginEmailScreen extends Component {
     })
   }
 
+  componentWillUnmount() {
+      BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+
+  handleBackButtonClick=()=> {
+    this.props.navigation.goBack();
+    return true;
+  }
+
+   componentWillMount(){
+     BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick)
+   }
+
   render(){
     return (
       <ImageBackground

@@ -2,7 +2,7 @@ console.ignoredYellowBox = [
     'Setting a timer'
 ]
 import React, { Component } from 'react';
-import { ImageBackground, Image, Alert } from 'react-native';
+import { ImageBackground, Image, Alert,BackHandler } from 'react-native';
 import { styles, images} from '../constants/constants'
 import ComponentsCadastroInicial  from './componentsCadastroInicial'
 import { signup, cadastrarUsuario } from '../firebase/database'
@@ -80,6 +80,18 @@ export class CadastroInicialScreen extends Component {
       this.setState({
         checked: !this.state.checked
       });}
+
+      componentWillUnmount() {
+          BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+      }
+
+      handleBackButtonClick=()=> {
+        this.props.navigation.goBack();
+        return true;
+      }
+
+       componentWillMount(){
+         BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick)}
 
 
     render(){

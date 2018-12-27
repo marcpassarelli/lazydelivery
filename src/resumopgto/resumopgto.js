@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { ImageBackground, TextInput, Picker, PickerIOS, Platform, ScrollView, Dimensions, Image, Alert, View, Text, Button, FlatList, Icon } from 'react-native'
+import { ImageBackground, TextInput, Picker, PickerIOS, Platform, ScrollView,
+   Dimensions, Image, Alert, View, Text, Button, FlatList, Icon,BackHandler } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
 import LazyActivity from '../loadingModal/lazyActivity'
 import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
 import { getUserProfile, getUserEndAtual, getEstabelecimentoInfo,
-  loadMessages, sendMessage, salvarPedido} from '../firebase/database'
+  loadMessages, sendMessage,deleteMessages, salvarPedido} from '../firebase/database'
 import ResumoCarrinhoListItem from './resumoCarrinhoListItem'
-import {frete} from '../listaEstabelecimentos/listaEstabelecimentosListItem'
+import {frete} from '../home/home'
 import ResumoInformacoes from './resumoInformacoes'
 import Loader from '../loadingModal/loadingModal';
 import LazyBackButton from '../constants/lazyBackButton'
@@ -20,7 +21,10 @@ import _ from 'lodash'
 let totalPrice =0
 let teste=[];
 let estabelecimento=""
+let pedidoKey=''
 const produtosCarrinho = []
+
+var myVar;
 
 export class ResumoPgtoScreen extends Component{
 
@@ -76,13 +80,21 @@ updateTroco = (text) => {
   this.setState({troco: text})
 }
 
+componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+}
+
+handleBackButtonClick=()=> {
+  this.props.navigation.goBack();
+  return true;
+}
 
 async componentWillMount(){
+  BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick)
   let userId = await auth.currentUser.uid
-  console.log("userID"+userId);
 
   this.estabelecimento= this.props.navigation.state.params.nomeEstabelecimento
-  console.log("this.retirar"+this.props.navigation.state.params.retirarLoja);
+
   this.setState({
           loading: true,
           retirar: this.props.navigation.state.params.retirarLoja,
@@ -127,7 +139,7 @@ async componentWillMount(){
       nome: nomeP,
       telefone: telefoneP,
     },function(){
-      console.log("dentro func getUserProfile");
+
     });
   })
   //Pegar endereço cadastrado
@@ -138,7 +150,7 @@ async componentWillMount(){
         bairro:bairroP,
         referencia:referenciaP
       },function(){
-        console.log("dentro func getUserEndAtual"),
+
         this._callback()
       });
     })
@@ -148,15 +160,44 @@ async componentWillMount(){
 }
 
 _callback(){
-  console.log("inside callback"+this.state.nomeEstabelecimento);
+
+}
+
+checkTimeOut=(key)=>{
+  console.log("dentro checktimeout");
+  this.setState({
+    esperandoConfirmacao: false
+  },function(){
+    deleteMessages(this.state.nomeEstabelecimento,key)
+    Alert.alert(
+      'Erro no Pedido',
+      'Ocorreu algum erro no pedido e não obtivemos resposta do restaurante. Verifique se o horário de funcionamento do restaurante ou então tente novamente.',
+       [
+         {text: 'OK', onPress: () => {
+           const { navigate } = this.props.navigation;
+           navigate('Carrinho')
+         }},
+       ],
+       { cancelable: false }
+    )
+  });
+}
+
+timeoutPedido=(key)=>{
+  console.log("inside timeout");
+  myVar = setTimeout(()=>{
+    this.checkTimeOut(key)
+  }, 60000);
 }
 
 fazerPedido(){
+
   Alert.alert(
     'Confirmar Pedido',
     'Deseja confirmar o pedido? Após a confirmação, o pedido será enviado para o estabelecimento para preparo.',
     [
       {text: 'Sim', onPress: () => {
+
         this.setState({
           esperandoConfirmacao: true
         });
@@ -180,14 +221,21 @@ fazerPedido(){
           formaPgto = "Dinheiro"
           formaPgtoDetalhe = this.state.troco
         }
+
+
+        // console.log("timerId"+timerId);
         //mandar informação do pedido para o banco de dados do pedido
-        console.log("state.produtosCarrinho"+JSON.stringify(this.state.produtosCarrinho));
+
         sendMessage(this.state.retirar, this.state.produtosCarrinho, formaPgto, formaPgtoDetalhe,
            this.state.nome, this.state.telefone, this.state.endereco, this.state.bairro,
            this.state.referencia, this.state.nomeEstabelecimento, "Aguardando Confirmação",(key)=>{
+             this.timeoutPedido(key.key)
+             // console.log("pedidoKey"+pedidoKey);
+
              //aguardar confirmação do estabelecimento
              loadMessages(this.state.nomeEstabelecimento, key.key, (message)=>{
-
+               clearTimeout(myVar)
+               myVar=0
                if(message.status=="Confirmado Recebimento"){
                  this.setState({
                    esperandoConfirmacao: false
@@ -198,7 +246,7 @@ fazerPedido(){
                     'Seu pedido foi recebido pelo estabelecimento e está sendo preparado para o envio até você. Em caso de dúvidas entre em contato com o estabelecimento',
                     [
                       {text: 'OK', onPress: () => {
-                        console.log("totalPrice"+this.totalPrice);
+
                         salvarPedido(this.state.retirar, this.state.produtosCarrinho, this.totalPrice, this.state.frete, formaPgto, formaPgtoDetalhe,
                           this.state.endereco, this.state.bairro,
                           this.state.nomeEstabelecimento, key.key)
@@ -209,6 +257,22 @@ fazerPedido(){
                     ],
                     { cancelable: false }
                   )
+                 });
+               }else if(message.status=="Estabelecimento Fechado"){
+                 this.setState({
+                   esperandoConfirmacao: false
+                 },function(){
+                   Alert.alert(
+                     'Estabelecimento Fechado.',
+                     'Sinto muito mas o estabelecimento fechou e não está aceitando mais pedidos.',
+                     [
+                       {text: 'OK', onPress: () => {
+                         const { navigate } = this.props.navigation;
+                         navigate('Carrinho')
+                       }},
+                     ],
+                     { cancelable: false }
+                   )
                  });
                }
              })
@@ -223,7 +287,6 @@ fazerPedido(){
 }
 
 functionPicker(tipoPgto){
-  console.log("functionPickertipoPgto"+tipoPgto);
   if(Platform.OS==='ios'){
     return(
     <PickerIOS
@@ -290,7 +353,8 @@ funcaoTroco(){
 }
 
 valorVirgula(valor){
-  var str = (valor).toFixed(2)
+  var str = parseFloat(valor)
+  str = str.toFixed(2)
   var res = str.toString().replace(".",",")
   return(
       <Text>{res}</Text>

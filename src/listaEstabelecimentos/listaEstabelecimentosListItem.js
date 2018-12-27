@@ -2,9 +2,11 @@
 import React, { Component } from 'react';
 import { Image, View, Text, TouchableOpacity } from 'react-native'
 import { styles, images} from '../constants/constants'
+import {atualizarAberto,atualizarFrete} from '../home/home'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 var frete =0
+
 export default class ListaEstabelecimentosListItem extends Component {
 
   functionValorFrete(valorFrete){
@@ -42,14 +44,17 @@ export default class ListaEstabelecimentosListItem extends Component {
         onPress = {() => {
           console.log("props.delivery"+this.props.valorDelivery);
           if(this.props.valorDelivery=='gratis'){
-            frete = 0
+            console.log("frete 0");
+            atualizarFrete(frete)
           }else{
-            frete = this.props.valorDelivery
+            console.log("frete "+this.props.valorDelivery);
+            atualizarFrete(this.props.valorDelivery)
           }
+          atualizarAberto(this.props.aberto,this.props.fechando,this.props.horarioFechamento)
+          console.log("props.aberto"+this.props.aberto);
           this.props.navigation.push('Estabelecimento',
           {nomeEstabelecimento: this.props.estabelecimento,
           tipoEstabelecimento: this.props.tipoEstabelecimento,
-          frete:frete,
            telaAnterior:"listaEstabelecimentos"})
            console.log("frete ao selecionar restaurante "+frete);
         }}>

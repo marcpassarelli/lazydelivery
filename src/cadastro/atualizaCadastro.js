@@ -2,7 +2,7 @@ console.ignoredYellowBox = [
     'Setting a timer'
 ]
 import React, { Component } from 'react';
-import { ImageBackground, Image, Text, TouchableOpacity, View } from 'react-native';
+import { ImageBackground, Image, Text, TouchableOpacity, View,BackHandler } from 'react-native';
 import { styles, images} from '../constants/constants'
 import { atualizarUsuario } from '../firebase/database'
 import { Hoshi } from 'react-native-textinput-effects';
@@ -58,8 +58,17 @@ export class AtualizaCadastroScreen extends Component {
     validateUserName(){
       return this.state.nome+""
     }
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    handleBackButtonClick=()=> {
+      this.props.navigation.goBack();
+      return true;
+    }
 
     componentWillMount() {
+      BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick)
       const {state} = this.props.navigation;
       var nomeUp = state.params ? state.params.nomeUp : ""
       var telefoneUp = state.params ? state.params.telefoneUp : ""
@@ -71,6 +80,10 @@ export class AtualizaCadastroScreen extends Component {
         this.validateUserName();
       })
       }
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
     }
 
   render(){

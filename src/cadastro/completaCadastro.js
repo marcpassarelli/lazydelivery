@@ -80,8 +80,17 @@ export class CompletaCadastroScreen extends Component {
     validateUserName(){
       return this.state.nome+""
     }
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    handleBackButtonClick=()=> {
+      this.props.navigation.goBack();
+      return true;
+    }
 
     componentWillMount() {
+      BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick)
       this.setState({
         loading:true
       });

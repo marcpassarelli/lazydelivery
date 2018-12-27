@@ -3,13 +3,14 @@ console.ignoredYellowBox = [
 ]
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import React, { Component } from 'react';
-import { ImageBackground, Image, Text, View, ScrollView,Platform } from 'react-native'
+import { ImageBackground, Image, Text, View, ScrollView,Platform,BackHandler} from 'react-native'
 import { styles,cores, images} from '../constants/constants'
 import { getEstabelecimentoInfo, estabelecimentoInfo } from '../firebase/database'
 import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
 import StatusBar from '../constants/statusBar'
 import LazyActivity from '../loadingModal/lazyActivity'
 import LazyBackButton from '../constants/lazyBackButton'
+import { NavigationActions } from 'react-navigation';
 import LazyYellowButton from '../constants/lazyYellowButton'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import _ from 'lodash';
@@ -43,9 +44,18 @@ export class EstabelecimentoInformacoesScreen extends Component {
     };
   }
 
+  componentWillUnmount() {
+      BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+
+  handleBackButtonClick=()=> {
+    this.props.navigation.dispatch(NavigationActions.back());
+    return true;
+  }
+
 
   componentWillMount(){
-
+ BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick)
     this.setState({
             loading: true
           });

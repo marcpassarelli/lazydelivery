@@ -1,7 +1,7 @@
 import PizzaListItem from './pizzaListItem'
 
 import React, { Component } from 'react';
-import { ImageBackground, Platform, Image, Alert, View, Text, Button, FlatList } from 'react-native'
+import { ImageBackground, Platform, Image, Alert, View, Text, Button, FlatList,BackHandler } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
 import LazyActivity from '../loadingModal/lazyActivity'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -50,8 +50,18 @@ constructor(props){
 
 }
 
-componentWillMount(){
+componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+}
 
+handleBackButtonClick=()=> {
+  this.props.navigation.goBack();
+  return true;
+}
+
+
+componentWillMount(){
+   BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick)
   this.setState({
           loadingList: true
         });

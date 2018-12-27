@@ -1,9 +1,9 @@
 
 import React, { Component } from 'react';
-import { ImageBackground, Image, View, Text, FlatList } from 'react-native'
+import { ImageBackground, Image, View, Text, FlatList,BackHandler } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
 import ListaEstabelecimentosListItem from './listaEstabelecimentosListItem'
-import {getListaEstabelecimentos, listaEstabelecimentos, limparEstabelecimentoProd} from '../firebase/database'
+import {semEstabelecimentos,abertoFechado,getListaEstabelecimentos, listaEstabelecimentos, limparEstabelecimentoProd} from '../firebase/database'
 import Loader from '../loadingModal/loadingModal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LazyActivity from '../loadingModal/lazyActivity'
@@ -50,7 +50,17 @@ constructor(props){
   }
 }
 
+componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+}
+
+handleBackButtonClick=()=> {
+  this.props.navigation.goBack();
+  return true;
+}
+
  componentWillMount(){
+   BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick)
    this.setState({
       loadingList: true
    })
@@ -62,51 +72,71 @@ constructor(props){
   this.bairro = state.params ? state.params.bairro:""
 
   getListaEstabelecimentos(this.tipoEstabelecimentoUp, this.bairro,
-  ()=> {
+  ()=>{
+    if(semEstabelecimentos==true){
+      this.setState({
+        estabAbertos:null
+      },function(){
+        this.setState({
+          loadingList:false
+        });
+      });
+    }else{
     newListaEstabelecimentosOpen=[]
-    newListaEstabelecimentosClosed=[]
-    listaEstabelecimentos.map((item,index)=>{
-      if(item.aberto==true&&item.frete!='n'){
-        newListaEstabelecimentosOpen.push({
-          logo: item.logo,
-          nome: item.nome,
-          precoDelivery: item.precoDelivery,
-          tempoEntrega: item.tempoEntrega,
-          aberto:item.aberto,
-          frete:item.frete,
-          _id:todoCounter++
-        })
-      }else if(item.aberto==false&&item.frete!='n'){
-        newListaEstabelecimentosOpen.push({
-          logo: item.logo,
-          nome: item.nome,
-          precoDelivery: item.precoDelivery,
-          tempoEntrega: item.tempoEntrega,
-          aberto:item.aberto,
-          frete:item.frete,
-          _id:todoCounter++
-        })
-      }
+    console.log("bairor"+this.bairro);
+    console.log("listaEstabelecimentos"+JSON.stringify(listaEstabelecimentos));
+    abertoFechado.map((aberto,index2)=>{
+      listaEstabelecimentos.map((lista,index)=>{
+        if(aberto.nome==lista.nome){
+          if(aberto.aberto==true&&lista.frete!='n'){
+            newListaEstabelecimentosOpen.push({
+              logo: lista.logo,
+              nome: lista.nome,
+              precoDelivery: lista.precoDelivery,
+              tempoEntrega: lista.tempoEntrega,
+              frete:lista.frete,
+              fechando:aberto.fechando,
+              horarioFechamento:aberto.horarioFechamento,
+              aberto:aberto.aberto,
+              _id:todoCounter++
+            })
+          }else if(aberto.aberto==false&&lista.frete!='n'){
+            newListaEstabelecimentosOpen.push({
+              logo: lista.logo,
+              nome: lista.nome,
+              precoDelivery: lista.precoDelivery,
+              tempoEntrega: lista.tempoEntrega,
+              frete:lista.frete,
+              horarioFechamento:aberto.horarioFechamento,
+              fechando:aberto.fechando,
+              aberto:aberto.aberto,
+              _id:todoCounter++
+            })
+          }
+        }
+      })
     })
     newListaEstabelecimentosOpen = _.orderBy(newListaEstabelecimentosOpen, ['aberto','nome'], ['desc','asc'])
     this.setState({
       estabAbertos:newListaEstabelecimentosOpen,
     },function(){
-
       this.setState({
         loadingList: false
       });
     });
+  }
   })
 
+
+
 }
 
-onBackButtonPressAndroid = () =>{
-  const {navigate} = this.props.navigation
-  const {state} = this.props.navigation
-  navigate('Home')
-  return true
-}
+// onBackButtonPressAndroid = () =>{
+//   const {navigate} = this.props.navigation
+//   const {state} = this.props.navigation
+//   navigate('Home')
+//   return true
+// }
 
 render() {
   console.ignoredYellowBox = [
@@ -119,31 +149,38 @@ render() {
     <LazyActivity/>
   </View> :
 
-  <AndroidBackHandler onBackPress={this.onBackButtonPressAndroid}>
+
   <View style={{flex:1}}>
   <View style={{marginTop:10}}></View>
-  <FlatList
-    ItemSeparatorComponent={ListItemSeparator}
-    data= {this.state.estabAbertos}
-    extraData={this.state}
-    renderItem= {
-      ({item}) =>
-      <ListaEstabelecimentosListItem
-        aberto={item.aberto}
-        estabelecimento = {item.nome}
-        imglogoEstabelecimento = {item.logo}
-        valorDelivery = {item.frete}
-        tempoEntrega = {item.tempoEntrega}
-        navigation={this.props.navigation}
-        tipoEstabelecimento={this.tipoEstabelecimentoUp}>
-      </ListaEstabelecimentosListItem>}
-    keyExtractor={item => item._id.toString()}
-    />
+  {this.state.estabAbertos?
+    <FlatList
+      ItemSeparatorComponent={ListItemSeparator}
+      data= {this.state.estabAbertos}
+      extraData={this.state}
+      renderItem= {
+        ({item}) =>
+        <ListaEstabelecimentosListItem
+          fechando={item.fechando}
+          horarioFechamento={item.horarioFechamento}
+          aberto={item.aberto}
+          estabelecimento = {item.nome}
+          imglogoEstabelecimento = {item.logo}
+          valorDelivery = {item.frete}
+          tempoEntrega = {item.tempoEntrega}
+          navigation={this.props.navigation}
+          tipoEstabelecimento={this.tipoEstabelecimentoUp}>
+        </ListaEstabelecimentosListItem>}
+      keyExtractor={item => item._id.toString()}
+      />
+    :
+    <Text style={[styles.textAddProduto,{color:cores.corPrincipal,textAlign: 'center',marginTop: 10}]}>Ainda não há estabelecimentos cadastrados nesta categoria.</Text>
+  }
+
   </View>
-  </AndroidBackHandler>
+
 
   return (
-    <AndroidBackHandler onBackPress={this.onBackButtonPressAndroid}>
+
     <ImageBackground
       source={images.imageBackground}
       style={styles.backgroundImage}>
@@ -151,7 +188,7 @@ render() {
           loading = {this.state.loading}/>
       {content}
     </ImageBackground>
-    </AndroidBackHandler>
+
 );
 }
 }

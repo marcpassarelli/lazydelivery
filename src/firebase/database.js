@@ -16,8 +16,12 @@ export var listaEnderecos = []
 export var numTamanhos = 0
 export var listaPedidos=[]
 export var listaBairros=[]
+export var abertoFechado=[]
+var numChildrenLista=0
 var todoCounter = 1;
-let aberto=''
+
+var weekday = ["domingo","segunda","terca","quarta","quinta","sexta","sabado"]
+var months = ["January","February","March","April","May","June","July","August","September","October","November","December"]
 
 
 export async function login (email, pass, onLogin) {
@@ -295,33 +299,7 @@ export async function checkUserDetails(userExiste, userNaoExiste){
 
 }
 
-export async function getListaEstabelecimentos(tipoEstabelecimento, bairro, onListLoad){
-  try{
-    listaEstabelecimentos = []
-    db.ref("/tiposEstabelecimentos/"+tipoEstabelecimento).once('value').then(function(snapshot){
-      var estabelecimentoData = snapshot.val()
-      if(estabelecimentoData){
-        snapshot.forEach((child) =>{
-          console.log("aberto"+aberto);
-          listaEstabelecimentos.push({
-            logo: child.val().Logo,
-            nome: child.val().Nome,
-            precoDelivery: child.val().PreçoDelivery,
-            tempoEntrega: child.val().TempoEntrega,
-            aberto:aberto,
-            frete:child.val().frete[bairro].valor,
-            _id:todoCounter++
-          });
-        })
-        onListLoad()
-        console.log("listaEstabelecimentos"+JSON.stringify(listaEstabelecimentos));
-      }
 
-    })
-  } catch(error){
-    console.log(error)
-  }
-}
 
 export async function getEstabelecimentoProd(nomeEstabelecimento, sectionDataFunction, onListLoad ){
   try{
@@ -373,64 +351,108 @@ export async function getTamanhosPizzas(nomeEstabelecimento){
     console.log(error)
   }
 }
-
-export function getDay(estabelecimento, onGetDay){
-
+var aberto=''
+export function getDay(estabelecimento,onListLoad){
   var d = new Date()
-  var weekday = ["domingo","segunda","terca","quarta","quinta","sexta","sabado"]
-  var months = ["January","February","March","April","May","June","July","August","September","October","November","December"]
   var currentDay = weekday[d.getDay()];
   var day = d.getDate()
   var month = months[d.getMonth()]
   var year = d.getFullYear()
   var atual = Date.parse(d)
+  var madrugada;
+  console.log("d.getHours estabelecimento"+d.getHours()+" "+estabelecimento);
 
   //detectar se é madrugada e diminuir um dia
-    if(d.getHours()>=0  && d.getHours()<7){
+    if(d.getHours()>=0  && d.getHours()<6){
         if(d.getDay()==0){
+          madrugada= true
+          console.log("madrugada"+madrugada);
           currentDay = weekday[6]
         }else{
           currentDay = weekday[d.getDay()-1]
+          madrugada= true
+          console.log("madrugada"+madrugada);
         }
+    }else{
+      madrugada= false
+      console.log("madrugada"+madrugada);
     }
-
-    try{
+try{
   db.ref("/infoEstabelecimentos/"+estabelecimento+"/horarioFuncionamento/"+currentDay+"/").once('value').then(function(snapshot){
     //determina valores para abertura e fechamento
+    console.log("estabelecimento"+estabelecimento);
+    console.log("currentDay"+currentDay);
+    console.log("abertura "+estabelecimento+": "+snapshot.val().abertura)
+    console.log("fechamento "+estabelecimento+": "+snapshot.val().fechamento)
+
     var abertura = Date.parse(month+" "+day+", "+year+" "+snapshot.val().abertura)
     var fechamento = Date.parse(month+" "+day+", "+year+" "+snapshot.val().fechamento)
 
+
     //se fechamento for menor que abertura quer dizer que o estabelecimento fecha de madrugada
-    if(fechamento<abertura){
+    if(fechamento<abertura&&madrugada==true){
       // tiro um dia da abertura pois ela é o no dia anterior
       var dayAbertura = new Date(month+" "+day+", "+year+" "+snapshot.val().abertura)
       var dayBefore = dayAbertura.getDate()-1
       dayAbertura.setDate(dayBefore)
       abertura = Date.parse(dayAbertura)
-
+      console.log("INICIO estabelecimento-----"+estabelecimento);
+      console.log("atual"+atual);
+      console.log("abertura"+abertura);
+      console.log("fechamento"+fechamento);
+      console.log("FIM estabelecimento-----"+estabelecimento);
       if(atual>abertura&&atual<fechamento){
         aberto = true
-        console.log(aberto);
       }else{
         aberto = false
-        console.log(aberto);
       }
-
     }
-
+    else if(fechamento<abertura&&madrugada==false){
+      var dayFechamento = new Date(month+" "+day+", "+year+" "+snapshot.val().fechamento)
+      var dayAfter = dayFechamento.getDate()+1
+      dayFechamento.setDate(dayAfter)
+      fechamento = Date.parse(dayFechamento)
+      console.log("INICIO estabelecimento-----"+estabelecimento);
+      console.log("atual"+atual);
+      console.log("abertura"+abertura);
+      console.log("fechamento"+fechamento);
+      console.log("FIM estabelecimento-----"+estabelecimento);
+      if(atual>abertura&&atual<fechamento){
+        aberto = true
+      }else{
+        aberto = false
+      }
+    }
     else{
       if(atual>abertura&&atual<fechamento){
         aberto = true
-        console.log(aberto);
       }else{
         aberto = false
-        console.log(aberto);
       }
     }
+
+    var quaseFechando = fechamento - atual
+    console.log("quaseFechando"+quaseFechando);
+    var quaseFechandoSt=''
+    if(quaseFechando<600000&&quaseFechando>0){
+      quaseFechandoSt=true
+    }else{
+      quaseFechandoSt=false
+    }
+
+    abertoFechado.push({
+      nome:estabelecimento,
+      aberto:aberto,
+      fechando:quaseFechandoSt,
+      horarioFechamento:snapshot.val().fechamento
+    })
+    if(abertoFechado.length==numChildrenLista){
+      onListLoad()
+    }
   })
-  onGetDay()
+
 }catch(error){
-  console.log(error);
+  console.log("ERROR CARALHO"+error);
 }
 }
 
@@ -440,25 +462,69 @@ export async function limparEstabelecimentoProd(){
   console.log("dentro limparEstabelecimentoProd");
   estabelecimentoProd = []
 }
+export var semEstabelecimentos=''
+export function getListaEstabelecimentos(tipoEstabelecimento, bairro,onListLoad){
+  try{
+    listaEstabelecimentos = []
+    abertoFechado=[]
+    numChildrenLista=0
+    db.ref("/tiposEstabelecimentos/"+tipoEstabelecimento).once('value').then(function(snapshot){
+      console.log("snapshot.val()"+snapshot.val());
+      var estabelecimentoData = snapshot.val()
 
-export async function getNomeEstabelecimentos(bairro){
+      if(estabelecimentoData){
+        semEstabelecimentos=false
+        numChildrenLista= snapshot.numChildren()
+        snapshot.forEach((child) =>{
+          console.log("nome"+child.val().Nome);
+          console.log("frete"+child.val().frete[bairro].valor);
+          listaEstabelecimentos.push({
+            logo: child.val().Logo,
+            nome: child.val().Nome,
+            precoDelivery: child.val().PreçoDelivery,
+            tempoEntrega: child.val().TempoEntrega,
+            frete:child.val().frete[bairro].valor,
+            _id:todoCounter++
+          })
+          getDay(child.val().Nome,
+        ()=>{onListLoad()})
+
+        })
+      }else{
+        semEstabelecimentos=true
+        onListLoad()
+        console.log("dentro else estabelecimentodata");
+      }
+
+    })
+  } catch(error){
+    console.log("error lista"+error)
+  }
+}
+
+export function getNomeEstabelecimentos(bairro,onListLoad){
   try{
     nomesEstabelecimentos = []
+    abertoFechado=[]
+    numChildrenLista=0
     db.ref("/nomeEstabelecimentos/").once('value').then(function(snapshot){
       var estabelecimentoTiposProdData = snapshot.val()
       if(estabelecimentoTiposProdData){
+        numChildrenLista= snapshot.numChildren()
         snapshot.forEach((child) =>{
-          console.log("childa.val().nome"+child.val().nome);
-          getDay(child.val().nome,()=>{
-            nomesEstabelecimentos.push({
-              nome: child.val().nome,
-              logo: child.val().logo,
-              frete:child.val().frete[bairro].valor,
-              tipoEstabelecimento: child.val().tipoEstabelecimento
-            });
+          let nome = child.val().nome
+          let logo= child.val().logo
+          let frete= child.val().frete[bairro].valor
+          let tipoEstabelecimento= child.val().tipoEstabelecimento
+          nomesEstabelecimentos.push({
+            nome: nome,
+            logo: logo,
+            frete: frete,
+            tipoEstabelecimento: tipoEstabelecimento
           })
+          getDay(child.val().nome,
+          ()=>{onListLoad()})
         })
-        console.log("nomeEstsbelecimentos"+JSON.stringify(nomesEstabelecimentos));;
       }
     })
   } catch(error){
@@ -551,6 +617,10 @@ export async function getEstabelecimentoInfo(nomeEstabelecimento, callback){
 
           }
 
+
+
+
+
       callback(logo, nome, precoDelivery, tempoEntrega, seg, ter,
         qua, qui, sex, sab, dom, cre, deb, din)
 
@@ -602,9 +672,14 @@ export async function loadMessages(estabelecimento, chave, callback){
   this.messageRef.on('value',function(snap){
     callback({status:snap.val()})
   })
+}
 
-
-
+export async function deleteMessages(estabelecimento, chave){
+  // console.log("dentro loadMessages"+estabelecimento);
+  this.messageRef = db.ref("/messages/"+estabelecimento+"/"+chave)
+  console.log("messageRef"+this.messageRef);
+  this.messageRef.remove()
+  this.messageRef.off()
 }
 
 export async function carregarPedidos(callback){
@@ -641,14 +716,7 @@ export async function carregarPedidos(callback){
         _id:exists
       })
     }
-
   })
-
-
-
-
-
-
 }
 
 export var chaveMsg=""

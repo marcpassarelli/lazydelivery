@@ -43,6 +43,19 @@ export class RedefinePasswordScreen extends Component {
     console.log("this.state.email"+this.state.email);
   }
 
+  componentWillUnmount() {
+      BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+
+  handleBackButtonClick=()=> {
+    this.props.navigation.goBack();
+    return true;
+  }
+
+   componentWillMount(){
+     BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick)
+   }
+
 
    sendEmailRedefinition= ()=>{
     console.log("sendEmailRedefinition");

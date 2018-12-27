@@ -2,7 +2,7 @@ console.ignoredYellowBox = [
     'Setting a timer'
 ]
 import React, { Component } from 'react';
-import { ImageBackground, Image, Text, TouchableOpacity, View } from 'react-native';
+import { ImageBackground, Image, Text, TouchableOpacity, View,BackHandler } from 'react-native';
 import { styles, images} from '../constants/constants'
 import { atualizarEndereco } from '../firebase/database'
 import { Hoshi } from 'react-native-textinput-effects';
@@ -66,7 +66,17 @@ export class AtualizaEnderecoScreen extends Component {
       return this.state.nome+""
     }
 
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    handleBackButtonClick=()=> {
+      this.props.navigation.goBack();
+      return true;
+    }
+
     componentWillMount() {
+      BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick)
       const {state} = this.props.navigation;
       var enderecoUp = state.params ? state.params.enderecoUp : ""
       var bairroUp = state.params ? state.params.bairroUp : ""

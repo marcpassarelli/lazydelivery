@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { ImageBackground, FlatList, Image, View, Text, Button, TouchableHighlight, YellowBox } from 'react-native'
+import { ImageBackground,BackHandler, FlatList, Image, View, Text, Button, TouchableHighlight, YellowBox } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
 import LazyActivity from '../loadingModal/lazyActivity'
 import { updateStatus, carregarPedidos } from '../firebase/database'
@@ -53,12 +53,22 @@ export class DetalhesPedidoScreen extends Component {
     }
 
   }
+  componentWillUnmount() {
+      BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+
+  handleBackButtonClick=()=> {
+    this.props.navigation.goBack();
+    return true;
+  }
 
   componentWillMount(){
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick)
     this.setState({
       loading:true
     });
   }
+
   componentDidMount(){
     const {state} = this.props.navigation
     this.endereco = state.params ? state.params.endereco : ""

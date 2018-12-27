@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { ImageBackground, FlatList, Image, View, Text, Button, TouchableHighlight, YellowBox } from 'react-native'
+import { ImageBackground, FlatList, Image, View, Text, Button, TouchableHighlight, YellowBox,BackHandler } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
 import LazyActivity from '../loadingModal/lazyActivity'
 import { updateStatus, carregarPedidos } from '../firebase/database'
@@ -36,12 +36,24 @@ export class HistoricoPedidosScreen extends Component {
       messages:[],
       refreshing: false
     }
+    this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
 
   }
 
-  componentWillMount(){
 
+  componentWillMount() {
+      BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick)
   }
+
+  componentWillUnmount() {
+      BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+
+  handleBackButtonClick=()=> {
+    this.props.navigation.goBack();
+    return true;
+  }
+
 
   componentDidMount(){
       teste=[]

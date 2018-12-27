@@ -1,9 +1,10 @@
 
 import React, { Component } from 'react';
-import { ImageBackground, Platform, BackHandler, Image, View, Text,TextInput, Button, TouchableOpacity, Dimensions, ScrollView } from 'react-native'
+import { Alert,ImageBackground, Platform, BackHandler, Image, View, Text,TextInput, Button, TouchableOpacity, Dimensions, ScrollView } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
 import {getListaAdicionais, listaAdicionais} from '../firebase/database'
 import {adicionaisEscolhidos} from './adicionais'
+import {aberto} from '../home/home'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Loader from '../loadingModal/loadingModal';
 import StatusBar from '../constants/statusBar'
@@ -20,6 +21,7 @@ export var carrinho =[]
 var todoCounter = 1;
 var totalPrecoAd=0;
 var tag=0
+var estabelecimento=''
 let marginTop = 50
 
 
@@ -73,8 +75,19 @@ export class AddProdutoScreen extends Component{
 // componentDidMount(){
 //   window.addEventListener('scroll', this.handleScroll);
 // }
+componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+}
+
+handleBackButtonClick=()=> {
+  console.log("handleButtonClick");
+  this.props.navigation.dispatch(NavigationActions.back());
+  return true;
+}
+
 
   componentWillMount(){
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick)
     // window.removeEventListener('scroll', this.handleScroll);
     console.log("WILLMOUNT");
     this.setState({
@@ -89,7 +102,7 @@ export class AddProdutoScreen extends Component{
     var imgProduto = state.params ? state.params.imgProduto : ""
     var tipoProduto = state.params ? state.params.tipoProduto : ""
 
-    var estabelecimento = state.params ? state.params.nomeEstabelecimento : ""
+    estabelecimento = state.params ? state.params.nomeEstabelecimento : ""
 
     var telaAdicionais = state.params ? state.params.telaAdicionais : ""
     var tipoEstabelecimento = state.params ? state.params.tipoEstabelecimento : ""
@@ -131,7 +144,7 @@ export class AddProdutoScreen extends Component{
     if(qtde>0){
       let qtde = this.state.qtde
       qtde = qtde - 1
-      let preco = parseFloat(this.state.preco)
+      let preco = this.state.preco
       let total = (qtde*preco).toFixed(2)
       this.setState({
         qtde: qtde,
@@ -146,8 +159,10 @@ export class AddProdutoScreen extends Component{
   maisQtde(){
     let qtde = this.state.qtde
     qtde = qtde + 1
-    let preco = parseFloat(this.state.preco)
-    let total = (qtde*preco).toFixed(2)
+    let preco = this.state.preco
+    let total = parseFloat(qtde*preco)
+    console.log('total'+total);
+    total = total.toFixed(2)
 
     this.setState({
       qtde: qtde
@@ -242,52 +257,33 @@ export class AddProdutoScreen extends Component{
   }
 
   valorVirgula(valor){
-
+    console.log("valor"+valor);
     var str = parseFloat(valor)
-    str = (str).toFixed(2)
+    str = str.toFixed(2)
     var res = str.toString().replace(".",",")
     return(
         <Text style={[styles.textAddProduto,{color:cores.textDetalhes}]}>{res}</Text>
     )
   }
 
- onBackButtonPressAndroid = () =>{
-   const {navigate} = this.props.navigation
-   const {state} = this.props.navigation
-   navigate('Estabelecimento',
-   {nomeEstabelecimento:state.params.nomeEstabelecimento,
-   tipoEstabelecimento: state.params.tipoEstabelecimento})
-   return true
- }
+ // onBackButtonPressAndroid = () =>{
+ //   const {navigate} = this.props.navigation
+ //   const {state} = this.props.navigation
+ //   navigate('Estabelecimento',
+ //   {nomeEstabelecimento:state.params.nomeEstabelecimento,
+ //   tipoEstabelecimento: state.params.tipoEstabelecimento})
+ //   return true
+ // }
 
- handleScroll=(e)=>{
-
-     console.log("inside onScroll");
-     if (this.isCloseToBottom(e.nativeEvent.layoutMeasurement,e.nativeEvent.contentOffset,e.nativeEvent.contentSize)) {
-       console.log("end reached");
-       this.setState({
-         moreContent:false
-       });
-     }
- }
 
  isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
    console.log("inside isCloseToBottom");
    return layoutMeasurement.height + contentOffset.y >= contentSize.height - 1;
  };
 
-   // onLayout={(e) => {
-   //   // console.log("nativeEvent.layout.width"+e.nativeEvent.layout.width);
-   //   // console.log("nativeEvent.layout.height"+e.nativeEvent.layout.height);
-   //   // console.log("nativeEvent.layout.x"+e.nativeEvent.layout.x);
-   //   // console.log("nativeEvent.layout.y"+e.nativeEvent.layout.y);
-   //   // if (this.isCloseToBottom(nativeEvent)) {
-   //   //   console.log("end reached");
-   //   //   this.setState({
-   //   //     moreContent:false
-   //   //   });
-   //   // }
-   // }}
+ handleImageLoaded() {
+  this.setState({ imageLoaded: false});
+}
 
   render() {
     const {state} = this.props.navigation
@@ -303,7 +299,7 @@ export class AddProdutoScreen extends Component{
       <LazyActivity/>
     </View> :
 
-    <AndroidBackHandler onBackPress={this.onBackButtonPressAndroid}>
+
     <View style={{flex:1}}>
       <StatusBar/>
       <ScrollView contentContainerStyle={{flexGrow: 1}}>
@@ -366,11 +362,7 @@ export class AddProdutoScreen extends Component{
           </Text>
         </TouchableOpacity>
         :
-        <View onLayout={()=>{
-            this.setState({
-              imageLoaded: false
-            });
-          }}></View>
+        <View></View>
       }
         <View style={{marginHorizontal:wp('14.5%'),flexDirection: 'row',flexWrap: 'wrap',justifyContent: 'center',alignContent: 'center'}}>{
             this.state.tipoProduto == "Pizzas" ?
@@ -401,52 +393,76 @@ export class AddProdutoScreen extends Component{
         <View>
           {this.checkAdicionais()}
         </View>
-
-
       </ScrollView>
     </View>
-    </AndroidBackHandler>
 
     return (
-      <ImageBackground
-        source={{uri:this.state.imgProduto}}
-        style={styles.backgroundImageAddProduto}>
-        <Loader
-          loading={this.state.loadingAfter}
-          message="Aguarde enquanto a preguiça adiciona o item ao carrinho."/>
-        <KeyboardAwareScrollView>
-          {content}
-        </KeyboardAwareScrollView>
-        <View style={{}}>
+      <View>
+        <ImageBackground
+          source={{uri:this.state.imgProduto}}
+          style={styles.backgroundImageAddProduto}
+          onLoad={this.handleImageLoaded.bind(this)}>
+          {this.state.imageLoaded ?
+            <View style={{alignContent: 'center',justifyContent: 'center',alignSelf: 'center'}}>
+              <LazyActivity/>
+            </View>
+          :
+          <View>
+          <Loader
+            loading={this.state.loadingAfter}
+            message="Aguarde enquanto a preguiça adiciona o item ao carrinho."/>
+          <KeyboardAwareScrollView>
+            {content}
+          </KeyboardAwareScrollView>
+          <View style={{}}>
 
-          <Text style={[styles.textAddProduto,{
-              marginBottom: 0,
-              marginLeft:wp('4.45%'),
-              alignSelf: 'flex-start',color:cores.textDetalhes}]}>Observações:</Text>
-          <TextInput
-            style={{backgroundColor: 'rgba(240,240,240,0.5)',
-              marginLeft:wp('4.38%'),
-              marginRight: 8,
-              marginVertical: hp('0.88%'),
-              borderRadius: 10,
-              fontSize: wp('3%'),
-              color:'#FFFFFF',
-              fontFamily: 'Futura Medium',
-              height:hp('5.5%')}}
-            onChangeText={(text) => this.setState({obs: text})}
-            value={this.state.obs}
-            placeholder='Indique o ponto da carne ou para tirar algum ingrediente.'
-            placeholderTextColor='#FFFFFF'
-            >
-          </TextInput>
-        </View>
-        <LazyYellowButton
-          styleButton={{width: wp('100%')}}
-          styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal, fontSize: wp('5%')}}
-          onPress={()=>{this.adicionarAoCarrinho()}}
-          text={"ADICIONAR AO CARRINHO"}
-          />
-      </ImageBackground>
+            <Text style={[styles.textAddProduto,{
+                marginBottom: 0,
+                marginLeft:wp('4.45%'),
+                alignSelf: 'flex-start',color:cores.textDetalhes}]}>Observações:</Text>
+            <TextInput
+              style={{backgroundColor: 'rgba(240,240,240,0.5)',
+                marginLeft:wp('4.38%'),
+                marginRight: 8,
+                marginVertical: hp('0.88%'),
+                borderRadius: 10,
+                fontSize: wp('3%'),
+                color:'#FFFFFF',
+                fontFamily: 'Futura Medium',
+                height:hp('5.5%')}}
+              onChangeText={(text) => this.setState({obs: text})}
+              value={this.state.obs}
+              placeholder='Indique o ponto da carne ou para tirar algum ingrediente.'
+              placeholderTextColor='#FFFFFF'
+              >
+            </TextInput>
+          </View>
+          <LazyYellowButton
+            styleButton={{width: wp('100%')}}
+            styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal, fontSize: wp('5%')}}
+            onPress={()=>{
+              if(aberto){
+                this.adicionarAoCarrinho()
+              }else{
+                Alert.alert(
+                 'ESTABELECIMENTO FECHADO',
+                 ''+estabelecimento+' encontra-se fechado no momento. Você poderá ver os produtos mas sem adicionar ao carrinho ou encaminhar o pedido. Acesse a aba INFORMAÇÕES para saber o horário de funcionamento.',
+                 [
+                   {text: 'OK', onPress: () => {
+
+                   }},
+                 ],
+                 { cancelable: false }
+               )
+              }
+              }}
+            text={"ADICIONAR AO CARRINHO"}
+            />
+          </View>
+          }
+
+        </ImageBackground>
+      </View>
     );
   }
 }

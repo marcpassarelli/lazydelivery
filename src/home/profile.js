@@ -3,7 +3,7 @@ console.ignoredYellowBox = [
 ]
 
 import React, { Component } from 'react';
-import { ImageBackground, Image, Alert, Text, View, TouchableOpacity } from 'react-native'
+import { Platform,ImageBackground, Image, Alert, Text, View, TouchableOpacity,BackHandler } from 'react-native'
 import LazyActivity from '../loadingModal/lazyActivity'
 import { styles, images, cores } from '../constants/constants'
 import { logout, getUserProfile } from '../firebase/database'
@@ -11,6 +11,8 @@ import FBSDK, { AccessToken, GraphRequestManager, GraphRequest } from 'react-nat
 import { auth} from '../firebase/firebase'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import LazyYellowButton from '../constants/lazyYellowButton'
+
+let listener =null
 
 export class ProfileScreen extends Component {
 
@@ -39,7 +41,19 @@ export class ProfileScreen extends Component {
    ),
   };
 
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+
   async componentWillMount(){
+
+
+      BackHandler.addEventListener("hardwareBackPress", () => {
+        console.log("dentro backhandler");
+        this.props.navigation.navigate('Home')
+      })
+
+
     this.setState({
             loading: true
           });

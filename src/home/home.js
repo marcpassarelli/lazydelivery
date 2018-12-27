@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { ImageBackground, Image, Alert, View, Text, BackHandler, Platform, FlatList, Modal, AsyncStorage } from 'react-native'
 import { styles, cores, images } from '../constants/constants'
-import { listaEnderecos, getUserListEnd, checkUserDetails,deleteEnd, getUserEndAtual, getNomeEstabelecimentos, nomesEstabelecimentos } from '../firebase/database'
+import { abertoFechado, listaEnderecos, getUserListEnd, checkUserDetails,deleteEnd, getUserEndAtual, getNomeEstabelecimentos, nomesEstabelecimentos } from '../firebase/database'
 import HomeListItem from './homeListItem'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import StatusBar from '../constants/statusBar'
@@ -19,6 +19,24 @@ import ListItemSeparator from '../constants/listItemSeparator'
 
 let listener = null
 let user =''
+let newListaEstabelecimentosOpen = []
+let todoCounter=0
+
+export var aberto=''
+export var fechando=''
+export var horarioFechamento=''
+export function atualizarAberto(abertoNovo,fechandoNovo,horarioFechamentoNovo){
+  aberto = abertoNovo
+  fechando = fechandoNovo
+  horarioFechamento = horarioFechamentoNovo
+}
+
+
+export var frete =0
+export function atualizarFrete(freteNovo){
+  frete = parseFloat(freteNovo)
+}
+
 
 export class HomeScreen extends Component {
   static navigationOptions = {
@@ -71,14 +89,19 @@ export class HomeScreen extends Component {
     )
   }
 
-  async componentDidMount(){
-
-
+  componentWillMount(){
     if (Platform.OS == "android" && listener == null) {
       listener = BackHandler.addEventListener("hardwareBackPress", () => {
         BackHandler.exitApp()
       })
     }
+  }
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+
+  async componentDidMount(){
+
     //checar se o usuario já tem o cadastro completo
     checkUserDetails(
       //se já tiver cadastro completo
@@ -92,7 +115,6 @@ export class HomeScreen extends Component {
           });
 
     this.user = await auth.currentUser;
-    console.log('rendered again');
 
 
     getUserListEnd(this.user.uid,
@@ -104,18 +126,63 @@ export class HomeScreen extends Component {
             bairro:bairroP,
             referencia:referenciaP
           },function(){
-            getNomeEstabelecimentos(this.state.bairro)
-          });
-          this.setState({
-                  loadingList: false,
-                  listaModalEnd: listaEnderecos
+            getNomeEstabelecimentos(this.state.bairro,
+            ()=>{
+              newListaEstabelecimentosOpen=[]
+              abertoFechado.map((aberto,index2)=>{
+                nomesEstabelecimentos.map((lista,index)=>{
+
+                  // console.log("lista.frete"+lista.frete+"  lista.nome"+lista.nome);
+                  if(aberto.nome==lista.nome){
+                    if(aberto.aberto==true&&lista.frete!='n'){
+
+                      newListaEstabelecimentosOpen.push({
+                        logo: lista.logo,
+                        nome: lista.nome,
+                        tipoEstabelecimento:lista.tipoEstabelecimento,
+                        frete:lista.frete,
+                        aberto:aberto.aberto,
+                        fechando:aberto.fechando,
+                        horarioFechamento:aberto.horarioFechamento,
+                        _id:todoCounter++
+                      })
+                    }else if(aberto.aberto==false&&lista.frete!='n'){
+
+                      newListaEstabelecimentosOpen.push({
+                        logo: lista.logo,
+                        nome: lista.nome,
+                        tipoEstabelecimento:lista.tipoEstabelecimento,
+                        frete:lista.frete,
+                        aberto:aberto.aberto,
+                        fechando:aberto.fechando,
+                        horarioFechamento:aberto.horarioFechamento,
+                        _id:todoCounter++
+                      })
+                    }
+                  }
+                })
+              })
+              this.setState({
+                listaModalEnd: listaEnderecos,
+              },function(){
+                this.setState({
+                    nomesEstabSearch: newListaEstabelecimentosOpen,
+                    loadingList:false
+                },function(){
+
+
                 });
+              });
+            })
+          })
+
         }else{
           this.setState({
             endereco: listaEnderecos[0].endereco,
             bairro:listaEnderecos[0].bairro,
             referencia:listaEnderecos[0].referencia
           },async function(){
+            // getNomeEstabelecimentos(this.state.bairro)
             try {
               await AsyncStorage.multiSet([['endAtual', this.state.endereco],
                                           ['bairro', this.state.bairro], ['referencia', this.state.referencia]]);
@@ -123,19 +190,26 @@ export class HomeScreen extends Component {
             } catch (error) {
               console.log("error AsyncStorage cadastrarEndereco"+error)
             }
-          });
+          })
+          // getDay()
           this.setState({
-                  loadingList: false,
-                  listaModalEnd: listaEnderecos
+                  listaModalEnd: listaEnderecos,
+                  loadingList:false
                 });
         }
         })
     })
 
-    this.setState({
-      nomesEstabSearch: nomesEstabelecimentos
-    });
 
+    // ,function(){
+    //   this.state.nomesEstabSearch.map((item,index)=>{
+    //     getDay(item.nome,()=>{
+    //       this.setState({
+    //         loadingList: false
+    //       });
+    //     })
+    //   })
+    // }
 
   }
 
@@ -148,6 +222,9 @@ export class HomeScreen extends Component {
           data= {this.state.nomesEstabSearch}
           renderItem= {({item}) =>
           <SearchEstabelecimentoListItem
+            horarioFechamento={item.horarioFechamento}
+            aberto={item.aberto}
+            fechando={item.fechando}
             frete={item.frete}
             estabelecimento = {item.nome}
             tipoEstabelecimento = {item.tipoEstabelecimento}
@@ -163,7 +240,7 @@ export class HomeScreen extends Component {
     this.setState({
       showProcura: true,
       opacity: 0.2})
-    const newData = nomesEstabelecimentos.filter(function(item){
+    const newData = newListaEstabelecimentosOpen.filter(function(item){
       const itemData= item.nome.toUpperCase()
       const textData= text.toUpperCase()
       return itemData.indexOf(textData) > -1
@@ -172,7 +249,6 @@ export class HomeScreen extends Component {
       nomesEstabSearch: newData,
       text: text
     }, function(){
-      console.log("nomesEstabSearch"+this.state.nomesEstabSearch);
       if(!this.state.text){
         this.setState({
           showProcura:false,
@@ -197,7 +273,7 @@ export class HomeScreen extends Component {
             bairro:bairroP,
             referencia:referenciaP
           },function(){
-            console.log("state.endereco"+this.state.endereco);
+
           });
           this.setState({
                   loadingList: false,
@@ -241,7 +317,7 @@ export class HomeScreen extends Component {
    // }
 
    deleteEnd = (item)=>{
-     console.log("listaenderecos"+JSON.stringify(listaEnderecos));
+
      if(listaEnderecos.length>1){
        Alert.alert(
          'Deletar Endereço',
@@ -250,14 +326,12 @@ export class HomeScreen extends Component {
            {text: 'Sim', onPress: () => {
              //se endereço deletado for o selecionado
              if(this.state.endereco==item.endereco){
-               console.log("dentro if");
+
                deleteEnd(this.user.uid,item.key,
                ()=>{
                  getUserListEnd(this.user.uid,
                  async()=>{
-                   console.log("endereco"+listaEnderecos[0].endereco);
-                   console.log("bairro"+listaEnderecos[0].bairro);
-                   console.log("referencia"+listaEnderecos[0].referencia);
+
                    try {
                      await AsyncStorage.multiSet([['endAtual', listaEnderecos[0].endereco],
                                                  ['bairro', listaEnderecos[0].bairro], ['referencia', listaEnderecos[0].referencia]]);
@@ -275,7 +349,7 @@ export class HomeScreen extends Component {
              }
              //se endereco deletado NÃO for o selecionado
              else{
-               console.log("dentro else");
+
                deleteEnd(this.user.uid,item.key,
                ()=>{
                  getUserListEnd(this.user.uid,
@@ -290,7 +364,7 @@ export class HomeScreen extends Component {
 
           }},
            {text: 'Não', onPress: ()=>{
-             console.log("cancelado");
+
            }},
          ],
          {cancelable: false}
@@ -308,16 +382,70 @@ export class HomeScreen extends Component {
    }
 
    selecionaEnd =  (item) =>{
-     getNomeEstabelecimentos(item.bairro)
+     this.setState({
+       loadingList:true
+     });
+     getNomeEstabelecimentos(item.bairro,
+     ()=>{
+       newListaEstabelecimentosOpen=[]
+       abertoFechado.map((aberto,index2)=>{
+         nomesEstabelecimentos.map((lista,index)=>{
+
+           console.log("lista.frete"+lista.frete+"  lista.nome"+lista.nome);
+           if(aberto.nome==lista.nome){
+             if(aberto.aberto==true&&lista.frete!='n'){
+
+               newListaEstabelecimentosOpen.push({
+                 logo: lista.logo,
+                 nome: lista.nome,
+                 tipoEstabelecimento:lista.tipoEstabelecimento,
+                 frete:lista.frete,
+                 aberto:aberto.aberto,
+                 fechando:aberto.fechando,
+                 horarioFechamento:aberto.horarioFechamento,
+                 _id:todoCounter++
+               })
+             }else if(aberto.aberto==false&&lista.frete!='n'){
+
+               newListaEstabelecimentosOpen.push({
+                 logo: lista.logo,
+                 nome: lista.nome,
+                 tipoEstabelecimento:lista.tipoEstabelecimento,
+                 frete:lista.frete,
+                 aberto:aberto.aberto,
+                 fechando:aberto.fechando,
+                 horarioFechamento:aberto.horarioFechamento,
+                 _id:todoCounter++
+               })
+             }
+           }
+         })
+       })
+       this.setState({
+         listaModalEnd: listaEnderecos,
+         nomesEstabSearch:newListaEstabelecimentosOpen,
+       },function(){
+
+       });
+
+     })
      try {
        this.setState({
          endereco:item.endereco,
          bairro:item.bairro,
          referencia:item.referencia,
-         nomesEstabSearch:nomesEstabelecimentos
        }, async function(){
          await AsyncStorage.multiSet([['endAtual', item.endereco],
                                      ['bairro', item.bairro], ['referencia', item.referencia]]);
+
+         this.setState({
+
+           loadingList:false
+         },function(){
+           this.state.nomesEstabSearch.map((item,index)=>{
+             console.log("item.nome"+item.nome);
+           })
+         });
 
        });
 

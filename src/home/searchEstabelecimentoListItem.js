@@ -3,7 +3,9 @@ import { Image, View, Text, TouchableOpacity, ListView } from 'react-native'
 import { styles, images} from '../constants/constants'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import StatusBar from '../constants/statusBar'
-import { getEstabelecimentoProd, } from '../firebase/database'
+import {atualizarAberto,atualizarFrete}from'../home/home'
+import { getEstabelecimentoProd } from '../firebase/database'
+
 
 import _ from 'lodash'
 
@@ -40,18 +42,19 @@ export default class SearchEstabelecimentoListItem extends Component {
     ]
 
     return (
+      <View style={{flexDirection: 'row'}}>
       <TouchableOpacity
         style={[styles.containerSearchListItem,{marginBottom:5}]}
         onPress = {() => {
           if(this.props.frete=='gratis'){
-            frete = 0
+            atualizarFrete(0)
           }else{
-            frete = this.props.frete
+            atualizarFrete(this.props.frete)
           }
+          atualizarAberto(this.props.aberto,this.props.fechando,this.props.horarioFechamento)
           this.props.navigation.navigate('Estabelecimento',
           {nomeEstabelecimento: this.props.estabelecimento,
-           tipoEstabelecimento: this.props.tipoEstabelecimento, telaAnterior:"home",
-          frete:frete})
+           tipoEstabelecimento: this.props.tipoEstabelecimento, telaAnterior:"home"})
         }}>
         <Image
           source={{uri:this.props.imglogo}}
@@ -63,6 +66,17 @@ export default class SearchEstabelecimentoListItem extends Component {
           {this.functionValorFrete(this.props.frete)}
         </View>
       </TouchableOpacity>
+      {this.props.aberto?
+      <View></View>:
+      <View style={{marginRight:wp('5.31%'),alignContent: 'center',alignItems:'center',justifyContent: 'center'}}>
+        {
+          this.props.aberto?
+          <View></View> :
+          <Text style={[styles.textDetalhesEstabelecimento,{color: 'red',fontSize:wp('4%')}]}>FECHADO</Text>
+        }
+      </View>
+      }
+    </View>
 
   )
 }
