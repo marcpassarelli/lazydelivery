@@ -96,6 +96,7 @@ export class AdicionaisScreen extends Component{
             nome: item.nome,
             preco: item.preco,
             quantidade: item.quantidade,
+            tipoProduto: this.tipoProduto,
             _id:todoCounter++
           })
         }

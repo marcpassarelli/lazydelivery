@@ -9,6 +9,7 @@ import SearchEstabelecimentoListItem from './searchEstabelecimentoListItem'
 import {dadosTipoEstabelecimento} from './dadosTipoEstabelecimento'
 import { SearchBar } from 'react-native-elements'
 import Loader from '../loadingModal/loadingModal';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {auth} from '../firebase/firebase'
 
 import _ from 'lodash'
@@ -69,7 +70,7 @@ export class DestaquesScreen extends Component {
           });
     let user = await auth.currentUser;
 
-    getNomeEstabelecimentos()
+    // getNomeEstabelecimentos()
 
     this.setState({
       nomesEstabSearch: nomesEstabelecimentos
@@ -178,11 +179,7 @@ export class DestaquesScreen extends Component {
       'Setting a timer'
     ]
 
-    const content = this.state.loadingList ?
-
-    <View style={styles.containerIndicator}>
-      <LazyActivity/>
-    </View> :
+    const content =
 
     <View style={{flex:1}}>
       <Text style={{fontSize: wp('5%'), marginTop: hp('3.33%')}}>Em breve...</Text>
@@ -200,3 +197,13 @@ export class DestaquesScreen extends Component {
 }
 
 }
+// const content = this.state.loadingList ?
+//
+// <View style={styles.containerIndicator}>
+//   <LazyActivity/>
+// </View> :
+//
+// <View style={{flex:1}}>
+//   <Text style={{fontSize: wp('5%'), marginTop: hp('3.33%')}}>Em breve...</Text>
+// </View>
+//

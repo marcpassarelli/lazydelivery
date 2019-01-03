@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BackHandler,ImageBackground, Platform, Image, Alert, View, Text, Button, SectionList, Animated } from 'react-native'
+import { ScrollView,BackHandler,ImageBackground, Platform, Image, Alert, View, Text, Button, SectionList, Animated } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
 import {getDay, getEstabelecimentoProd, zerarAdicionais,estabelecimentoProd, listaTamanhosPizzas, getTamanhosPizzas, numTamanhos} from '../firebase/database'
 import EstabelecimentoProdutosListItem from './estabelecimentoProdutosListItem'
@@ -67,7 +67,7 @@ sectionDataFunction(){
 
   var indexToRemove = []
   listaPizzas = []
-
+  console.log("newEstabelecimentoProd"+JSON.stringify(newEstabelecimentoProd));
   //pega as pizzas do cardápio e adicionar em listPizzas e criar array de indices q devem ser removidos
   newEstabelecimentoProd.map((item,i)=>{
     if(item.tipo==="Pizzas"){
@@ -75,7 +75,9 @@ sectionDataFunction(){
       indexToRemove.push(i)
     }
   })
-
+  console.log("listaPizzas"+listaPizzas.length);
+  console.log("listaPizzas"+JSON.stringify(listaPizzas));
+  if(listaPizzas.length>0){
   //Remover Pizzas da lista de produtos
   for (var i = indexToRemove.length - 1; i>=0;i--){
     newEstabelecimentoProd.splice(indexToRemove[i],1)
@@ -87,10 +89,11 @@ sectionDataFunction(){
 
   // organiza por qtde de fatias para definir ordem das pizzas no cardápio
   newListaTamanhosPizzas = _.orderBy(listaTamanhosPizzas, ['fatias'], ['asc'])
+
   var ordemPizza = listaPizzas[0].ordem
   //array de sabores de pizza agrupados por tamanhos
   listaPizzas = _.groupBy(listaPizzas,'tamanho')
-  console.log("listaPizzas"+JSON.stringify(listaPizzas));
+
 
 //Cria lista baseado na qtde de sabores q um tamanho aceita, tamanho, qtde fatias e o preco mínimo
   //id para itens da lista
@@ -131,7 +134,7 @@ sectionDataFunction(){
           }
         }
     })
-
+}
 //Separa lista por tipo de produto
 
   sectionData = _.orderBy(newEstabelecimentoProd, ['ordem','nomeProduto'], ['asc','asc'])
@@ -161,13 +164,14 @@ handleBackButtonClick=()=> {
 }
 
 componentWillMount(){
+  this.setState({
+          loadingList: true
+        });
 BackHandler.addEventListener('hardwareBackPress', ()=>this.handleBackButtonClick)
 
   console.log("frete estabelecimento produtos"+frete);
   zerarAdicionais()
-  this.setState({
-          loadingList: true
-        });
+
   const {state} = this.props.navigation
   var estabelecimento = state.params ? state.params.nomeEstabelecimento : ""
   if(!aberto){
@@ -211,7 +215,9 @@ BackHandler.addEventListener('hardwareBackPress', ()=>this.handleBackButtonClick
     ()=>{
       this.setState({
               loadingList: false
-            })
+      },function(){
+        console.log("sectiondata"+JSON.stringify(sectionData));
+      })
     })
   }
 //para não precisar carregar novamente a lista
@@ -346,35 +352,6 @@ functionButton(){
   }
 }
 
-// onBackButtonPressAndroid = () =>{
-//   const {navigate} = this.props.navigation
-//   const {state} = this.props.navigation
-//   if(carrinho.length>0){
-//     Alert.alert(
-//       'Sair do Estabelecimento',
-//       'Tem certeza que deseja sair deste estabelecimento? Todos os items do carrinho serão perdido.',
-//       [
-//         {text: 'Sim', onPress: () => {
-//           console.log("tipoestabelecimento onPress:"+navigation.state.params.tipoEstabelecimento);
-//           atualizarCarrinho([])
-//           navigation.navigate('ListaEstabelecimentos',
-//           {tipoEstabelecimento:navigation.state.params.tipoEstabelecimento})
-//           return true
-//         }},
-//         {text: 'Não', onPress: ()=>{
-//           console.log("cancelado");
-//         }},
-//       ],
-//       {cancelable: false}
-//     )
-//   }else{
-//     navigation.navigate('Home')
-//     return true
-//   }
-//
-// }
-
-
 
   render() {
 
@@ -389,8 +366,10 @@ functionButton(){
     </View> :
 
 
-    <View style={{flex: 1}}>
+    <View>
       <SectionList
+        removeClippedSubviews={true}
+        scrollEventThrottle={16}
         ItemSeparatorComponent={this.renderListItemSeparator}
         SectionSeparatorComponent={this.renderSeparatorSection}
         renderItem={this.renderItem}

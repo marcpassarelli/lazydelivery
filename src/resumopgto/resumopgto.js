@@ -5,7 +5,7 @@ import { styles, cores, images} from '../constants/constants'
 import LazyActivity from '../loadingModal/lazyActivity'
 import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
 import { getUserProfile, getUserEndAtual, getEstabelecimentoInfo,
-  loadMessages, sendMessage,deleteMessages, salvarPedido} from '../firebase/database'
+  loadMessages, loadMessagesSemItem, sendMessage,deleteMessages, salvarPedido} from '../firebase/database'
 import ResumoCarrinhoListItem from './resumoCarrinhoListItem'
 import {frete} from '../home/home'
 import ResumoInformacoes from './resumoInformacoes'
@@ -23,7 +23,6 @@ let teste=[];
 let estabelecimento=""
 let pedidoKey=''
 const produtosCarrinho = []
-
 var myVar;
 
 export class ResumoPgtoScreen extends Component{
@@ -184,10 +183,8 @@ checkTimeOut=(key)=>{
 }
 
 timeoutPedido=(key)=>{
-  console.log("inside timeout");
-  myVar = setTimeout(()=>{
-    this.checkTimeOut(key)
-  }, 60000);
+  var myVar1 = setTimeout(()=> { this.checkTimeOut(key) }, 60000);
+  myVar = myVar1
 }
 
 fazerPedido(){
@@ -227,6 +224,7 @@ fazerPedido(){
         //mandar informação do pedido para o banco de dados do pedido
 
         sendMessage(this.state.retirar, this.state.produtosCarrinho, formaPgto, formaPgtoDetalhe,
+          this.state.frete,this.totalPrice,
            this.state.nome, this.state.telefone, this.state.endereco, this.state.bairro,
            this.state.referencia, this.state.nomeEstabelecimento, "Aguardando Confirmação",(key)=>{
              this.timeoutPedido(key.key)
@@ -234,9 +232,10 @@ fazerPedido(){
 
              //aguardar confirmação do estabelecimento
              loadMessages(this.state.nomeEstabelecimento, key.key, (message)=>{
-               clearTimeout(myVar)
-               myVar=0
+
                if(message.status=="Confirmado Recebimento"){
+                 clearTimeout(myVar)
+                 myVar=0
                  this.setState({
                    esperandoConfirmacao: false
                  },function(){
@@ -258,7 +257,9 @@ fazerPedido(){
                     { cancelable: false }
                   )
                  });
-               }else if(message.status=="Estabelecimento Fechado"){
+               }else if(message.status=="estabFechado"){
+                 clearTimeout(myVar)
+                 myVar=0
                  this.setState({
                    esperandoConfirmacao: false
                  },function(){
@@ -268,12 +269,33 @@ fazerPedido(){
                      [
                        {text: 'OK', onPress: () => {
                          const { navigate } = this.props.navigation;
-                         navigate('Carrinho')
+                         navigate('Home')
                        }},
                      ],
                      { cancelable: false }
                    )
                  });
+               }else if(message.status=="semItem"){
+                 clearTimeout(myVar)
+                 myVar=0
+                 loadMessagesSemItem(this.state.nomeEstabelecimento, key.key,(itemIndisponivel)=>{
+                   console.log("itemIndisponivel"+JSON.stringify(itemIndisponivel));
+                   this.setState({
+                     esperandoConfirmacao: false
+                   },function(){
+                     Alert.alert(
+                       'Falta de Disponibilidade de um dos items.',
+                       'Devido a falta de disponibilidade do item '+itemIndisponivel.nome.nome+', seu pedido não foi aceito. Sentimos muito pelo incomodo.',
+                       [
+                         {text: 'OK', onPress: () => {
+                           const { navigate } = this.props.navigation;
+                           navigate('Carrinho')
+                         }},
+                       ],
+                       { cancelable: false }
+                     )
+                   });
+                 })
                }
              })
            })
@@ -419,7 +441,7 @@ render() {
   <View style={{flex:1}}>
     <Loader
             loading={this.state.esperandoConfirmacao}
-            message="Aguarde enquanto o estabelecimento confirma o recebimento do pedido..." />
+            message="Aguarde enquanto o estabelecimento confirma o recebimento do pedido. Pode durar até 1 minuto.." />
           <View style={{maxHeight: 150}}>
 
       {/* Resumo Carrinho */}

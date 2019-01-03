@@ -301,7 +301,7 @@ export async function checkUserDetails(userExiste, userNaoExiste){
 
 
 
-export async function getEstabelecimentoProd(nomeEstabelecimento, sectionDataFunction, onListLoad ){
+export function getEstabelecimentoProd(nomeEstabelecimento, sectionDataFunction, onListLoad ){
   try{
     estabelecimentoProd = []
     db.ref("/produtos/"+nomeEstabelecimento).once('value').then(function(snapshot){
@@ -330,7 +330,7 @@ export async function getEstabelecimentoProd(nomeEstabelecimento, sectionDataFun
   }
 }
 
-export async function getTamanhosPizzas(nomeEstabelecimento){
+export function getTamanhosPizzas(nomeEstabelecimento){
   try{
     listaTamanhosPizzas = []
     db.ref("/pizza/"+nomeEstabelecimento).once('value').then(function(snapshot){
@@ -415,7 +415,7 @@ try{
     }
 
     var quaseFechando = fechamento - atual
-    console.log("quaseFechando"+quaseFechando);
+
     var quaseFechandoSt=''
     if(quaseFechando<600000&&quaseFechando>0){
       quaseFechandoSt=true
@@ -441,7 +441,7 @@ try{
 
 
 
-export async function limparEstabelecimentoProd(){
+export function limparEstabelecimentoProd(){
   console.log("dentro limparEstabelecimentoProd");
   estabelecimentoProd = []
 }
@@ -514,7 +514,7 @@ export function getNomeEstabelecimentos(bairro,onListLoad){
   }
 }
 
-export async function getEstabelecimentoInfo(nomeEstabelecimento, callback){
+export function getEstabelecimentoInfo(nomeEstabelecimento, callback){
   try{
     estabelecimentoInfo = []
     db.ref("/infoEstabelecimentos/"+nomeEstabelecimento).once('value').then(function(snapshot){
@@ -618,7 +618,7 @@ export function zerarAdicionais(){
   listaAdicionais=[]
 }
 
-export async function getListaAdicionais(nomeEstabelecimento, tipoProduto, onListLoad){
+export function getListaAdicionais(nomeEstabelecimento, tipoProduto, onListLoad){
   try{
     listaAdicionais = []
     todoCounter=0
@@ -646,7 +646,7 @@ export async function getListaAdicionais(nomeEstabelecimento, tipoProduto, onLis
 
 }
 
-export async function loadMessages(estabelecimento, chave, callback){
+export function loadMessages(estabelecimento, chave, callback){
   // console.log("dentro loadMessages"+estabelecimento);
   this.messageRef = db.ref("/messages/"+estabelecimento+"/"+chave+"/status")
   console.log("messageRef"+this.messageRef);
@@ -656,7 +656,23 @@ export async function loadMessages(estabelecimento, chave, callback){
   })
 }
 
-export async function deleteMessages(estabelecimento, chave){
+export function loadMessagesSemItem(estabelecimento, chave, callback){
+  // console.log("dentro loadMessages"+estabelecimento);
+  this.messageRef = db.ref("/messages/"+estabelecimento+"/"+chave+"/itemIndisponivel")
+  console.log("messageRef"+this.messageRef);
+  this.messageRef.off();
+  this.messageRef.on('value',function(snap){
+    snap.forEach((child)=>{
+      
+      callback({nome:child.val()})
+    })
+
+
+  })
+}
+
+
+export function deleteMessages(estabelecimento, chave){
   // console.log("dentro loadMessages"+estabelecimento);
   this.messageRef = db.ref("/messages/"+estabelecimento+"/"+chave)
 
@@ -702,8 +718,8 @@ export async function carregarPedidos(callback){
 }
 
 export var chaveMsg=""
-export async function sendMessage(retirarNovo, carrinhoNovo, formaPgtoNovo, formaPgtoDetalheNovo,
-   nomeNovo, telefoneNovo, enderecoNovo, bairroNovo, referenciaNovo,
+export function sendMessage(retirarNovo, carrinhoNovo, formaPgtoNovo, formaPgtoDetalheNovo,
+  freteNovo, totalNovo,nomeNovo, telefoneNovo, enderecoNovo, bairroNovo, referenciaNovo,
    estabelecimento, statusNovo, key) {
 
     this.messageRef = db.ref("/messages/"+estabelecimento+"/")
@@ -712,6 +728,8 @@ export async function sendMessage(retirarNovo, carrinhoNovo, formaPgtoNovo, form
       carrinho: carrinhoNovo,
       formaPgto: formaPgtoNovo,
       formaPgtoDetalhe: formaPgtoDetalheNovo,
+      frete:freteNovo,
+      total:totalNovo,
       nome: nomeNovo,
       telefone: telefoneNovo,
       endereco: enderecoNovo,
@@ -746,7 +764,7 @@ export async function sendMessage(retirarNovo, carrinhoNovo, formaPgtoNovo, form
     })
   }
 
-  export async function retiraLoja(nomeEstabelecimento, callback){
+  export function retiraLoja(nomeEstabelecimento, callback){
     try{
       db.ref("/infoEstabelecimentos/"+nomeEstabelecimento+"/retiraLoja").once('value').then(function(snapshot){
           callback({retiraLoja: snapshot.val()})

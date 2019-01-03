@@ -193,7 +193,7 @@ handleBackButtonClick=()=> {
       tipoProduto:this.state.tipoProduto
     })
 
-
+    console.log("listaAdicionais carrinho"+JSON.stringify(this.state.listaAdicionais));
     this.state.listaAdicionais.map((item, i, arr)=>{
           if(arr.length > 0 ){
 

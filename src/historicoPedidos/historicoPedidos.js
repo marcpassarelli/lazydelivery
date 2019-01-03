@@ -8,11 +8,12 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 import HistoricoPedidosListItem from './historicoPedidosListItem'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LazyBackButton from '../constants/lazyBackButton'
+import _ from 'lodash';
 
 let todocount=0
 let listener = null
 let temPedidos=''
-let teste=[];
+let pedidosHistorico=[];
 export class HistoricoPedidosScreen extends Component {
 
   static navigationOptions = ({navigation}) => ({
@@ -56,7 +57,7 @@ export class HistoricoPedidosScreen extends Component {
 
 
   componentDidMount(){
-      teste=[]
+      pedidosHistorico=[]
     carregarPedidos((message)=>{
       console.log("dentro carregapedidos+message"+message._id)
       temPedidos = message._id
@@ -71,7 +72,7 @@ export class HistoricoPedidosScreen extends Component {
         });
       }else{
         console.log("dentro else");
-      teste.push({
+      pedidosHistorico.push({
         id:message._id,
         endereco:message.endereco,
         bairro: message.bairro,
@@ -85,8 +86,9 @@ export class HistoricoPedidosScreen extends Component {
         retirar: message.retirar,
         key: message.key
         })
+        pedidosHistorico=_.orderBy(pedidosHistorico,['createdAt'],['desc'])
       this.setState({
-        messages:teste
+        messages:pedidosHistorico
       },function(){
 
         this.setState({
