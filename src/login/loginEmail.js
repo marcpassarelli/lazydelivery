@@ -63,12 +63,16 @@ export class LoginEmailScreen extends Component {
         loading: false
       });
     }else{
-
+      this.setState({
+        loading:false
+      });
       Alert.alert(
         'Campos Vazios',
         'Preencha todos os campos para proceder com o login',
         [
-          {text: 'OK'},
+          {text: 'OK', onPress: () => {
+
+          }},
         ],
         { cancelable: false }
       )

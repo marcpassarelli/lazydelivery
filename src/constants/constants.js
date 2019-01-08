@@ -12,6 +12,7 @@ export const images ={
   iconSplash: require('../../img/Icon---Roxo.png'),
   iconYellow: require('../../img/Logo-amarelo.png'),
   backgroundLazy: require('../../img/cadastro-01-bg.png'),
+  backgroundLazyEscuro: require('../../img/cadastro-01-bg-escuro.png'),
   backgroundLogin: require('../../img/Login-background.png'),
   backgroundLoginEmail: require('../../img/Login-02-background.png'),
   logoLogin: require('../../img/Logo-White.png'),
@@ -38,8 +39,7 @@ export const styles = StyleSheet.create({
 
     // resizeMode: 'cover', // or 'stretch'
     flex:1,
-    height: null,
-    width: null
+
     // tintColor: cores.corSecundaria
   },
   backgroundImageAddProduto:{
@@ -110,7 +110,7 @@ export const styles = StyleSheet.create({
   },
   containerListItemProdutos:{
     flex:1,
-    height:hp('10.5%'),
+    height:hp('10%'),
     justifyContent:'center'
 
     // alignItems:'center'
@@ -122,7 +122,7 @@ export const styles = StyleSheet.create({
   },
   developedBy: {
     fontFamily: 'Futura Medium',
-    fontSize: wp('2.5%'),//10
+    fontSize: wp('3%'),//10
     alignSelf: 'center',
   },
   header:{

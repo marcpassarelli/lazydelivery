@@ -17,7 +17,6 @@ var todoCounter = 1;
 var nome=""
 var preco=""
 var detalhes=""
-var imgProduto=""
 var tipoProduto=""
 
 const adicionais = listaAdicionais
@@ -58,9 +57,9 @@ export class AdicionaisScreen extends Component{
     this.nome = state.params ? state.params.nome : ""
     this.preco = state.params ? state.params.preco : ""
     this.detalhes = state.params ? state.params.detalhes : ""
-    this.imgProduto = state.params ? state.params.imgProduto : ""
+
     this.tipoProduto = state.params ? state.params.tipoProduto : ""
-    console.log("listaAdicionais"+JSON.stringify(listaAdicionais));
+    // console.log("listaAdicionais"+JSON.stringify(listaAdicionais));
     this.setState({
       adicionais: listaAdicionais
     });
@@ -114,7 +113,6 @@ export class AdicionaisScreen extends Component{
       preco: this.preco,
       precoPizza: this.preco,
       detalhes:this.detalhes,
-      imgProduto:this.imgProduto,
       tipoProduto:this.tipoProduto,
       telaAdicionais:true,
       tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento},

@@ -18,9 +18,11 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 let sectionData =[]
 let sectionName =[]
 export var listaPizzas = []
+export var imgProduto=""
 
-
-
+export function atualizarImgProduto(novaImg){
+  imgProduto=novaImg
+}
 
 export class EstabelecimentoProdutosScreen extends Component{
 
@@ -63,11 +65,11 @@ renderListItemSeparator = () =>{
 
 sectionDataFunction(){
 
-  var newEstabelecimentoProd = _.orderBy(estabelecimentoProd, ['ordem','nomeProduto'], ['asc','asc'])
+  var newEstabelecimentoProd = _.orderBy(estabelecimentoProd, ['ordem'], ['asc'])
 
   var indexToRemove = []
   listaPizzas = []
-  console.log("newEstabelecimentoProd"+JSON.stringify(newEstabelecimentoProd));
+  // console.log("newEstabelecimentoProd"+JSON.stringify(newEstabelecimentoProd));
   //pega as pizzas do cardápio e adicionar em listPizzas e criar array de indices q devem ser removidos
   newEstabelecimentoProd.map((item,i)=>{
     if(item.tipo==="Pizzas"){
@@ -75,8 +77,8 @@ sectionDataFunction(){
       indexToRemove.push(i)
     }
   })
-  console.log("listaPizzas"+listaPizzas.length);
-  console.log("listaPizzas"+JSON.stringify(listaPizzas));
+  // console.log("listaPizzas"+listaPizzas.length);
+  // console.log("listaPizzas"+JSON.stringify(listaPizzas));
   if(listaPizzas.length>0){
   //Remover Pizzas da lista de produtos
   for (var i = indexToRemove.length - 1; i>=0;i--){
@@ -137,7 +139,7 @@ sectionDataFunction(){
 }
 //Separa lista por tipo de produto
 
-  sectionData = _.orderBy(newEstabelecimentoProd, ['ordem','nomeProduto'], ['asc','asc'])
+  sectionData = _.orderBy(newEstabelecimentoProd, ['ordem'], ['asc'])
 
   sectionData = _.groupBy(sectionData, p => p.tipo)
 
@@ -149,8 +151,13 @@ sectionDataFunction(){
     return acc
   }, [])
 
+  this.callbackFinishLoading()
+}
 
-
+callbackFinishLoading(){
+  this.setState({
+    loadingList:false
+  });
 }
 
 componentWillUnmount() {
@@ -213,11 +220,11 @@ BackHandler.addEventListener('hardwareBackPress', ()=>this.handleBackButtonClick
       this.sectionDataFunction()
     },
     ()=>{
-      this.setState({
-              loadingList: false
-      },function(){
-        console.log("sectiondata"+JSON.stringify(sectionData));
-      })
+      // this.setState({
+      //         loadingList: false
+      // },function(){
+      //   // console.log("sectiondata"+JSON.stringify(sectionData));
+      // })
     })
   }
 //para não precisar carregar novamente a lista
@@ -249,7 +256,7 @@ renderItem = (item) =>{
 
   // onLayout={this._setMaxHeight.bind(t  his)}
   return (
-  <View>
+  <View style={{flex:1}}>
     <EstabelecimentoProdutosListItem
       nomeProduto = {item.item.nomeProduto}
       tipoProduto = {item.item.tipo}
@@ -290,13 +297,13 @@ renderItem = (item) =>{
 
         }else{
           console.log("item.item.preco"+item.item.preco);
+          imgProduto = item.item.imgProduto
           const navigateAction = NavigationActions.navigate({
               routeName: 'AddProduto',
               params: {
                 nomeEstabelecimento: nomeEstabelecimentoUp,
                 nome: item.item.nomeProduto, preco: item.item.preco,
-                detalhes: item.item.detalhes, imgProduto: item.item.imgProduto,
-                tipoProduto: item.item.tipo,
+                detalhes: item.item.detalhes, tipoProduto: item.item.tipo,
                 tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento},
               key:Math.random()*100000
             });
@@ -366,10 +373,8 @@ functionButton(){
     </View> :
 
 
-    <View>
+    <View style={{flex:1}}>
       <SectionList
-        removeClippedSubviews={true}
-        scrollEventThrottle={16}
         ItemSeparatorComponent={this.renderListItemSeparator}
         SectionSeparatorComponent={this.renderSeparatorSection}
         renderItem={this.renderItem}

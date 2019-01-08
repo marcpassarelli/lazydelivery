@@ -16,15 +16,20 @@ export const dadosTipoEstabelecimento = [
     logo: require("../../img/Docerias.png"),
   },
   {
-    tipoEstabelecimento: "Farmácias",
-    logo: require("../../img/Farmácias.png"),
-  },
-  {
-    tipoEstabelecimento: "Supermercados",
-    logo: require("../../img/Supermercados.png"),
-  },
-  {
     tipoEstabelecimento: "Bebidas",
     logo: require("../../img/Bebidas.png"),
+  },
+  {
+    tipoEstabelecimento: "Água e Gás",
+    logo: require("../../img/Água-e-gás.png"),
   }
 ];
+// ,
+// {
+//   tipoEstabelecimento: "Farmácias",
+//   logo: require("../../img/Farmácias.png"),
+// },
+// {
+//   tipoEstabelecimento: "Supermercados",
+//   logo: require("../../img/Supermercados.png"),
+// },

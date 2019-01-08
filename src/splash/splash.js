@@ -60,13 +60,13 @@ export class SplashScreen extends Component {
    render() {
      return(
        <ImageBackground
-         source={images.backgroundSplashAzul}
+         source={images.backgroundSplash}
          style={styles.backgroundImage}>
          <FadeInOutView style={{justifyContent: 'center',alignContent: 'center'}}>
            <View >
              <Image
               style={styles.logo}
-              source={images.iconYellow}
+              source={images.iconSplash}
              />
            </View>
          <Text style={[styles.developedBy,{color:cores.corPrincipal}]}>desenvolvido por Marc Passarelli</Text>

@@ -24,7 +24,7 @@ var weekday = ["domingo","segunda","terca","quarta","quinta","sexta","sabado"]
 var months = ["January","February","March","April","May","June","July","August","September","October","November","December"]
 
 
-export async function login (email, pass, onLogin) {
+export async function login (email, pass, onLogin,onError) {
 
     try {
         await auth
@@ -35,11 +35,14 @@ export async function login (email, pass, onLogin) {
         var errorCode = error.code
         if (errorCode === 'auth/wrong-password' || errorCode === 'auth/invalid-email' ){
           alert('Credenciais Incorretas');
+          onError()
         }
         else if (errorCode === 'auth/user-disabled'){
           alert('Usuário desabilitado')
+          onError()
         }else if (errorCode === 'auth/user-not-found'){
           alert('Usuário não cadastrado')
+          onError()
         }
     }
 
@@ -385,7 +388,7 @@ try{
     if(fechamento<abertura&&madrugada==true){
       // tiro um dia da abertura pois ela é o no dia anterior
       var dayAbertura = new Date(month+" "+day+", "+year+" "+snapshot.val().abertura)
-      var dayBefore = dayAbertura.getDate()-1
+      let dayBefore = dayAbertura.getDate()-1
       dayAbertura.setDate(dayBefore)
       abertura = Date.parse(dayAbertura)
       if(atual>abertura&&atual<fechamento){
@@ -663,7 +666,7 @@ export function loadMessagesSemItem(estabelecimento, chave, callback){
   this.messageRef.off();
   this.messageRef.on('value',function(snap){
     snap.forEach((child)=>{
-      
+
       callback({nome:child.val()})
     })
 

@@ -13,6 +13,7 @@ import LazyActivity from '../loadingModal/lazyActivity'
 import LazyBackButton from '../constants/lazyBackButton'
 import LazyYellowButton from '../constants/lazyYellowButton'
 import { NavigationActions } from 'react-navigation';
+import {imgProduto,atualizarImgProduto}from '../estabelecimentos/estabelecimentoProdutos'
 import _ from 'lodash'
 import Icon from 'react-native-vector-icons/Feather';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -23,7 +24,6 @@ var totalPrecoAd=0;
 var tag=0
 var estabelecimento=''
 let marginTop = 50
-
 
 
 export function atualizarCarrinho(carrinhoAtualizado){
@@ -99,7 +99,7 @@ handleBackButtonClick=()=> {
     var nome = state.params ? state.params.nome : ""
     var preco = state.params.tipoProduto=="Pizzas" ? state.params.precoPizza : state.params.preco
     var detalhes = state.params ? state.params.detalhes : ""
-    var imgProduto = state.params ? state.params.imgProduto : ""
+
     var tipoProduto = state.params ? state.params.tipoProduto : ""
 
     estabelecimento = state.params ? state.params.nomeEstabelecimento : ""
@@ -107,26 +107,42 @@ handleBackButtonClick=()=> {
     var telaAdicionais = state.params ? state.params.telaAdicionais : ""
     var tipoEstabelecimento = state.params ? state.params.tipoEstabelecimento : ""
     this.totalPrecoAd = navigation.getParam('totalPreco','')
-    console.log("totalPrecoAd"+totalPrecoAd);
+
 
     //Se tiver vindo da lista de produtos zerará os adicionais
     if(!telaAdicionais){
+
       this.setState({
         listaAdicionais: []
       });
+
     }
+
+    if(isNaN(imgProduto)){
+      console.log("isInteger");
+      this.setState({
+        imgProduto:{uri:imgProduto},
+      });
+    }
+    else{
+      console.log("else");
+        this.setState({ imgProduto: images.backgroundLazyEscuro})
+        atualizarImgProduto(images.backgroundLazyEscuro)
+    }
+
 
     this.setState({
       nome: nome,
       preco: preco,
       detalhes: detalhes,
-      imgProduto: imgProduto,
       tipoProduto: tipoProduto,
       total: preco,
       estabelecimento: estabelecimento,
       tipoEstabelecimento: tipoEstabelecimento
     },function(){
-
+      this.setState({
+        loading:false
+      });
     });
 
     getListaAdicionais(estabelecimento, tipoProduto,()=>{
@@ -346,10 +362,9 @@ handleBackButtonClick=()=> {
         {listaAdicionais.length>0 ?
         <TouchableOpacity onPress={()=>{
             this.props.navigation.navigate({routeName:'Adicionais',
-            params:{nome:this.state.nome,
+              params:{nome:this.state.nome,
                   preco:this.state.preco,
                   detalhes:this.state.detalhes,
-                  imgProduto:this.state.imgProduto,
                   tipoProduto:this.state.tipoProduto,
                   nomeEstabelecimento: this.state.estabelecimento,
                   tipoEstabelecimento: this.state.tipoEstabelecimento },
@@ -399,7 +414,7 @@ handleBackButtonClick=()=> {
     return (
       <View>
         <ImageBackground
-          source={{uri:this.state.imgProduto}}
+          source={this.state.imgProduto}
           style={styles.backgroundImageAddProduto}
           onLoad={this.handleImageLoaded.bind(this)}>
           {this.state.imageLoaded ?

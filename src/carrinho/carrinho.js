@@ -266,7 +266,8 @@ export class CarrinhoScreen extends Component{
                 }}
                 detalhes={()=>{
                   this.showModal(item.obs,item.detalhes)
-                }}/>
+                }}
+                />
             )}
             keyExtractor={item => item._id.toString()}
           />
