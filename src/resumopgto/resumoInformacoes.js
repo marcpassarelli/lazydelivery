@@ -16,7 +16,7 @@ export default class ResumoInformacoes extends Component {
           <View></View>
         :
         <View style={{marginLeft:5,marginTop:5}}>
-          <Text style={[styles.textAdicionais,{fontFamily:'Futura Medium Italic BT',fontSize: wp('4.5%')}]}>Informações para Entrega:</Text>
+          <Text style={[styles.textAdicionais,{fontFamily:'FuturaBT-MediumItalic',fontSize: wp('4.5%')}]}>Informações para Entrega:</Text>
           <View style={{flexDirection: 'row'}}>
             <Text style={[styles.textResumoPgto,{color: cores.textDetalhes}]}>Entregar para: </Text>
             <Text style={[styles.textResumoPgto,{color:'#616161'}]}>{this.props.nome}</Text>

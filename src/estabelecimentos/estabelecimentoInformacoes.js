@@ -125,7 +125,7 @@ export class EstabelecimentoInformacoesScreen extends Component {
          source={{uri:imageProfile.uri}}/>
 
        <Text style={{backgroundColor: 'transparent',alignSelf: 'center',
-         fontSize:26,fontFamily: 'Futura Medium Italic BT',color:cores.corPrincipal}}>{this.state.nomeEstabelecimento} </Text>
+         fontSize:26,fontFamily: 'FuturaBT-MediumItalic',color:cores.corPrincipal}}>{this.state.nomeEstabelecimento} </Text>
 
        <Text style={[styles.textInformacoes,{alignSelf: 'center',marginLeft: 0,color: cores.textDetalhes}]}>Tempo de Entrega:{this.state.tempoEntrega} </Text>
 

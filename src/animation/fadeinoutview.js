@@ -19,14 +19,14 @@ export default class FadeInOutView extends Component {
         this.state.fadeAnim,                      // The animated value to drive
         {
           toValue: 1,
-          duration: 2000,                             // Animate to opacity: 1, or fully opaque
+          duration:1500,                             // Animate to opacity: 1, or fully opaque
         }
       ),
       Animated.timing(                            // Animate over time
         this.state.fadeAnim,                      // The animated value to drive
         {
           toValue: 0,
-          duration: 2000,                             // Animate to opacity: 0, or fully transparent
+          duration: 1500,                             // Animate to opacity: 0, or fully transparent
         }
       )]).start();                       // Starts the animation*/
   }

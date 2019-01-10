@@ -36,7 +36,7 @@ render(){
         </TouchableHighlight>
         <Text style={{marginTop:hp('0.55%'),justifyContent: 'center',
           alignSelf: 'center',fontSize:wp('2.5%') ,
-          fontFamily: 'Futura Medium Italic BT',color: 'white'}}> FECHAR APP </Text>
+          fontFamily: 'FuturaBT-MediumItalic',color: 'white'}}> FECHAR APP </Text>
       </View>
       <Text style={[styles.titleCadastro,{marginTop:hp('8%'),marginBottom: hp('3%')}]}>COMPLETE O SEU CADASTRO</Text>
         <LazyTextInput
@@ -88,7 +88,7 @@ render(){
             </PickerIOS>
           :
               <Picker
-                itemStyle={{fontFamily: 'Futura Book'}}
+                itemStyle={{fontFamily: 'Futura-Book'}}
                 style={{height: hp('7%'),backgroundColor: "#d1d1d1",width: wp('63.30%')}}
                 selectedValue={this.props.bairroSelecionado}
                 onValueChange={this.props.updateBairro}>

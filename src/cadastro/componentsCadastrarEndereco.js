@@ -54,7 +54,7 @@ export default ComponentsCadastrarEndereco = (props) => {
             </PickerIOS>
           :
               <Picker
-                itemStyle={{fontFamily: 'Futura Book'}}
+                itemStyle={{fontFamily: 'Futura-Book'}}
                 style={{height: hp('7%'),backgroundColor: "#d1d1d1",width: wp('63.30%')}}
                 selectedValue={props.bairroSelecionado}
                 onValueChange={props.updateBairro}>

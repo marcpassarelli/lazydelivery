@@ -45,7 +45,7 @@ render(){
         onRequestClose={() => {this.props.showModal()}}>
         <View style={stylesLocal.modalBackground}>
           <View style={stylesLocal.activityIndicatorWrapper}>
-            <Text style={{fontSize:wp('5%'),color: cores.corPrincipal,marginVertical: 10,fontFamily: 'Futura Medium Italic BT'}}>Lista de Endereços</Text>
+            <Text style={{fontSize:wp('5%'),color: cores.corPrincipal,marginVertical: 10,fontFamily: 'FuturaBT-MediumItalic'}}>Lista de Endereços</Text>
             <FlatList
               ItemSeparatorComponent={this.renderSeparator}
               data= {this.props.listaEnderecos}
@@ -61,7 +61,7 @@ render(){
               <View>
                 <TouchableOpacity
                   onPress={()=>{this.props.adicionaEnd()}}>
-                  <Text style={{color: cores.textDetalhes,marginBottom: 5,marginTop: 10,fontFamily:'Futura Book' }}>Adicionar Novo Endereço</Text>
+                  <Text style={{color: cores.textDetalhes,marginBottom: 5,marginTop: 10,fontFamily:'Futura-Book' }}>Adicionar Novo Endereço</Text>
                 </TouchableOpacity>
               </View>
               <View>

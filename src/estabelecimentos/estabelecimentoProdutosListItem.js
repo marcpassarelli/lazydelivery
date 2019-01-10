@@ -45,10 +45,12 @@ export default class EstabelecimentoProdutosListItem extends Component {
           </View>
         </View>
         }
-
-        <View style={{flexDirection: 'column', marginLeft:10}}>
-          <Text style={styles.textDetalhesEstabelecimento}>{this.props.detalhes}</Text>
-        </View>
+        {this.props.detalhes?
+          <View style={{flexDirection: 'column', marginLeft:10}}>
+            <Text style={styles.textDetalhesEstabelecimento}>{this.props.detalhes}</Text>
+          </View>
+          :<View></View>
+        }
       </TouchableOpacity>
       </View>
   )

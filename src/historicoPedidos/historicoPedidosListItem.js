@@ -34,7 +34,7 @@ export default class HistoricoPedidosListItem extends Component {
           <View style={{flexDirection: 'row',justifyContent: 'space-between',marginTop:hp('1.11%')}}>
             <View>
               <Text style={[styles.textHistoricoPedidos,{color:cores.corPrincipal,
-                  fontFamily: 'Futura PT Bold',fontSize: wp('5.5%'), marginTop:hp('0.55%')}]}>
+                  fontFamily: 'FuturaPT-Bold',fontSize: wp('5.5%'), marginTop:hp('0.55%')}]}>
                 {_.upperCase(item.estabelecimento)}
               </Text>
               <View style={{flexDirection: 'row'}}>
@@ -67,7 +67,7 @@ export default class HistoricoPedidosListItem extends Component {
             <View style={{flexDirection: 'row',flex:1}}>
             <Text
               onPress={this.props.onPressSend}
-              style={{fontFamily:'Futura Medium',marginHorizontal: 5,fontSize:wp('3%'),textDecorationLine:'underline'}}>
+              style={{fontFamily:'Futura-Medium',marginHorizontal: 5,fontSize:wp('3%'),textDecorationLine:'underline'}}>
               Mais detalhes sobre o pedido
             </Text>
             <Icon
@@ -97,7 +97,7 @@ export default class HistoricoPedidosListItem extends Component {
   //     style={[styles.buttons,{width:wp('25%') ,marginHorizontal: 10,borderRadius: 20}]}
   //     onPress = { () => {this.props.avaliarPedido()} } >
   //     <Text style={[styles.textButtons,{textAlign: 'center',
-  //         fontFamily: 'Futura PT Bold',marginHorizontal: 5,
+  //         fontFamily: 'FuturaPT-Bold',marginHorizontal: 5,
   //         fontSize:wp('3%') ,color:cores.corPrincipal}]}>AVALIAR PEDIDO</Text>
   //   </TouchableOpacity>
   // </View>

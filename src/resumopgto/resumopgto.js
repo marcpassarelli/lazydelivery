@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ImageBackground, TextInput, Picker, PickerIOS, Platform, ScrollView,
+import { ImageBackground, TextInput, Picker, Platform, ScrollView,ActionSheetIOS,TouchableOpacity,
    Dimensions, Image, Alert, View, Text, Button, FlatList, Icon,BackHandler } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
 import LazyActivity from '../loadingModal/lazyActivity'
@@ -308,18 +308,35 @@ fazerPedido(){
   )
 }
 
+onSelectTipoPgto(tipoPgto){
+  var optPgto = tipoPgto
+  var length = optPgto.length
+  optPgto.push('Cancelar')
+  ActionSheetIOS.showActionSheetWithOptions({
+    options:optPgto,
+    cancelButtonIndex:length
+  },
+    (btnIndex)=>{
+      if(btnIndex==length){
+
+      }else{
+        this.setState({
+          pgtoEscolhido: optPgto[btnIndex]
+        });
+      }
+    }
+  )
+}
+
 functionPicker(tipoPgto){
   if(Platform.OS==='ios'){
     return(
-    <PickerIOS
-      itemStyle={{color: cores.corPrincipal,height:80, fontSize: wp('5%'),right: 10}}
-      style={{height: 80}}
-      selectedValue={this.state.pgtoEscolhido}
-      onValueChange={this.updatePgtoEscolhido}>
-      {tipoPgto.map((item, index)=>{
-        return (<Picker.Item label={item.bandeira} value={item.bandeira} key={index} />)
-      })}
-    </PickerIOS>
+    <View>
+      <TouchableOpacity onPress={()=>{this.onSelectTipoPgto(tipoPgto)}}>
+        <Text style={{alignSelf: 'center',color: cores.corPrincipal,textDecorationLine: 'underline'}}>Clique para escolher.</Text>
+        <Text>Escolhido:{this.state.pgtoEscolhido}</Text>
+      </TouchableOpacity>
+    </View>
   )
   }else{
     return(
@@ -341,7 +358,7 @@ functionPicker(tipoPgto){
 funcaoCredito(){
   return(
     <View style={{marginLeft: 25}}>
-      <Text style={{fontSize: wp('3.75%'),fontFamily: 'Futura Medium'}}>Selecione a bandeira do seu cartão de crédito:</Text>
+      <Text style={{fontSize: wp('3.75%'),fontFamily: 'Futura-Medium'}}>Selecione a bandeira do seu cartão de crédito:</Text>
       <View>{this.functionPicker(this.state.cre)}</View>
     </View>
   )
@@ -350,7 +367,7 @@ funcaoCredito(){
 funcaoDebito(){
   return(
     <View style={{marginLeft: 25}}>
-      <Text style={{fontSize: wp('3.75%'),fontFamily: 'Futura Medium'}}>Selecione a bandeira do seu cartão de débito:</Text>
+      <Text style={{fontSize: wp('3.75%'),fontFamily: 'Futura-Medium'}}>Selecione a bandeira do seu cartão de débito:</Text>
       <View>{this.functionPicker(this.state.deb)}</View>
     </View>
   )
@@ -358,8 +375,8 @@ funcaoDebito(){
 
 funcaoTroco(){
   return(
-    <View style={{marginLeft: 25,flexDirection: 'row',alignItems: 'center'}}>
-      <Text style={{fontSize: wp('3.75%'),fontFamily: 'Futura Medium'}}>Troco para:</Text>
+    <View style={{marginLeft: 25,flexDirection: 'row',alignItems: 'center',marginVertical: hp('1%')}}>
+      <Text style={{fontSize: wp('3.75%'),fontFamily: 'Futura-Medium'}}>Troco para:</Text>
       <TextInput
         style={[styles.textInputs,{width: wp('25%'), fontSize: wp('3.75%')}]}
         onChangeText = {this.updateTroco}
@@ -397,20 +414,20 @@ renderHeader=()=>{
             borderRightWidth: 0.5,
             width:wp('18%')}}>
             <Text style={{color:cores.corSecundaria,
-                marginLeft: 5,fontFamily: 'Futura Medium'}}>QTD.</Text>
+                marginLeft: 5,fontFamily: 'Futura-Medium'}}>QTD.</Text>
         </View>
 
         <View style={{width:wp('54%'),height:35, justifyContent: 'center',
           borderRightColor: cores.corSecundaria,borderRightWidth: 0.5}}>
           <Text style={{
-              marginLeft: 5,color:cores.corSecundaria,fontFamily: 'Futura Medium'}}
+              marginLeft: 5,color:cores.corSecundaria,fontFamily: 'Futura-Medium'}}
               >ITEM</Text>
         </View>
 
         <View style={{width: wp('24%'),height: 35,
           justifyContent: 'center',alignItems:'center' ,marginRight:10}}>
           <Text style={{color:cores.corSecundaria,
-              fontFamily: 'Futura Medium',alignSelf: 'center'}}>PREÇO</Text>
+              fontFamily: 'Futura-Medium',alignSelf: 'center'}}>PREÇO</Text>
         </View>
 
 
@@ -467,7 +484,7 @@ render() {
             return(
                 <Text style={[styles.textCarrinho,{
                     color: cores.textDetalhes,
-                    fontFamily: "Futura Medium Italic BT",
+                    fontFamily: "FuturaBT-MediumItalic",
                     alignSelf: 'center', fontSize: fontSize}]}>
                   R$ {res}
                 </Text>
@@ -500,10 +517,10 @@ render() {
     <ScrollView>
     <View style={{height:2, backgroundColor: cores.corSecundaria}}></View>
 
-    <Text style={[styles.textAdicionais,{fontFamily:'Futura Medium Italic BT' ,fontSize: wp('4.5%'), marginVertical: 5,marginLeft: 5}]}>Selecione a forma de pagamento:</Text>
+    <Text style={[styles.textAdicionais,{fontFamily:'FuturaBT-MediumItalic' ,fontSize: wp('4.5%'), marginVertical: 5,marginLeft: 5}]}>Selecione a forma de pagamento:</Text>
     <View style={{}}>
       <CheckBox
-        textStyle={{marginLeft: 10,fontSize: wp('5%'),fontFamily: 'Futura Medium',fontWeight: 'normal'}}
+        textStyle={{marginLeft: 10,fontSize: wp('5%'),fontFamily: 'Futura-Medium',fontWeight: 'normal'}}
         containerStyle={{backgroundColor: 'rgba(0,0,0,0.2)'}}
         title='Cartão de Crédito'
         checkedIcon='check-square-o'
@@ -521,7 +538,7 @@ render() {
         {this.state.checked && this.funcaoCredito()}
       </View>
       <CheckBox
-        textStyle={{marginLeft: 10,fontSize: wp('5%'),fontFamily: 'Futura Medium',fontWeight: 'normal'}}
+        textStyle={{marginLeft: 10,fontSize: wp('5%'),fontFamily: 'Futura-Medium',fontWeight: 'normal'}}
         containerStyle={{backgroundColor: 'rgba(0,0,0,0.2)'}}
         title='Cartão de Débito'
         checkedIcon='check-square-o'
@@ -539,7 +556,7 @@ render() {
         {this.state.checked2 && this.funcaoDebito()}
       </View>
       <CheckBox
-        textStyle={{marginLeft: 10,fontSize: wp('5%'),fontFamily: 'Futura Medium',fontWeight: 'normal'}}
+        textStyle={{marginLeft: 10,fontSize: wp('5%'),fontFamily: 'Futura-Medium',fontWeight: 'normal'}}
         containerStyle={{backgroundColor: 'rgba(0,0,0,0.2)'}}
         title='Dinheiro'
         checkedIcon='check-square-o'
@@ -572,7 +589,7 @@ render() {
       </ScrollView>
       <LazyYellowButton
         styleButton={{width: wp('100%')}}
-        styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal, fontSize: wp('5%')}}
+        styleText={{fontFamily:'FuturaPT-Bold',color:cores.corPrincipal, fontSize: wp('5%')}}
         onPress={()=>{this.fazerPedido()}}
         text={"FINALIZAR PEDIDO"}
         />

@@ -19,7 +19,7 @@ export default ComponentsRedefinePassword =(props)=> {
         <LazyBackButton
           goBack={props.goBack}/>
         <Text style={{marginTop: hp('19.98%'),
-            fontFamily: 'Futura PT Extra Bold',color: 'white',alignSelf:'center',
+            fontFamily: 'FuturaPT-ExtraBold',color: 'white',alignSelf:'center',
             fontSize: wp('5%')}}>INFORME O E-MAIL CADASTRADO</Text>
         <LazyTextInput
           style={{marginVertical: hp('4.44%')}}

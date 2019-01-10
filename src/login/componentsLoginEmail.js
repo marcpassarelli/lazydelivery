@@ -40,7 +40,7 @@ export default ComponentsLoginEmail = (props) => {
       <View style={{flexDirection: 'row',alignItems: 'center',
         justifyContent: 'flex-end',marginHorizontal: wp('12.31%'),
         marginBottom: hp('4.43%')}}>
-        <Text style={{fontFamily: 'Futura Medium Italic BT',color: 'white'}}
+        <Text style={{fontFamily: 'FuturaBT-MediumItalic',color: 'white'}}
           onPress={()=>{props.esqueciSenha()}}>Esqueceu a senha?</Text>
       </View>
       <View style={{backgroundColor: '#FFFFFF',height: hp('0.1%'),marginHorizontal: wp('12.31%')}}></View>

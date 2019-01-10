@@ -50,7 +50,6 @@ const TabHome = createBottomTabNavigator({
     activeTintColor: cores.corPrincipal,
     labelStyle: {
       fontSize: wp('3.75%'),
-      fontFamily:'FuturaBookCTT Normal',
       color:cores.corPrincipal,
 
     },
@@ -89,7 +88,7 @@ const TabEstabelecimento = createMaterialTopTabNavigator({
     labelStyle: {
       fontSize: wp('4.5%'),
       marginBottom:10,
-      fontFamily: 'Futura Book',
+      fontFamily: 'Futura-Book',
       color: cores.corSecundaria
     },
     style: {
@@ -108,7 +107,7 @@ TabEstabelecimento.navigationOptions = ({navigation}) =>{
   return{
   title: _.upperCase(navigation.state.params.nomeEstabelecimento),
   headerTitleStyle: styles.headerText,
-  headerStyle: Platform.OS=="ios"? styles.headerIos : styles.header,
+  headerStyle: styles.header,
   headerLeft: (
     <LazyBackButton
       goBack={()=>{

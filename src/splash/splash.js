@@ -7,6 +7,7 @@ import FadeInOutView from '../animation/fadeinoutview'
 import { styles, images,cores} from '../constants/constants'
 import {auth} from '../firebase/firebase'
 import { checkUserDetails } from '../firebase/database'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 /*import { Home } from './home'*/
 
@@ -15,7 +16,8 @@ export class SplashScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loggedIn:''
+      loggedIn:'',
+      segundoIcone:false
     };
   }
   validateUserName(){
@@ -46,11 +48,19 @@ export class SplashScreen extends Component {
       navigate('LoginRegister')
     }
   }
+  changeIcon(){
+    this.setState({
+      segundoIcone:true
+    });
+  }
 
   componentWillMount() {
       setTimeout (() => {
+        this.changeIcon()
+      }, 3000);
+      setTimeout (() => {
         this.getUser()
-      }, 4000);
+      }, 6000);
   }
 
   static navigationOptions = {
@@ -62,15 +72,26 @@ export class SplashScreen extends Component {
        <ImageBackground
          source={images.backgroundSplash}
          style={styles.backgroundImage}>
-         <FadeInOutView style={{justifyContent: 'center',alignContent: 'center'}}>
-           <View >
-             <Image
-              style={styles.logo}
-              source={images.iconSplash}
-             />
-           </View>
-         <Text style={[styles.developedBy,{color:cores.corPrincipal}]}>desenvolvido por Marc Passarelli</Text>
-         </FadeInOutView>
+           <FadeInOutView style={{marginLeft:wp('25%') ,justifyContent: 'center',alignContent: 'center',position: 'absolute'}}>
+             <View>
+               <Image
+                style={styles.logo}
+                source={images.iconSplash}
+               />
+             </View>
+
+           </FadeInOutView>
+          {this.state.segundoIcone &&
+          <FadeInOutView >
+            <View>
+              <Image
+               style={[styles.logo]}
+               source={images.logoNomeRoxo}
+              />
+            </View>
+          </FadeInOutView>
+        }
+
        </ImageBackground>
      );
    }

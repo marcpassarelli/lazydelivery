@@ -238,10 +238,10 @@ BackHandler.addEventListener('hardwareBackPress', ()=>this.handleBackButtonClick
   if(toast){
     Toast.show(toast+" foi adicionado ao carrinho",Toast.SHORT, Toast.BOTTOM, {
       backgroundColor: '#472c82',
-      height: Platform.OS === ("ios") ? hp('25%') : hp('30%'),
+      height: Platform.OS === ("ios") ? hp('10%') : hp('30%'),
       color: '#fccc3c',
       fontSize: wp('3.5%'),
-      borderRadius: 25,
+      borderRadius: 15,
       yOffset: 30,
       paddingLeft: 20,
       paddingRight: 20
@@ -284,6 +284,8 @@ renderItem = (item) =>{
           }else{
             titleHeader = "Escolha o 1º sabor da pizza"
           }
+          imgProduto = images.pizzaImg
+          console.log("imgProduto"+imgProduto);
           const navigateAction = NavigationActions.navigate({
               routeName: 'Pizza',
               params: {nomeEstabelecimento: nomeEstabelecimentoUp,
@@ -339,10 +341,10 @@ goToCarrinho(){
 functionButton(){
   if(Platform.OS==='ios'){
     return (
-    <View style={{marginBottom: hp('2.22%')}}>
+    <View style={{marginBottom: hp('0%')}}>
     <LazyYellowButton
       styleButton={{width: wp('100%'), }}
-      styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal}}
+      styleText={{fontFamily:'FuturaPT-Bold',color:cores.corPrincipal,fontSize:wp('5%')}}
       onPress={()=>{this.goToCarrinho()}}
       text={"CARRINHO"}
       />
@@ -351,7 +353,7 @@ functionButton(){
     return(
       <LazyYellowButton
         styleButton={{width: wp('100%'), }}
-        styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal, fontSize: wp('5%')}}
+        styleText={{fontFamily:'FuturaPT-Bold',color:cores.corPrincipal, fontSize: wp('5%')}}
         onPress={()=>{this.goToCarrinho()}}
         text={"CARRINHO"}
         />

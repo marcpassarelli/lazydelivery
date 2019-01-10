@@ -26,8 +26,8 @@ export default class AdicionaisListItem extends Component {
         {
           this.props.tipoProduto=="Pizzas" ?
           <View style={{height: 50,flex: 1, flexDirection: 'row', marginTop: hp('0.55%'), justifyContent: 'space-between'}}>
-            <View style={{width:wp('38%'),marginLeft:wp('3.8%'),justifyContent: 'center'}}>
-              <Text style={[styles.textAdicionais, {alignSelf: 'flex-start', marginHorizontal: 5}]}>
+            <View style={{flexShrink:1,width:wp('38%'),marginLeft:wp('3.8%'),justifyContent: 'center'}}>
+              <Text style={[styles.textAdicionais, {alignSelf: 'flex-start', marginHorizontal: 5,flex:1,flexGrow: 1,flexWrap: 'wrap',}]}>
                 {item.nome}
               </Text>
             </View>
@@ -49,11 +49,11 @@ export default class AdicionaisListItem extends Component {
 
            :
 
-           <View style={{height: 50,flex: 1, flexDirection: 'row', marginTop: hp('0.55%'), justifyContent: 'space-between'}}>
+           <View style={{height: 50,flexDirection: 'row', marginTop: hp('0.55%'), justifyContent: 'space-between'}}>
 
-             <View style={{width:wp('38%'),marginLeft:wp('3.8%'),justifyContent: 'center'}}>
+             <View style={{width:wp('38%'),marginLeft:wp('3.8%'),justifyContent: 'center',alignContent: 'center'}}>
                <Text style={[styles.textAdicionais,
-                   {marginHorizontal: 5,alignSelf: 'flex-start'}]}>
+                   {flexWrap: 'wrap',alignContent: 'center',flex:1,marginHorizontal: 5}]}>
                  {item.nome}
                </Text>
              </View>

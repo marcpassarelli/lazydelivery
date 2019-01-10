@@ -15,10 +15,12 @@ export const images ={
   backgroundLazyEscuro: require('../../img/cadastro-01-bg-escuro.png'),
   backgroundLogin: require('../../img/Login-background.png'),
   backgroundLoginEmail: require('../../img/Login-02-background.png'),
+  logoNomeRoxo:require('../../img/Lazy-_-Logo-Nome.png'),
   logoLogin: require('../../img/Logo-White.png'),
   logoFacebook: require('../../img/facebook.png'),
   seta1: require('../../img/Seta-01.png'),
   seta2: require('../../img/Seta-02.png'),
+  pizzaImg: require('../../img/pizzaImg.jpg'),
   preguicaRating:require('../../img/Preguica-contorno.png')
 }
 export const cores = {
@@ -116,12 +118,12 @@ export const styles = StyleSheet.create({
     // alignItems:'center'
   },
   estabOpenClosed:{
-    fontFamily: 'Futura Medium',
+    fontFamily: 'Futura-Medium',
     fontSize: wp('4%'),
     marginLeft: wp('7%')
   },
   developedBy: {
-    fontFamily: 'Futura Medium',
+    fontFamily: 'Futura-Medium',
     fontSize: wp('3%'),//10
     alignSelf: 'center',
   },
@@ -131,14 +133,14 @@ export const styles = StyleSheet.create({
   },
   headerText:{
     flex:1,
-    fontFamily: 'Futura PT Bold',
+    fontFamily: 'FuturaPT-Bold',
     color: cores.corSecundaria,
     textAlign: 'center',
     fontSize:wp('5%'),
     fontWeight:'200',
   },
   headerList:{
-    fontFamily: 'Futura Book',
+    fontFamily: 'Futura-Book',
     color: cores.corPrincipal,
     fontSize:wp('4.25%'),//17
     marginLeft:wp('2.66%'),
@@ -171,7 +173,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     resizeMode:'cover',
     borderWidth: 1.5,
-    borderRadius: 60,
+    borderRadius: 30,
     borderColor: cores.textDetalhes
   },
   imagemListSearch:{
@@ -201,7 +203,7 @@ export const styles = StyleSheet.create({
     marginBottom: hp('2.54%'),
     fontSize: wp('5%'),
     backgroundColor:'transparent',
-    fontFamily: 'Futura Book'
+    fontFamily: 'Futura-Book'
   },
   separator:{
     height:hp('3.4%')
@@ -211,134 +213,134 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     color: cores.corSecundaria,
     fontSize: wp('4.5%'),
-    fontFamily: 'Futura Medium Italic BT'
+    fontFamily: 'FuturaBT-MediumItalic'
 },
 textAdicionais:{
+  alignSelf: 'flex-start',
   backgroundColor:'transparent',
-  alignSelf: 'center',
   justifyContent: 'center',
   color: cores.corPrincipal,
   fontSize: wp('4%'),
-  marginBottom: hp('1.66%'),
-  fontFamily: 'Futura Book'
+  flexWrap: 'wrap',
+  fontFamily: 'Futura-Book'
 },
   textButtons:{
     backgroundColor:'transparent',
     alignSelf:'center',
     color:'#FFFFFF',
     fontSize: wp('4%'),
-    fontFamily: 'Futura Book'
+    fontFamily: 'Futura-Book'
   },
   textCarrinho:{
     backgroundColor:'transparent',
     color: cores.corPrincipal,
     fontSize: wp('3.75%'),
-    fontFamily: 'Futura Book'
+    fontFamily: 'Futura-Book'
   },
   textCarrinhoAdicionais:{
     backgroundColor:'transparent',
     alignSelf: 'center',
     fontSize: wp('3.5%'),
-    fontFamily: 'Futura Book'
+    fontFamily: 'Futura-Book'
   },
   textDetalhesEstabelecimento:{
     backgroundColor:'transparent',
     marginLeft: wp('1.51%'),
     marginVertical: wp('0.5%'),
     fontSize: wp('3.25%'),
-    fontFamily: 'Futura Book'
+    fontFamily: 'Futura-Book'
   },
   textEndHome:{
     backgroundColor:'transparent',
     fontSize: wp('3.25%'),
     color: cores.corPrincipal,
-    fontFamily: 'Futura Book'
+    fontFamily: 'Futura-Book'
   },
   textEstabelecimento:{
     backgroundColor:'transparent',
     marginLeft: wp('1.51%'),
     fontSize: wp('4.25%'),
     color: cores.corPrincipal,
-    fontFamily: 'Futura Medium Italic BT'
+    fontFamily: 'FuturaBT-MediumItalic'
   },
   textHistoricoPedidos: {
     backgroundColor:'transparent',
     fontSize: wp('3.75%'),
     marginBottom:hp('0.55%'),
     marginLeft: wp('1.11%'),
-    fontFamily: 'Futura Book'
+    fontFamily: 'Futura-Book'
   },
   textInformacoes:{
     backgroundColor:'transparent',
     marginLeft:wp('3.33%'),
     fontSize: wp('4.5%'),
     color:cores.corPrincipal,
-    fontFamily: 'Futura Medium Italic BT'
+    fontFamily: 'FuturaBT-MediumItalic'
   },
   textInformacoes2:{
     backgroundColor:'transparent',
     marginLeft:wp('4.44%'),
     fontSize:wp('4.25%'),
-    fontFamily: 'Futura Book'
+    fontFamily: 'Futura-Book'
   },
   textInformacoesD: {
     backgroundColor:'transparent',
     marginLeft:wp('6.66%'),
     fontSize: wp('4%'),
-    fontFamily: 'Futura Book'
+    fontFamily: 'Futura-Book'
   },
   textInputs:{
     borderColor: cores.corPrincipal,
-    fontFamily: 'Futura Book'
+    fontFamily: 'Futura-Book'
   },
   textPreco:{
     backgroundColor:'transparent',
     fontSize: wp('4%'),
     marginRight: wp('3.33%'),
     color: cores.textDetalhes,
-    fontFamily: 'Futura Medium Italic BT'
+    fontFamily: 'FuturaBT-MediumItalic'
   },
   textProdutos:{
     backgroundColor:'transparent',
     marginLeft: wp('3.33%'),
     fontSize: wp('4%'),
     color: cores.corPrincipal,
-    fontFamily: 'Futura Medium Italic BT'
+    fontFamily: 'FuturaBT-MediumItalic'
   },
   textProfileDetails:{
     backgroundColor:'transparent',
     fontSize:wp('4%'),
     alignSelf:'center',
     color: cores.corPrincipal,
-    fontFamily: 'Futura Book'
+    fontFamily: 'Futura-Book'
   },
   textResumoPgto:{
     backgroundColor:'transparent',
     color: cores.corPrincipal,
-    fontSize: wp('3.5%'),
+    fontSize: wp('4.5%'),
     marginBottom: hp('0.33%'),
-    fontFamily: 'Futura Book'
+    fontFamily: 'Futura-Book'
   },
   textTelaCadastro: {
     backgroundColor:'transparent',
     fontFamily: 'Cochin',
     fontSize: wp('4.5%'),
     textAlign: 'left',
-    fontFamily: 'Futura Book'
+    fontFamily: 'Futura-Book'
   },
   textTipoEstabelecimento:{
     marginLeft: wp('2.22%'),
     fontSize: wp('4.25%'),
     backgroundColor:'transparent',
     color: cores.corPrincipal,
-    fontFamily: 'Futura Medium Italic BT'
+    fontFamily: 'FuturaBT-MediumItalic'
   },
   textUpdateEnd:{
     backgroundColor:'transparent',
     fontSize: wp('3.25%'),
     marginVertical: hp('0.55%'),
     color:'#0000FF',
-    fontFamily: 'Futura Book'
+    fontFamily: 'Futura-Book'
   },
   titleCadastro: {
     backgroundColor:'transparent',
@@ -346,6 +348,6 @@ textAdicionais:{
     color: 'white',
     fontSize: wp('6%'),
     opacity: 1,
-    fontFamily: 'Futura PT Extra Bold'
+    fontFamily: 'FuturaPT-ExtraBold'
   }
 });

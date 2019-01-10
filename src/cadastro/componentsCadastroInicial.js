@@ -60,7 +60,7 @@ export default ComponentsCadastroInicial = (props) => {
             size={24}
             onPress={()=>{props.functionCheck()}}
             ></Icon>
-          <Text style={{fontFamily: 'Futura Book',fontSize: wp('4%'),
+          <Text style={{fontFamily: 'Futura-Book',fontSize: wp('4%'),
             color: 'rgb(176,240,241)', marginLeft: 5}}>
             Lembrar login e senha</Text>
         </View>

@@ -195,7 +195,7 @@ render() {
 // {
 //   Object.keys(this.state.estabFechados).length>0?
 // <View>
-//   <Text style={{fontFamily: 'Futura Medium',fontSize: wp('4%'),
+//   <Text style={{fontFamily: 'Futura-Medium',fontSize: wp('4%'),
 //     marginLeft: wp('7%'),color: 'red',marginBottom: hp('1%')}}>Fechado</Text>
 //     <FlatList
 //       ItemSeparatorComponent={ListItemSeparator}

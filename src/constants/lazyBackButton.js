@@ -21,7 +21,7 @@ export default class LazyBackButton extends Component {
       </TouchableHighlight>
       <Text style={{marginTop:hp('0.55%'),justifyContent: 'center',
         alignSelf: 'center',fontSize:wp('2.5%') ,
-        fontFamily: 'Futura Medium Italic BT',color: 'white'}}> VOLTAR </Text>
+        fontFamily: 'FuturaBT-MediumItalic',color: 'white'}}> VOLTAR </Text>
     </View>
 
 )

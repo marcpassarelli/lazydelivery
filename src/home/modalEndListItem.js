@@ -20,7 +20,7 @@ export default class ModalEndListItem extends Component {
                 marginHorizontal: 10}]}>
               {item.endereco}
             </Text>
-            <Text style={{alignSelf: 'center',fontFamily:'Futura Book',marginVertical: 5}}>
+            <Text style={{alignSelf: 'center',fontFamily:'Futura-Book',marginVertical: 5}}>
               {item.referencia}
             </Text>
           </View>
@@ -28,11 +28,11 @@ export default class ModalEndListItem extends Component {
             <TouchableOpacity
               onPress={()=>{this.props.selecionaEnd(),
                             this.props.showModal()}}>
-              <Text style={{color: cores.textDetalhes,fontFamily:'Futura Book',marginVertical: 5}}>Selecionar</Text>
+              <Text style={{color: cores.textDetalhes,fontFamily:'Futura-Book',marginVertical: 5}}>Selecionar</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={()=>{this.props.deleteEnd()}}>
-              <Text style={{color: cores.textDetalhes,fontFamily:'Futura Book'}}>Excluir Endereço</Text>
+              <Text style={{color: cores.textDetalhes,fontFamily:'Futura-Book'}}>Excluir Endereço</Text>
             </TouchableOpacity>
             </View>
         </View>

@@ -212,12 +212,12 @@ export class CarrinhoScreen extends Component{
 
           <View style={{width:wp('54%'),height:50, justifyContent: 'center',marginLeft: 10,
             borderRightColor: cores.corSecundaria,borderRightWidth: 0.5}}>
-            <Text style={{marginLeft: 5,color:cores.corSecundaria,fontFamily: 'Futura Medium'}}>ITEM</Text>
+            <Text style={{marginLeft: 5,color:cores.corSecundaria,fontFamily: 'Futura-Medium'}}>ITEM</Text>
           </View>
 
           <View style={{width: wp('24%'),height: 50,
             borderRightColor: cores.corSecundaria,borderRightWidth: 0.5,justifyContent: 'center'}}>
-            <Text style={{color:cores.corSecundaria,fontFamily: 'Futura Medium',alignSelf: 'center'}}>PREÇO</Text>
+            <Text style={{color:cores.corSecundaria,fontFamily: 'Futura-Medium',alignSelf: 'center'}}>PREÇO</Text>
           </View>
 
           <View style={
@@ -225,7 +225,7 @@ export class CarrinhoScreen extends Component{
               justifyContent: 'center',
               alignItems:'center',
               marginRight: 10}}>
-              <Text style={{color:cores.corSecundaria,fontFamily: 'Futura Medium'}}>QTD.</Text>
+              <Text style={{color:cores.corSecundaria,fontFamily: 'Futura-Medium'}}>QTD.</Text>
           </View>
       </View>)
   }
@@ -258,7 +258,7 @@ export class CarrinhoScreen extends Component{
                   return(
                       <Text style={[styles.textCarrinho,{
                           color: cores.textDetalhes,
-                          fontFamily: "Futura Medium Italic BT",
+                          fontFamily: "FuturaBT-MediumItalic",
                           alignSelf: 'center', fontSize: fontSize}]}>
                         R$ {res}
                       </Text>
@@ -334,7 +334,7 @@ export class CarrinhoScreen extends Component{
           </View>
           <LazyYellowButton
             styleButton={{width: wp('100%')}}
-            styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal, fontSize: wp('5%')}}
+            styleText={{fontFamily:'FuturaPT-Bold',color:cores.corPrincipal, fontSize: wp('5%')}}
             onPress={()=>{
               if(this.state.produtosCarrinho.length>0){
                 this.props.navigation.navigate('ResumoPgto',{

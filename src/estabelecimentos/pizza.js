@@ -157,7 +157,7 @@ _renderSeparator(){
               }
 
               if(state.params.partePizza==state.params.sabores){
-                this.props.navigation.navigate('AddProduto',{
+                this.props.navigation.push('AddProduto',{
                 nomeEstabelecimento: state.params.nomeEstabelecimento,
                 nome: "Pizza "+_.upperFirst(state.params.tamanhoPizza)+" "+state.params.sabores+" "+sabores,
                 preco: preco, precoPizza: precoPizza,

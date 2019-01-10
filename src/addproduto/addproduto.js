@@ -124,6 +124,11 @@ handleBackButtonClick=()=> {
         imgProduto:{uri:imgProduto},
       });
     }
+    else if(tipoProduto=="Pizzas"){
+      this.setState({
+        imgProduto:imgProduto 
+      });
+    }
     else{
       console.log("else");
         this.setState({ imgProduto: images.backgroundLazyEscuro})
@@ -443,7 +448,7 @@ handleBackButtonClick=()=> {
                 borderRadius: 10,
                 fontSize: wp('3%'),
                 color:'#FFFFFF',
-                fontFamily: 'Futura Medium',
+                fontFamily: 'Futura-Medium',
                 height:hp('5.5%')}}
               onChangeText={(text) => this.setState({obs: text})}
               value={this.state.obs}
@@ -454,7 +459,7 @@ handleBackButtonClick=()=> {
           </View>
           <LazyYellowButton
             styleButton={{width: wp('100%')}}
-            styleText={{fontFamily:'Futura PT Bold',color:cores.corPrincipal, fontSize: wp('5%')}}
+            styleText={{fontFamily:'FuturaPT-Bold',color:cores.corPrincipal, fontSize: wp('5%')}}
             onPress={()=>{
               if(aberto){
                 this.adicionarAoCarrinho()
