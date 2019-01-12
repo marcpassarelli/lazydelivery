@@ -368,7 +368,6 @@ export class CarrinhoScreen extends Component{
     </View> :
 
     <View style={{flex:1}}>
-      <StatusBar/>
       {this.functionCarrinho()}
     </View>
 

@@ -2,7 +2,7 @@ console.ignoredYellowBox = [
     'Setting a timer'
 ]
 import React, { Component } from 'react';
-import { ImageBackground, Image, Text, TouchableOpacity, View } from 'react-native';
+import { ActionSheetIOS,ImageBackground, Image, Text, TouchableOpacity, View } from 'react-native';
 import { styles, images,cores} from '../constants/constants'
 import { cadastrarEndereco,getBairros, listaBairros } from '../firebase/database'
 import { Hoshi } from 'react-native-textinput-effects';
@@ -86,6 +86,29 @@ export class CadastrarEnderecoScreen extends Component {
       return this.state.nome+""
     }
 
+    onSelectBairro(){
+      var optBairro=[]
+      listaBairros.map((item,index)=>{
+        optBairro.push(item.value)
+      })
+      var length = optBairro.length
+      optBairro.push('Cancelar')
+      ActionSheetIOS.showActionSheetWithOptions({
+        options:optBairro,
+        cancelButtonIndex:length
+      },
+        (btnIndex)=>{
+          if(btnIndex==length){
+
+          }else{
+            this.setState({
+              bairroSelecionado: optBairro[btnIndex]
+            });
+          }
+        }
+      )
+    }
+
   render(){
 
     const content = this.state.loading?
@@ -96,8 +119,10 @@ export class CadastrarEnderecoScreen extends Component {
 
     <ComponentsCadastrarEndereco
       goBack={()=>{this.props.navigation.navigate('Home')}}
+      placeholderBairro={"CLIQUE PARA ESCOLHER O BAIRRO"}
       endereco={this.state.endereco}
       bairros={listaBairros}
+      onSelectBairro={()=>{this.onSelectBairro()}}
       bairroSelecionado={this.state.bairroSelecionado}
       referencia={this.state.referencia}
       updateEndereco={this.updateEndereco}

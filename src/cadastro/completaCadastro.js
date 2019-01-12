@@ -2,7 +2,7 @@ console.ignoredYellowBox = [
     'Setting a timer'
 ]
 import React, { Component } from 'react';
-import { ImageBackground, Image, Text,View,BackHandler } from 'react-native';
+import { ImageBackground,ActionSheetIOS, Image, Text,View,BackHandler } from 'react-native';
 import { styles, images, cores } from '../constants/constants'
 import ComponentsCompletaCadastro from './componentsCompletaCadastro'
 import { cadastrarUsuario, getBairros, listaBairros } from '../firebase/database'
@@ -113,6 +113,29 @@ export class CompletaCadastroScreen extends Component {
       })
     }
 
+    onSelectBairro(){
+      var optBairro=[]
+      listaBairros.map((item,index)=>{
+        optBairro.push(item.value)
+      })
+      var length = optBairro.length
+      optBairro.push('Cancelar')
+      ActionSheetIOS.showActionSheetWithOptions({
+        options:optBairro,
+        cancelButtonIndex:length
+      },
+        (btnIndex)=>{
+          if(btnIndex==length){
+
+          }else{
+            this.setState({
+              bairroSelecionado: optBairro[btnIndex]
+            });
+          }
+        }
+      )
+    }
+
   render(){
     console.ignoredYellowBox = [
         'Setting a timer'
@@ -130,6 +153,8 @@ export class CompletaCadastroScreen extends Component {
       nome={this.state.nome}
       bairros={listaBairros}
       bairroSelecionado={this.state.bairroSelecionado}
+      onSelectBairro={()=>{this.onSelectBairro()}}
+      placeholderBairro={"CLIQUE PARA ESCOLHER O BAIRRO"}
       telefone={this.state.telefone}
       updateNome = {this.updateNome}
       updateTelefone = {this.updateTelefone}

@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { ImageBackground, Image, Alert, View, Text, BackHandler, Platform, FlatList, Modal, AsyncStorage } from 'react-native'
+import { ImageBackground, Image,TouchableOpacity, Alert, View, Text, BackHandler, Platform, FlatList, Modal, AsyncStorage } from 'react-native'
 import { styles, cores, images } from '../constants/constants'
 import { abertoFechado, listaEnderecos, getUserListEnd, checkUserDetails,deleteEnd, getUserEndAtual, getNomeEstabelecimentos, nomesEstabelecimentos } from '../firebase/database'
 import HomeListItem from './homeListItem'
@@ -73,42 +73,7 @@ export class HomeScreen extends Component {
 
   }
 
-  usuarioCompleto(){
-    console.log('usuario com cadastro completo')
-  }
-
-  usuarioNaoCompleto(){
-    const { navigate } = this.props.navigation;
-    Alert.alert(
-      'Completar Cadastro',
-      'Você precisa completar o cadastro para continuar navegando pelos estabelecimentos',
-      [
-        {text: 'OK', onPress: () => navigate('CompletaCadastro')},
-      ],
-      { cancelable: false }
-    )
-  }
-
-  componentWillMount(){
-    if (Platform.OS == "android" && listener == null) {
-      listener = BackHandler.addEventListener("hardwareBackPress", () => {
-        BackHandler.exitApp()
-      })
-    }
-  }
-  componentWillUnmount(){
-    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
-  }
-
-  async componentDidMount(){
-
-    //checar se o usuario já tem o cadastro completo
-    checkUserDetails(
-      //se já tiver cadastro completo
-      ()=> this.usuarioCompleto(),
-      //se não tiver cadastro completo
-      ()=> this.usuarioNaoCompleto()
-    )
+  async usuarioCompleto () {
 
     this.setState({
             loadingList: true
@@ -199,6 +164,42 @@ export class HomeScreen extends Component {
         }
         })
     })
+  }
+
+  usuarioNaoCompleto(){
+    const { navigate } = this.props.navigation;
+    Alert.alert(
+      'Completar Cadastro',
+      'Você precisa completar o cadastro para continuar navegando pelos estabelecimentos',
+      [
+        {text: 'OK', onPress: () => navigate('CompletaCadastro')},
+      ],
+      { cancelable: false }
+    )
+  }
+
+  componentWillMount(){
+    if (Platform.OS == "android" && listener == null) {
+      listener = BackHandler.addEventListener("hardwareBackPress", () => {
+        BackHandler.exitApp()
+      })
+    }
+  }
+  componentWillUnmount(){
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+
+  async componentDidMount(){
+
+    //checar se o usuario já tem o cadastro completo
+    checkUserDetails(
+      //se já tiver cadastro completo
+      ()=> {this.usuarioCompleto()},
+      //se não tiver cadastro completo
+      ()=> this.usuarioNaoCompleto()
+    )
+
+
 
 
     // ,function(){
@@ -468,18 +469,20 @@ export class HomeScreen extends Component {
 
     <View style={{flex:1}}>
     <StatusBar/>
-      <View style={{marginBottom: hp('1.11%'),flexDirection: 'row',alignItems: 'center', justifyContent: 'center'}}>
+      <View style={{marginVertical: hp('1.51%'),flexDirection: 'row',alignItems: 'center', justifyContent: 'center'}}>
         <Text style={styles.textEndHome}>{_.upperFirst(this.state.endereco)} - </Text>
-        <Text
-          style={styles.textUpdateEnd}
+        <TouchableOpacity
           onPress = {()=>{
             this.setState({
               loadingList: true,
               modalEnd: !this.state.modalEnd
             });
           }}>
-        Trocar Endereço
-        </Text>
+          <Text
+            style={styles.textUpdateEnd}>
+          Trocar Endereço
+          </Text>
+        </TouchableOpacity>
       </View>
       <View>
         <LazySearchBar

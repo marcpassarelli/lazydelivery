@@ -163,23 +163,22 @@ _callback(){
 }
 
 checkTimeOut=(key)=>{
-  console.log("dentro checktimeout");
-  this.setState({
-    esperandoConfirmacao: false
-  },function(){
     deleteMessages(this.state.nomeEstabelecimento,key)
     Alert.alert(
       'Erro no Pedido',
       'Ocorreu algum erro no pedido e não obtivemos resposta do restaurante. Verifique se o horário de funcionamento do restaurante ou então tente novamente.',
        [
          {text: 'OK', onPress: () => {
+           this.setState({
+             esperandoConfirmacao:false
+           });
            const { navigate } = this.props.navigation;
            navigate('Carrinho')
          }},
        ],
        { cancelable: false }
     )
-  });
+
 }
 
 timeoutPedido=(key)=>{
@@ -236,17 +235,17 @@ fazerPedido(){
                if(message.status=="Confirmado Recebimento"){
                  clearTimeout(myVar)
                  myVar=0
-                 this.setState({
-                   esperandoConfirmacao: false
-                 },function(){
                    //caso pedido seja confirmado
                    Alert.alert(
                     'Pedido Recebido.',
                     'Seu pedido foi recebido pelo estabelecimento e está sendo preparado para o envio até você. Em caso de dúvidas entre em contato com o estabelecimento',
                     [
                       {text: 'OK', onPress: () => {
-
-                        salvarPedido(this.state.retirar, this.state.produtosCarrinho, this.totalPrice, this.state.frete, formaPgto, formaPgtoDetalhe,
+                        this.setState({
+                          esperandoConfirmacao: false
+                        });
+                        salvarPedido(this.state.retirar, this.state.produtosCarrinho, this.totalPrice,
+                          this.state.frete, formaPgto, formaPgtoDetalhe,
                           this.state.endereco, this.state.bairro,
                           this.state.nomeEstabelecimento, key.key)
                         atualizarCarrinho([])
@@ -256,45 +255,44 @@ fazerPedido(){
                     ],
                     { cancelable: false }
                   )
-                 });
                }else if(message.status=="estabFechado"){
                  clearTimeout(myVar)
                  myVar=0
-                 this.setState({
-                   esperandoConfirmacao: false
-                 },function(){
                    Alert.alert(
                      'Estabelecimento Fechado.',
                      'Sinto muito mas o estabelecimento fechou e não está aceitando mais pedidos.',
                      [
                        {text: 'OK', onPress: () => {
+                         this.setState({
+                           esperandoConfirmacao:false
+                         });
                          const { navigate } = this.props.navigation;
                          navigate('Home')
                        }},
                      ],
                      { cancelable: false }
                    )
-                 });
                }else if(message.status=="semItem"){
                  clearTimeout(myVar)
                  myVar=0
                  loadMessagesSemItem(this.state.nomeEstabelecimento, key.key,(itemIndisponivel)=>{
                    console.log("itemIndisponivel"+JSON.stringify(itemIndisponivel));
-                   this.setState({
-                     esperandoConfirmacao: false
-                   },function(){
+
                      Alert.alert(
                        'Falta de Disponibilidade de um dos items.',
                        'Devido a falta de disponibilidade do item '+itemIndisponivel.nome.nome+', seu pedido não foi aceito. Sentimos muito pelo incomodo.',
                        [
                          {text: 'OK', onPress: () => {
+                           this.setState({
+                             esperandoConfirmacao:false
+                           });
                            const { navigate } = this.props.navigation;
                            navigate('Carrinho')
                          }},
                        ],
                        { cancelable: false }
                      )
-                   });
+
                  })
                }
              })
@@ -309,7 +307,13 @@ fazerPedido(){
 }
 
 onSelectTipoPgto(tipoPgto){
-  var optPgto = tipoPgto
+  this.setState({
+    pgtoEscolhido: tipoPgto[0].bandeira
+  });
+  var optPgto=[]
+  tipoPgto.map((item,index)=>{
+    optPgto.push(item.bandeira)
+  })
   var length = optPgto.length
   optPgto.push('Cancelar')
   ActionSheetIOS.showActionSheetWithOptions({
@@ -329,16 +333,6 @@ onSelectTipoPgto(tipoPgto){
 }
 
 functionPicker(tipoPgto){
-  if(Platform.OS==='ios'){
-    return(
-    <View>
-      <TouchableOpacity onPress={()=>{this.onSelectTipoPgto(tipoPgto)}}>
-        <Text style={{alignSelf: 'center',color: cores.corPrincipal,textDecorationLine: 'underline'}}>Clique para escolher.</Text>
-        <Text>Escolhido:{this.state.pgtoEscolhido}</Text>
-      </TouchableOpacity>
-    </View>
-  )
-  }else{
     return(
       <View style={{marginRight: wp('5%')}}>
       <Picker
@@ -353,24 +347,59 @@ functionPicker(tipoPgto){
       </View>
     )
 }
-}
 
 funcaoCredito(){
-  return(
-    <View style={{marginLeft: 25}}>
-      <Text style={{fontSize: wp('3.75%'),fontFamily: 'Futura-Medium'}}>Selecione a bandeira do seu cartão de crédito:</Text>
-      <View>{this.functionPicker(this.state.cre)}</View>
-    </View>
-  )
+    if(Platform.OS=='ios'){
+      return(
+        <View style={{alignSelf: 'center'}}>
+          <TouchableOpacity style={{flexDirection: 'column'}} onPress={()=>{this.onSelectTipoPgto(this.state.cre)}}>
+            <Text style={{alignSelf: 'center',
+              color: cores.corPrincipal,
+              textDecorationLine: 'underline',
+              fontFamily: 'Futura-Book',
+              fontSize: wp('4%')}}>Clique para escolher a bandeira do seu cartão.</Text>
+            <Text style={{alignSelf: 'center',
+              color: cores.textDetalhes,
+              textDecorationLine: 'underline',
+              fontFamily: 'Futura-Medium',
+              fontSize: wp('4%')}}>{this.state.pgtoEscolhido}</Text>
+          </TouchableOpacity>
+        </View>
+      )
+    }else{
+    return(
+      <View style={{marginLeft: 25}}>
+        <Text style={{fontSize: wp('3.75%'),fontFamily: 'Futura-Medium'}}>Selecione a bandeira do seu cartão de crédito:</Text>
+        <View>{this.functionPicker()}</View>
+      </View>
+    )
+  }
 }
 
 funcaoDebito(){
+  if(Platform.OS=='ios'){
+    return(
+      <View style={{alignSelf: 'center'}}>
+        <TouchableOpacity style={{flexDirection: 'column'}} onPress={()=>{this.onSelectTipoPgto(this.state.deb)}}>
+          <Text style={{alignSelf: 'center',
+            color: cores.corPrincipal,
+            textDecorationLine: 'underline',
+            fontSize: wp('4%')}}>Clique para escolher a bandeira do seu cartão.</Text>
+          <Text style={{alignSelf: 'center',
+            color: cores.textDetalhes,
+            textDecorationLine: 'underline',
+            fontSize: wp('4%')}}>{this.state.pgtoEscolhido}</Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }else{
   return(
     <View style={{marginLeft: 25}}>
       <Text style={{fontSize: wp('3.75%'),fontFamily: 'Futura-Medium'}}>Selecione a bandeira do seu cartão de débito:</Text>
       <View>{this.functionPicker(this.state.deb)}</View>
     </View>
   )
+}
 }
 
 funcaoTroco(){
@@ -529,7 +558,7 @@ render() {
         uncheckedColor={cores.textDetalhes}
         checked={this.state.checked}
         onPress={() => {
-          this.setState({checked: true})
+          this.setState({checked: true,pgtoEscolhido:this.state.cre[0].bandeira})
           this.setState({checked2: false})
           this.setState({checked3: false})
         }}
@@ -548,7 +577,7 @@ render() {
         checked={this.state.checked2}
         onPress={() => {
           this.setState({checked: false})
-          this.setState({checked2: true})
+          this.setState({checked2: true,pgtoEscolhido:this.state.deb[0].bandeira})
           this.setState({checked3: false})
         }}
       />

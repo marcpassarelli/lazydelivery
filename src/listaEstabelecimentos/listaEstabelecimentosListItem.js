@@ -58,10 +58,14 @@ export default class ListaEstabelecimentosListItem extends Component {
            telaAnterior:"listaEstabelecimentos"})
            console.log("frete ao selecionar restaurante "+frete);
         }}>
-        <Image
-          source={{uri:this.props.imglogoEstabelecimento}}
-          style={styles.imagemListaEstabelecimento}
-          />
+        <View>
+          <View style={styles.viewIcon}>
+            <Image
+              source={{uri:this.props.imglogoEstabelecimento}}
+              style={styles.imagemListaEstabelecimento}
+              />
+          </View>
+        </View>
         <View>
           <Text style={styles.textEstabelecimento}>{this.props.estabelecimento}</Text>
           {this.functionValorFrete(this.props.valorDelivery)}

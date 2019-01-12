@@ -21,7 +21,7 @@ export const dadosTipoEstabelecimento = [
   },
   {
     tipoEstabelecimento: "Água e Gás",
-    logo: require("../../img/Água-e-gás.png"),
+    logo: require("../../img/Agua-e-gas.png"),
   }
 ];
 // ,

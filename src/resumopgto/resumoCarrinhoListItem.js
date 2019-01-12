@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Image, Text } from 'react-native';
+import { View, TouchableOpacity, Image, Text,ScrollView } from 'react-native';
 import { styles, images,cores} from '../constants/constants'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
@@ -42,14 +42,27 @@ export default class ResumoCarrinhoListItem extends Component {
               </Text>
             </View>
 
-            <View style={{width:wp('54%'),height:35, justifyContent: 'center',
+            <View style={{width:wp('54%'),flex:1,height:35, justifyContent: 'center',
+              flexDirection: 'row',flexShrink: 1,
               borderColor: cores.corSecundaria,borderWidth: 1}}>
-              <Text style={[styles.textCarrinho,
-                  {alignSelf: 'flex-start',
-                  marginHorizontal: 10,
-                fontSize: wp('3.25%')}]}>
-              {item.nome}
-              </Text>
+              {item.tipoProduto=="Pizzas"?
+                <ScrollView>
+                <Text style={[styles.textCarrinho,
+                    {alignSelf: 'flex-start',
+                    marginHorizontal: 10,flex:1,
+                  fontSize: wp('3.25%'),flexGrow: 1,flexWrap: 'wrap',}]}>
+                  {item.nome} - {item.detalhes}
+                </Text>
+                </ScrollView>
+                :
+                <Text style={[styles.textCarrinho,
+                    {alignSelf: 'center',
+                    marginHorizontal: 10,flex:1,justifyContent:'center',
+                  fontSize: wp('3.25%'),flexGrow: 1,flexWrap: 'wrap'}]}>
+                  {item.nome}
+                </Text>
+              }
+
             </View>
 
             <View style={{width: wp('24%'),height: 35,marginRight: 10,

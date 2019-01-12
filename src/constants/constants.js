@@ -32,10 +32,11 @@ export const cores = {
 export const styles = StyleSheet.create({
   logoLogin:{
     height: hp('18%'),
-    width: wp('80%'),
+
     marginTop: hp('23.15%'),
     marginBottom: hp('13%'),
-    alignSelf: 'center'
+    alignSelf: 'center',
+    resizeMode: 'contain'
   },
   backgroundImage: {
 
@@ -168,19 +169,17 @@ export const styles = StyleSheet.create({
     resizeMode:'cover'
   },
   imagemListaEstabelecimento:{
-    height: 60,
-    width: 60,
-    alignSelf: 'center',
-    resizeMode:'cover',
-    borderWidth: 1.5,
-    borderRadius: 30,
+    borderRadius: wp('9.5%'),
+    height: wp('19%'),
+    width: wp('19%'),
+    borderWidth: 1,
     borderColor: cores.textDetalhes
   },
   imagemListSearch:{
-    height: 35,
-    width: 35,
+    height: wp('10%'),
+    width: wp('10%'),
     alignSelf: 'center',
-    borderRadius: 20,
+    borderRadius: wp('5%'),
     borderWidth: 1,
     borderColor:cores.corPrincipal,
     resizeMode:'cover'
@@ -193,7 +192,7 @@ export const styles = StyleSheet.create({
     width: wp('50%'),
     marginTop: hp('28%'),
     alignSelf: 'center',
-    resizeMode: 'center'
+    resizeMode: 'contain'
 
   },
   nomeAppHome:{
@@ -252,7 +251,7 @@ textAdicionais:{
   },
   textEndHome:{
     backgroundColor:'transparent',
-    fontSize: wp('3.25%'),
+    fontSize: wp('3.5%'),
     color: cores.corPrincipal,
     fontFamily: 'Futura-Book'
   },
@@ -337,7 +336,7 @@ textAdicionais:{
   },
   textUpdateEnd:{
     backgroundColor:'transparent',
-    fontSize: wp('3.25%'),
+    fontSize: wp('3.5%'),
     marginVertical: hp('0.55%'),
     color:'#0000FF',
     fontFamily: 'Futura-Book'

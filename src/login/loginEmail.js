@@ -57,7 +57,10 @@ export class LoginEmailScreen extends Component {
       login(
         this.state.email,
         this.state.senha,
-        () => this.props.navigation.navigate('Home')
+        () => this.props.navigation.navigate('Home'),
+        () => {this.setState({
+          loading:false
+        });}
       )
       this.setState({
         loading: false

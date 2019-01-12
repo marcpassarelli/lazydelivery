@@ -3,7 +3,7 @@ console.ignoredYellowBox = [
 ]
 import { styles, images, cores} from '../constants/constants'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { Text,View,Platform,PickerIOS,Picker } from 'react-native';
+import { TouchableOpacity,Text,View,Platform,PickerIOS,Picker } from 'react-native';
 import React, { Component } from 'react';
 import LazyTextInput from '../constants/lazyTextInput';
 import LazyYellowButton from '../constants/lazyYellowButton'
@@ -42,16 +42,20 @@ export default ComponentsCadastrarEndereco = (props) => {
         {
           Platform.OS==='ios'?
 
-            <PickerIOS
-              itemStyle={{color: cores.corPrincipal,height:80, fontSize: wp('5%'),right: 10}}
-              style={{height: 80}}
-              selectedValue={props.bairroSelecionado}
-              onValueChange={props.updateBairro}>
-              <Picker.Item label="Escolha seu bairro..." value={null}/>
-              {props.bairros.map((item, index)=>{
-                return (<Picker.Item label={item.label} value={item.value} key={index} />)
-              })}
-            </PickerIOS>
+          <View style={{}}>
+            <TouchableOpacity style={{flexDirection: 'column',
+              backgroundColor:'#d1d1d1',height:hp('7%'),
+              borderColor: '#d1d1d1',borderWidth: 1,
+              justifyContent: 'center',
+              width:wp('63.30%')}}
+              onPress={props.onSelectBairro}>
+              <Text style={{marginLeft: 15,
+                justifyContent: 'center',
+                textDecorationLine: 'underline',
+                fontFamily: 'Futura-Book',
+                fontSize: wp('3.75%')}}>{props.bairroSelecionado?props.bairroSelecionado:props.placeholderBairro}</Text>
+            </TouchableOpacity>
+          </View>
           :
               <Picker
                 itemStyle={{fontFamily: 'Futura-Book'}}

@@ -25,7 +25,8 @@ export default class AdicionaisListItem extends Component {
       <View>
         {
           this.props.tipoProduto=="Pizzas" ?
-          <View style={{height: 50,flex: 1, flexDirection: 'row', marginTop: hp('0.55%'), justifyContent: 'space-between'}}>
+          <View style={{height: 50,flex: 1, flexDirection: 'row',
+            marginTop: hp('0.55%'), justifyContent: 'space-between'}}>
             <View style={{flexShrink:1,width:wp('38%'),marginLeft:wp('3.8%'),justifyContent: 'center'}}>
               <Text style={[styles.textAdicionais, {alignSelf: 'flex-start', marginHorizontal: 5,flex:1,flexGrow: 1,flexWrap: 'wrap',}]}>
                 {item.nome}

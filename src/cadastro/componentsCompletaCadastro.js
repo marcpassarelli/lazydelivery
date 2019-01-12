@@ -76,16 +76,20 @@ render(){
         {
           Platform.OS==='ios'?
 
-            <PickerIOS
-              itemStyle={{color: cores.corPrincipal,height:80, fontSize: wp('5%'),right: 10}}
-              style={{height: 80}}
-              selectedValue={this.props.bairroSelecionado}
-              onValueChange={this.props.updateBairro}>
-              <Picker.Item label="Escolha seu bairro..." value={null}/>
-              {this.props.bairros.map((item, index)=>{
-                return (<Picker.Item label={item.label} value={item.value} key={index} />)
-              })}
-            </PickerIOS>
+          <View style={{}}>
+            <TouchableOpacity style={{flexDirection: 'column',
+              backgroundColor:'#d1d1d1',height:hp('7%'),
+              borderColor: '#d1d1d1',borderWidth: 1,
+              justifyContent: 'center',
+              width:wp('63.30%')}}
+              onPress={()=>{this.props.onSelectBairro()}}>
+              <Text style={{marginLeft: 15,
+                justifyContent: 'center',
+                textDecorationLine: 'underline',
+                fontFamily: 'Futura-Book',
+                fontSize: wp('3.75%')}}>{this.props.bairroSelecionado?this.props.bairroSelecionado:this.props.placeholderBairro}</Text>
+            </TouchableOpacity>
+          </View>
           :
               <Picker
                 itemStyle={{fontFamily: 'Futura-Book'}}
@@ -96,7 +100,6 @@ render(){
                 {this.props.bairros.map((item, index)=>{
                   return (<Picker.Item label={item.label} value={item.value} key={index}color={"#464949"} />)
                 })}
-
               </Picker>
         }
         </View>
@@ -112,7 +115,7 @@ render(){
           onPress = { () => {this.props.cadastrarInformacoesBD()} }
           text={"CADASTRAR"}/>
         <View style={{backgroundColor: '#FFFFFF',height: hp('0.1%'),marginHorizontal: wp('12.31%'),marginBottom: hp('4.4%')}}></View>
-        <Image source={images.iconYellow} style={{height: hp('8.9%'),width: wp('14.81%'),alignSelf: 'center'}}></Image>
+        <Image source={images.iconYellow} style={{height: hp('8.9%'),width: wp('14.81%'),alignSelf: 'center',resizeMode: 'contain'}}></Image>
     </KeyboardAwareScrollView>
   )
   }

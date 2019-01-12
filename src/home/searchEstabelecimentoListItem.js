@@ -72,7 +72,7 @@ export default class SearchEstabelecimentoListItem extends Component {
         {
           this.props.aberto?
           <View></View> :
-          <Text style={[styles.textDetalhesEstabelecimento,{color: 'red',fontSize:wp('4%')}]}>FECHADO</Text>
+          <Text style={[styles.textDetalhesEstabelecimento,{color: 'red',fontSize:wp('3%'),marginRight: 2}]}>FECHADO</Text>
         }
       </View>
       }

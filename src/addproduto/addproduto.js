@@ -126,7 +126,7 @@ handleBackButtonClick=()=> {
     }
     else if(tipoProduto=="Pizzas"){
       this.setState({
-        imgProduto:imgProduto 
+        imgProduto:imgProduto
       });
     }
     else{
@@ -424,7 +424,10 @@ handleBackButtonClick=()=> {
           onLoad={this.handleImageLoaded.bind(this)}>
           {this.state.imageLoaded ?
             <View style={{alignContent: 'center',justifyContent: 'center',alignSelf: 'center'}}>
-              <LazyActivity/>
+              <Text style={{alignSelf: 'center',color: cores.corPrincipal}}>Aguarde enquanto a preguiça carrega a imagem do produto.</Text>
+              <View style={{alignSelf: 'center',alignContent: 'center',justifyContent: 'center'}}>
+                <LazyActivity/>
+              </View>
             </View>
           :
           <View>
