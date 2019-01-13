@@ -9,7 +9,6 @@ buildscript {
         supportLibVersion = "27.1.1"
     }
     repositories {
-<<<<<<< ours
       google()
       jcenter()
       maven {
@@ -17,15 +16,9 @@ buildscript {
           name 'Google'
       }
     }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
-=======
-        google()
-        jcenter()
-    }
+
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
->>>>>>> theirs
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -34,7 +27,6 @@ buildscript {
 
 allprojects {
     repositories {
-<<<<<<< ours
        google()
        jcenter()
        mavenLocal()
@@ -42,8 +34,10 @@ allprojects {
            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
            url "$rootDir/../node_modules/react-native/android"
        }
-
-
+      maven {
+        // Local Maven repo containing AARs with JSC library built for Android
+        url "$rootDir/../node_modules/jsc-android/dist"
+      }
     }
 }
 
@@ -58,26 +52,8 @@ subprojects {
   }
 }
 
-ext {
-    buildToolsVersion = "26.0.3"
-    minSdkVersion = 16
-    compileSdkVersion = 26
-    targetSdkVersion = 26
-    supportLibVersion = "26.1.0"
-=======
-        mavenLocal()
-        google()
-        jcenter()
-        maven {
-            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-            url "$rootDir/../node_modules/react-native/android"
-        }
-    }
-}
-
-
 task wrapper(type: Wrapper) {
     gradleVersion = '4.4'
     distributionUrl = distributionUrl.replace("bin", "all")
->>>>>>> theirs
+
 }
