@@ -71,7 +71,7 @@ export class EstabelecimentoInformacoesScreen extends Component {
   }
 
   _callback(){
-    console.log("inside callback");
+
     getEstabelecimentoInfo(this.state.nomeEstabelecimento, (logoUp, nomeUp, precoDeliveryUp,
       tempoEntregaUp, segUp, terUp, quaUp, quiUp, sexUp, sabUp, domUp, creUp, debUp, dinUp)=>{
       this.setState({
@@ -95,15 +95,6 @@ export class EstabelecimentoInformacoesScreen extends Component {
           });
     })
   }
-
-  componentDidMount(){
-
-
-
-    console.log("CREDITO"+this.state.cre)
-
-  }
-
 
    render() {
 

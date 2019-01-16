@@ -26,7 +26,7 @@ export default ComponentsAtualizaCadastro = (props) => {
     <LazyTextInput
       style={{marginBottom: hp('3%')}}
       nameIcon={'phone'}
-      placeholder={'TELEFONE'}
+      placeholder={'TELEFONE COM DDD'}
       onChangeText = {props.updateTelefone}
       returnKeyType="next"
       keyboardType="numeric"

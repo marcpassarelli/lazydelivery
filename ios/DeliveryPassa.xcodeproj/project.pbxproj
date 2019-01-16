@@ -1503,9 +1503,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.DeliveryPassa123;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.LazyDelivery123;
 				PRODUCT_NAME = DeliveryPassa;
-				PROVISIONING_PROFILE_SPECIFIER = iosDistributionProfile;
+				PROVISIONING_PROFILE_SPECIFIER = ProfileDis;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1542,9 +1542,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.DeliveryPassa123;
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.LazyDelivery123;
 				PRODUCT_NAME = DeliveryPassa;
-				PROVISIONING_PROFILE_SPECIFIER = iosDistributionProfile;
+				PROVISIONING_PROFILE_SPECIFIER = ProfileDis;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

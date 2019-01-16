@@ -11,6 +11,7 @@ import FBSDK, { AccessToken, GraphRequestManager, GraphRequest } from 'react-nat
 import { auth} from '../firebase/firebase'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import LazyYellowButton from '../constants/lazyYellowButton'
+import { semCadastro } from '../login/loginregister'
 
 let listener =null
 
@@ -53,10 +54,15 @@ export class ProfileScreen extends Component {
         this.props.navigation.navigate('Home')
       })
 
-
     this.setState({
-            loading: true
-          });
+      loading: true
+    });
+
+    if(semCadastro){
+      this.setState({
+        loading:false 
+      });
+    }else{
     let user = await auth.currentUser;
     let provider = user.providerData[0].providerId
     console.log("provider"+provider);
@@ -118,7 +124,7 @@ export class ProfileScreen extends Component {
         this.setState({
           loading:false
         });
-      }
+      }}
 
   }
 
@@ -155,12 +161,25 @@ export class ProfileScreen extends Component {
      </View> :
 
      <View style={{flex:1}}>
+       {semCadastro?
+         <View>
+         <Text style={[styles.titleCadastro,{marginTop: hp('23.5%'),
+           marginBottom: hp('2%')}]}>VOLTAR PARA A TELA DE LOGIN PARA FAZER CADASTRO</Text>
+         <LazyYellowButton
+             style={{marginBottom: hp('4%')}}
+             onPress={() => {
+               this.props.navigation.push('LoginRegister')
+             }}
+             text={"IR PARA TELA INICIAL"}/>
+           </View>
+         :
+        <View>
        <Text style={[styles.titleCadastro,{marginTop: hp('3.5%'),marginBottom: hp('2%')}]}>PERFIL</Text>
        <Image
        style={{height:120, width:120, borderWidth:1, borderRadius:55, alignSelf:'center',
          borderColor: cores.corPrincipal,borderWidth: 3}}
        source={{uri:imageProfile.uri}}/>
-     <Text style={[styles.textProfileDetails,{color: 'white',fontSize: wp('4.5%')}]}> {this.state.nome} </Text>
+       <Text style={[styles.textProfileDetails,{color: 'white',fontSize: wp('4.5%')}]}> {this.state.nome} </Text>
        <Text style={[styles.textProfileDetails,
            {marginBottom: hp('2.77%'),color: 'white',fontFamily: 'FuturaBT-MediumItalic'}
          ]}> {this.state.telefone} </Text>
@@ -184,11 +203,13 @@ export class ProfileScreen extends Component {
          onPress={ () => {
             this.goToHistoricoPedidos()}}
           text={"HISTÓRICO DE PEDIDOS"}/>
-
+        </View>
+      }
         <Image
           source={images.iconYellow}
           style={{height: 80,width: 80,alignSelf: 'center',marginTop:hp('3.5%')}}/>
-     </View>
+
+   </View>
 
      return (
        <ImageBackground

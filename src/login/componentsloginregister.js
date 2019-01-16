@@ -18,15 +18,15 @@ export default ComponentsLoginRegister = (props) => {
         />
 
       <LazyYellowButton
-        style={{marginBottom: hp('4.98%')}}
-        onPress = { () => {props.loginToHome()}}
-        text={"LOGIN COM E-MAIL"}>
+            style={{marginBottom: hp('4%')}}
+        onPress = {()=>{props.logintToCadastro()}}
+        text={"CADASTRE-SE"}>
       </LazyYellowButton>
 
       <LazyYellowButton
-            style={{marginBottom: hp('4.98%')}}
-        onPress = {()=>{props.logintToCadastro()}}
-        text={"CADASTRE-SE"}>
+        style={{marginBottom: hp('4%')}}
+        onPress = { () => {props.loginToHome()}}
+        text={"LOGIN COM E-MAIL"}>
       </LazyYellowButton>
 
       <TouchableHighlight
@@ -37,6 +37,22 @@ export default ComponentsLoginRegister = (props) => {
         <Text style={styles.textButtons}>LOGIN COM O FACEBOOK</Text>
         </View>
       </TouchableHighlight>
+
+      <Text style={{alignSelf: 'center', color: 'white',
+        fontFamily: 'Futura-Medium',marginVertical:hp('4%'),
+        textShadowOffset: {width: -5,height: 5},
+        textShadowRadius: 20,textShadowColor: 'black',
+        fontSize: wp('4%')}}>OU</Text>
+
+      <LazyYellowButton
+        onPress = {()=>{props.loginSemCadastro()}}
+        text={"ENTRAR SEM CADASTRO"}/>
+
+      <Text style={{alignSelf: 'center', color: 'white',
+        fontFamily: 'Futura-Medium',marginVertical:hp('2%'),
+        fontSize: wp('4%'),marginHorizontal: hp('2%'),textShadowOffset: {width: -5,height: 5},
+        textShadowRadius: 20,textShadowColor: 'black',
+        textAlign: 'center'}}>Entrando sem cadastro suas informações não ficarão salvas para o próximo pedido e você não terá o histórico de pedidos salvo.</Text>
 </View>
 )
 

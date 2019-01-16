@@ -128,7 +128,7 @@ export default class CarrinhoListItem extends Component {
 
   render() {
     const { item } = this.props;
-    console.log("item"+JSON.stringify(item));
+    
     return(
       <View>
         {this.functionCarrinhoListItem(item)}

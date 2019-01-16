@@ -59,7 +59,7 @@ export class AdicionaisScreen extends Component{
     this.detalhes = state.params ? state.params.detalhes : ""
 
     this.tipoProduto = state.params ? state.params.tipoProduto : ""
-    // console.log("listaAdicionais"+JSON.stringify(listaAdicionais));
+
     this.setState({
       adicionais: listaAdicionais
     });
@@ -68,7 +68,7 @@ export class AdicionaisScreen extends Component{
   adicionarAdicionais(){
     const { navigate } = this.props.navigation;
     const { state } = this.props.navigation;
-    console.log("this.tipoProduto"+this.tipoProduto);
+
     var nomeEstabelecimento = state.params ? state.params.nomeEstabelecimento : ""
 
     adicionaisEscolhidos = []
@@ -101,7 +101,7 @@ export class AdicionaisScreen extends Component{
         }
       })
     }
-    console.log("this.totalPrice"+this.totalPrice);
+
     navigate({
       routeName: 'AddProduto',
       params:
@@ -217,12 +217,3 @@ export class AdicionaisScreen extends Component{
     );
   }
 }
-
-
-// refresh={()=>{
-//   this.setState({
-//     refresh: !this.state.refresh
-//   },function(){
-//     console.log("state.refresh"+this.state.refresh+" "+index);
-//   });
-// }}

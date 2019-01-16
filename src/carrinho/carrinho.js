@@ -64,10 +64,10 @@ export class CarrinhoScreen extends Component{
 
   componentWillMount(){
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick)
-    console.log("state.frete"+this.state.frete);
+
     const {state} = this.props.navigation
     var nomeEstabelecimento = state.params ? state.params.nomeEstabelecimento : ""
-    console.log("depois state params"+frete);
+
     retiraLoja(nomeEstabelecimento,(callback)=>{
       this.setState({
         retiraNaLoja: callback.retiraLoja
@@ -81,7 +81,7 @@ export class CarrinhoScreen extends Component{
         frete: frete
       });
     })
-    console.log("carrinho"+carrinho);
+
     if(carrinho.length>0){
       this.setState({
         produtosCarrinho: carrinho
@@ -89,7 +89,7 @@ export class CarrinhoScreen extends Component{
           this.setState({
             loading: false
           },function(){
-            console.log("this.state.produtosCarrinho"+JSON.stringify(this.state.produtosCarrinho));
+
           })
       })
     }else{
@@ -134,13 +134,6 @@ export class CarrinhoScreen extends Component{
                 atualizarCarrinho([])
               }
 
-              // this.setState({ produtosCarrinho}, function(){
-              //   if(produtosCarrinho.length>0){
-              //   atualizarCarrinho(this.state.produtosCarrinho)
-              // }else{
-              //   atualizarCarrinho([])
-              // }
-              // })
             }},
             {text: 'Não', onPress: ()=>{
               console.log("cancelado");
@@ -178,12 +171,14 @@ export class CarrinhoScreen extends Component{
   }
 
   valorVirgula(valor){
-    console.log("valor"+valor);
+
     var str = parseFloat(valor)
     str = str.toFixed(2)
     var res = str.toString().replace(".",",")
     return(
-        <Text style={[styles.textAddProduto,{color: cores.textDetalhes}]}>{res}</Text>
+        <Text style={[styles.textAdicionais,{color: cores.textDetalhes,
+        fontSize: wp('4.5%'),
+        fontFamily: 'FuturaBT-MediumItalic'}]}>{res}</Text>
     )
   }
 
@@ -328,7 +323,7 @@ export class CarrinhoScreen extends Component{
                 Total:
             </Text>
             <Text style={[styles.textAdicionais,
-                {alignItems:'flex-end', fontSize: wp('4.5%'),marginBottom:hp('0.33%'),color:cores.textDetalhes}]}>
+                {alignItems:'flex-end', fontSize: wp('4.5%'),marginBottom:hp('0.33%')}]}>
                 R$ {this.valorVirgula(this.totalPrice+this.state.frete)}
             </Text>
           </View>

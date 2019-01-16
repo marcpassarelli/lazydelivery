@@ -9,6 +9,7 @@ import LazyTextInput from '../constants/lazyTextInput';
 import LazyYellowButton from '../constants/lazyYellowButton'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import LazyBackButton from '../constants/lazyBackButton'
+import { semCadastro } from '../login/loginregister'
 import Icon from 'react-native-vector-icons/Feather';
 
 export default ComponentsCadastrarEndereco = (props) => {
@@ -17,13 +18,21 @@ export default ComponentsCadastrarEndereco = (props) => {
     <KeyboardAwareScrollView>
       <LazyBackButton
         goBack={props.goBack}/>
-      <Text style={[styles.titleCadastro,
-        {marginTop: hp('15%'),marginBottom: hp('2.22%')}]}>
-        CADASTRE NOVO ENDEREÇO
-      </Text>
+      <View>
+        {semCadastro?
+          <Text style={[styles.titleCadastro,
+            {marginTop: hp('15%'),fontSize:wp('4.5%'),
+              marginBottom: hp('2.22%')}]}>PRECISAMOS APENAS DO SEU ENDEREÇO PARA O CÁLCULO DO FRETE
+          </Text>
+          :
+          <Text style={[styles.titleCadastro,
+            {marginTop: hp('15%'),marginBottom: hp('2.22%')}]}>CADASTRE NOVO ENDEREÇO
+          </Text>}
+      </View>
+
       <LazyTextInput
         style={{marginBottom: hp('2.22%')}}
-        placeholder={'ENDEREÇO'}
+        placeholder={'ENDEREÇO COM NÚMERO'}
         nameIcon={'home'}
         onChangeText = {props.updateEndereco}
         returnKeyType="next"

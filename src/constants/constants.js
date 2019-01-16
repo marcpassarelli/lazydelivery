@@ -32,9 +32,7 @@ export const cores = {
 export const styles = StyleSheet.create({
   logoLogin:{
     height: hp('18%'),
-
-    marginTop: hp('23.15%'),
-    marginBottom: hp('13%'),
+    marginVertical: hp('8%'),
     alignSelf: 'center',
     resizeMode: 'contain'
   },
@@ -209,7 +207,15 @@ export const styles = StyleSheet.create({
   },
   textAddProduto:{
     backgroundColor:'transparent',
+    elevation: 4,
     alignSelf: 'center',
+    textShadowColor: 'rgba(0,0,0,1)',
+    textShadowOffset: {width:5,height:5},
+    textShadowRadius: 10,
+    shadowColor: 'rgb(0,0,0)',
+    shadowOffset: {width:5,height:5},
+    shadowRadius: 10,
+    shadowOpacity: 1,
     color: cores.corSecundaria,
     fontSize: wp('4.5%'),
     fontFamily: 'FuturaBT-MediumItalic'
@@ -316,7 +322,7 @@ textAdicionais:{
   textResumoPgto:{
     backgroundColor:'transparent',
     color: cores.corPrincipal,
-    fontSize: wp('4.5%'),
+    fontSize: wp('4%'),
     marginBottom: hp('0.33%'),
     fontFamily: 'Futura-Book'
   },

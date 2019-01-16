@@ -106,6 +106,17 @@ export function atualizarUsuario(userId, nome, telefone) {
   })
 }
 
+export async function semEndCadastro(endereco, bairro, referencia, cadastroEfetuado){
+  try {
+    await AsyncStorage.multiSet([['endAtual', endereco],
+                                ['bairro', bairro], ['referencia', referencia]]);
+    cadastroEfetuado()
+    console.log("cadastrarEndereco");
+  } catch (error) {
+    console.log("error AsyncStorage cadastrarEndereco"+error)
+  }
+}
+
 export async function cadastrarEndereco(userId,  endereco,
   bairro, referencia,cadastroEfetuado){
     let userInformationPath = "/user/" + userId + "/details/listaEnderecos/"

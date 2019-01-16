@@ -80,7 +80,7 @@ componentWillUnmount() {
 }
 
 handleBackButtonClick=()=> {
-  console.log("handleButtonClick");
+
   this.props.navigation.dispatch(NavigationActions.back());
   return true;
 }
@@ -89,7 +89,7 @@ handleBackButtonClick=()=> {
   componentWillMount(){
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick)
     // window.removeEventListener('scroll', this.handleScroll);
-    console.log("WILLMOUNT");
+
     this.setState({
       loading: true
     });
@@ -119,7 +119,7 @@ handleBackButtonClick=()=> {
     }
 
     if(isNaN(imgProduto)){
-      console.log("isInteger");
+
       this.setState({
         imgProduto:{uri:imgProduto},
       });
@@ -130,7 +130,7 @@ handleBackButtonClick=()=> {
       });
     }
     else{
-      console.log("else");
+
         this.setState({ imgProduto: images.backgroundLazyEscuro})
         atualizarImgProduto(images.backgroundLazyEscuro)
     }
@@ -182,7 +182,7 @@ handleBackButtonClick=()=> {
     qtde = qtde + 1
     let preco = this.state.preco
     let total = parseFloat(qtde*preco)
-    console.log('total'+total);
+
     total = total.toFixed(2)
 
     this.setState({
@@ -214,7 +214,7 @@ handleBackButtonClick=()=> {
       tipoProduto:this.state.tipoProduto
     })
 
-    console.log("listaAdicionais carrinho"+JSON.stringify(this.state.listaAdicionais));
+
     this.state.listaAdicionais.map((item, i, arr)=>{
           if(arr.length > 0 ){
 
@@ -278,7 +278,7 @@ handleBackButtonClick=()=> {
   }
 
   valorVirgula(valor){
-    console.log("valor"+valor);
+
     var str = parseFloat(valor)
     str = str.toFixed(2)
     var res = str.toString().replace(".",",")
@@ -286,21 +286,6 @@ handleBackButtonClick=()=> {
         <Text style={[styles.textAddProduto,{color:cores.textDetalhes}]}>{res}</Text>
     )
   }
-
- // onBackButtonPressAndroid = () =>{
- //   const {navigate} = this.props.navigation
- //   const {state} = this.props.navigation
- //   navigate('Estabelecimento',
- //   {nomeEstabelecimento:state.params.nomeEstabelecimento,
- //   tipoEstabelecimento: state.params.tipoEstabelecimento})
- //   return true
- // }
-
-
- isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
-   console.log("inside isCloseToBottom");
-   return layoutMeasurement.height + contentOffset.y >= contentSize.height - 1;
- };
 
  handleImageLoaded() {
   this.setState({ imageLoaded: false});
@@ -324,7 +309,10 @@ handleBackButtonClick=()=> {
     <View style={{flex:1}}>
       <StatusBar/>
       <ScrollView contentContainerStyle={{flexGrow: 1}}>
-        <Text style={[styles.textAddProduto,this.totalPrecoAd>0?{marginTop:hp('5.38%')}:{marginTop: hp('9.9%')},{marginHorizontal: wp('14.5%'),textAlign:'center', fontSize: wp('6%')}]}>
+        <Text style={[styles.textAddProduto,
+            this.totalPrecoAd>0?{marginTop:hp('5.38%')}:
+            {marginTop: hp('9.9%')},{marginHorizontal: wp('14.5%'),
+            textAlign:'center', fontSize: wp('6%')}]}>
             {this.state.nome}
         </Text>
 

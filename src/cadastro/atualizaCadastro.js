@@ -32,6 +32,10 @@ export class AtualizaCadastroScreen extends Component {
     this.setState({nome: text})
   }
   updateTelefone = (text) => {
+    var x = text.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+
+    text = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+    
     this.setState({telefone: text})
   }
 

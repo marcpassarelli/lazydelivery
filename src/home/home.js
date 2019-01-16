@@ -16,6 +16,7 @@ import LazyActivity from '../loadingModal/lazyActivity'
 import LazySearchBar from '../constants/lazySearchBar'
 import _ from 'lodash'
 import ListItemSeparator from '../constants/listItemSeparator'
+import { semCadastro } from '../login/loginregister'
 
 let listener = null
 let user =''
@@ -93,54 +94,9 @@ export class HomeScreen extends Component {
           },function(){
             getNomeEstabelecimentos(this.state.bairro,
             ()=>{
-              newListaEstabelecimentosOpen=[]
-              abertoFechado.map((aberto,index2)=>{
-                nomesEstabelecimentos.map((lista,index)=>{
-
-                  // console.log("lista.frete"+lista.frete+"  lista.nome"+lista.nome);
-                  if(aberto.nome==lista.nome){
-                    if(aberto.aberto==true&&lista.frete!='n'){
-
-                      newListaEstabelecimentosOpen.push({
-                        logo: lista.logo,
-                        nome: lista.nome,
-                        tipoEstabelecimento:lista.tipoEstabelecimento,
-                        frete:lista.frete,
-                        aberto:aberto.aberto,
-                        fechando:aberto.fechando,
-                        horarioFechamento:aberto.horarioFechamento,
-                        _id:todoCounter++
-                      })
-                    }else if(aberto.aberto==false&&lista.frete!='n'){
-
-                      newListaEstabelecimentosOpen.push({
-                        logo: lista.logo,
-                        nome: lista.nome,
-                        tipoEstabelecimento:lista.tipoEstabelecimento,
-                        frete:lista.frete,
-                        aberto:aberto.aberto,
-                        fechando:aberto.fechando,
-                        horarioFechamento:aberto.horarioFechamento,
-                        _id:todoCounter++
-                      })
-                    }
-                  }
-                })
-              })
-              this.setState({
-                listaModalEnd: listaEnderecos,
-              },function(){
-                this.setState({
-                    nomesEstabSearch: newListaEstabelecimentosOpen,
-                    loadingList:false
-                },function(){
-
-
-                });
-              });
+              this.getEstabComFrete()
             })
           })
-
         }else{
           this.setState({
             endereco: listaEnderecos[0].endereco,
@@ -178,6 +134,54 @@ export class HomeScreen extends Component {
     )
   }
 
+  getEstabComFrete(){
+    newListaEstabelecimentosOpen=[]
+    abertoFechado.map((aberto,index2)=>{
+      nomesEstabelecimentos.map((lista,index)=>{
+
+        // console.log("lista.frete"+lista.frete+"  lista.nome"+lista.nome);
+        if(aberto.nome==lista.nome){
+          if(aberto.aberto==true&&lista.frete!='n'){
+
+            newListaEstabelecimentosOpen.push({
+              logo: lista.logo,
+              nome: lista.nome,
+              tipoEstabelecimento:lista.tipoEstabelecimento,
+              frete:lista.frete,
+              aberto:aberto.aberto,
+              fechando:aberto.fechando,
+              horarioFechamento:aberto.horarioFechamento,
+              _id:todoCounter++
+            })
+          }else if(aberto.aberto==false&&lista.frete!='n'){
+
+            newListaEstabelecimentosOpen.push({
+              logo: lista.logo,
+              nome: lista.nome,
+              tipoEstabelecimento:lista.tipoEstabelecimento,
+              frete:lista.frete,
+              aberto:aberto.aberto,
+              fechando:aberto.fechando,
+              horarioFechamento:aberto.horarioFechamento,
+              _id:todoCounter++
+            })
+          }
+        }
+      })
+    })
+    this.setState({
+      listaModalEnd: listaEnderecos,
+    },function(){
+      this.setState({
+          nomesEstabSearch: newListaEstabelecimentosOpen,
+          loadingList:false
+      },function(){
+
+
+      });
+    });
+  }
+
   componentWillMount(){
     if (Platform.OS == "android" && listener == null) {
       listener = BackHandler.addEventListener("hardwareBackPress", () => {
@@ -185,32 +189,39 @@ export class HomeScreen extends Component {
       })
     }
   }
+
   componentWillUnmount(){
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
   }
 
   async componentDidMount(){
-
-    //checar se o usuario já tem o cadastro completo
-    checkUserDetails(
-      //se já tiver cadastro completo
-      ()=> {this.usuarioCompleto()},
-      //se não tiver cadastro completo
-      ()=> this.usuarioNaoCompleto()
-    )
-
-
-
-
-    // ,function(){
-    //   this.state.nomesEstabSearch.map((item,index)=>{
-    //     getDay(item.nome,()=>{
-    //       this.setState({
-    //         loadingList: false
-    //       });
-    //     })
-    //   })
-    // }
+    this.setState({
+      loadingList:true
+    });
+    if(semCadastro){
+      console.log("sem cadastro");
+      getUserEndAtual((enderecoP,bairroP,referenciaP)=>{
+          this.setState({
+            endereco: enderecoP,
+            bairro:bairroP,
+            referencia:referenciaP
+          },function(){
+            getNomeEstabelecimentos(this.state.bairro,
+            ()=>{
+              this.getEstabComFrete()
+            })
+          })
+        })
+    }else{
+      console.log("tem cadastro");
+      //checar se o usuario já tem o cadastro completo
+      checkUserDetails(
+        //se já tiver cadastro completo
+        ()=> {this.usuarioCompleto()},
+        //se não tiver cadastro completo
+        ()=> this.usuarioNaoCompleto()
+      )
+    }
 
   }
 
@@ -443,9 +454,7 @@ export class HomeScreen extends Component {
 
            loadingList:false
          },function(){
-           this.state.nomesEstabSearch.map((item,index)=>{
-             console.log("item.nome"+item.nome);
-           })
+
          });
 
        });
@@ -473,10 +482,14 @@ export class HomeScreen extends Component {
         <Text style={styles.textEndHome}>{_.upperFirst(this.state.endereco)} - </Text>
         <TouchableOpacity
           onPress = {()=>{
+            if(semCadastro){
+              this.props.navigation.push('CadastrarEndereco')
+            }else{
             this.setState({
               loadingList: true,
               modalEnd: !this.state.modalEnd
             });
+            }
           }}>
           <Text
             style={styles.textUpdateEnd}>

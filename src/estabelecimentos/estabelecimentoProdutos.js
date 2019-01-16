@@ -69,7 +69,7 @@ sectionDataFunction(){
 
   var indexToRemove = []
   listaPizzas = []
-  // console.log("newEstabelecimentoProd"+JSON.stringify(newEstabelecimentoProd));
+
   //pega as pizzas do cardápio e adicionar em listPizzas e criar array de indices q devem ser removidos
   newEstabelecimentoProd.map((item,i)=>{
     if(item.tipo==="Pizzas"){
@@ -77,8 +77,7 @@ sectionDataFunction(){
       indexToRemove.push(i)
     }
   })
-  // console.log("listaPizzas"+listaPizzas.length);
-  // console.log("listaPizzas"+JSON.stringify(listaPizzas));
+
   if(listaPizzas.length>0){
   //Remover Pizzas da lista de produtos
   for (var i = indexToRemove.length - 1; i>=0;i--){
@@ -165,7 +164,7 @@ componentWillUnmount() {
 }
 
 handleBackButtonClick=()=> {
-  console.log("handleButtonClick");
+
   this.props.navigation.dispatch(NavigationActions.back());
   return true;
 }
@@ -176,7 +175,7 @@ componentWillMount(){
         });
 BackHandler.addEventListener('hardwareBackPress', ()=>this.handleBackButtonClick)
 
-  console.log("frete estabelecimento produtos"+frete);
+
   zerarAdicionais()
 
   const {state} = this.props.navigation
@@ -209,7 +208,7 @@ BackHandler.addEventListener('hardwareBackPress', ()=>this.handleBackButtonClick
 
 
   var toast = state.params ? state.params.toast : ""
-  console.log("toast"+toast);
+
   var telaAnterior = state.params ? state.params.telaAnterior : ""
 
 
@@ -285,7 +284,7 @@ renderItem = (item) =>{
             titleHeader = "Escolha o 1º sabor da pizza"
           }
           imgProduto = images.pizzaImg
-          console.log("imgProduto"+imgProduto);
+
           const navigateAction = NavigationActions.navigate({
               routeName: 'Pizza',
               params: {nomeEstabelecimento: nomeEstabelecimentoUp,
@@ -298,7 +297,7 @@ renderItem = (item) =>{
           this.props.navigation.dispatch(navigateAction);
 
         }else{
-          console.log("item.item.preco"+item.item.preco);
+          
           imgProduto = item.item.imgProduto
           const navigateAction = NavigationActions.navigate({
               routeName: 'AddProduto',

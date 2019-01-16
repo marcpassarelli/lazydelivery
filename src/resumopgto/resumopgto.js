@@ -15,6 +15,7 @@ import LazyYellowButton from '../constants/lazyYellowButton'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {auth} from '../firebase/firebase'
 import { CheckBox } from 'react-native-elements'
+import { semCadastro } from '../login/loginregister'
 
 import _ from 'lodash'
 
@@ -90,7 +91,7 @@ handleBackButtonClick=()=> {
 
 async componentWillMount(){
   BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick)
-  let userId = await auth.currentUser.uid
+
 
   this.estabelecimento= this.props.navigation.state.params.nomeEstabelecimento
 
@@ -106,7 +107,7 @@ async componentWillMount(){
             });
           }
         });
-  let user = await auth.currentUser;
+
   //Pegar formas de pagamento
   getEstabelecimentoInfo(this.estabelecimento, (logoUp, nomeUp, precoDeliveryUp,
     tempoEntregaUp, segUp, terUp, quaUp, quiUp, sexUp, sabUp, domUp, creUp, debUp, dinUp)=>{
@@ -131,16 +132,7 @@ async componentWillMount(){
       });
     })
   })
-  //Pegar informações usuário
-  getUserProfile(user.uid, (nomeP,telefoneP,profilePicURLP)=>{
 
-    this.setState({
-      nome: nomeP,
-      telefone: telefoneP,
-    },function(){
-
-    });
-  })
   //Pegar endereço cadastrado
   getUserEndAtual((enderecoP,bairroP,referenciaP)=>{
 
@@ -153,6 +145,22 @@ async componentWillMount(){
         this._callback()
       });
     })
+
+    if(semCadastro){
+
+    }else{
+      //Pegar informações usuário
+        let user = await auth.currentUser;
+      getUserProfile(user.uid, (nomeP,telefoneP,profilePicURLP)=>{
+
+        this.setState({
+          nome: nomeP,
+          telefone: telefoneP,
+        },function(){
+
+        });
+      })
+    }
 
 
 
@@ -244,10 +252,14 @@ fazerPedido(){
                         this.setState({
                           esperandoConfirmacao: false
                         });
-                        salvarPedido(this.state.retirar, this.state.produtosCarrinho, this.totalPrice,
-                          this.state.frete, formaPgto, formaPgtoDetalhe,
-                          this.state.endereco, this.state.bairro,
-                          this.state.nomeEstabelecimento, key.key)
+                        if(semCadastro){
+
+                        }else{
+                          salvarPedido(this.state.retirar, this.state.produtosCarrinho, this.totalPrice,
+                            this.state.frete, formaPgto, formaPgtoDetalhe,
+                            this.state.endereco, this.state.bairro,
+                            this.state.nomeEstabelecimento, key.key)
+                        }
                         atualizarCarrinho([])
                         const { navigate } = this.props.navigation;
                         navigate('Home')
@@ -458,10 +470,19 @@ renderHeader=()=>{
           <Text style={{color:cores.corSecundaria,
               fontFamily: 'Futura-Medium',alignSelf: 'center'}}>PREÇO</Text>
         </View>
-
-
     </View>)
 }
+
+updateNome = (text) => {
+  this.setState({nome: text})
+}
+updateTelefone = (text) => {
+  var x = text.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+
+  text = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+  this.setState({telefone: text})
+}
+
 
 render() {
   var {width, height} = Dimensions.get('window');
@@ -613,13 +634,22 @@ render() {
         telefone={this.state.telefone}
         endereco={this.state.endereco}
         bairro={this.state.bairro}
-        referencia={this.state.referencia}/>
+        referencia={this.state.referencia}
+        updateNome={this.updateNome}
+        updateTelefone={this.updateTelefone}/>
 
       </ScrollView>
       <LazyYellowButton
         styleButton={{width: wp('100%')}}
         styleText={{fontFamily:'FuturaPT-Bold',color:cores.corPrincipal, fontSize: wp('5%')}}
-        onPress={()=>{this.fazerPedido()}}
+        onPress={()=>{
+          if(this.state.nome && this.state.telefone){
+            this.fazerPedido()
+           }else{
+             alert('Preencha todos os campos')
+           }
+
+        }}
         text={"FINALIZAR PEDIDO"}
         />
   </View>

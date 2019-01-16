@@ -57,10 +57,10 @@ export class SplashScreen extends Component {
   componentWillMount() {
       setTimeout (() => {
         this.changeIcon()
-      }, 4000);
+      }, 3000);
       setTimeout (() => {
         this.getUser()
-      }, 8000);
+      }, 6000);
   }
 
   static navigationOptions = {

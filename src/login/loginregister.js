@@ -12,6 +12,12 @@ import FBSDK, { LoginManager, AccessToken, GraphRequestManager, GraphRequest } f
 import Loader from '../loadingModal/loadingModal';
 import { auth} from '../firebase/firebase'
 let listener = null
+
+export var semCadastro = false
+export function atualizarSemCadastro(estadoSemCadastro){
+  semCadastro = estadoSemCadastro
+}
+
 export class LoginRegisterScreen extends Component {
 
 
@@ -60,22 +66,23 @@ export class LoginRegisterScreen extends Component {
 
   logintToCadastro ()
   {
+    semCadastro = false
     this.setState({
       loading: true
     })
-    const {navigate} = this.props.navigation
-    navigate('CadastroInicial')
+    // const {navigate} = this.props.navigation
+    this.props.navigation.push('CadastroInicial')
     this.setState({
       loading: false
     })
   }
 
   logintToCadastroFacebook (nomeUsuario, profilePicUrl) {
+    semCadastro = false
     this.setState({
       loading: true
     })
-    const {navigate} = this.props.navigation
-    navigate('CompletaCadastro', { name: nomeUsuario, profilePic: profilePicUrl })
+    this.props.navigation.push('CompletaCadastro', { name: nomeUsuario, profilePic: profilePicUrl })
     this.setState({
       loading: false
     })
@@ -83,14 +90,25 @@ export class LoginRegisterScreen extends Component {
 
 
   loginToHomeFacebook(){
+    semCadastro = false
     this.setState({
       loading: true
     })
-    const {navigate} = this.props.navigation
-    navigate('Home')
+    this.props.navigation.push('Home')
     this.setState({
       loading: false
     })
+  }
+
+  loginSemCadastro = () => {
+    this.setState({
+      loading:true
+    });
+    semCadastro = true
+    this.props.navigation.push('CadastrarEndereco')
+    this.setState({
+      loading: false
+    });
   }
 
 
@@ -172,6 +190,7 @@ export class LoginRegisterScreen extends Component {
           logintToCadastro = {this.logintToCadastro}
           logintToCadastroFacebook = {this.logintToCadastroFacebook}
           loginWithFacebook = {this.loginWithFacebook}
+          loginSemCadastro={this.loginSemCadastro}
           />
       </ImageBackground>
     )

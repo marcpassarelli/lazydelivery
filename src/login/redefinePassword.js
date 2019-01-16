@@ -62,7 +62,6 @@ export class RedefinePasswordScreen extends Component {
     const { navigate } = this.props.navigation
     let email = this.state.email
     // let user = await auth.currentUser;
-    // log
     // let provider = user.providerData[0].providerId
     console.log("this.state.email"+this.state.email);
     if(this.state.email){

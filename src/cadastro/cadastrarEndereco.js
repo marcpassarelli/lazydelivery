@@ -4,11 +4,12 @@ console.ignoredYellowBox = [
 import React, { Component } from 'react';
 import { ActionSheetIOS,ImageBackground, Image, Text, TouchableOpacity, View } from 'react-native';
 import { styles, images,cores} from '../constants/constants'
-import { cadastrarEndereco,getBairros, listaBairros } from '../firebase/database'
+import { cadastrarEndereco,getBairros, listaBairros, semEndCadastro } from '../firebase/database'
 import { Hoshi } from 'react-native-textinput-effects';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import StatusBar from '../constants/statusBar'
-import {db, auth} from '../firebase/firebase'
+import {db, auth } from '../firebase/firebase'
+import { semCadastro } from '../login/loginregister'
 import ComponentsCadastrarEndereco from './componentsCadastrarEndereco'
 import LazyActivity from '../loadingModal/lazyActivity/'
 import { NavigationActions } from 'react-navigation';
@@ -44,11 +45,13 @@ export class CadastrarEnderecoScreen extends Component {
   }
 
   componentWillMount(){
+    console.log("semCadastro"+semCadastro);
     this.setState({
       loading: true
     });
 
     getBairros(()=>{
+      //quando tiver a lista de bairros
       this.setState({
         loading:false
       });
@@ -59,6 +62,17 @@ export class CadastrarEnderecoScreen extends Component {
    async cadastrarEnderecoBD () {
      const {push} = this.props.navigation
      if(this.state.endereco && this.state.bairroSelecionado && this.state.referencia){
+
+        if(semCadastro){
+          semEndCadastro(this.state.endereco,
+            this.state.bairroSelecionado,
+            this.state.referencia,
+            ()=>{
+              setTimeout(()=>{
+                push('Home')
+              },1000)
+            })
+        }else{
 
           let user = await auth.currentUser;
 
@@ -72,9 +86,7 @@ export class CadastrarEnderecoScreen extends Component {
           }, 1000);
 
          })
-
-
-
+       }
 
       }else{
         alert('Preencha todos os campos')
@@ -118,7 +130,12 @@ export class CadastrarEnderecoScreen extends Component {
     </View> :
 
     <ComponentsCadastrarEndereco
-      goBack={()=>{this.props.navigation.navigate('Home')}}
+      goBack={()=>{
+        if(semCadastro){
+          this.props.navigation.navigate('LoginRegister')
+        }else {
+          this.props.navigation.navigate('Home')
+        }}}
       placeholderBairro={"CLIQUE PARA ESCOLHER O BAIRRO"}
       endereco={this.state.endereco}
       bairros={listaBairros}
@@ -128,7 +145,8 @@ export class CadastrarEnderecoScreen extends Component {
       updateEndereco={this.updateEndereco}
       updateBairro={this.updateBairro}
       updateReferencia={this.updateReferencia}
-      cadastrarEnderecoBD={()=>this.cadastrarEnderecoBD()}/>
+      cadastrarEnderecoBD={()=>this.cadastrarEnderecoBD()}
+      semEnd={semCadastro}/>
 
     return (
       <ImageBackground
