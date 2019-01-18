@@ -40,7 +40,7 @@ export default class EstabelecimentoProdutosListItem extends Component {
           <View style={{width: wp('70%'),flexDirection: 'row'}}>
           <Text style={[styles.textProdutos,{flex: 1,flexWrap: 'wrap'}]}>{this.props.nomeProduto}</Text>
           </View>
-          <View style={{width:wp('22.2%')}}>
+          <View style={{width:wp('22.5%')}}>
           {this.props.preco()}
           </View>
         </View>
