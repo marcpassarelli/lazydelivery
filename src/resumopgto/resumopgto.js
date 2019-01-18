@@ -45,7 +45,7 @@ constructor(props){
   super(props);
   this.state = {
     produtosCarrinho,
-    loading: true,
+    loading: false,
     nomeEstabelecimento:"",
     logo: "",
     nome: "",
@@ -127,24 +127,22 @@ async componentWillMount(){
         deb: debUp,
         din: dinUp
     },function(){
-      this.setState({
-        loading: false
-      });
+      //Pegar endereço cadastrado
+      getUserEndAtual((enderecoP,bairroP,referenciaP)=>{
+
+          this.setState({
+            endereco:enderecoP,
+            bairro:bairroP,
+            referencia:referenciaP
+          },function(){
+
+            this._callback()
+          });
+        })
     })
   })
 
-  //Pegar endereço cadastrado
-  getUserEndAtual((enderecoP,bairroP,referenciaP)=>{
 
-      this.setState({
-        endereco:enderecoP,
-        bairro:bairroP,
-        referencia:referenciaP
-      },function(){
-
-        this._callback()
-      });
-    })
 
     if(semCadastro){
 
@@ -167,7 +165,10 @@ async componentWillMount(){
 }
 
 _callback(){
-
+  console.log("");
+  this.setState({
+    loading: false
+  });
 }
 
 checkTimeOut=(key)=>{
@@ -382,7 +383,7 @@ funcaoCredito(){
     return(
       <View style={{marginLeft: 25}}>
         <Text style={{fontSize: wp('3.75%'),fontFamily: 'Futura-Medium'}}>Selecione a bandeira do seu cartão de crédito:</Text>
-        <View>{this.functionPicker()}</View>
+        <View>{this.functionPicker(this.state.cre)}</View>
       </View>
     )
   }

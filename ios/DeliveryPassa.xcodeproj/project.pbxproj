@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -68,6 +67,7 @@
 		D1715D63C9F34F588D1AB802 /* libRCTFBSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69130418D2D24410B5E111B8 /* libRCTFBSDK.a */; };
 		FC91AB5A19A541FE9A18B652 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 13B0EF039E93499B8C456EFC /* Ionicons.ttf */; };
 		FD3489D7E4A64FEEB179218F /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5CE8DF7EAF94DEA8A43721E /* MaterialIcons.ttf */; };
+		35B33875F3F14278B2AAA62A /* Futura-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F21339C02CEA4140BDA8ECA6 /* Futura-Medium.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -431,6 +431,7 @@
 		F5CE8DF7EAF94DEA8A43721E /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		F8AEFB20526F49AB81F59DB7 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		F99CAF5985C84618A8D22B64 /* FuturaPT-ExtraBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = file; name = "FuturaPT-ExtraBold.otf"; path = "../assets/fonts/FuturaPT-ExtraBold.otf"; sourceTree = "<group>"; };
+		F21339C02CEA4140BDA8ECA6 /* Futura-Medium.ttf */ = {isa = PBXFileReference; name = "Futura-Medium.ttf"; path = "../assets/fonts/Futura-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -614,6 +615,7 @@
 				9DE12E71F3E34A398B7AF54B /* FontAwesome5_Brands.ttf */,
 				656130D7CC494987A821F2EB /* FontAwesome5_Regular.ttf */,
 				F8AEFB20526F49AB81F59DB7 /* FontAwesome5_Solid.ttf */,
+				F21339C02CEA4140BDA8ECA6 /* Futura-Medium.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1291,6 +1293,7 @@
 				67326ABC44E645419D3CCBC4 /* FontAwesome5_Brands.ttf in Resources */,
 				1AB6DC0D90784F37A6F6A2FC /* FontAwesome5_Regular.ttf in Resources */,
 				AB16F3253529444881A034DA /* FontAwesome5_Solid.ttf in Resources */,
+				35B33875F3F14278B2AAA62A /* Futura-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
