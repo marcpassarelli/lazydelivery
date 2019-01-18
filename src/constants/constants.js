@@ -111,7 +111,7 @@ export const styles = StyleSheet.create({
   },
   containerListItemProdutos:{
     flex:1,
-    height:hp('10%'),
+    height:hp('11.5%'),
     justifyContent:'center'
 
     // alignItems:'center'
