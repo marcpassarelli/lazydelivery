@@ -173,7 +173,7 @@ render() {
       keyExtractor={item => item._id.toString()}
       />
     :
-    <Text style={[styles.textAddProduto,{color:cores.corPrincipal,textAlign: 'center',marginTop: 10}]}>Ainda não há estabelecimentos cadastrados nesta categoria.</Text>
+    <Text style={[styles.textAdicionais,{color:cores.corPrincipal,textAlign: 'center',marginTop: 10}]}>Ainda não há estabelecimentos cadastrados nesta categoria.</Text>
   }
 
   </View>
