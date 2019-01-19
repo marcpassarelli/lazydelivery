@@ -342,7 +342,7 @@ export class CarrinhoScreen extends Component{
       </View>)
 
     }else{
-      return(<Text style={[styles.textAdicionais,{marginTop: 10}]}>Não há itens no carrinho.</Text>)
+      return(<Text style={[styles.textAdicionais,{alignSelf: 'center',marginTop: 10}]}>Não há itens no carrinho.</Text>)
     }
   }
 
