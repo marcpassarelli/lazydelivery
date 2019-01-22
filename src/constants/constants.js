@@ -77,7 +77,7 @@ export const styles = StyleSheet.create({
   },
   containerListItem:{
     flexDirection:'row',
-    height:hp('10%'),
+    height:hp('15%'),
     alignItems:'center',
     marginHorizontal: wp('7%'),
     marginBottom: 5,
@@ -87,7 +87,7 @@ export const styles = StyleSheet.create({
   containerListItemDisabled:{
     opacity: 0.5,
     flexDirection:'row',
-    height:hp('11%'),
+    height:hp('15%'),
     alignItems:'center',
     marginHorizontal: wp('7%'),
     marginBottom: 5,
@@ -167,9 +167,15 @@ export const styles = StyleSheet.create({
     resizeMode:'cover'
   },
   imagemListaEstabelecimento:{
-    borderRadius: wp('9.5%'),
-    height: wp('19%'),
-    width: wp('19%'),
+    alignSelf: 'center',
+    borderRadius: wp('10.5%'),
+    height: wp('21%'),
+    width: wp('21%'),
+  },
+  viewIcon:{
+    borderRadius: wp('11.5%'),
+    height: wp('23%'),
+    width: wp('23%'),
     borderWidth: 1,
     borderColor: cores.textDetalhes
   },
@@ -207,15 +213,7 @@ export const styles = StyleSheet.create({
   },
   textAddProduto:{
     backgroundColor:'transparent',
-    elevation: 4,
     alignSelf: 'center',
-    textShadowColor: 'rgba(0,0,0,1)',
-    textShadowOffset: {width:5,height:5},
-    textShadowRadius: 10,
-    shadowColor: 'rgb(0,0,0)',
-    shadowOffset: {width:5,height:5},
-    shadowRadius: 10,
-    shadowOpacity: 1,
     color: cores.corSecundaria,
     fontSize: wp('4.5%'),
     fontFamily: 'FuturaBT-MediumItalic'
@@ -252,7 +250,7 @@ textAdicionais:{
     backgroundColor:'transparent',
     marginLeft: wp('1.51%'),
     marginVertical: wp('0.5%'),
-    fontSize: wp('3.25%'),
+    fontSize: wp('3.75%'),
     fontFamily: 'Futura-Book'
   },
   textEndHome:{
@@ -264,7 +262,7 @@ textAdicionais:{
   textEstabelecimento:{
     backgroundColor:'transparent',
     marginLeft: wp('1.51%'),
-    fontSize: wp('4.25%'),
+    fontSize: wp('4.75%'),
     color: cores.corPrincipal,
     fontFamily: 'FuturaBT-MediumItalic'
   },

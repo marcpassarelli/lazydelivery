@@ -405,6 +405,7 @@ try{
       if(atual>abertura&&atual<fechamento){
         aberto = true
       }else{
+        console.log("false 1");
         aberto = false
       }
     }
@@ -417,6 +418,7 @@ try{
       if(atual>abertura&&atual<fechamento){
         aberto = true
       }else{
+        console.log("false 2");
         aberto = false
       }
     }
@@ -424,6 +426,7 @@ try{
       if(atual>abertura&&atual<fechamento){
         aberto = true
       }else{
+        console.log("false 3");
         aberto = false
       }
     }
@@ -444,6 +447,7 @@ try{
       horarioFechamento:snapshot.val().fechamento
     })
     if(abertoFechado.length==numChildrenLista){
+      console.log("abertoFechado"+JSON.stringify(abertoFechado));
       onListLoad()
     }
   })

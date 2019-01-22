@@ -434,6 +434,7 @@ handleBackButtonClick=()=> {
             <TextInput
               style={{backgroundColor: 'rgba(240,240,240,0.5)',
                 marginLeft:wp('4.38%'),
+                paddingLeft: 10,
                 marginRight: 8,
                 marginVertical: hp('0.88%'),
                 borderRadius: 10,
@@ -471,7 +472,6 @@ handleBackButtonClick=()=> {
             />
           </View>
           }
-
         </ImageBackground>
       </View>
     );
