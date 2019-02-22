@@ -1,6 +1,6 @@
 import firebase from 'firebase'
 
-const config = {
+const configProd = {
   apiKey: "AIzaSyDEg_vdMB9UiCpBv2mVnksveSI___aNP5I",
   authDomain: "deliveryaltamira.firebaseapp.com",
   databaseURL: "https://deliveryaltamira.firebaseio.com",
@@ -9,7 +9,16 @@ const config = {
   messagingSenderId: "752201168315"
 }
 
-export const firebaseImpl = firebase.initializeApp(config)
+const configDev = {
+  apiKey: "AIzaSyCMzXGGIwSY2MQRstUN3ufezu33NXUA1nA",
+  authDomain: "deliveryaltamira-restore.firebaseapp.com",
+  databaseURL: "https://deliveryaltamira-restore.firebaseio.com",
+  projectId: "deliveryaltamira-restore",
+  storageBucket: "deliveryaltamira-restore.appspot.com",
+  messagingSenderId: "308469361421"
+}
+
+export const firebaseImpl = firebase.initializeApp(configDev)
 export const db = firebase.database()
 export const auth = firebase.auth()
 export const storage = firebase.storage()

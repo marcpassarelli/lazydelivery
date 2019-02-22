@@ -9,6 +9,7 @@ import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
 import Toast from 'react-native-toast-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import StatusBar from '../constants/statusBar'
+import LazySearchBar from '../constants/lazySearchBar'
 import ListItemSeparator from '../constants/listItemSeparator'
 import LazyYellowButton from '../constants/lazyYellowButton'
 import { NavigationActions } from 'react-navigation';
@@ -40,7 +41,8 @@ constructor(props){
     loadingList: false,
     loading: false,
     expandido: false,
-    animation: new Animated.Value()
+    animation: new Animated.Value(),
+    text:'',
   }
 
 }
@@ -149,7 +151,9 @@ sectionDataFunction(){
     })
     return acc
   }, [])
-
+  // this.setState({
+  //   listaProdutos:sectionData
+  // });
   this.callbackFinishLoading()
 }
 
@@ -297,7 +301,7 @@ renderItem = (item) =>{
           this.props.navigation.dispatch(navigateAction);
 
         }else{
-          
+
           imgProduto = item.item.imgProduto
           const navigateAction = NavigationActions.navigate({
               routeName: 'AddProduto',
@@ -360,6 +364,24 @@ functionButton(){
   }
 }
 
+filterSearch(text){
+  this.setState({
+    loadingList:true
+  });
+  const newData = newListaEstabelecimentosOpen.filter(function(item){
+    const itemData= item.nome.toUpperCase()
+    const textData= text.toUpperCase()
+    return itemData.indexOf(textData) > -1
+  })
+  this.setState({
+    nomesEstabSearch: newData,
+    text: text,
+    loadingList:false
+  }, function(){
+
+  });
+}
+
 
   render() {
 
@@ -375,6 +397,18 @@ functionButton(){
 
 
     <View style={{flex:1}}>
+      <View style={{marginBottom: 3,borderWidth: 1.5,borderColor: cores.corSecundaria}}>
+      <LazySearchBar
+
+        value={this.state.text}
+        clearText={()=>{this.setState({
+          text:""
+        });}}
+        onChangeText={(text) => {this.filterSearch(text)}}
+        onClearText={() => {}}
+        returnKeyType="search"
+        placeholder={'PROCURAR'}/>
+      </View>
       <SectionList
         ItemSeparatorComponent={this.renderListItemSeparator}
         SectionSeparatorComponent={this.renderSeparatorSection}

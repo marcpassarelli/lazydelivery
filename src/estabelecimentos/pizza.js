@@ -161,7 +161,7 @@ _renderSeparator(){
                 nomeEstabelecimento: state.params.nomeEstabelecimento,
                 nome: "Pizza "+_.upperFirst(state.params.tamanhoPizza)+" "+state.params.sabores+" "+sabores,
                 preco: preco, precoPizza: precoPizza,
-                detalhes: "Sabores da Pizza: "+state.params.detalhes+item.nomeProduto+"("+preco+")",
+                detalhes: "Sabores: "+state.params.detalhes+item.nomeProduto+"("+preco+")",
                 imgProduto: "https://firebasestorage.googleapis.com/v0/b/deliveryaltamira.appspot.com/o/produtos%2FCasa%20Nova%2Fdiversos-tamanhos-varios.jpg?alt=media&token=a548a5f5-14a9-47a4-9a30-0fd56e838e0c" , tipoProduto: state.params.tipoProduto ,
                 tipoEstabelecimento: state.params.tipoEstabelecimento,
                 tipoProduto: state.params.tipoProduto})

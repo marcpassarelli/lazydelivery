@@ -15,11 +15,11 @@ export default class ListaEstabelecimentosListItem extends Component {
           <Text style={[styles.textDetalhesEstabelecimento,{color:'red'}]}>NÃO ENTREGA NO BAIRRO ESCOLHIDO.</Text>)
     }else if(valorFrete=='gratis'){
       return(
-        <Text style={[styles.textDetalhesEstabelecimento,{color:'green'}]}>FRETE GRÁTIS</Text>)
+        <Text style={[styles.textDetalhesEstabelecimento,{color:'green'}]}>ENTREGA GRÁTIS</Text>)
   }else{
     return(
       <View>
-      <Text style={styles.textDetalhesEstabelecimento}>Frete: R$ {this.preco(valorFrete)}</Text>
+      <Text style={styles.textDetalhesEstabelecimento}>Taxa de Entrega: R$ {this.preco(valorFrete)}</Text>
       </View>)
     }
   }

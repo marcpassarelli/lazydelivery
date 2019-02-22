@@ -167,10 +167,9 @@ export const styles = StyleSheet.create({
     resizeMode:'cover'
   },
   imagemListaEstabelecimento:{
-    alignSelf: 'center',
-    borderRadius: wp('10.5%'),
-    height: wp('21%'),
-    width: wp('21%'),
+    borderRadius: wp('11.5%'),
+    height: wp('22.7%'),
+    width: wp('22.7%'),
   },
   viewIcon:{
     borderRadius: wp('11.5%'),

@@ -60,7 +60,7 @@ export class ProfileScreen extends Component {
 
     if(semCadastro){
       this.setState({
-        loading:false 
+        loading:false
       });
     }else{
     let user = await auth.currentUser;

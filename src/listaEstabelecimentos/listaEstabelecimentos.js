@@ -29,7 +29,7 @@ export class ListaEstabelecimentosScreen extends Component{
       <View style={{flex:1}}>
       <LazyBackButton
         goBack={()=>{
-        navigation.navigate('Home')
+        navigation.push('Home')
       }}/>
       </View>
     ),
