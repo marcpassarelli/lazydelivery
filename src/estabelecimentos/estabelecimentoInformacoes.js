@@ -40,7 +40,8 @@ export class EstabelecimentoInformacoesScreen extends Component {
       dom: "",
       deb: "",
       cre: "",
-      din: ""
+      din: "",
+      foneContato: ""
     };
   }
 
@@ -73,7 +74,7 @@ export class EstabelecimentoInformacoesScreen extends Component {
   _callback(){
 
     getEstabelecimentoInfo(this.state.nomeEstabelecimento, (logoUp, nomeUp, precoDeliveryUp,
-      tempoEntregaUp, segUp, terUp, quaUp, quiUp, sexUp, sabUp, domUp, creUp, debUp, dinUp)=>{
+      tempoEntregaUp, segUp, terUp, quaUp, quiUp, sexUp, sabUp, domUp, creUp, debUp, dinUp, foneContatoUp)=>{
       this.setState({
           logo: logoUp,
           nome: nomeUp,
@@ -88,7 +89,8 @@ export class EstabelecimentoInformacoesScreen extends Component {
           dom: domUp,
           cre: creUp,
           deb: debUp,
-          din: dinUp
+          din: dinUp,
+          foneContato: foneContatoUp
       })
       this.setState({
             loading: false
@@ -122,7 +124,7 @@ export class EstabelecimentoInformacoesScreen extends Component {
 
        <View style={{height: 2,backgroundColor: cores.corSecundaria,marginVertical:hp('1.66%'), marginHorizontal: 10}}></View>
 
-       <Text style={styles.textInformacoes}>Horários de Funcionamento</Text>
+       <Text style={styles.textInformacoes}>Horários de Funcionamento no Lazy Delivery</Text>
        <Text style={styles.textInformacoesD}>Segunda-Feira: {this.state.seg}</Text>
        <Text style={styles.textInformacoesD}>Terça-Feira: {this.state.ter}</Text>
        <Text style={styles.textInformacoesD}>Quarta-Feira: {this.state.qua}</Text>
@@ -153,8 +155,10 @@ export class EstabelecimentoInformacoesScreen extends Component {
            })
          }</Text>
        <Text style={styles.textInformacoes2}>{this.state.din}</Text>
+       <Text></Text>
 
-       <View style={styles.separator}></View>
+       <Text style={styles.textInformacoes}>Telefone para contato:</Text>
+         <Text style={styles.textInformacoesD}>{this.state.foneContato}</Text>
 
      </ScrollView>
 

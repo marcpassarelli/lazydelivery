@@ -537,7 +537,7 @@ export function getEstabelecimentoInfo(nomeEstabelecimento, callback){
     estabelecimentoInfo = []
     db.ref("/infoEstabelecimentos/"+nomeEstabelecimento).once('value').then(function(snapshot){
       var estabelecimentoData = snapshot.val()
-      var logo, nome, precoDelivery, tempoEntrega, seg, ter, qua, qui, sex, sab, dom, deb, din  = "";
+      var logo, nome, precoDelivery, tempoEntrega, seg, ter, qua, qui, sex, sab, dom, deb, din, foneContato  = "";
       var cre = []
       var deb = []
       if(estabelecimentoData){
@@ -545,6 +545,7 @@ export function getEstabelecimentoInfo(nomeEstabelecimento, callback){
             nome = estabelecimentoData.nome
             precoDelivery = estabelecimentoData.precoDelivery
             tempoEntrega = estabelecimentoData.tempoEntrega
+            foneContato = estabelecimentoData.foneContato
 
             if(estabelecimentoData.horarioFuncionamento.segunda.abertura=="fechado"){
               seg = "Fechado"
@@ -622,7 +623,7 @@ export function getEstabelecimentoInfo(nomeEstabelecimento, callback){
 
 
       callback(logo, nome, precoDelivery, tempoEntrega, seg, ter,
-        qua, qui, sex, sab, dom, cre, deb, din)
+        qua, qui, sex, sab, dom, cre, deb, din,foneContato)
 
 
 
