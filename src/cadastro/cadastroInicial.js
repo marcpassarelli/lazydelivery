@@ -7,6 +7,7 @@ import { styles, images} from '../constants/constants'
 import ComponentsCadastroInicial  from './componentsCadastroInicial'
 import { signup, cadastrarUsuario } from '../firebase/database'
 import StatusBar from '../constants/statusBar'
+import { checkInternetConnection } from 'react-native-offline';
 
 export class CadastroInicialScreen extends Component {
 
@@ -21,7 +22,7 @@ export class CadastroInicialScreen extends Component {
       confirmarEmail: '',
       senha: '',
       confirmarSenha: '',
-      checked:false
+      checked:false,
     }
 
     this.cadastrarUsuarioBD = this.cadastrarUsuarioBD.bind(this);
@@ -53,7 +54,7 @@ export class CadastroInicialScreen extends Component {
     }
   }
 
-  cadastrarUsuarioBD () {
+  async cadastrarUsuarioBD () {
 
     if(this.state.email && this.state.confirmarEmail &&
       this.state.senha && this.state.confirmarSenha){
@@ -63,11 +64,26 @@ export class CadastroInicialScreen extends Component {
         }else if(this.state.email!=this.state.confirmarEmail){
           alert('Emails diferentes. Cheque o email e tenha certeza que colocou o e-mail correto.')
         }else{
-          signup(
-            this.state.email,
-            this.state.senha,
-            () => this.props.navigation.navigate('CompletaCadastro')
-          )
+          const isConnected = await checkInternetConnection();
+          if(isConnected){
+            signup(
+              this.state.email,
+              this.state.senha,
+              () => this.props.navigation.navigate('CompletaCadastro')
+            )
+          }else{
+            Alert.alert(
+              'Conexão com a Internet',
+              'Aparantemente há um problema com sua conexão de internet e não conseguimos fazer o login. Cheque para haver se você possui conexão com a internet no momento e tente novamente',
+              [
+                {text: 'OK', onPress: () => {
+
+                }},
+              ],
+              { cancelable: false }
+            )
+          }
+
         }
 
       }else{

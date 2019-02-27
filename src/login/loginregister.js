@@ -12,6 +12,7 @@ import FBSDK, { LoginManager, AccessToken, GraphRequestManager, GraphRequest } f
 import Loader from '../loadingModal/loadingModal';
 import { auth} from '../firebase/firebase'
 let listener = null
+import { checkInternetConnection } from 'react-native-offline';
 
 export var semCadastro = false
 export function atualizarSemCadastro(estadoSemCadastro){
@@ -19,19 +20,6 @@ export function atualizarSemCadastro(estadoSemCadastro){
 }
 
 export class LoginRegisterScreen extends Component {
-
-
-  componentDidMount() {
-
-    //Encerrar app se for android e se back for pressionado
-    if (Platform.OS == "android" && listener == null) {
-      listener = BackHandler.addEventListener("hardwareBackPress", () => {
-        BackHandler.exitApp()
-      })
-    }
-
-  }
-
 
   static navigationOptions = {
     header: null,
@@ -44,11 +32,24 @@ export class LoginRegisterScreen extends Component {
       senha: '',
       nameUser: '',
       profilePicUrl:'',
-      loading: false
+      loading: false,
+      temInternet: true
     }
 
     this.loginToHome = this.loginToHome.bind(this);
     this.logintToCadastro = this.logintToCadastro.bind(this);
+
+  }
+
+
+  componentDidMount() {
+
+    //Encerrar app se for android e se back for pressionado
+    if (Platform.OS == "android" && listener == null) {
+      listener = BackHandler.addEventListener("hardwareBackPress", () => {
+        BackHandler.exitApp()
+      })
+    }
 
   }
 
@@ -77,33 +78,71 @@ export class LoginRegisterScreen extends Component {
     })
   }
 
-  logintToCadastroFacebook (nomeUsuario, profilePicUrl) {
+  async logintToCadastroFacebook (nomeUsuario, profilePicUrl) {
     semCadastro = false
     this.setState({
       loading: true
     })
-    this.props.navigation.push('CompletaCadastro', { name: nomeUsuario, profilePic: profilePicUrl })
-    this.setState({
-      loading: false
-    })
+    const isConnected = await checkInternetConnection();
+    if(isConnected){
+      this.setState({
+        loading: false
+      })
+      this.props.navigation.push('CompletaCadastro', { name: nomeUsuario, profilePic: profilePicUrl })
+    }else{
+      this.setState({
+        loading: false
+      })
+      Alert.alert(
+        'Conexão com a Internet',
+        'Aparantemente há um problema com sua conexão de internet e não conseguimos fazer o login. Cheque para haver se você possui conexão com a internet no momento e tente novamente',
+        [
+          {text: 'OK', onPress: () => {
+
+          }},
+        ],
+        { cancelable: false }
+      )
+    }
+
   }
 
 
-  loginToHomeFacebook(){
+  async loginToHomeFacebook(){
     semCadastro = false
     this.setState({
       loading: true
     })
-    this.props.navigation.push('Home')
-    this.setState({
-      loading: false
-    })
+    const isConnected = await checkInternetConnection();
+    if(isConnected){
+      this.props.navigation.push('Home')
+      this.setState({
+        loading: false
+      })
+    }else{
+      this.setState({
+        loading: false
+      })
+      Alert.alert(
+        'Conexão com a Internet',
+        'Aparantemente há um problema com sua conexão de internet e não conseguimos fazer o login. Cheque para haver se você possui conexão com a internet no momento e tente novamente',
+        [
+          {text: 'OK', onPress: () => {
+
+          }},
+        ],
+        { cancelable: false }
+      )
+    }
+
+
   }
 
   loginSemCadastro = () => {
     this.setState({
       loading:true
     });
+    //p
     semCadastro = true
     this.props.navigation.push('CadastrarEndereco')
     this.setState({
@@ -183,7 +222,7 @@ export class LoginRegisterScreen extends Component {
         style={styles.backgroundImage}>
         <Loader
           loading={this.state.loading}
-          message="Aguarde enquanto a preguiça faz o seu login"/>
+          message="Aguarde enquanto a preguiça faz o seu login. Caso a internet esteja lenta pode demorar um pouco. Aguarde ou feche o aplicativo, verifique sua conexão com a internet e tente novamente."/>
         <StatusBar/>
         <ComponentsLoginRegister
           loginToHome = {this.loginToHome}

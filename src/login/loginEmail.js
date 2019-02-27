@@ -11,18 +11,13 @@ import { styles, images} from '../constants/constants'
 import FBSDK, { LoginManager, AccessToken, GraphRequestManager, GraphRequest } from 'react-native-fbsdk'
 import Loader from '../loadingModal/loadingModal';
 import { auth } from '../firebase/firebase'
+import { checkInternetConnection } from 'react-native-offline';
 let listener = null
 
 export class LoginEmailScreen extends Component {
   static navigationOptions = {
     header: null,
   };
-
-  componentDidMount() {
-    //Encerrar app se for android e se back for pressionado
-
-  }
-
 
   constructor(props) {
     super(props);
@@ -32,7 +27,8 @@ export class LoginEmailScreen extends Component {
       nameUser: '',
       profilePicUrl:'',
       loading: false,
-      checked:false
+      checked:false,
+      temInternet: null
     }
 
     this.loginToHome = this.loginToHome.bind(this);
@@ -48,23 +44,46 @@ export class LoginEmailScreen extends Component {
   }
 
 
-  loginToHome () {
+  async loginToHome () {
     this.setState({
       loading: true
     });
     if(this.state.email && this.state.senha){
+      //detectar se há internet
+      console.log("dentro 1º if");
+        const isConnected = await checkInternetConnection();
+        console.log("dentro fetch:"+isConnected);
+        if(isConnected) {
+          console.log("connected");
+          login(
+            this.state.email,
+            this.state.senha,
+            () => this.props.navigation.push('Home'),
+            () => {this.setState({
+              loading:false
+            });}
+          )
+          this.setState({
+            loading: false
+          });
+        }else{
+          console.log("problema conexão");
+          this.setState({
+            loading: false
+          });
+          Alert.alert(
+            'Conexão com a Internet',
+            'Aparantemente há um problema com sua conexão de internet e não conseguimos fazer o login. Cheque para haver se você possui conexão com a internet no momento e tente novamente',
+            [
+              {text: 'OK', onPress: () => {
 
-      login(
-        this.state.email,
-        this.state.senha,
-        () => this.props.navigation.push('Home'),
-        () => {this.setState({
-          loading:false
-        });}
-      )
-      this.setState({
-        loading: false
-      });
+              }},
+            ],
+            { cancelable: false }
+          )
+        }
+
+
     }else{
       this.setState({
         loading:false
@@ -80,6 +99,7 @@ export class LoginEmailScreen extends Component {
         { cancelable: false }
       )
     }
+
   }
 
   logintToCadastro ()
@@ -114,7 +134,7 @@ export class LoginEmailScreen extends Component {
         style={styles.backgroundImage}>
         <Loader
           loading={this.state.loading}
-          message="Aguarde enquanto a preguiça faz o seu login" />
+          message="Aguarde enquanto a preguiça faz o seu login. Caso a internet esteja lenta pode demorar um pouco. Aguarde ou feche o aplicativo, verifique sua conexão com a internet e tente novamente." />
         <StatusBar/>
         <ComponentsLoginEmail
           goBack={()=>{this.props.navigation.navigate('LoginRegister')}}
