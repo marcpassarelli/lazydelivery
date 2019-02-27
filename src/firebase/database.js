@@ -111,7 +111,6 @@ export async function semEndCadastro(endereco, bairro, referencia, cadastroEfetu
     await AsyncStorage.multiSet([['endAtual', endereco],
                                 ['bairro', bairro], ['referencia', referencia]]);
     cadastroEfetuado()
-    console.log("cadastrarEndereco");
   } catch (error) {
     console.log("error AsyncStorage cadastrarEndereco"+error)
   }
@@ -132,7 +131,6 @@ export async function cadastrarEndereco(userId,  endereco,
         await AsyncStorage.multiSet([['endAtual', endereco],
                                     ['bairro', bairro], ['referencia', referencia]]);
         cadastroEfetuado()
-        console.log("cadastrarEndereco");
       } catch (error) {
         console.log("error AsyncStorage cadastrarEndereco"+error)
       }
@@ -189,7 +187,6 @@ export async function deleteUser(){
     let userInformationPath = "/user/" + user.uid
     user.delete().then(function() {
       db.ref(userInformationPath).remove()
-      console.log("user deletado")
     }, function(error) {
       console.log("user não deletado"+error)// An error happened.
     });
@@ -212,7 +209,6 @@ export function getUserProfile(userID, callback){
 //Se userData não for nulo, isso quer dizer que o usuário já existe e não precisa completar cadastro
     if(userData){
       nome = userData.details.nome
-      console.log("nome"+nome);
       telefone = userData.details.telefone
       profilePicURL = userData.details.profilePicURL
     }
@@ -246,7 +242,7 @@ export async function getUserEndAtual(callback){
 }
 
 export function getUserListEnd(userID, onListLoad){
-  console.log("inside getUserListEnd");
+
   let userPath = "/user/"+userID
 
   db.ref(userPath+"/details/listaEnderecos/").once('value').then(function(snapshot){
@@ -291,7 +287,7 @@ export async function checkUserDetails(userExiste, userNaoExiste){
 
   try {
     let userId = await auth.currentUser.uid
-    console.log("userId"+userId);
+
     db.ref("/user/"+userId).once('value').then(function(snapshot) {
       var userData = snapshot.val()
 
@@ -405,7 +401,6 @@ try{
       if(atual>abertura&&atual<fechamento){
         aberto = true
       }else{
-        console.log("false 1");
         aberto = false
       }
     }
@@ -418,7 +413,6 @@ try{
       if(atual>abertura&&atual<fechamento){
         aberto = true
       }else{
-        console.log("false 2");
         aberto = false
       }
     }
@@ -426,7 +420,6 @@ try{
       if(atual>abertura&&atual<fechamento){
         aberto = true
       }else{
-        console.log("false 3");
         aberto = false
       }
     }
@@ -447,7 +440,6 @@ try{
       horarioFechamento:snapshot.val().fechamento
     })
     if(abertoFechado.length==numChildrenLista){
-      console.log("abertoFechado"+JSON.stringify(abertoFechado));
       onListLoad()
     }
   })
@@ -688,6 +680,21 @@ export function loadMessagesSemItem(estabelecimento, chave, callback){
 
 
   })
+}
+
+export function salvarPedidoPerdido(estabelecimento,chave,onListLoad){
+  try{
+    db.ref("/messages/"+estabelecimento+"/"+chave+"/").once('value').then(function(snapshot){
+      var pedidosPerdido = snapshot.val()
+      this.messageRef = db.ref("/messages/"+estabelecimento+"/pedidosPerdidos/")
+      this.messageRef.push(pedidosPerdido)
+        onListLoad()
+      })
+  } catch(error){
+    onListLoad()
+    console.log("error:"+error)
+  }
+
 }
 
 

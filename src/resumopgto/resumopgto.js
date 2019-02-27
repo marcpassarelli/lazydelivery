@@ -5,7 +5,7 @@ import { styles, cores, images} from '../constants/constants'
 import LazyActivity from '../loadingModal/lazyActivity'
 import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
 import { getUserProfile, getUserEndAtual, getEstabelecimentoInfo,
-  loadMessages, loadMessagesSemItem, sendMessage,deleteMessages, salvarPedido} from '../firebase/database'
+  loadMessages, loadMessagesSemItem, sendMessage,deleteMessages,salvarPedidoPerdido, salvarPedido} from '../firebase/database'
 import ResumoCarrinhoListItem from './resumoCarrinhoListItem'
 import {frete} from '../home/home'
 import ResumoInformacoes from './resumoInformacoes'
@@ -172,7 +172,9 @@ _callback(){
 }
 
 checkTimeOut=(key)=>{
-    deleteMessages(this.state.nomeEstabelecimento,key)
+    salvarPedidoPerdido(this.state.nomeEstabelecimento,key,()=>{
+      deleteMessages(this.state.nomeEstabelecimento,key)
+    })
     Alert.alert(
       'Erro no Pedido',
       'Ocorreu algum erro no pedido e não obtivemos resposta do restaurante. Verifique se o horário de funcionamento do restaurante ou então tente novamente.',
