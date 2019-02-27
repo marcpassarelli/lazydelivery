@@ -50,24 +50,26 @@ export class LoginEmailScreen extends Component {
     });
     if(this.state.email && this.state.senha){
       //detectar se há internet
-      console.log("dentro 1º if");
+
         const isConnected = await checkInternetConnection();
-        console.log("dentro fetch:"+isConnected);
+
         if(isConnected) {
-          console.log("connected");
+
           login(
             this.state.email,
             this.state.senha,
-            () => this.props.navigation.push('Home'),
+            () => {
+              this.setState({
+                loading:false
+              })
+              this.props.navigation.push('Home')
+            },
             () => {this.setState({
               loading:false
             });}
           )
-          this.setState({
-            loading: false
-          });
         }else{
-          console.log("problema conexão");
+
           this.setState({
             loading: false
           });
@@ -145,7 +147,7 @@ export class LoginEmailScreen extends Component {
           functionCheck={()=>{this.setState({
             checked: !this.state.checked
           });}}
-          esqueciSenha={()=>{this.props.navigation.navigate('RedefinePassword'),console.log("dentroesquecisenha");}}
+          esqueciSenha={()=>{this.props.navigation.navigate('RedefinePassword');}}
           />
       </ImageBackground>
     )

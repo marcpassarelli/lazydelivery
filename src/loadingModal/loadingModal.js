@@ -41,7 +41,7 @@ const stylesLocal = StyleSheet.create({
   },
   activityIndicatorWrapper: {
     backgroundColor: '#FFFFFF',
-    height: 100,
+    height: 120,
     borderRadius: 10,
     display: 'flex',
     alignItems: 'center',

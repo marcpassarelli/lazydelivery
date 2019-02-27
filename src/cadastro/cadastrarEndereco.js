@@ -45,7 +45,7 @@ export class CadastrarEnderecoScreen extends Component {
   }
 
   componentWillMount(){
-    console.log("semCadastro"+semCadastro);
+
     this.setState({
       loading: true
     });

@@ -114,11 +114,14 @@ export class LoginRegisterScreen extends Component {
       loading: true
     })
     const isConnected = await checkInternetConnection();
+
     if(isConnected){
-      this.props.navigation.push('Home')
+
       this.setState({
         loading: false
       })
+      this.props.navigation.push('Home')
+
     }else{
       this.setState({
         loading: false

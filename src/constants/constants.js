@@ -202,7 +202,7 @@ export const styles = StyleSheet.create({
     alignSelf:'center',
     color: cores.corPrincipal,
     marginTop: hp('2.54%'),
-    marginBottom: hp('2.54%'),
+    marginBottom: hp('2%'),
     fontSize: wp('5%'),
     backgroundColor:'transparent',
     fontFamily: 'Futura-Book'
