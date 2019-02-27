@@ -478,25 +478,34 @@ export class HomeScreen extends Component {
 
     <View style={{flex:1}}>
     <StatusBar/>
-      <View style={{marginVertical: hp('1.51%'),flexDirection: 'row',alignItems: 'center', justifyContent: 'center'}}>
-        <Text style={styles.textEndHome}>{_.upperFirst(this.state.endereco)} - </Text>
-        <TouchableOpacity
-          onPress = {()=>{
-            if(semCadastro){
-              this.props.navigation.push('CadastrarEndereco')
-            }else{
-            this.setState({
-              loadingList: true,
-              modalEnd: !this.state.modalEnd
-            });
-            }
-          }}>
-          <Text
-            style={styles.textUpdateEnd}>
-          Trocar Endereço
-          </Text>
-        </TouchableOpacity>
+      <View>
+        <Text style={[styles.textEndHome,{marginLeft: wp('5%'),marginTop: 5,fontSize: wp('3.75%')}]}>Entregar para:</Text>
       </View>
+
+      <View style={{marginTop:5,marginBottom: 5,flexDirection: 'row',justifyContent: 'center',alignItems: 'center'}}>
+        <View style={{width:wp('60%'),marginLeft: wp('4%'),flexWrap: 'wrap'}}>
+          <Text style={[styles.textEndHome,{}]}>{_.upperFirst(this.state.endereco)}</Text>
+        </View>
+        <View style={{width:wp('25%'),marginLeft: wp('1.5%'), marginRight: wp('3%')}}>
+          <TouchableOpacity
+            onPress = {()=>{
+              if(semCadastro){
+                this.props.navigation.push('CadastrarEndereco')
+              }else{
+              this.setState({
+                loadingList: true,
+                modalEnd: !this.state.modalEnd
+              });
+              }
+            }}>
+            <Text
+              style={[styles.textUpdateEnd,{flexWrap: 'wrap'}]}>
+            Trocar Endereço
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
       <View>
         <LazySearchBar
           value={this.state.text}
