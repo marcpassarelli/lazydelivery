@@ -14,17 +14,17 @@ export default class HistoricoPedidosListItem extends Component {
   }
 
   functionCarrinhoListItem=(item)=>{
-
-    var year = item.createdAt.getUTCFullYear();
-    var month = item.createdAt.getUTCMonth() + 1; // getMonth() is zero-indexed, so we'll increment to get the correct month number
-    var day = item.createdAt.getUTCDate();
-    var hours = item.createdAt.getUTCHours();
-    var minutes = item.createdAt.getUTCMinutes();
-    var seconds = item.createdAt.getUTCSeconds();
+    console.log("createdat"+item.createdAt);
+    var year = item.createdAt.getFullYear();
+    var month = item.createdAt.getMonth() + 1; // getMonth() is zero-indexed, so we'll increment to get the correct month number
+    var day = item.createdAt.getDate();
+    var hours = item.createdAt.getHours();
+    var minutes = item.createdAt.getMinutes();
+    var seconds = item.createdAt.getSeconds();
 
     month = (month < 10) ? '0' + month : month;
     day = (day < 10) ? '0' + day : day;
-    hours = (hours < 10) ? '0' + (hours-3) : (hours-3);
+    hours = (hours < 10) ? '0' + (hours) : (hours);
     minutes = (minutes < 10) ? '0' + minutes : minutes;
     seconds = (seconds < 10) ? '0' + seconds: seconds;
 
@@ -42,7 +42,7 @@ export default class HistoricoPedidosListItem extends Component {
                   Valor Compra:
                 </Text>
                 <Text style={[styles.textHistoricoPedidos]}>
-                  R${(item.valorCompra+item.frete).toFixed(2)}
+                  R${(item.total+item.frete).toFixed(2)}
                 </Text>
               </View>
             </View>
@@ -61,6 +61,12 @@ export default class HistoricoPedidosListItem extends Component {
                   Horário do Pedido:
                 </Text>
                 <Text style={[styles.textHistoricoPedidos]}>{hours+":"+minutes}</Text>
+              </View>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={[styles.textHistoricoPedidos,{color:cores.textDetalhes}]}>
+                  Status do Pedido:
+                </Text>
+                <Text style={[styles.textHistoricoPedidos]}>{item.status}</Text>
               </View>
             </View>
           </View>

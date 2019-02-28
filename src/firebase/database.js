@@ -720,7 +720,9 @@ export async function carregarPedidos(callback){
           db.ref("/infoEstabelecimentos/"+child.val().estabelecimento+"/logo").once('value').then(function(logo){
           callback({
             logo: logo.val(),
+            status: child.val().status,
             _id:child.key,
+            total:child.val().total,
             carrinho: child.val().carrinho,
             bairro: child.val().bairro,
             frete: child.val().frete,
@@ -729,7 +731,6 @@ export async function carregarPedidos(callback){
             estabelecimento: child.val().estabelecimento,
             formaPgto: child.val().formaPgto,
             formaPgtoDetalhe: child.val().formaPgtoDetalhe,
-            valorCompra: child.val().valorCompra,
             key: child.val().key
           })
         })
@@ -744,12 +745,13 @@ export async function carregarPedidos(callback){
 }
 
 export var chaveMsg=""
-export function sendMessage(retirarNovo, carrinhoNovo, formaPgtoNovo, formaPgtoDetalheNovo,
+export function sendMessage(uid,retirarNovo, carrinhoNovo, formaPgtoNovo, formaPgtoDetalheNovo,
   freteNovo, totalNovo,nomeNovo, telefoneNovo, enderecoNovo, bairroNovo, referenciaNovo,
    estabelecimento, statusNovo, key) {
 
     this.messageRef = db.ref("/messages/"+estabelecimento+"/")
     this.messageRef.push({
+      idUser:uid,
       retirar: retirarNovo,
       carrinho: carrinhoNovo,
       formaPgto: formaPgtoNovo,

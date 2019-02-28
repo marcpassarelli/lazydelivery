@@ -59,7 +59,7 @@ export class HistoricoPedidosScreen extends Component {
   componentDidMount(){
       pedidosHistorico=[]
     carregarPedidos((message)=>{
-      console.log("dentro carregapedidos+message"+message._id)
+      console.log("dentro carregapedidos+message"+JSON.stringify(message.total))
       temPedidos = message._id
       if(temPedidos==false){
         console.log("dentro if");
@@ -73,6 +73,7 @@ export class HistoricoPedidosScreen extends Component {
       }else{
         console.log("dentro else");
       pedidosHistorico.push({
+        status:message.status,
         id:message._id,
         endereco:message.endereco,
         bairro: message.bairro,
@@ -80,11 +81,11 @@ export class HistoricoPedidosScreen extends Component {
         formaPgto: message.formaPgto,
         carrinho: message.carrinho,
         frete: message.frete,
-        valorCompra: message.valorCompra,
+        total: message.total,
         createdAt: message.createdAt,
         logo: message.logo,
         retirar: message.retirar,
-        key: message.key
+        key: message.key,
         })
         pedidosHistorico=_.orderBy(pedidosHistorico,['createdAt'],['desc'])
       this.setState({
@@ -118,13 +119,14 @@ export class HistoricoPedidosScreen extends Component {
     // const messages = [...this.state.messages]
     const { navigate } = this.props.navigation;
     navigate('DetalhesPedido',{
+      status:item.status,
       id: item.id,
       endereco:item.endereco,
       bairro: item.bairro,
       estabelecimento: item.estabelecimento,
       formaPgto: item.formaPgto,
       carrinho: item.carrinho,
-      valorCompra: item.valorCompra,
+      total: item.total,
       createdAt: item.createdAt,
       logo: item.logo,
       frete: item.frete,

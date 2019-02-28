@@ -203,8 +203,8 @@ fazerPedido(){
     'Confirmar Pedido',
     'Deseja confirmar o pedido? Após a confirmação, o pedido será enviado para o estabelecimento para preparo.',
     [
-      {text: 'Sim', onPress: () => {
-
+      {text: 'Sim', onPress: async () => {
+        let uid = await auth.currentUser.uid;
         this.setState({
           esperandoConfirmacao: true
         });
@@ -233,7 +233,7 @@ fazerPedido(){
         // console.log("timerId"+timerId);
         //mandar informação do pedido para o banco de dados do pedido
 
-        sendMessage(this.state.retirar, this.state.produtosCarrinho, formaPgto, formaPgtoDetalhe,
+        sendMessage(uid,this.state.retirar, this.state.produtosCarrinho, formaPgto, formaPgtoDetalhe,
           this.state.frete,this.totalPrice,
            this.state.nome, this.state.telefone, this.state.endereco, this.state.bairro,
            this.state.referencia, this.state.nomeEstabelecimento, "Aguardando Confirmação",(key)=>{
@@ -249,7 +249,7 @@ fazerPedido(){
                    //caso pedido seja confirmado
                    Alert.alert(
                     'Pedido Recebido.',
-                    'Seu pedido foi recebido pelo estabelecimento e está sendo preparado para o envio até você. Em caso de dúvidas entre em contato com o estabelecimento',
+                    'Seu pedido foi recebido pelo estabelecimento e está sendo preparado para o envio até você. Você poderá acompanhar o status do pedido pelo seu histórico de pedidos no seu perfil. Em caso de dúvidas entre em contato com o estabelecimento',
                     [
                       {text: 'OK', onPress: () => {
                         this.setState({
@@ -258,10 +258,10 @@ fazerPedido(){
                         if(semCadastro){
 
                         }else{
-                          salvarPedido(this.state.retirar, this.state.produtosCarrinho, this.totalPrice,
-                            this.state.frete, formaPgto, formaPgtoDetalhe,
-                            this.state.endereco, this.state.bairro,
-                            this.state.nomeEstabelecimento, key.key)
+                          // salvarPedido(this.state.retirar, this.state.produtosCarrinho, this.totalPrice,
+                          //   this.state.frete, formaPgto, formaPgtoDetalhe,
+                          //   this.state.endereco, this.state.bairro,
+                          //   this.state.nomeEstabelecimento, key.key)
                         }
                         atualizarCarrinho([])
                         const { navigate } = this.props.navigation;
@@ -511,7 +511,7 @@ render() {
   <View style={{flex:1}}>
     <Loader
             loading={this.state.esperandoConfirmacao}
-            message="Aguarde enquanto o estabelecimento confirma o recebimento do pedido. Pode durar até 1 minuto.." />
+            message="Aguarde enquanto o estabelecimento confirma o recebimento do pedido. Pode durar até 1 minuto... " />
           <View style={{maxHeight: 150}}>
 
       {/* Resumo Carrinho */}

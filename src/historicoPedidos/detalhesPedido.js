@@ -26,6 +26,7 @@ var day = ''
 var hours = ''
 var minutes = ''
 var seconds = ''
+var status = ''
 
 export class DetalhesPedidoScreen extends Component {
 
@@ -76,13 +77,14 @@ export class DetalhesPedidoScreen extends Component {
     this.estabelecimento = state.params ? state.params.estabelecimento : ""
     this.formaPgto = state.params ? state.params.formaPgto : ""
     this.carrinho = state.params ? state.params.carrinho : ""
-    console.log("this.carrinho"+this.carrinho);
-    this.valorCompra = state.params ? state.params.valorCompra : ""
+    this.total = state.params ? state.params.total : ""
+    console.log("total"+this.total);
     this.logo = state.params ? state.params.logo : ""
     this.createdAt = state.params ? state.params.createdAt : ""
     this.frete = state.params ? state.params.frete : ""
+    console.log("frete"+this.frete);
     this.retirar = state.params ? state.params.retirar : ""
-    console.log("this.frete"+(this.frete).toFixed(2));
+    this.status = state.params ? state.params.status : ""
 
     this.year = this.createdAt.getUTCFullYear();
     console.log("this.year"+this.year);
@@ -106,6 +108,7 @@ export class DetalhesPedidoScreen extends Component {
   }
 
   valorVirgula(valor){
+    console.log("valor"+valor);
     var str = (valor).toFixed(2)
     var res = str.toString().replace(".",",")
     return(
@@ -153,7 +156,7 @@ export class DetalhesPedidoScreen extends Component {
       </View>
       <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: hp('0.55%')}}>
         <Text style={[styles.textResumoPgto]}>Valor Pedido:</Text>
-        <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ {this.valorVirgula(this.valorCompra)}</Text>
+        <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ {this.valorVirgula(this.total)}</Text>
       </View>
       <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: hp('0.55%')}}>
         <Text style={[styles.textResumoPgto]}>Valor Frete:</Text>
@@ -161,7 +164,7 @@ export class DetalhesPedidoScreen extends Component {
       </View>
       <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: hp('0.55%')}}>
         <Text style={[styles.textResumoPgto]}>Valor Total Pedido:</Text>
-        <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ {this.valorVirgula(this.valorCompra+this.frete)}</Text>
+        <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>R$ {this.valorVirgula(this.total+this.frete)}</Text>
       </View>
       <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: hp('0.55%')}}>
         <Text style={[styles.textResumoPgto]}>Forma de Pagamento Utilizada:</Text>
@@ -170,7 +173,12 @@ export class DetalhesPedidoScreen extends Component {
 
 
         {this.retirar?
-          <View style={{marginTop:hp('1.11%')}}></View>
+          <View style={{marginTop:hp('1.11%')}}>
+          <Text style={[styles.textAdicionais,{fontSize: wp('4%')}]}>Informações da entrega</Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={styles.textHistoricoPedidos}>Pedido feito para retirar no estabelecimento.</Text>
+          </View>
+          </View>
         :
           <View style={{marginTop:hp('1.11%')}}>
           <Text style={[styles.textAdicionais,{fontSize: wp('4%')}]}>Informações da entrega</Text>
@@ -190,6 +198,10 @@ export class DetalhesPedidoScreen extends Component {
           </View>
           </View>
         }
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10, marginTop: hp('0.55%')}}>
+          <Text style={[styles.textResumoPgto]}>Status do Pedido:</Text>
+          <Text style={[styles.textResumoPgto,{alignItems:'flex-end'}]}>{this.status}</Text>
+        </View>
 
     </View>
 
