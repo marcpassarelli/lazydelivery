@@ -52,7 +52,7 @@ export default class AdicionaisListItem extends Component {
 
            <View style={{height: 50,flexDirection: 'row', marginTop: hp('0.55%'), justifyContent: 'space-between'}}>
 
-             <View style={{width:wp('38%'),marginLeft:wp('3.8%'),justifyContent: 'center',alignContent: 'center'}}>
+             <View style={{flex:1,width:wp('38%'),marginLeft:wp('3.8%'),justifyContent: 'center',alignSelf: 'center'}}>
                <Text style={[styles.textAdicionais,
                    {flexWrap: 'wrap',alignContent: 'center',flex:1,marginHorizontal: 5}]}>
                  {item.nome}
@@ -63,7 +63,9 @@ export default class AdicionaisListItem extends Component {
                {this.props.preco()}
              </View>
 
-             <View style={{flex:1, flexDirection: 'row', justifyContent: 'flex-end', marginRight: wp('3.8%')}}>
+             <View style={{flex:1, flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center', marginRight: wp('3.8%')}}>
                <TouchableOpacity
                  style={{justifyContent: 'center', alignSelf: 'center', marginBottom: hp('1.11%')}}
                  onPress={this.props.onSubtract}>
@@ -73,7 +75,7 @@ export default class AdicionaisListItem extends Component {
                    color={'rgb(43, 189, 204)'}/>
                </TouchableOpacity>
                <Text
-                 style={[styles.textAdicionais, {alignSelf: 'center', justifyContent: 'center', marginHorizontal: 10, fontSize: wp('4%')}]}>
+                 style={[styles.textAdicionais, {marginBottom: 10,alignSelf: 'center', justifyContent: 'center', marginHorizontal: 10, fontSize: wp('4%')}]}>
                  {item.quantidade}
                </Text>
                <TouchableOpacity

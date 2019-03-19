@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Text
 } from 'react-native';
-
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 
 export default class ModalItem extends Component {
@@ -29,7 +29,7 @@ render(){
             {this.props.detalhes}
             <TouchableOpacity
               onPress={()=>{this.props.showModal()}}>
-              <Text>Fechar</Text>
+              <Text style={{fontSize: wp('4%')}}>Fechar</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -50,6 +50,7 @@ const stylesLocal = StyleSheet.create({
   activityIndicatorWrapper: {
     backgroundColor: '#FFFFFF',
     height: 200,
+    width: wp('90%'),
     borderRadius: 10,
     marginHorizontal: 10,
     display: 'flex',

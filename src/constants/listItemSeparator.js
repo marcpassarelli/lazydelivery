@@ -14,7 +14,7 @@ export default class ListItemSeparator extends Component {
       style={{
         height: 3,
         backgroundColor: cores.corSecundaria,
-        marginHorizontal: 15,
+        marginHorizontal: 10,
         marginBottom:hp('0.77%')
       }}
     />

@@ -188,8 +188,8 @@ export class CarrinhoScreen extends Component{
     });
     this.detalhesModal =
       <View>
-        <Text style={{marginHorizontal: 10,marginBottom:15 ,color:'#666666', fontSize: wp('4.5%')}}>{detalhes}</Text>
-        {obs?<Text style={{marginHorizontal: 10,marginBottom:15 ,color:'#666666', fontSize: wp('4.5%')}}>Observação: {obs}</Text>:<View></View>}
+        <Text style={{fontFamily: 'Futura-Book',marginHorizontal: 10,marginBottom:15 ,color:'#666666', fontSize: wp('5%')}}>{detalhes}</Text>
+        {obs?<Text style={{marginHorizontal: 10,fontFamily: 'Futura-Book',marginBottom:15 ,color:'#666666', fontSize: wp('5%')}}>Observação: {obs}</Text>:<View></View>}
       </View>
   }
 
@@ -309,7 +309,7 @@ export class CarrinhoScreen extends Component{
               </Text>
             </View>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 10}}>
-              <Text style={[styles.textAdicionais,{fontSize: wp('4%'), marginBottom:hp('0.33%')}]}>Frete:</Text>
+              <Text style={[styles.textAdicionais,{fontSize: wp('4%'), marginBottom:hp('0.33%')}]}>Taxa de Entrega:</Text>
               <Text style={[styles.textAdicionais,
                   {alignItems:'flex-end', fontSize: wp('4%'),marginBottom:hp('0.33%')}]}>
                   R$ {this.valorVirgula(this.state.frete)}

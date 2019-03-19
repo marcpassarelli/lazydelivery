@@ -21,7 +21,7 @@ export default class Loader extends Component{
         onRequestClose={() => {console.log('close modal')}}>
         <View style={stylesLocal.modalBackground}>
           <View style={stylesLocal.activityIndicatorWrapper}>
-            <Text style={{marginHorizontal: 5,fontFamily: 'Futura-Book',textAlign: 'center'}}>{this.props.message}</Text>
+            <Text style={{marginHorizontal: 5,fontFamily: 'Futura-Book',textAlign: 'center',marginBottom: 5}}>{this.props.message}</Text>
             <LazyActivity/>
           </View>
         </View>

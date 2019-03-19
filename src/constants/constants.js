@@ -79,7 +79,8 @@ export const styles = StyleSheet.create({
     flexDirection:'row',
     height:hp('15%'),
     alignItems:'center',
-    marginHorizontal: wp('7%'),
+    marginLeft: wp('5%'),
+    marginRight: wp('7%'),
     marginBottom: 5,
     marginTop:3,
     flex:1
@@ -218,7 +219,7 @@ export const styles = StyleSheet.create({
     fontFamily: 'FuturaBT-MediumItalic'
 },
 textAdicionais:{
-  alignSelf: 'flex-start',
+  // alignSelf: 'flex-start',
   backgroundColor:'transparent',
   justifyContent: 'center',
   color: cores.corPrincipal,

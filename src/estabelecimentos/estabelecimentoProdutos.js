@@ -282,6 +282,7 @@ renderItem = (item) =>{
 
         let titleHeader= ""
         if(item.item.tipo=="Pizzas"){
+          //rota para pizzas
           if(item.item.sabores==1){
             titleHeader = "Escolha o sabor da pizza"
           }else{
@@ -299,9 +300,42 @@ renderItem = (item) =>{
               key:Math.random()*100000
             });
           this.props.navigation.dispatch(navigateAction);
+          //se houver quantidade de paginas quer dizer que não é pizza e nem é produto normal
+        }else if (item.item.paginas) {
+          //rota para produtos com mais de uma pagina
+          //qtdePaginas = quantas paginas até chegar no AddProduto
+          //tipoPagina =  o que vai ser cada tipo de pagina
+          //qtdeItens = caso o tipoPagina for quantidade informar o máximo que pode dar a soma
+          //tipoItens = tipo de item que será mostrado em cada página
+          //
+          let titleHeader= ""
+          if(item.item.paginas.length==1){
+            console.log("uma pagina");
+            titleHeader = "Escolha o(s) sabor(es)"
+          }else{
+            console.log("mais de uma pagina");
+            titleHeader = "Escolha o 1º sabor"
+          }
+
+
+          imgProduto = item.item.imgProduto
+          const navigateAction = NavigationActions.navigate({
+              routeName: 'AntesAddProduto',
+              params: {
+                title:item.item.paginas[0].titulo,
+                nomeEstabelecimento: nomeEstabelecimentoUp,
+                nome: item.item.nomeProduto,
+                pagAtual: 1,
+                paginas: item.item.paginas,
+                preco: item.item.preco,
+                detalhes: "",
+                tipoProduto: item.item.tipo,
+                tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento},
+              key:Math.random()*100000
+            });
+          this.props.navigation.dispatch(navigateAction);
 
         }else{
-
           imgProduto = item.item.imgProduto
           const navigateAction = NavigationActions.navigate({
               routeName: 'AddProduto',
@@ -397,18 +431,7 @@ filterSearch(text){
 
 
     <View style={{flex:1}}>
-      <View style={{marginBottom: 3,borderWidth: 1.5,borderColor: cores.corSecundaria}}>
-      <LazySearchBar
 
-        value={this.state.text}
-        clearText={()=>{this.setState({
-          text:""
-        });}}
-        onChangeText={(text) => {this.filterSearch(text)}}
-        onClearText={() => {}}
-        returnKeyType="search"
-        placeholder={'PROCURAR'}/>
-      </View>
       <SectionList
         ItemSeparatorComponent={this.renderListItemSeparator}
         SectionSeparatorComponent={this.renderSeparatorSection}
@@ -430,3 +453,16 @@ filterSearch(text){
     );
   }
 }
+
+// <View style={{marginBottom: 3,borderWidth: 1.5,borderColor: cores.corSecundaria}}>
+// <LazySearchBar
+//
+//   value={this.state.text}
+//   clearText={()=>{this.setState({
+//     text:""
+//   });}}
+//   onChangeText={(text) => {this.filterSearch(text)}}
+//   onClearText={() => {}}
+//   returnKeyType="search"
+//   placeholder={'PROCURAR'}/>
+// </View>

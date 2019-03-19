@@ -316,7 +316,7 @@ handleBackButtonClick=()=> {
             {this.state.nome}
         </Text>
 
-        <Text style={[styles.textAddProduto,{textAlign: 'center',fontSize: wp('3.5%') ,marginHorizontal: wp('14%'),color:'rgb(240,242,242)'}]}>
+        <Text style={[styles.textAddProduto,{marginTop: hp('1%'),textAlign: 'center',fontSize: wp('3.5%') ,marginHorizontal: wp('14%'),color:'rgb(240,242,242)'}]}>
           {this.state.detalhes}
         </Text>
 
@@ -444,7 +444,7 @@ handleBackButtonClick=()=> {
                 height:hp('5.5%')}}
               onChangeText={(text) => this.setState({obs: text})}
               value={this.state.obs}
-              placeholder='Indique o ponto da carne ou para tirar algum ingrediente.'
+              placeholder='Caso aplicável, indique o ponto da carne ou para tirar algum ingrediente.'
               placeholderTextColor='#FFFFFF'
               >
             </TextInput>

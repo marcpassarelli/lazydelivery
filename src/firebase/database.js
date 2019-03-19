@@ -17,6 +17,7 @@ export var numTamanhos = 0
 export var listaPedidos=[]
 export var listaBairros=[]
 export var abertoFechado=[]
+export var listaTipoItens=[]
 var numChildrenLista=0
 var todoCounter = 1;
 
@@ -327,12 +328,35 @@ export function getEstabelecimentoProd(nomeEstabelecimento, sectionDataFunction,
             sabores: child.val().sabores,
             tamanho: child.val().tamanho,
             ordem: child.val().ordem,
+            paginas: child.val().qtdePaginas,
             _id:todoCounter++
           });
         })
         sectionDataFunction()
         onListLoad()
         ;
+      }
+    })
+  } catch(error){
+    console.log(error)
+  }
+}
+
+export function getTiposItens(nomeEstabelecimento,tipoItem,onListLoad){
+  try{
+    listaTipoItens = []
+    db.ref("/tipoItens/"+nomeEstabelecimento+"/"+tipoItem).once('value').then(function(snapshot){
+      var estabelecimentoData = snapshot.val()
+      if(estabelecimentoData){
+        snapshot.forEach((child) =>{
+          listaTipoItens.push({
+            nome:child.val().nome,
+            quantidade:0,
+            tipoItem:tipoItem,
+            _id:todoCounter++
+          })
+        })
+        onListLoad()
       }
     })
   } catch(error){

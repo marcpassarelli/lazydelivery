@@ -14,7 +14,7 @@ export default class HistoricoPedidosListItem extends Component {
   }
 
   functionCarrinhoListItem=(item)=>{
-    console.log("createdat"+item.createdAt);
+    console.log("item.total"+item.total+"   item.frete"+item.frete);
     var year = item.createdAt.getFullYear();
     var month = item.createdAt.getMonth() + 1; // getMonth() is zero-indexed, so we'll increment to get the correct month number
     var day = item.createdAt.getDate();
@@ -62,12 +62,17 @@ export default class HistoricoPedidosListItem extends Component {
                 </Text>
                 <Text style={[styles.textHistoricoPedidos]}>{hours+":"+minutes}</Text>
               </View>
-              <View style={{flexDirection: 'row'}}>
-                <Text style={[styles.textHistoricoPedidos,{color:cores.textDetalhes}]}>
-                  Status do Pedido:
-                </Text>
-                <Text style={[styles.textHistoricoPedidos]}>{item.status}</Text>
-              </View>
+              {item.status?
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={[styles.textHistoricoPedidos,{color:cores.textDetalhes}]}>
+                    Status do Pedido:
+                  </Text>
+                  <Text style={[styles.textHistoricoPedidos]}>{item.status}</Text>
+                </View>
+                :
+                <View></View>
+              }
+
             </View>
           </View>
             <View style={{flexDirection: 'row',flex:1}}>

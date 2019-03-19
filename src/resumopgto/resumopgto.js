@@ -193,7 +193,7 @@ checkTimeOut=(key)=>{
 }
 
 timeoutPedido=(key)=>{
-  var myVar1 = setTimeout(()=> { this.checkTimeOut(key) }, 60000);
+  var myVar1 = setTimeout(()=> { this.checkTimeOut(key) }, 120000);
   myVar = myVar1
 }
 
@@ -511,7 +511,7 @@ render() {
   <View style={{flex:1}}>
     <Loader
             loading={this.state.esperandoConfirmacao}
-            message="Aguarde enquanto o estabelecimento confirma o recebimento do pedido. Pode durar até 1 minuto... " />
+            message="Aguarde até 2 minutos enquanto o estabelecimento confirma o recebimento do pedido. Caso demore muito mais que isso feche o aplicativo e verifique o Histórico de Pedidos em seu Perfil. Se o pedido foi aceito pelo estabelecimento ele aparecerá em seu histórico." />
           <View style={{maxHeight: 150}}>
 
       {/* Resumo Carrinho */}
