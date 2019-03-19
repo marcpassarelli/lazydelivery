@@ -182,7 +182,7 @@ export class DestaquesScreen extends Component {
     const content =
 
     <View style={{flex:1}}>
-      <Text style={{fontSize: wp('5%'), marginTop: hp('3.33%')}}>Em breve...</Text>
+      <Text style={{fontSize: wp('5%'),fontFamily: 'Futura-Book',marginLeft:wp('1%') ,marginTop: hp('3.33%')}}>Em breve...</Text>
     </View>
 
     return (

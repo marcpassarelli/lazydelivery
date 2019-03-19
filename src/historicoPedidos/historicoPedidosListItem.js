@@ -34,7 +34,7 @@ export default class HistoricoPedidosListItem extends Component {
           <View style={{flexDirection: 'row',justifyContent: 'space-between',marginTop:hp('1.11%')}}>
             <View>
               <Text style={[styles.textHistoricoPedidos,{color:cores.corPrincipal,
-                  fontFamily: 'FuturaPT-Bold',fontSize: wp('5.5%'), marginTop:hp('0.55%')}]}>
+                  fontFamily: 'FuturaPT-Bold',fontSize: wp('5.5%')}]}>
                 {_.upperCase(item.estabelecimento)}
               </Text>
               <View style={{flexDirection: 'row'}}>
@@ -89,7 +89,7 @@ export default class HistoricoPedidosListItem extends Component {
             </View>
             </View>
 
-            <View style={{flexDirection: 'column',flex:1,justifyContent:'center',alignContent: 'center',alignItems:'center' }}>
+            <View style={{flexDirection: 'column',flex:1,justifyContent:'center',alignContent: 'center',alignItems:'center',marginBottom: 5}}>
               <Image
                 source={{uri:item.logo}}
                 style={{height: hp('12%'),
