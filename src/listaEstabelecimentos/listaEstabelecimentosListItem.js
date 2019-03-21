@@ -59,6 +59,8 @@ export default class ListaEstabelecimentosListItem extends Component {
            console.log("frete ao selecionar restaurante "+frete);
         }}>
         <View>
+        <View style={{flexDirection: 'row'}}>
+        <View>
           <View style={styles.viewIcon}>
             <Image
               source={{uri:this.props.imglogoEstabelecimento}}
@@ -71,17 +73,22 @@ export default class ListaEstabelecimentosListItem extends Component {
           {this.functionValorFrete(this.props.valorDelivery)}
           <Text style={styles.textDetalhesEstabelecimento}>Entrega: {this.props.tempoEntrega}</Text>
         </View>
-      </TouchableOpacity>
-      {this.props.aberto?
-      <View></View>:
-      <View style={{marginRight:wp('5.31%'),alignContent: 'center',alignItems:'center',justifyContent: 'center'}}>
-        {
-          this.props.aberto?
-          <View></View> :
-          <Text style={[styles.textDetalhesEstabelecimento,{color: 'red',fontSize:wp('4%')}]}>FECHADO</Text>
+        </View>
+        <View>
+        {this.props.aberto?
+        <View></View>:
+        <View style={{alignContent: 'center',alignItems:'center',justifyContent: 'center'}}>
+          {
+            this.props.aberto?
+            <View></View> :
+            <Text style={[styles.textDetalhesEstabelecimento,{marginLeft: 0,alignSelf: 'center',color: 'red',fontSize:wp('4%')}]}>FECHADO</Text>
+          }
+          </View>
         }
-      </View>
-      }
+        </View>
+        </View>
+      </TouchableOpacity>
+
       </View>
 
   )
