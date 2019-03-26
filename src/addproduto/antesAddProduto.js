@@ -54,7 +54,8 @@ constructor(props){
     loading: false,
     listaItens:[],
     qtdeSabores:0,
-    checkBoxSortidos:false
+    checkBoxSortidos:false,
+    checkBoxChecked:100000
   }
 
   this.onAdd = this.onAdd.bind(this);
@@ -474,7 +475,9 @@ render() {
         const {state} = this.props.navigation
         let detalhes=""
         //verificar se atingiu o valor qtdeItens
+
         if(this.tipoPagina=="checkbox"){
+
           console.log("this.state.checkBoxChecked"+this.state.checkBoxChecked);
           if(this.state.checkBoxChecked==100000){
             Alert.alert(
