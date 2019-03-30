@@ -15,6 +15,7 @@ import {auth} from '../firebase/firebase'
 import LazyActivity from '../loadingModal/lazyActivity'
 import LazySearchBar from '../constants/lazySearchBar'
 import _ from 'lodash'
+import { atualizarCarrinho} from '../addproduto/addproduto'
 import ListItemSeparator from '../constants/listItemSeparator'
 import { semCadastro } from '../login/loginregister'
 
@@ -195,6 +196,7 @@ export class HomeScreen extends Component {
   }
 
   async componentDidMount(){
+    atualizarCarrinho([])
     this.setState({
       loadingList:true
     });

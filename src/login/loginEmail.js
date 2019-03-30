@@ -70,15 +70,15 @@ export class LoginEmailScreen extends Component {
           )
         }else{
 
-          this.setState({
-            loading: false
-          });
+
           Alert.alert(
             'Conexão com a Internet',
             'Aparantemente há um problema com sua conexão de internet e não conseguimos fazer o login. Cheque para haver se você possui conexão com a internet no momento e tente novamente',
             [
               {text: 'OK', onPress: () => {
-
+                this.setState({
+                  loading: false
+                });
               }},
             ],
             { cancelable: false }

@@ -8,6 +8,7 @@ import {
   Animated,
   Text
 } from 'react-native';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 import LazyActivity from './lazyActivity'
 
@@ -41,19 +42,12 @@ const stylesLocal = StyleSheet.create({
   },
   activityIndicatorWrapper: {
     backgroundColor: '#FFFFFF',
-    height: 120,
+    height: hp('35%'),
     borderRadius: 10,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-around'
   },
-  box: {
-  width: 100,
-  height: 100,
-  backgroundColor: '#333',
-  alignItems: "center",
-  justifyContent: "center"
-},
 text: {
   color: "#FFF"
 }

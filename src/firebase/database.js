@@ -315,7 +315,7 @@ export async function checkUserDetails(userExiste, userNaoExiste){
 export function getEstabelecimentoProd(nomeEstabelecimento, sectionDataFunction, onListLoad ){
   try{
     estabelecimentoProd = []
-    db.ref("/produtos/"+nomeEstabelecimento).once('value').then(function(snapshot){
+    db.ref("/produtosNovo/"+nomeEstabelecimento).once('value').then(function(snapshot){
       var estabelecimentoData = snapshot.val()
       if(estabelecimentoData){
         snapshot.forEach((child) =>{
@@ -386,7 +386,9 @@ export function getTamanhosPizzas(nomeEstabelecimento){
   }
 }
 var aberto=''
+var abertoBool=''
 export function getDay(estabelecimento,onListLoad){
+
   var d = new Date()
   var currentDay = weekday[d.getDay()];
   var day = d.getDate()
@@ -408,9 +410,13 @@ export function getDay(estabelecimento,onListLoad){
       madrugada= false
     }
 try{
-  db.ref("/infoEstabelecimentos/"+estabelecimento+"/horarioFuncionamento/"+currentDay+"/").once('value').then(function(snapshot){
+  db.ref("/infoEstabelecimentosNovo/"+estabelecimento+"/horarioFuncionamento/"+currentDay+"/").once('value').then(function(snapshot){
     //determina valores para abertura e fechamento
-
+    db.ref("infoEstabelecimentosNovo/"+estabelecimento+"/aberto").once('value').then(function(snap){
+      this.abertoBool = snap.val()
+      console.log('SNAPCARAI'+abertoBool);
+    })
+    console.log('abertoBool'+this.abertoBool);
     var abertura = Date.parse(month+" "+day+", "+year+" "+snapshot.val().abertura)
     var fechamento = Date.parse(month+" "+day+", "+year+" "+snapshot.val().fechamento)
 
@@ -422,10 +428,14 @@ try{
       let dayBefore = dayAbertura.getDate()-1
       dayAbertura.setDate(dayBefore)
       abertura = Date.parse(dayAbertura)
-      if(atual>abertura&&atual<fechamento){
-        aberto = true
-      }else{
+      if(this.abertoBool==false){
         aberto = false
+      }else{
+        if(atual>abertura&&atual<fechamento){
+          aberto = true
+        }else{
+          aberto = false
+        }
       }
     }
     else if(fechamento<abertura&&madrugada==false){
@@ -433,18 +443,25 @@ try{
       var dayAfter = dayFechamento.getDate()+1
       dayFechamento.setDate(dayAfter)
       fechamento = Date.parse(dayFechamento)
-
-      if(atual>abertura&&atual<fechamento){
-        aberto = true
-      }else{
+      if(this.abertoBool==false){
         aberto = false
+      }else{
+        if(atual>abertura&&atual<fechamento){
+          aberto = true
+        }else{
+          aberto = false
+        }
       }
     }
     else{
-      if(atual>abertura&&atual<fechamento){
-        aberto = true
-      }else{
+      if(this.abertoBool==false){
         aberto = false
+      }else{
+        if(atual>abertura&&atual<fechamento){
+          aberto = true
+        }else{
+          aberto = false
+        }
       }
     }
 
@@ -485,7 +502,7 @@ export function getListaEstabelecimentos(tipoEstabelecimento, bairro,onListLoad)
     listaEstabelecimentos = []
     abertoFechado=[]
     numChildrenLista=0
-    db.ref("/tiposEstabelecimentos/"+tipoEstabelecimento).once('value').then(function(snapshot){
+    db.ref("/tiposEstabelecimentosNovo/"+tipoEstabelecimento).once('value').then(function(snapshot){
 
       var estabelecimentoData = snapshot.val()
 
@@ -523,7 +540,7 @@ export function getNomeEstabelecimentos(bairro,onListLoad){
     nomesEstabelecimentos = []
     abertoFechado=[]
     numChildrenLista=0
-    db.ref("/nomeEstabelecimentos/").once('value').then(function(snapshot){
+    db.ref("/nomeEstabelecimentosNovo/").once('value').then(function(snapshot){
       var estabelecimentoTiposProdData = snapshot.val()
       if(estabelecimentoTiposProdData){
         numChildrenLista= snapshot.numChildren()
@@ -551,17 +568,19 @@ export function getNomeEstabelecimentos(bairro,onListLoad){
 export function getEstabelecimentoInfo(nomeEstabelecimento, callback){
   try{
     estabelecimentoInfo = []
-    db.ref("/infoEstabelecimentos/"+nomeEstabelecimento).once('value').then(function(snapshot){
+    db.ref("/infoEstabelecimentosNovo/"+nomeEstabelecimento).once('value').then(function(snapshot){
       var estabelecimentoData = snapshot.val()
-      var logo, nome, precoDelivery, tempoEntrega, seg, ter, qua, qui, sex, sab, dom, deb, din, foneContato  = "";
+      var logo, nome, precoDelivery, tempoEntrega, seg, ter, qua, qui, sex, sab, dom, deb, din, foneContato, obs  = "";
       var cre = []
       var deb = []
       if(estabelecimentoData){
+        console.log("obs"+estabelecimentoData.obs);
             logo = estabelecimentoData.logo
             nome = estabelecimentoData.nome
             precoDelivery = estabelecimentoData.precoDelivery
             tempoEntrega = estabelecimentoData.tempoEntrega
             foneContato = estabelecimentoData.foneContato
+            obs = estabelecimentoData.obs
 
             if(estabelecimentoData.horarioFuncionamento.segunda.abertura=="fechado"){
               seg = "Fechado"
@@ -639,7 +658,7 @@ export function getEstabelecimentoInfo(nomeEstabelecimento, callback){
 
 
       callback(logo, nome, precoDelivery, tempoEntrega, seg, ter,
-        qua, qui, sex, sab, dom, cre, deb, din,foneContato)
+        qua, qui, sex, sab, dom, cre, deb, din,foneContato,obs)
 
 
 
@@ -741,12 +760,13 @@ export async function carregarPedidos(callback){
 
       db.ref("/user/"+userId+"/details/pedidos/").once('value').then(function(snapshot){
         snapshot.forEach((child)=>{
-          db.ref("/infoEstabelecimentos/"+child.val().estabelecimento+"/logo").once('value').then(function(logo){
+          db.ref("/infoEstabelecimentosNovo/"+child.val().estabelecimento+"/logo").once('value').then(function(logo){
           callback({
             logo: logo.val(),
             status: child.val().status,
             _id:child.key,
             total:child.val().total,
+            valorCompra:child.val().valorCompra,
             carrinho: child.val().carrinho,
             bairro: child.val().bairro,
             frete: child.val().frete,
@@ -818,7 +838,7 @@ export function sendMessage(uid,retirarNovo, carrinhoNovo, formaPgtoNovo, formaP
 
   export function retiraLoja(nomeEstabelecimento, callback){
     try{
-      db.ref("/infoEstabelecimentos/"+nomeEstabelecimento+"/retiraLoja").once('value').then(function(snapshot){
+      db.ref("/infoEstabelecimentosNovo/"+nomeEstabelecimento+"/retiraLoja").once('value').then(function(snapshot){
           callback({retiraLoja: snapshot.val()})
       })
     } catch(error){

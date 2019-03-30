@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { ImageBackground, FlatList, Image, View, Text, Button, TouchableHighlight, YellowBox,BackHandler } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
 import LazyActivity from '../loadingModal/lazyActivity'
+import ListItemSeparator from '../constants/listItemSeparator'
 import { updateStatus, carregarPedidos } from '../firebase/database'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import HistoricoPedidosListItem from './historicoPedidosListItem'
@@ -59,10 +60,10 @@ export class HistoricoPedidosScreen extends Component {
   componentDidMount(){
       pedidosHistorico=[]
     carregarPedidos((message)=>{
-      console.log("dentro carregapedidos+message"+JSON.stringify(message.total))
+
       temPedidos = message._id
       if(temPedidos==false){
-        console.log("dentro if");
+
         this.setState({
           messages: false
         },function(){
@@ -71,7 +72,7 @@ export class HistoricoPedidosScreen extends Component {
           });
         });
       }else{
-        console.log("dentro else");
+      
       pedidosHistorico.push({
         status:message.status,
         id:message._id,
@@ -82,6 +83,7 @@ export class HistoricoPedidosScreen extends Component {
         carrinho: message.carrinho,
         frete: message.frete,
         total: message.total,
+        valorCompra: message.valorCompra,
         createdAt: message.createdAt,
         logo: message.logo,
         retirar: message.retirar,
@@ -130,7 +132,8 @@ export class HistoricoPedidosScreen extends Component {
       createdAt: item.createdAt,
       logo: item.logo,
       frete: item.frete,
-      retirar: item.retirar
+      retirar: item.retirar,
+      valorCompra: item.valorCompra
   })
   }
 
@@ -159,7 +162,7 @@ export class HistoricoPedidosScreen extends Component {
         temPedidos ?
         <View>
           <FlatList
-            ItemSeparatorComponent={this.renderSeparatorComponent}
+            ItemSeparatorComponent={ListItemSeparator}
             data={this.state.messages}
             extraData={this.state}
             renderItem={this._renderItem}

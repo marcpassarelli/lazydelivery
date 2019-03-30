@@ -90,7 +90,7 @@ componentWillMount(){
   this.qtdeItens= this.paginas[this.pagAtual-1].qtdeItens
   this.qtdeSabores = this.paginas[this.pagAtual-1].qtdeSabores
   this.sortidos = this.paginas[this.pagAtual-1].sortidos
-  console.log("tipoItens"+JSON.stringify(this.tipoItens));
+
 
   // this.tipoItensArray = this.tipoItens.split(",")
   let listaItens = []
@@ -103,7 +103,7 @@ componentWillMount(){
           this.setState({
             loadingList: false
           },function(){
-            console.log("state.listaItens loadingList"+JSON.stringify(this.state.listaItens[0]))
+
           });
         });
       }
@@ -158,7 +158,7 @@ onAddDez = (item, index) =>{
         if(this.totalItens+9<this.qtdeItens){
           if(this.tipoItens[indexOf].qtdeMaxima){
             if(this.tipoItens[indexOf].qtdeAtual+9 < this.tipoItens[indexOf].qtdeMaxima){
-              console.log("1");
+
               listaItens[index].quantidade += 10;
             }else{
               Alert.alert(
@@ -173,7 +173,7 @@ onAddDez = (item, index) =>{
              )
             }
           }else{
-            console.log("2");
+
             listaItens[index].quantidade += 10;
           }
         }else{
@@ -419,7 +419,6 @@ render() {
   </View> :
 
   <View style={{flex: 1}}>
-    <StatusBar/>
       {this.sortidos?
         <View style={{height: 70,marginTop: 10,flexDirection: 'row',alignItems: 'center',
          justifyContent: 'space-between'}}>
@@ -478,7 +477,7 @@ render() {
 
         if(this.tipoPagina=="checkbox"){
 
-          console.log("this.state.checkBoxChecked"+this.state.checkBoxChecked);
+
           if(this.state.checkBoxChecked==100000){
             Alert.alert(
              'Selecionar Item',
@@ -493,12 +492,12 @@ render() {
           }else{
             this.state.listaItens.map((item)=>{
               if(this.state.checkBoxChecked==item._id){
-                console.log("item.nome"+item.nome);
+
                 detalhes = _.upperFirst(item.nome)
               }
             })
             if(this.pagAtual==this.qtdePaginas){
-              console.log("detalhes"+detalhes);
+
               detalhes = state.params.detalhes+detalhes
               this.props.navigation.push('AddProduto',{
               nomeEstabelecimento: state.params.nomeEstabelecimento,
@@ -508,7 +507,7 @@ render() {
               imgProduto: "" , tipoProduto: state.params.tipoProduto ,
               tipoEstabelecimento: state.params.tipoEstabelecimento})
             }else{
-              console.log("detalhes"+detalhes);
+
               this.props.navigation.push('AntesAddProduto',{tipoEstabelecimento: state.params.tipoEstabelecimento,
               title:state.params.paginas[this.pagAtual].titulo, preco: state.params.preco,
               paginas: state.params.paginas,

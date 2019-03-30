@@ -78,16 +78,16 @@ export class DetalhesPedidoScreen extends Component {
     this.formaPgto = state.params ? state.params.formaPgto : ""
     this.carrinho = state.params ? state.params.carrinho : ""
     this.total = state.params ? state.params.total : ""
-    console.log("total"+this.total);
+
     this.logo = state.params ? state.params.logo : ""
     this.createdAt = state.params ? state.params.createdAt : ""
     this.frete = state.params ? state.params.frete : ""
-    console.log("frete"+this.frete);
+
     this.retirar = state.params ? state.params.retirar : ""
     this.status = state.params ? state.params.status : ""
 
     this.year = this.createdAt.getUTCFullYear();
-    console.log("this.year"+this.year);
+
     this.month = this.createdAt.getUTCMonth() + 1; // getMonth() is zero-indexed, so we'll increment to get the correct month number
     this.day = this.createdAt.getUTCDate();
     this.hours = this.createdAt.getUTCHours();
@@ -95,7 +95,7 @@ export class DetalhesPedidoScreen extends Component {
     this.seconds = this.createdAt.getUTCSeconds();
 
     this.month = (this.month < 10) ? '0' + this.month : this.month;
-    console.log("this.month"+this.month);
+
     this.day = (this.day < 10) ? '0' + this.day : this.day;
     this.hours = (this.hours < 10) ? '0' + (this.hours-3) : (this.hours-3);
     this.minutes = (this.minutes < 10) ? '0' + this.minutes : this.minutes;
@@ -104,11 +104,11 @@ export class DetalhesPedidoScreen extends Component {
     this.setState({
       loading: false
     });
-    console.log("loading false");
+
   }
 
   valorVirgula(valor){
-    console.log("valor"+valor);
+
     var str = (valor).toFixed(2)
     var res = str.toString().replace(".",",")
     return(

@@ -59,7 +59,7 @@ export default class ListaEstabelecimentosListItem extends Component {
            console.log("frete ao selecionar restaurante "+frete);
         }}>
         <View>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: 'row', alignContent: 'center',justifyContent:'space-between'}}>
         <View>
           <View style={styles.viewIcon}>
             <Image
@@ -71,20 +71,24 @@ export default class ListaEstabelecimentosListItem extends Component {
         <View>
           <Text style={styles.textEstabelecimento}>{this.props.estabelecimento}</Text>
           {this.functionValorFrete(this.props.valorDelivery)}
-          <Text style={styles.textDetalhesEstabelecimento}>Entrega: {this.props.tempoEntrega}</Text>
+          <Text style={styles.textDetalhesEstabelecimento}>Tempo estimado: {this.props.tempoEntrega}</Text>
+            {this.props.aberto?
+            <View></View>:
+            <View style={{alignContent: 'center',alignItems:'center',justifyContent: 'center'}}>
+              {
+                this.props.aberto?
+                <View></View> :
+                  <View style={{alignContent: 'center', justifyContent:'center'}}>
+                    <Text style={[styles.textDetalhesEstabelecimento,{marginVertical: 0,marginLeft: 0,
+                        alignSelf: 'center',color: 'red',fontSize:wp('4%')}]}>FECHADO</Text>
+                  </View>
+              }
+              </View>
+            }
         </View>
         </View>
         <View>
-        {this.props.aberto?
-        <View></View>:
-        <View style={{alignContent: 'center',alignItems:'center',justifyContent: 'center'}}>
-          {
-            this.props.aberto?
-            <View></View> :
-            <Text style={[styles.textDetalhesEstabelecimento,{marginLeft: 0,alignSelf: 'center',color: 'red',fontSize:wp('4%')}]}>FECHADO</Text>
-          }
-          </View>
-        }
+
         </View>
         </View>
       </TouchableOpacity>

@@ -154,6 +154,10 @@ configurations.all{
 }
 
 dependencies {
+    compile project(':react-native-vector-icons')
+    compile project(':react-native-toast-native')
+    compile project(':react-native-fbsdk')
+    compile project(':react-native-version-number')
     implementation project(':react-native-toast-native')
     implementation project(':react-native-fbsdk')
     implementation 'com.android.support:appcompat-v7:26.0.2'

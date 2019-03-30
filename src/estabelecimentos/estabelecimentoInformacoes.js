@@ -74,7 +74,7 @@ export class EstabelecimentoInformacoesScreen extends Component {
   _callback(){
 
     getEstabelecimentoInfo(this.state.nomeEstabelecimento, (logoUp, nomeUp, precoDeliveryUp,
-      tempoEntregaUp, segUp, terUp, quaUp, quiUp, sexUp, sabUp, domUp, creUp, debUp, dinUp, foneContatoUp)=>{
+      tempoEntregaUp, segUp, terUp, quaUp, quiUp, sexUp, sabUp, domUp, creUp, debUp, dinUp, foneContatoUp, obs)=>{
       this.setState({
           logo: logoUp,
           nome: nomeUp,
@@ -90,10 +90,13 @@ export class EstabelecimentoInformacoesScreen extends Component {
           cre: creUp,
           deb: debUp,
           din: dinUp,
-          foneContato: foneContatoUp
+          foneContato: foneContatoUp,
+          obs: obs
       })
       this.setState({
             loading: false
+          },function(){
+            console.log("state.obs"+this.state.obs);
           });
     })
   }
@@ -132,6 +135,11 @@ export class EstabelecimentoInformacoesScreen extends Component {
        <Text style={styles.textInformacoesD}>Sexta-Feira: {this.state.sex}</Text>
        <Text style={styles.textInformacoesD}>Sábado: {this.state.sab}</Text>
        <Text style={styles.textInformacoesD}>Domingo: {this.state.dom}</Text>
+       {this.state.obs?
+       <Text style={[styles.textInformacoesD,{marginTop: 5}]}>Observações: {this.state.obs}</Text>
+       :
+       <View></View>}
+
 
        <View style={styles.separator}></View>
 

@@ -134,12 +134,13 @@ TabEstabelecimento.navigationOptions = ({navigation}) =>{
               {cancelable: false}
             )
           }else{
-            if(navigation.state.params.telaAnterior=="home"){
-              navigation.navigate('Home')
-            }else{
-              navigation.navigate('ListaEstabelecimentos',
-              {tipoEstabelecimento:navigation.state.params.tipoEstabelecimento})
-            }
+
+              navigation.push('Home')
+            //   if(navigation.state.params.telaAnterior=="home"){
+            // }else{
+            //   navigation.push('ListaEstabelecimentos',
+            //   {tipoEstabelecimento:navigation.state.params.tipoEstabelecimento})
+            // }
           }
         }}/>
     ),

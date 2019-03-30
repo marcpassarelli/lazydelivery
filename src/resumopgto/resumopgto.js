@@ -62,7 +62,9 @@ constructor(props){
     troco:'',
     esperandoConfirmacao:false,
     key:"",
-    retirar:''
+    retirar:'',
+    formaPgto:'Crédito',
+    formaPgtoDetalhe:''
 
 
   }
@@ -77,7 +79,7 @@ updateIndex (selectedIndex) {
 }
 
 updateTroco = (text) => {
-  this.setState({troco: text})
+  this.setState({troco: text,pgtoEscolhido: text})
 }
 
 componentWillUnmount() {
@@ -193,7 +195,7 @@ checkTimeOut=(key)=>{
 }
 
 timeoutPedido=(key)=>{
-  var myVar1 = setTimeout(()=> { this.checkTimeOut(key) }, 120000);
+  var myVar1 = setTimeout(()=> { this.checkTimeOut(key) }, 90000);
   myVar = myVar1
 }
 
@@ -211,29 +213,28 @@ fazerPedido(){
         let estabelecimentoLoad = this.props.navigation.state.params.nomeEstabelecimento
         let formaPgto, formaPgtoDetalhe;
         if(this.state.checked){
-          formaPgto = "Crédito"
-          if(this.state.pgtoEscolhido){
-            formaPgtoDetalhe = this.state.pgtoEscolhido
-          }else{
-            formaPgtoDetalhe = this.state.cre[0].bandeira
-          }
+          this.setState({
+            formaPgto:'Crédito',
+            formaPgtoDetalhe: this.state.pgtoEscolhido
+          });
         }else if(this.state.checked2){
-          formaPgto = "Débito"
-          if(this.state.pgtoEscolhido){
-            formaPgtoDetalhe = this.state.pgtoEscolhido
-          }else{
-            formaPgtoDetalhe = this.state.deb[0].bandeira
-          }
+          this.setState({
+            formaPgto:'Débito',
+            formaPgtoDetalhe: this.state.pgtoEscolhido
+          });
         }else{
-          formaPgto = "Dinheiro"
-          formaPgtoDetalhe = this.state.troco
+          this.setState({
+            formaPgto:'Dinheiro',
+            formaPgtoDetalhe: this.state.troco
+          });
         }
 
 
         // console.log("timerId"+timerId);
         //mandar informação do pedido para o banco de dados do pedido
-
-        sendMessage(uid,this.state.retirar, this.state.produtosCarrinho, formaPgto, formaPgtoDetalhe,
+        console.log("stateFazer.formaPgto"+this.state.formaPgto);
+        console.log("stateFazer.formaPgtoDetalhe"+this.state.formaPgtoDetalhe);
+        sendMessage(uid,this.state.retirar, this.state.produtosCarrinho, this.state.formaPgto, this.state.formaPgtoDetalhe,
           this.state.frete,this.totalPrice,
            this.state.nome, this.state.telefone, this.state.endereco, this.state.bairro,
            this.state.referencia, this.state.nomeEstabelecimento, "Aguardando Confirmação",(key)=>{
@@ -282,7 +283,7 @@ fazerPedido(){
                            esperandoConfirmacao:false
                          });
                          const { navigate } = this.props.navigation;
-                         navigate('Home')
+                         push('Home')
                        }},
                      ],
                      { cancelable: false }
@@ -511,7 +512,7 @@ render() {
   <View style={{flex:1}}>
     <Loader
             loading={this.state.esperandoConfirmacao}
-            message="Aguarde até 2 minutos enquanto o estabelecimento confirma o recebimento do pedido. Caso demore muito mais que isso feche o aplicativo e verifique o Histórico de Pedidos em seu Perfil. Se o pedido foi aceito pelo estabelecimento ele aparecerá em seu histórico." />
+            message="Aguarde até 1 minuto e 30 segundos enquanto o estabelecimento confirma o recebimento do pedido. Caso demore muito mais que isso feche o aplicativo e verifique o Histórico de Pedidos em seu Perfil. Se o pedido foi aceito pelo estabelecimento ele aparecerá em seu histórico." />
           <View style={{maxHeight: 150}}>
 
       {/* Resumo Carrinho */}
@@ -582,7 +583,7 @@ render() {
         uncheckedColor={cores.textDetalhes}
         checked={this.state.checked}
         onPress={() => {
-          this.setState({checked: true,pgtoEscolhido:this.state.cre[0].bandeira})
+          this.setState({checked: true,formaPgto: 'Crédito', pgtoEscolhido:this.state.cre[0].bandeira})
           this.setState({checked2: false})
           this.setState({checked3: false})
         }}
@@ -601,7 +602,7 @@ render() {
         checked={this.state.checked2}
         onPress={() => {
           this.setState({checked: false})
-          this.setState({checked2: true,pgtoEscolhido:this.state.deb[0].bandeira})
+          this.setState({checked2: true,formaPgto: 'Crédito',pgtoEscolhido:this.state.deb[0].bandeira})
           this.setState({checked3: false})
         }}
       />
@@ -620,7 +621,7 @@ render() {
         onPress={() => {
           this.setState({checked: false})
           this.setState({checked2: false})
-          this.setState({checked3: true})
+          this.setState({checked3: true,formaPgto: 'Dinheiro',pgtoEscolhido: ''})
         }}
       />
       <View>
@@ -646,10 +647,31 @@ render() {
         styleButton={{width: wp('100%')}}
         styleText={{fontFamily:'FuturaPT-Bold',color:cores.corPrincipal, fontSize: wp('5%')}}
         onPress={()=>{
-          if(this.state.nome && this.state.telefone){
+          console.log("sem entrou no onpress");
+          if(this.state.nome && this.state.telefone && this.state.pgtoEscolhido){
+
             this.fazerPedido()
            }else{
-             alert('Preencha todos os campos')
+             console.log("sem entrou no else");
+             console.log("state.nome"+this.state.nome);
+             console.log("state.telefone"+this.state.telefone);
+             console.log("state.formaPgto"+this.state.formaPgto);
+             console.log("state.formaPgtoDetalhe"+this.state.formaPgtoDetalhe);
+             console.log("state.pgtoEscolhido"+this.state.pgtoEscolhido);
+
+             if(this.state.nome=="" && this.state.telefone==""){
+               console.log("sem nome ou telefone");
+               alert('Faltando informar nome ou telefone')
+             }else if(this.state.formaPgto=='Dinheiro' && this.state.formaPgtoDetalhe==''){
+               console.log("sem troco");
+               alert('Indique quanto precisa de troco')
+             }else if(this.state.formaPgto=="Crédito" && !this.state.pgtoEscolhido){
+               console.log("sem bandeira");
+               alert('Indique a bandeira do cartão de crédito')
+             }else if(this.state.formaPgto=="Débito" && !this.state.pgtoEscolhido){
+               alert('Indique a bandeira do cartão de crédito')
+             }
+
            }
 
         }}

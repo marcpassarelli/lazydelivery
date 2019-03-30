@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ScrollView,BackHandler,ImageBackground, Platform, Image, Alert, View, Text, Button, SectionList, Animated } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
-import {getDay, getEstabelecimentoProd, zerarAdicionais,estabelecimentoProd, listaTamanhosPizzas, getTamanhosPizzas, numTamanhos} from '../firebase/database'
+import {getEstabelecimentoProd, zerarAdicionais,estabelecimentoProd, listaTamanhosPizzas, getTamanhosPizzas, numTamanhos} from '../firebase/database'
 import EstabelecimentoProdutosListItem from './estabelecimentoProdutosListItem'
 import LazyActivity from '../loadingModal/lazyActivity'
 import {aberto,frete,fechando,horarioFechamento} from '../home/home'

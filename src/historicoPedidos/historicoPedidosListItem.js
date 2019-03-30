@@ -14,7 +14,8 @@ export default class HistoricoPedidosListItem extends Component {
   }
 
   functionCarrinhoListItem=(item)=>{
-    console.log("item.total"+item.total+"   item.frete"+item.frete);
+
+    
     var year = item.createdAt.getFullYear();
     var month = item.createdAt.getMonth() + 1; // getMonth() is zero-indexed, so we'll increment to get the correct month number
     var day = item.createdAt.getDate();
@@ -42,7 +43,10 @@ export default class HistoricoPedidosListItem extends Component {
                   Valor Compra:
                 </Text>
                 <Text style={[styles.textHistoricoPedidos]}>
-                  R${(item.total+item.frete).toFixed(2)}
+                  R${item.valorCompra?
+                    (item.valorCompra+item.frete).toFixed(2):
+                    (item.total+item.frete).toFixed(2)
+                  }
                 </Text>
               </View>
             </View>
@@ -90,17 +94,19 @@ export default class HistoricoPedidosListItem extends Component {
             </View>
 
             <View style={{flexDirection: 'column',flex:1,justifyContent:'center',alignContent: 'center',alignItems:'center',marginBottom: 5}}>
-              <Image
-                source={{uri:item.logo}}
-                style={{height: hp('12%'),
-                    width: wp('25%'),
-                    justifyContent: 'center',
-                    alignSelf: 'center'}}
-                />
+
             </View>
         </View>
       );
   }
+  //
+  // <Image
+  //   source={{uri:item.logo}}
+  //   style={{height: hp('10%'),
+  //       width: wp('20%'),
+  //       justifyContent: 'center',
+  //       alignSelf: 'center'}}
+  //   />
 
   // Botão Avaliar Pedido
   // <View style={{marginRight:wp('3%')}}>
