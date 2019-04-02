@@ -36,7 +36,7 @@ export class AntesAddProdutoScreen extends Component{
       <View style={{}}>
         <LazyBackButton
           goBack={()=>{
-            navigation.navigate('Estabelecimento',
+            navigation.push('Estabelecimento',
             {nomeEstabelecimento:navigation.state.params.nomeEstabelecimento,
             tipoEstabelecimento: navigation.state.params.tipoEstabelecimento})
             }}/>
@@ -68,7 +68,7 @@ componentWillUnmount() {
 }
 
 handleBackButtonClick=()=> {
-  this.props.navigation.goBack();
+  this.props.navigation.dispatch(NavigationActions.back());
   return true;
 }
 

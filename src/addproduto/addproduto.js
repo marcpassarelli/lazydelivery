@@ -39,7 +39,7 @@ export class AddProdutoScreen extends Component{
       headerLeft: (
         <LazyBackButton
           goBack={ ()=>{
-              navigation.navigate('Estabelecimento',
+              navigation.push('Estabelecimento',
               {nomeEstabelecimento:navigation.state.params.nomeEstabelecimento,
               tipoEstabelecimento: navigation.state.params.tipoEstabelecimento})
             }}/>
