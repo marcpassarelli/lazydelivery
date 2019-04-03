@@ -10,6 +10,7 @@ import ListItemSeparator from '../constants/listItemSeparator'
 import LazyBackButton from '../constants/lazyBackButton'
 import LazyYellowButton from '../constants/lazyYellowButton'
 import AntesAddProdutoListItem from './antesAddProdutoListItem'
+import { NavigationActions } from 'react-navigation';
 
 import _ from 'lodash';
 

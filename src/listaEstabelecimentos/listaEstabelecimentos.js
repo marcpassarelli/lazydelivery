@@ -61,73 +61,106 @@ handleBackButtonClick=()=> {
 
  componentWillMount(){
    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick)
-   this.setState({
-      loadingList: true
-   })
-
 
   limparEstabelecimentoProd()
   const {state} = this.props.navigation;
   this.tipoEstabelecimentoUp = state.params ? state.params.tipoEstabelecimento : ""
   this.bairro = state.params ? state.params.bairro:""
-
-  getListaEstabelecimentos(this.tipoEstabelecimentoUp, this.bairro,
-  ()=>{
-    if(semEstabelecimentos==true){
+  this.setState({
+     loadingList: true
+  },function(){
+    getListaEstabelecimentos(this.tipoEstabelecimentoUp, this.bairro,
+    ()=>{
+      if(semEstabelecimentos==true){
+        this.setState({
+          estabAbertos:null
+        },function(){
+          this.setState({
+            loadingList:false
+          });
+        });
+      }else{
+      newListaEstabelecimentosOpen=[]
+      console.log("bairor"+this.bairro);
+      console.log("listaEstabelecimentos"+JSON.stringify(listaEstabelecimentos));
+      abertoFechado.map((aberto,index2)=>{
+        listaEstabelecimentos.map((lista,index)=>{
+          if(aberto.nome==lista.nome){
+            if(aberto.aberto==true&&lista.frete!='n'){
+              newListaEstabelecimentosOpen.push({
+                logo: lista.logo,
+                nome: lista.nome,
+                precoDelivery: lista.precoDelivery,
+                tempoEntrega: lista.tempoEntrega,
+                frete:lista.frete,
+                fechando:aberto.fechando,
+                horarioFechamento:aberto.horarioFechamento,
+                aberto:aberto.aberto,
+                _id:todoCounter++
+              })
+            }else if(aberto.aberto==false&&lista.frete!='n'){
+              newListaEstabelecimentosOpen.push({
+                logo: lista.logo,
+                nome: lista.nome,
+                precoDelivery: lista.precoDelivery,
+                tempoEntrega: lista.tempoEntrega,
+                frete:lista.frete,
+                horarioFechamento:aberto.horarioFechamento,
+                fechando:aberto.fechando,
+                aberto:aberto.aberto,
+                _id:todoCounter++
+              })
+            }
+          }
+        })
+      })
+      newListaEstabelecimentosOpen = _.orderBy(newListaEstabelecimentosOpen, ['aberto','nome'], ['desc','asc'])
       this.setState({
-        estabAbertos:null
+        estabAbertos:newListaEstabelecimentosOpen,
       },function(){
         this.setState({
-          loadingList:false
+          loadingList: false
+        },function(){
+          console.log("estabAbertos"+JSON.stringify(this.state.estabAbertos));
         });
       });
-    }else{
-    newListaEstabelecimentosOpen=[]
-    console.log("bairor"+this.bairro);
-    console.log("listaEstabelecimentos"+JSON.stringify(listaEstabelecimentos));
-    abertoFechado.map((aberto,index2)=>{
-      listaEstabelecimentos.map((lista,index)=>{
-        if(aberto.nome==lista.nome){
-          if(aberto.aberto==true&&lista.frete!='n'){
-            newListaEstabelecimentosOpen.push({
-              logo: lista.logo,
-              nome: lista.nome,
-              precoDelivery: lista.precoDelivery,
-              tempoEntrega: lista.tempoEntrega,
-              frete:lista.frete,
-              fechando:aberto.fechando,
-              horarioFechamento:aberto.horarioFechamento,
-              aberto:aberto.aberto,
-              _id:todoCounter++
-            })
-          }else if(aberto.aberto==false&&lista.frete!='n'){
-            newListaEstabelecimentosOpen.push({
-              logo: lista.logo,
-              nome: lista.nome,
-              precoDelivery: lista.precoDelivery,
-              tempoEntrega: lista.tempoEntrega,
-              frete:lista.frete,
-              horarioFechamento:aberto.horarioFechamento,
-              fechando:aberto.fechando,
-              aberto:aberto.aberto,
-              _id:todoCounter++
-            })
-          }
-        }
-      })
+    }
     })
-    newListaEstabelecimentosOpen = _.orderBy(newListaEstabelecimentosOpen, ['aberto','nome'], ['desc','asc'])
-    this.setState({
-      estabAbertos:newListaEstabelecimentosOpen,
-    },function(){
-      this.setState({
-        loadingList: false
-      });
-    });
-  }
+
   })
+}
 
-
+functionListaEstabelecimentos(){
+  if(this.state.estabAbertos){
+    if(Object.keys(this.state.estabAbertos).length>0) {
+      return(
+        <FlatList
+          ItemSeparatorComponent={ListItemSeparator}
+          data= {this.state.estabAbertos}
+          extraData={this.state}
+          renderItem= {
+            ({item}) =>
+            <ListaEstabelecimentosListItem
+              fechando={item.fechando}
+              horarioFechamento={item.horarioFechamento}
+              aberto={item.aberto}
+              estabelecimento = {item.nome}
+              imglogoEstabelecimento = {item.logo}
+              valorDelivery = {item.frete}
+              tempoEntrega = {item.tempoEntrega}
+              navigation={this.props.navigation}
+              tipoEstabelecimento={this.tipoEstabelecimentoUp}>
+            </ListaEstabelecimentosListItem>}
+          keyExtractor={item => item._id.toString()}
+          />)
+    }else{
+      return(
+      <Text style={[styles.textAdicionais,{color:cores.corPrincipal,textAlign: 'center',marginTop: 10,alignSelf: 'center'}]}>Ainda não há estabelecimentos cadastrados nesta categoria para o bairro escolhido.</Text>)
+    }
+  }else{
+    return(
+    <Text style={[styles.textAdicionais,{color:cores.corPrincipal,textAlign: 'center',marginTop: 10,alignSelf: 'center'}]}>Ainda não há estabelecimentos cadastrados nesta categoria para o bairro escolhido.</Text>)
+  }
 
 }
 
@@ -152,29 +185,7 @@ render() {
 
   <View style={{flex:1}}>
   <View style={{marginTop:10}}></View>
-  {this.state.estabAbertos?
-    <FlatList
-      ItemSeparatorComponent={ListItemSeparator}
-      data= {this.state.estabAbertos}
-      extraData={this.state}
-      renderItem= {
-        ({item}) =>
-        <ListaEstabelecimentosListItem
-          fechando={item.fechando}
-          horarioFechamento={item.horarioFechamento}
-          aberto={item.aberto}
-          estabelecimento = {item.nome}
-          imglogoEstabelecimento = {item.logo}
-          valorDelivery = {item.frete}
-          tempoEntrega = {item.tempoEntrega}
-          navigation={this.props.navigation}
-          tipoEstabelecimento={this.tipoEstabelecimentoUp}>
-        </ListaEstabelecimentosListItem>}
-      keyExtractor={item => item._id.toString()}
-      />
-    :
-    <Text style={[styles.textAdicionais,{color:cores.corPrincipal,textAlign: 'center',marginTop: 10,alignSelf: 'center'}]}>Ainda não há estabelecimentos cadastrados nesta categoria.</Text>
-  }
+  {this.functionListaEstabelecimentos()}
 
   </View>
 

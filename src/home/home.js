@@ -139,7 +139,6 @@ export class HomeScreen extends Component {
     newListaEstabelecimentosOpen=[]
     abertoFechado.map((aberto,index2)=>{
       nomesEstabelecimentos.map((lista,index)=>{
-
         // console.log("lista.frete"+lista.frete+"  lista.nome"+lista.nome);
         if(aberto.nome==lista.nome){
           if(aberto.aberto==true&&lista.frete!='n'){

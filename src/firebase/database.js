@@ -510,7 +510,6 @@ export function getListaEstabelecimentos(tipoEstabelecimento, bairro,onListLoad)
         semEstabelecimentos=false
         numChildrenLista= snapshot.numChildren()
         snapshot.forEach((child) =>{
-
           listaEstabelecimentos.push({
             logo: child.val().Logo,
             nome: child.val().Nome,
