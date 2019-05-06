@@ -15,6 +15,7 @@ import LazyYellowButton from '../constants/lazyYellowButton'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {auth} from '../firebase/firebase'
 import { CheckBox } from 'react-native-elements'
+import { checkInternetConnection } from 'react-native-offline';
 import { semCadastro } from '../login/loginregister'
 
 import _ from 'lodash'
@@ -179,7 +180,7 @@ checkTimeOut=(key)=>{
     })
     Alert.alert(
       'Erro no Pedido',
-      'Ocorreu algum erro no pedido e não obtivemos resposta do restaurante. Verifique se o horário de funcionamento do restaurante ou então tente novamente.',
+      'Ocorreu algum erro no pedido e não obtivemos resposta do restaurante. Verifique o horário de funcionamento do restaurante ou então tente novamente.',
        [
          {text: 'OK', onPress: () => {
            this.setState({
@@ -206,113 +207,128 @@ fazerPedido(){
     'Deseja confirmar o pedido? Após a confirmação, o pedido será enviado para o estabelecimento para preparo.',
     [
       {text: 'Sim', onPress: async () => {
-        let uid = await auth.currentUser.uid;
-        this.setState({
-          esperandoConfirmacao: true
-        });
-        let estabelecimentoLoad = this.props.navigation.state.params.nomeEstabelecimento
-        let formaPgto, formaPgtoDetalhe;
-        if(this.state.checked){
+        const isConnected = await checkInternetConnection();
+        if(isConnected){
+          let uid = await auth.currentUser.uid;
           this.setState({
-            formaPgto:'Crédito',
-            formaPgtoDetalhe: this.state.pgtoEscolhido
+            esperandoConfirmacao: true
           });
-        }else if(this.state.checked2){
-          this.setState({
-            formaPgto:'Débito',
-            formaPgtoDetalhe: this.state.pgtoEscolhido
-          });
-        }else{
-          this.setState({
-            formaPgto:'Dinheiro',
-            formaPgtoDetalhe: this.state.troco
-          });
-        }
+          let estabelecimentoLoad = this.props.navigation.state.params.nomeEstabelecimento
+          let formaPgto, formaPgtoDetalhe;
+          if(this.state.checked){
+            this.setState({
+              formaPgto:'Crédito',
+              formaPgtoDetalhe: this.state.pgtoEscolhido
+            });
+          }else if(this.state.checked2){
+            this.setState({
+              formaPgto:'Débito',
+              formaPgtoDetalhe: this.state.pgtoEscolhido
+            });
+          }else{
+            this.setState({
+              formaPgto:'Dinheiro',
+              formaPgtoDetalhe: this.state.troco
+            });
+          }
 
 
-        // console.log("timerId"+timerId);
-        //mandar informação do pedido para o banco de dados do pedido
-        console.log("stateFazer.formaPgto"+this.state.formaPgto);
-        console.log("stateFazer.formaPgtoDetalhe"+this.state.formaPgtoDetalhe);
-        sendMessage(uid,this.state.retirar, this.state.produtosCarrinho, this.state.formaPgto, this.state.formaPgtoDetalhe,
-          this.state.frete,this.totalPrice,
-           this.state.nome, this.state.telefone, this.state.endereco, this.state.bairro,
-           this.state.referencia, this.state.nomeEstabelecimento, "Aguardando Confirmação",(key)=>{
-             this.timeoutPedido(key.key)
-             // console.log("pedidoKey"+pedidoKey);
+          // console.log("timerId"+timerId);
+          //mandar informação do pedido para o banco de dados do pedido
+          console.log("stateFazer.formaPgto"+this.state.formaPgto);
+          console.log("stateFazer.formaPgtoDetalhe"+this.state.formaPgtoDetalhe);
+          sendMessage(uid,this.state.retirar, this.state.produtosCarrinho, this.state.formaPgto, this.state.formaPgtoDetalhe,
+            this.state.frete,this.totalPrice,
+             this.state.nome, this.state.telefone, this.state.endereco, this.state.bairro,
+             this.state.referencia, this.state.nomeEstabelecimento, "Aguardando Confirmação",(key)=>{
+               this.timeoutPedido(key.key)
+               // console.log("pedidoKey"+pedidoKey);
 
-             //aguardar confirmação do estabelecimento
-             loadMessages(this.state.nomeEstabelecimento, key.key, (message)=>{
+               //aguardar confirmação do estabelecimento
+               loadMessages(this.state.nomeEstabelecimento, key.key, (message)=>{
 
-               if(message.status=="Confirmado Recebimento"){
-                 clearTimeout(myVar)
-                 myVar=0
-                   //caso pedido seja confirmado
-                   Alert.alert(
-                    'Pedido Recebido.',
-                    'Seu pedido foi recebido pelo estabelecimento e está sendo preparado para o envio até você. Você poderá acompanhar o status do pedido pelo seu histórico de pedidos no seu perfil. Em caso de dúvidas entre em contato com o estabelecimento',
-                    [
-                      {text: 'OK', onPress: () => {
-                        this.setState({
-                          esperandoConfirmacao: false
-                        });
-                        if(semCadastro){
-
-                        }else{
-                          // salvarPedido(this.state.retirar, this.state.produtosCarrinho, this.totalPrice,
-                          //   this.state.frete, formaPgto, formaPgtoDetalhe,
-                          //   this.state.endereco, this.state.bairro,
-                          //   this.state.nomeEstabelecimento, key.key)
-                        }
-                        atualizarCarrinho([])
-                        const { navigate } = this.props.navigation;
-                        navigate('Home')
-                      }},
-                    ],
-                    { cancelable: false }
-                  )
-               }else if(message.status=="estabFechado"){
-                 clearTimeout(myVar)
-                 myVar=0
-                   Alert.alert(
-                     'Estabelecimento Fechado.',
-                     'Sinto muito mas o estabelecimento fechou e não está aceitando mais pedidos.',
-                     [
-                       {text: 'OK', onPress: () => {
-                         this.setState({
-                           esperandoConfirmacao:false
-                         });
-                         const { navigate } = this.props.navigation;
-                         push('Home')
-                       }},
-                     ],
-                     { cancelable: false }
-                   )
-               }else if(message.status=="semItem"){
-                 clearTimeout(myVar)
-                 myVar=0
-                 loadMessagesSemItem(this.state.nomeEstabelecimento, key.key,(itemIndisponivel)=>{
-                   console.log("itemIndisponivel"+JSON.stringify(itemIndisponivel));
-
+                 if(message.status=="Confirmado Recebimento"){
+                   clearTimeout(myVar)
+                   myVar=0
+                     //caso pedido seja confirmado
                      Alert.alert(
-                       'Falta de Disponibilidade de um dos items.',
-                       'Devido a falta de disponibilidade do item '+itemIndisponivel.nome.nome+', seu pedido não foi aceito. Sentimos muito pelo incomodo.',
+                      'Pedido Recebido.',
+                      'Seu pedido foi recebido pelo estabelecimento e está sendo preparado para o envio até você. Você poderá acompanhar o status do pedido pelo seu histórico de pedidos no seu perfil. Em caso de dúvidas entre em contato com o estabelecimento',
+                      [
+                        {text: 'OK', onPress: () => {
+                          this.setState({
+                            esperandoConfirmacao: false
+                          });
+                          if(semCadastro){
+
+                          }else{
+                            // salvarPedido(this.state.retirar, this.state.produtosCarrinho, this.totalPrice,
+                            //   this.state.frete, formaPgto, formaPgtoDetalhe,
+                            //   this.state.endereco, this.state.bairro,
+                            //   this.state.nomeEstabelecimento, key.key)
+                          }
+                          atualizarCarrinho([])
+                          const { navigate } = this.props.navigation;
+                          navigate('Home')
+                        }},
+                      ],
+                      { cancelable: false }
+                    )
+                 }else if(message.status=="estabFechado"){
+                   clearTimeout(myVar)
+                   myVar=0
+                     Alert.alert(
+                       'Estabelecimento Fechado.',
+                       'Sinto muito mas o estabelecimento fechou e não está aceitando mais pedidos.',
                        [
                          {text: 'OK', onPress: () => {
                            this.setState({
                              esperandoConfirmacao:false
                            });
                            const { navigate } = this.props.navigation;
-                           navigate('Carrinho')
+                           this.props.navigation.push('Home')
                          }},
                        ],
                        { cancelable: false }
                      )
+                 }else if(message.status=="semItem"){
+                   clearTimeout(myVar)
+                   myVar=0
+                   loadMessagesSemItem(this.state.nomeEstabelecimento, key.key,(itemIndisponivel)=>{
+                     console.log("itemIndisponivel"+JSON.stringify(itemIndisponivel));
 
-                 })
-               }
+                       Alert.alert(
+                         'Falta de Disponibilidade de um dos items.',
+                         'Devido a falta de disponibilidade do item '+itemIndisponivel.nome.nome+', seu pedido não foi aceito. Sentimos muito pelo incomodo.',
+                         [
+                           {text: 'OK', onPress: () => {
+                             this.setState({
+                               esperandoConfirmacao:false
+                             });
+                             const { navigate } = this.props.navigation;
+                             navigate('Carrinho')
+                           }},
+                         ],
+                         { cancelable: false }
+                       )
+
+                   })
+                 }
+               })
              })
-           })
+      }else{
+        Alert.alert(
+          'Checar conexão.',
+          'Houve um problema em sua conexão com a internet, verifique se está conectado e tenta novamente.',
+          [
+            {text: 'OK', onPress: () => {
+
+            }},
+          ],
+          { cancelable: false }
+        )
+      }
+
       }},
       {text: 'Não', onPress: ()=>{
         console.log("cancelado");

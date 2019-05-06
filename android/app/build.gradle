@@ -86,7 +86,7 @@ apply from: "../../node_modules/react-native/react.gradle"
  * Upload all the APKs to the Play Store and people will download
  * the correct one based on the CPU architecture of their device.
  */
-def enableSeparateBuildPerCPUArchitecture = false
+def enableSeparateBuildPerCPUArchitecture = true
 
 /**
  * Run Proguard to shrink the Java bytecode in release builds.
@@ -101,11 +101,8 @@ android {
         applicationId "com.deliverypassa"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 5
-        versionName "1.0.1"
-        ndk {
-            abiFilters "armeabi-v7a", "x86"
-        }
+        versionCode 8
+        versionName "1.1.2"
     }
     signingConfigs {
         release {
@@ -157,7 +154,6 @@ dependencies {
     compile project(':react-native-vector-icons')
     compile project(':react-native-toast-native')
     compile project(':react-native-fbsdk')
-    compile project(':react-native-version-number')
     implementation project(':react-native-toast-native')
     implementation project(':react-native-fbsdk')
     implementation 'com.android.support:appcompat-v7:26.0.2'

@@ -18,7 +18,7 @@ const configDev = {
   messagingSenderId: "308469361421"
 }
 
-export const firebaseImpl = firebase.initializeApp(configProd)
+export const firebaseImpl = firebase.initializeApp(configDev)
 export const db = firebase.database()
 export const auth = firebase.auth()
 export const storage = firebase.storage()
