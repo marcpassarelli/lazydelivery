@@ -209,7 +209,13 @@ fazerPedido(){
       {text: 'Sim', onPress: async () => {
         const isConnected = await checkInternetConnection();
         if(isConnected){
-          let uid = await auth.currentUser.uid;
+          let uid =""
+          if(semCadastro){
+            uid = "semCadastro"
+          }else{
+            uid = await auth.currentUser.uid;
+          }
+
           this.setState({
             esperandoConfirmacao: true
           });
