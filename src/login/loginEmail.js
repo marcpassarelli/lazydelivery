@@ -12,6 +12,7 @@ import FBSDK, { LoginManager, AccessToken, GraphRequestManager, GraphRequest } f
 import Loader from '../loadingModal/loadingModal';
 import { auth } from '../firebase/firebase'
 import { checkInternetConnection } from 'react-native-offline';
+import { atualizarSemCadastro } from '../login/loginregister'
 let listener = null
 
 export class LoginEmailScreen extends Component {
@@ -54,6 +55,7 @@ export class LoginEmailScreen extends Component {
         const isConnected = await checkInternetConnection();
 
         if(isConnected) {
+          atualizarSemCadastro(false)
 
           login(
             this.state.email,

@@ -343,10 +343,13 @@ export function getEstabelecimentoProd(nomeEstabelecimento, sectionDataFunction,
 }
 
 export function getTiposItens(nomeEstabelecimento,tipoItem,onListLoad){
+  console.log("nomeEstabelecimento "+nomeEstabelecimento);
+  console.log("tipoItem "+tipoItem);
   try{
     listaTipoItens = []
     db.ref("/tipoItens/"+nomeEstabelecimento+"/"+tipoItem).once('value').then(function(snapshot){
       var estabelecimentoData = snapshot.val()
+      console.log("snapshotsnapshot "+JSON.stringify(snapshot));
       if(estabelecimentoData){
         snapshot.forEach((child) =>{
           listaTipoItens.push({
@@ -413,76 +416,99 @@ try{
   db.ref("/infoEstabelecimentosNovo/"+estabelecimento+"/horarioFuncionamento/"+currentDay+"/").once('value').then(function(snapshot){
     //determina valores para abertura e fechamento
     db.ref("infoEstabelecimentosNovo/"+estabelecimento+"/aberto").once('value').then(function(snap){
+
       this.abertoBool = snap.val()
-      console.log('SNAPCARAI'+abertoBool);
+      console.log('SNAPCARAI1'+this.abertoBool);
+
+      // console.log(currentDay+" "+month+" "+day+", "+year+" "+snapshot.val().abertura)
+      // console.log('ESTAB'+estabelecimento);
+      var abertura = Date.parse(month+" "+day+", "+year+" "+snapshot.val().abertura)
+
+      var fechamento = Date.parse(month+" "+day+", "+year+" "+snapshot.val().fechamento)
+
+
+      //se fechamento for menor que abertura quer dizer que o estabelecimento fecha de madrugada
+      if(fechamento<abertura&&madrugada==true){
+        // tiro um dia da abertura pois ela é o no dia anterior
+        var dayAbertura = new Date(month+" "+day+", "+year+" "+snapshot.val().abertura)
+        let dayBefore = dayAbertura.getDate()-1
+        dayAbertura.setDate(dayBefore)
+        abertura = Date.parse(dayAbertura)
+        if(this.abertoBool==false){
+          console.log("1"+estabelecimento);
+          aberto = false
+        }else{
+          if(atual>abertura&&atual<fechamento){
+            console.log("2"+estabelecimento);
+            aberto = true
+          }else{
+            console.log("3"+estabelecimento);
+            aberto = false
+          }
+        }
+      }
+      else if(fechamento<abertura&&madrugada==false){
+        var dayFechamento = new Date(month+" "+day+", "+year+" "+snapshot.val().fechamento)
+        var dayAfter = dayFechamento.getDate()+1
+        dayFechamento.setDate(dayAfter)
+        fechamento = Date.parse(dayFechamento)
+        if(this.abertoBool==false){
+          console.log("4"+estabelecimento);
+          aberto = false
+        }else{
+          console.log("atual"+atual);
+          console.log("abertura"+abertura);
+          console.log("fechamento"+fechamento);
+          if(atual>abertura&&atual<fechamento){
+            console.log("5"+estabelecimento);
+            aberto = true
+          }else{
+            console.log("6"+estabelecimento);
+            aberto = false
+          }
+        }
+      }
+      else{
+        if(this.abertoBool==false){
+          console.log("7"+estabelecimento);
+          aberto = false
+        }else{
+          if(atual>abertura&&atual<fechamento){
+            console.log("8"+estabelecimento);
+            aberto = true
+          }else{
+            console.log("9"+estabelecimento);
+            aberto = false
+          }
+        }
+      }
+
+      var quaseFechando = fechamento - atual
+
+      var quaseFechandoSt=''
+      if(quaseFechando<600000&&quaseFechando>0){
+        quaseFechandoSt=true
+      }else{
+        quaseFechandoSt=false
+      }
+
+      abertoFechado.push({
+        nome:estabelecimento,
+        aberto:aberto,
+        fechando:quaseFechandoSt,
+        horarioFechamento:snapshot.val().fechamento
+      })
+      if(abertoFechado.length==numChildrenLista){
+        onListLoad()
+      }
+
+
+
+
+
+
     })
-    console.log('abertoBool'+this.abertoBool);
-    var abertura = Date.parse(month+" "+day+", "+year+" "+snapshot.val().abertura)
-    var fechamento = Date.parse(month+" "+day+", "+year+" "+snapshot.val().fechamento)
 
-
-    //se fechamento for menor que abertura quer dizer que o estabelecimento fecha de madrugada
-    if(fechamento<abertura&&madrugada==true){
-      // tiro um dia da abertura pois ela é o no dia anterior
-      var dayAbertura = new Date(month+" "+day+", "+year+" "+snapshot.val().abertura)
-      let dayBefore = dayAbertura.getDate()-1
-      dayAbertura.setDate(dayBefore)
-      abertura = Date.parse(dayAbertura)
-      if(this.abertoBool==false){
-        aberto = false
-      }else{
-        if(atual>abertura&&atual<fechamento){
-          aberto = true
-        }else{
-          aberto = false
-        }
-      }
-    }
-    else if(fechamento<abertura&&madrugada==false){
-      var dayFechamento = new Date(month+" "+day+", "+year+" "+snapshot.val().fechamento)
-      var dayAfter = dayFechamento.getDate()+1
-      dayFechamento.setDate(dayAfter)
-      fechamento = Date.parse(dayFechamento)
-      if(this.abertoBool==false){
-        aberto = false
-      }else{
-        if(atual>abertura&&atual<fechamento){
-          aberto = true
-        }else{
-          aberto = false
-        }
-      }
-    }
-    else{
-      if(this.abertoBool==false){
-        aberto = false
-      }else{
-        if(atual>abertura&&atual<fechamento){
-          aberto = true
-        }else{
-          aberto = false
-        }
-      }
-    }
-
-    var quaseFechando = fechamento - atual
-
-    var quaseFechandoSt=''
-    if(quaseFechando<600000&&quaseFechando>0){
-      quaseFechandoSt=true
-    }else{
-      quaseFechandoSt=false
-    }
-
-    abertoFechado.push({
-      nome:estabelecimento,
-      aberto:aberto,
-      fechando:quaseFechandoSt,
-      horarioFechamento:snapshot.val().fechamento
-    })
-    if(abertoFechado.length==numChildrenLista){
-      onListLoad()
-    }
   })
 
 }catch(error){
@@ -560,7 +586,7 @@ export function getNomeEstabelecimentos(bairro,onListLoad){
       }
     })
   } catch(error){
-    console.log(error)
+    console.log("erro nome estabelecimentos"+error)
   }
 }
 
