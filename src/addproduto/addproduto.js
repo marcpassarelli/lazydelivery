@@ -147,6 +147,8 @@ handleBackButtonClick=()=> {
     },function(){
       this.setState({
         loading:false
+      },function(){
+        console.log("state.detalhes "+this.state.detalhes);
       });
     });
 
