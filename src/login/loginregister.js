@@ -1,13 +1,14 @@
 console.ignoredYellowBox = [
     'Setting a timer'
 ]
-import firebase from 'firebase';
 import StatusBar from '../constants/statusBar'
+import firebase from 'firebase'
 import ComponentsLoginRegister from './componentsloginregister';
 import { login, checkUserDetails } from '../firebase/database'
 import React, { Component } from 'react';
-import { ImageBackground, Image, Alert, BackHandler, Platform, Animated, Easing} from 'react-native';
+import { ImageBackground, Image, Alert, BackHandler, Platform, Animated, Easing, AsyncStorage} from 'react-native';
 import { styles, images} from '../constants/constants'
+import firebase1 from 'react-native-firebase';
 import FBSDK, { LoginManager, AccessToken, GraphRequestManager, GraphRequest } from 'react-native-fbsdk'
 import Loader from '../loadingModal/loadingModal';
 import { auth} from '../firebase/firebase'
@@ -42,8 +43,8 @@ export class LoginRegisterScreen extends Component {
   }
 
 
-  componentDidMount() {
-
+  async componentDidMount() {
+    this.checkPermission();
     //Encerrar app se for android e se back for pressionado
     if (Platform.OS == "android" && listener == null) {
       listener = BackHandler.addEventListener("hardwareBackPress", () => {
@@ -52,6 +53,40 @@ export class LoginRegisterScreen extends Component {
     }
 
   }
+
+  //1
+    async checkPermission() {
+    const enabled = await firebase1.messaging().hasPermission();
+    if (enabled) {
+        this.getToken();
+    } else {
+        this.requestPermission();
+    }
+    }
+
+    //3
+    async getToken() {
+    let fcmToken = await AsyncStorage.getItem('fcmToken');
+    if (!fcmToken) {
+        fcmToken = await firebase1.messaging().getToken();
+        if (fcmToken) {
+            // user has a device token
+            await AsyncStorage.setItem('fcmToken', fcmToken);
+        }
+    }
+    }
+
+    //2
+    async requestPermission() {
+    try {
+        await firebase1.messaging().requestPermission();
+        // User has authorised
+        this.getToken();
+    } catch (error) {
+        // User has rejected permissions
+        console.log('permission rejected');
+    }
+    }
 
   updateEmail = (text) => {
     this.setState({email: text})
@@ -79,6 +114,7 @@ export class LoginRegisterScreen extends Component {
   }
 
   async logintToCadastroFacebook (nomeUsuario, profilePicUrl) {
+    console.log("logintToCadastroFacebook");
     semCadastro = false
     this.setState({
       loading: true
@@ -109,20 +145,23 @@ export class LoginRegisterScreen extends Component {
 
 
   async loginToHomeFacebook(){
+    console.log("loginToHomeFacebook");
     semCadastro = false
     this.setState({
       loading: true
     })
     const isConnected = await checkInternetConnection();
 
-    if(isConnected){
 
+    if(isConnected){
+    console.log("dentro if");
       this.setState({
         loading: false
       })
       this.props.navigation.push('Home')
 
     }else{
+      console.log("dentro else");
       this.setState({
         loading: false
       })
@@ -158,7 +197,9 @@ export class LoginRegisterScreen extends Component {
 
     var that = this
     LoginManager.logInWithReadPermissions(['public_profile', 'email']).then(function(result){
+      console.log("result 1"+JSON.stringify(result));
       if (result.isCancelled){
+        console.log("result 12"+JSON.stringify(result));
         console.log('Login was cancelled');
       } else {
         this.setState({
@@ -166,16 +207,20 @@ export class LoginRegisterScreen extends Component {
         });
         AccessToken.getCurrentAccessToken().then((accessTokenData) => {
           let accessToken = accessTokenData.accessToken
+          console.log("accessToken"+accessToken);
+          console.log("log14");
           const credential = firebase.auth.FacebookAuthProvider.credential(accessToken)
+          console.log("credential"+JSON.stringify(credential));
             auth.signInAndRetrieveDataWithCredential(credential).then((result)=> {
-
+              console.log("log1");
             const responseInfoCallback = (error, result) => {
               if (error) {
+                console.log("log12");
                 error_json = JSON.stringify(error)
                 console.log(error_json)
                 alert('Error fetching data: ' + error.toString());
               } else {
-
+                console.log("log3");
                 //Se tiver resposta do Graph para o Facebook
                 this.setState({nameUser: result.name});
                 this.setState({profilePicUrl: result.picture.data.url})
