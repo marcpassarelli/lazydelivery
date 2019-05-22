@@ -207,6 +207,9 @@ fazerPedido(){
     'Deseja confirmar o pedido? Após a confirmação, o pedido será enviado para o estabelecimento para preparo.',
     [
       {text: 'Sim', onPress: async () => {
+        this.setState({
+          esperandoConfirmacao: true
+        });
         const isConnected = await checkInternetConnection();
         if(isConnected){
           let uid =""
@@ -215,10 +218,6 @@ fazerPedido(){
           }else{
             uid = await auth.currentUser.uid;
           }
-
-          this.setState({
-            esperandoConfirmacao: true
-          });
           let estabelecimentoLoad = this.props.navigation.state.params.nomeEstabelecimento
           let formaPgto, formaPgtoDetalhe;
           if(this.state.checked){
@@ -253,13 +252,13 @@ fazerPedido(){
                //aguardar confirmação do estabelecimento
                loadMessages(this.state.nomeEstabelecimento, key.key, (message)=>{
 
-                 if(message.status=="Confirmado Recebimento"){
+
                    clearTimeout(myVar)
                    myVar=0
                      //caso pedido seja confirmado
                      Alert.alert(
-                      'Pedido Recebido.',
-                      'Seu pedido foi recebido pelo estabelecimento e está sendo preparado para o envio até você. Você poderá acompanhar o status do pedido pelo seu histórico de pedidos no seu perfil. Em caso de dúvidas entre em contato com o estabelecimento',
+                      'Pedido Enviado.',
+                      'Seu pedido foi enviado ao estabelecimento. Você poderá acompanhar o status do pedido pelo seu histórico de pedidos no seu perfil. Em caso de dúvidas entre em contato com o estabelecimento pelo telefone em Informações',
                       [
                         {text: 'OK', onPress: () => {
                           this.setState({
@@ -280,46 +279,48 @@ fazerPedido(){
                       ],
                       { cancelable: false }
                     )
-                 }else if(message.status=="estabFechado"){
-                   clearTimeout(myVar)
-                   myVar=0
-                     Alert.alert(
-                       'Estabelecimento Fechado.',
-                       'Sinto muito mas o estabelecimento fechou e não está aceitando mais pedidos.',
-                       [
-                         {text: 'OK', onPress: () => {
-                           this.setState({
-                             esperandoConfirmacao:false
-                           });
-                           const { navigate } = this.props.navigation;
-                           this.props.navigation.push('Home')
-                         }},
-                       ],
-                       { cancelable: false }
-                     )
-                 }else if(message.status=="semItem"){
-                   clearTimeout(myVar)
-                   myVar=0
-                   loadMessagesSemItem(this.state.nomeEstabelecimento, key.key,(itemIndisponivel)=>{
-                     console.log("itemIndisponivel"+JSON.stringify(itemIndisponivel));
-
-                       Alert.alert(
-                         'Falta de Disponibilidade de um dos items.',
-                         'Devido a falta de disponibilidade do item '+itemIndisponivel.nome.nome+', seu pedido não foi aceito. Sentimos muito pelo incomodo.',
-                         [
-                           {text: 'OK', onPress: () => {
-                             this.setState({
-                               esperandoConfirmacao:false
-                             });
-                             const { navigate } = this.props.navigation;
-                             navigate('Carrinho')
-                           }},
-                         ],
-                         { cancelable: false }
-                       )
-
-                   })
+                if(message.status=="Confirmado Recebimento"){
                  }
+                 // else if(message.status=="estabFechado"){
+                 //   clearTimeout(myVar)
+                 //   myVar=0
+                 //     Alert.alert(
+                 //       'Estabelecimento Fechado.',
+                 //       'Sinto muito mas o estabelecimento fechou e não está aceitando mais pedidos.',
+                 //       [
+                 //         {text: 'OK', onPress: () => {
+                 //           this.setState({
+                 //             esperandoConfirmacao:false
+                 //           });
+                 //           const { navigate } = this.props.navigation;
+                 //           this.props.navigation.push('Home')
+                 //         }},
+                 //       ],
+                 //       { cancelable: false }
+                 //     )
+                 // }else if(message.status=="semItem"){
+                 //   clearTimeout(myVar)
+                 //   myVar=0
+                 //   loadMessagesSemItem(this.state.nomeEstabelecimento, key.key,(itemIndisponivel)=>{
+                 //     console.log("itemIndisponivel"+JSON.stringify(itemIndisponivel));
+                 //
+                 //       Alert.alert(
+                 //         'Falta de Disponibilidade de um dos items.',
+                 //         'Devido a falta de disponibilidade do item '+itemIndisponivel.nome.nome+', seu pedido não foi aceito. Sentimos muito pelo incomodo.',
+                 //         [
+                 //           {text: 'OK', onPress: () => {
+                 //             this.setState({
+                 //               esperandoConfirmacao:false
+                 //             });
+                 //             const { navigate } = this.props.navigation;
+                 //             navigate('Carrinho')
+                 //           }},
+                 //         ],
+                 //         { cancelable: false }
+                 //       )
+                 //
+                 //   })
+                 // }
                })
              })
       }else{
@@ -328,7 +329,9 @@ fazerPedido(){
           'Houve um problema em sua conexão com a internet, verifique se está conectado e tenta novamente.',
           [
             {text: 'OK', onPress: () => {
-
+              this.setState({
+                esperandoConfirmacao:false
+              });
             }},
           ],
           { cancelable: false }

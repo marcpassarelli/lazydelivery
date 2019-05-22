@@ -870,3 +870,20 @@ export function sendMessage(uid,retirarNovo, carrinhoNovo, formaPgtoNovo, formaP
       console.log(error)
     }
   }
+
+  export async function salvarPedidoUser(userId, key, pedido,onCompletion){
+      try {
+        this.historicoPedidos = db.ref("/user/"+userId+"/details/pedidos/"+key+"/")
+        this.historicoPedidos.off();
+        this.historicoPedidos.set(pedido)
+        this.historicoPedidosCreatedAt = db.ref("/user/"+userId+"/details/pedidos/"+key+"/createdAt/")
+        this.historicoPedidosCreatedAt.off();
+        this.historicoPedidosCreatedAt.set(firebase.database.ServerValue.TIMESTAMP)
+        this.historicoPedidos.off();
+        this.historicoPedidosCreatedAt.off();
+        onCompletion()
+      } catch (e) {
+        console.log("error"+e);
+      }
+
+  }

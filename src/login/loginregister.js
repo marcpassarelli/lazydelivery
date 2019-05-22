@@ -58,8 +58,10 @@ export class LoginRegisterScreen extends Component {
     async checkPermission() {
     const enabled = await firebase1.messaging().hasPermission();
     if (enabled) {
+      console.log("gettoken");
         this.getToken();
     } else {
+      console.log("requestPermission");
         this.requestPermission();
     }
     }
@@ -67,10 +69,12 @@ export class LoginRegisterScreen extends Component {
     //3
     async getToken() {
     let fcmToken = await AsyncStorage.getItem('fcmToken');
+    console.log("fcmtoken fora: "+fcmToken);
     if (!fcmToken) {
         fcmToken = await firebase1.messaging().getToken();
         if (fcmToken) {
             // user has a device token
+            console.log("fcmtoken dentro: "+fcmToken);
             await AsyncStorage.setItem('fcmToken', fcmToken);
         }
     }
