@@ -814,12 +814,13 @@ export async function carregarPedidos(callback){
 }
 
 export var chaveMsg=""
-export function sendMessage(uid,retirarNovo, carrinhoNovo, formaPgtoNovo, formaPgtoDetalheNovo,
+export function mandarPedido(token,uid,retirarNovo, carrinhoNovo, formaPgtoNovo, formaPgtoDetalheNovo,
   freteNovo, totalNovo,nomeNovo, telefoneNovo, enderecoNovo, bairroNovo, referenciaNovo,
    estabelecimento, statusNovo, key) {
 
     this.messageRef = db.ref("/messages/"+estabelecimento+"/")
     this.messageRef.push({
+      tokenUser:token,
       idUser:uid,
       retirar: retirarNovo,
       carrinho: carrinhoNovo,
@@ -871,19 +872,32 @@ export function sendMessage(uid,retirarNovo, carrinhoNovo, formaPgtoNovo, formaP
     }
   }
 
-  export async function salvarPedidoUser(userId, key, pedido,onCompletion){
-      try {
-        this.historicoPedidos = db.ref("/user/"+userId+"/details/pedidos/"+key+"/")
-        this.historicoPedidos.off();
-        this.historicoPedidos.set(pedido)
-        this.historicoPedidosCreatedAt = db.ref("/user/"+userId+"/details/pedidos/"+key+"/createdAt/")
-        this.historicoPedidosCreatedAt.off();
-        this.historicoPedidosCreatedAt.set(firebase.database.ServerValue.TIMESTAMP)
-        this.historicoPedidos.off();
-        this.historicoPedidosCreatedAt.off();
-        onCompletion()
-      } catch (e) {
-        console.log("error"+e);
-      }
+  export function salvarKeyMessage(estabelecimento,key){
+    this.messageRef = db.ref("/messages/"+estabelecimento+"/"+key+"/")
+    this.messageRef.set({
 
+    })
   }
+
+  export function salvarPedidoUser(key,uid,retirarNovo, carrinhoNovo, formaPgtoNovo, formaPgtoDetalheNovo,
+    freteNovo, totalNovo,nomeNovo, telefoneNovo, enderecoNovo, bairroNovo, referenciaNovo,
+     estabelecimento, statusNovo) {
+
+      this.messageRef = db.ref("/user/"+uid+"/details/pedidos/"+key+"/")
+      this.messageRef.set({
+        retirar: retirarNovo,
+        carrinho: carrinhoNovo,
+        formaPgto: formaPgtoNovo,
+        formaPgtoDetalhe: formaPgtoDetalheNovo,
+        frete:freteNovo,
+        total:totalNovo,
+        nome: nomeNovo,
+        telefone: telefoneNovo,
+        endereco: enderecoNovo,
+        bairro: bairroNovo,
+        referencia: referenciaNovo,
+        createdAt: firebase.database.ServerValue.TIMESTAMP,
+        status: statusNovo
+      })
+
+    }

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { ImageBackground, TextInput, Picker, Platform, ScrollView,ActionSheetIOS,TouchableOpacity,
-   Dimensions, Image, Alert, View, Text, Button, FlatList, Icon,BackHandler } from 'react-native'
+   Dimensions, Image, Alert, View, Text, Button, FlatList, Icon,BackHandler,AsyncStorage } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
 import LazyActivity from '../loadingModal/lazyActivity'
 import {carrinho, atualizarCarrinho} from '../addproduto/addproduto'
 import { getUserProfile, getUserEndAtual, getEstabelecimentoInfo,
-  loadMessages, loadMessagesSemItem, sendMessage,deleteMessages,salvarPedidoPerdido, salvarPedido} from '../firebase/database'
+  loadMessages, loadMessagesSemItem, mandarPedido,deleteMessages,salvarPedidoPerdido, salvarPedidoUser} from '../firebase/database'
 import ResumoCarrinhoListItem from './resumoCarrinhoListItem'
 import {frete} from '../home/home'
 import ResumoInformacoes from './resumoInformacoes'
@@ -210,6 +210,7 @@ fazerPedido(){
         this.setState({
           esperandoConfirmacao: true
         });
+        const fcmToken = await AsyncStorage.getItem('fcmToken');
         const isConnected = await checkInternetConnection();
         if(isConnected){
           let uid =""
@@ -242,45 +243,52 @@ fazerPedido(){
           //mandar informação do pedido para o banco de dados do pedido
           console.log("stateFazer.formaPgto"+this.state.formaPgto);
           console.log("stateFazer.formaPgtoDetalhe"+this.state.formaPgtoDetalhe);
-          sendMessage(uid,this.state.retirar, this.state.produtosCarrinho, this.state.formaPgto, this.state.formaPgtoDetalhe,
+          mandarPedido(fcmToken, uid,this.state.retirar, this.state.produtosCarrinho, this.state.formaPgto, this.state.formaPgtoDetalhe,
             this.state.frete,this.totalPrice,
              this.state.nome, this.state.telefone, this.state.endereco, this.state.bairro,
              this.state.referencia, this.state.nomeEstabelecimento, "Aguardando Confirmação",(key)=>{
-               this.timeoutPedido(key.key)
+
+               // ATUALIZAR PEDIDO EM MESSAGES COM A KEY DO PEDIDO
+               // SALVAR PEDIDO EM USER
+
+
                // console.log("pedidoKey"+pedidoKey);
 
                //aguardar confirmação do estabelecimento
-               loadMessages(this.state.nomeEstabelecimento, key.key, (message)=>{
-
-
-                   clearTimeout(myVar)
-                   myVar=0
-                     //caso pedido seja confirmado
-                     Alert.alert(
-                      'Pedido Enviado.',
-                      'Seu pedido foi enviado ao estabelecimento. Você poderá acompanhar o status do pedido pelo seu histórico de pedidos no seu perfil. Em caso de dúvidas entre em contato com o estabelecimento pelo telefone em Informações',
-                      [
-                        {text: 'OK', onPress: () => {
-                          this.setState({
-                            esperandoConfirmacao: false
-                          });
-                          if(semCadastro){
-
-                          }else{
-                            // salvarPedido(this.state.retirar, this.state.produtosCarrinho, this.totalPrice,
-                            //   this.state.frete, formaPgto, formaPgtoDetalhe,
-                            //   this.state.endereco, this.state.bairro,
-                            //   this.state.nomeEstabelecimento, key.key)
-                          }
+                   Alert.alert(
+                    'Pedido Enviado.',
+                    'Seu pedido foi enviado ao estabelecimento. Você poderá acompanhar o status do pedido pelo seu histórico de pedidos no seu perfil. Em caso de dúvidas entre em contato com o estabelecimento pelo telefone em Informações',
+                    [
+                      {text: 'OK', onPress: () => {
+                        this.setState({
+                          esperandoConfirmacao: false
+                        });
+                        if(semCadastro){
                           atualizarCarrinho([])
                           const { navigate } = this.props.navigation;
                           navigate('Home')
-                        }},
-                      ],
-                      { cancelable: false }
-                    )
-                if(message.status=="Confirmado Recebimento"){
-                 }
+                        }else{
+                          salvarPedidoUser(key.key,uid,this.state.retirar, this.state.produtosCarrinho, this.state.formaPgto, this.state.formaPgtoDetalhe,
+                            this.state.frete,this.totalPrice,
+                             this.state.nome, this.state.telefone, this.state.endereco, this.state.bairro,
+                             this.state.referencia, this.state.nomeEstabelecimento,"Aguardando Confirmação")
+                          atualizarCarrinho([])
+                          const { navigate } = this.props.navigation;
+                          navigate('Home')
+                        }
+
+                      }},
+                    ],
+                    { cancelable: false }
+                  )
+
+
+                   // clearTimeout(myVar)
+                   // myVar=0
+                     //caso pedido seja confirmado
+
+                // if(message.status=="Confirmado Recebimento"){
+                //  }
                  // else if(message.status=="estabFechado"){
                  //   clearTimeout(myVar)
                  //   myVar=0
@@ -321,7 +329,7 @@ fazerPedido(){
                  //
                  //   })
                  // }
-               })
+
              })
       }else{
         Alert.alert(
