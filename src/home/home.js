@@ -19,6 +19,7 @@ import _ from 'lodash'
 import { atualizarCarrinho} from '../addproduto/addproduto'
 import ListItemSeparator from '../constants/listItemSeparator'
 import { semCadastro } from '../login/loginregister'
+import {registerAppListener} from "../firebase/listeners";
 
 let listener = null
 let user =''
@@ -193,9 +194,37 @@ export class HomeScreen extends Component {
 
   componentWillUnmount(){
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    this.onTokenRefreshListener();
+    this.notificationOpenedListener();
+    this.messageListener();
   }
 
   async componentDidMount(){
+
+    // Build a channel
+    const channel = new firebase.notifications.Android.Channel('test-channel', 'Test Channel', firebase.notifications.Android.Importance.Max)
+    .setDescription('My apps test channel');
+
+    // Create the channel
+    firebase.notifications().android.createChannel(channel);
+
+    registerAppListener(this.props.navigation);
+    firebase.notifications().getInitialNotification()
+      .then((notificationOpen: NotificationOpen) => {
+        if (notificationOpen) {
+          // Get information about the notification that was opened
+          const notif: Notification = notificationOpen.notification;
+          this.setState({
+            initNotif: notif.data
+          })
+          if(notif && notif.targetScreen === 'HistoricoPedidos'){
+            setTimeout(()=>{
+              this.props.navigation.navigate('HistoricoPedidos')
+            }, 500)
+          }
+        }
+      });
+
     this.checkPermission();
 
     atualizarCarrinho([])
@@ -228,6 +257,7 @@ export class HomeScreen extends Component {
     }
 
   }
+
   async checkPermission() {
   const enabled = await firebase.messaging().hasPermission();
   if (enabled) {
