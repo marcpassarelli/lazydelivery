@@ -545,7 +545,7 @@ render() {
   <View style={{flex:1}}>
     <Loader
             loading={this.state.esperandoConfirmacao}
-            message="Aguarde até 1 minuto e 30 segundos enquanto o estabelecimento confirma o recebimento do pedido. Caso demore muito mais que isso feche o aplicativo e verifique o Histórico de Pedidos em seu Perfil. Se o pedido foi aceito pelo estabelecimento ele aparecerá em seu histórico." />
+            message="Aguarde apenas um instante enquanto a preguiça finaliza seu pedido." />
           <View style={{maxHeight: 150}}>
 
       {/* Resumo Carrinho */}

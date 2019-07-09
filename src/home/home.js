@@ -209,11 +209,13 @@ export class HomeScreen extends Component {
     firebase.notifications().android.createChannel(channel);
 
     registerAppListener(this.props.navigation);
+    console.log("notification 123 inside didmount");
     firebase.notifications().getInitialNotification()
       .then((notificationOpen: NotificationOpen) => {
         if (notificationOpen) {
           // Get information about the notification that was opened
           const notif: Notification = notificationOpen.notification;
+          console.log("notif"+JSON.stringify(notif));
           this.setState({
             initNotif: notif.data
           })
@@ -261,6 +263,7 @@ export class HomeScreen extends Component {
   async checkPermission() {
   const enabled = await firebase.messaging().hasPermission();
   if (enabled) {
+    console.log("checkPermission"+enabled);
       this.getToken();
   } else {
       this.requestPermission();

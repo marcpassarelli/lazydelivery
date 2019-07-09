@@ -834,7 +834,7 @@ export function mandarPedido(token,uid,retirarNovo, carrinhoNovo, formaPgtoNovo,
       bairro: bairroNovo,
       referencia: referenciaNovo,
       createdAt: firebase.database.ServerValue.TIMESTAMP,
-      status: statusNovo
+      status: statusNovo,
     }).then((snap)=>{
       key({key: snap.key})
     })
@@ -897,6 +897,7 @@ export function mandarPedido(token,uid,retirarNovo, carrinhoNovo, formaPgtoNovo,
         bairro: bairroNovo,
         referencia: referenciaNovo,
         createdAt: firebase.database.ServerValue.TIMESTAMP,
+        estabelecimento:estabelecimento,
         status: statusNovo
       })
 

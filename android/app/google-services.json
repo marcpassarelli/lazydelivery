@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "752201168315",
+    "firebase_url": "https://deliveryaltamira.firebaseio.com",
+    "project_id": "deliveryaltamira",
+    "storage_bucket": "deliveryaltamira.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:752201168315:android:384882ee5d21cacf",
+        "android_client_info": {
+          "package_name": "com.deliverypassa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "752201168315-p613f0ga6bt6keheuj54j5cme8h2kjo4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzhjj69yv27mPHhYvbPlyGjES6EcetTGU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "752201168315-p613f0ga6bt6keheuj54j5cme8h2kjo4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "752201168315-mrue47h5cvud8b40rvfnjbmf2flor5qr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.LazyDelivery123"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

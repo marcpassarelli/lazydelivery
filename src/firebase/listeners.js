@@ -3,6 +3,7 @@ import { Platform, AsyncStorage, AppState } from 'react-native';
 import firebase from 'react-native-firebase';
 
 function displayNotificationFromCustomData(message: RemoteMessage){
+  console.log("displayNotificationFromCustomData message "+JSON.stringify(message));
 
   if(message.data && message.data.title){
     let notification = new firebase.notifications.Notification();
@@ -24,10 +25,14 @@ export async function registerHeadlessListener(message: RemoteMessage){
 
 // these callback will be triggered only when app is foreground or background
 export function registerAppListener(navigation){
+console.log("notification 123 inside listener");
   this.notificationListener = firebase.notifications().onNotification(notification => {
+    console.log("notification 123 notificationListener "+notification);
     firebase.notifications().displayNotification(notification);
   })
+
   this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen: NotificationOpen) => {
+    console.log("notification 123 notificationOpenedListener");
     const notif: Notification = notificationOpen.notification;
 
     if(notif.data.targetScreen === 'HistoricoPedidos'){

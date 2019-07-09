@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "308469361421",
+    "firebase_url": "https://deliveryaltamira-restore.firebaseio.com",
+    "project_id": "deliveryaltamira-restore",
+    "storage_bucket": "deliveryaltamira-restore.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308469361421:android:384882ee5d21cacf",
+        "android_client_info": {
+          "package_name": "com.deliverypassa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "308469361421-m79jvo3j33gvv3ogm3db6o6p0jmuvn01.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAa2wp4wF7lUnfJ1nsN5V8inbyj-4WjMzU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "308469361421-m79jvo3j33gvv3ogm3db6o6p0jmuvn01.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
