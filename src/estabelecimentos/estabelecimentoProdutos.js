@@ -19,6 +19,7 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 let sectionData =[]
 let sectionName =[]
 export var listaPizzas = []
+export var listaPizzasDoces = []
 export var imgProduto=""
 
 export function atualizarImgProduto(novaImg){
@@ -71,6 +72,7 @@ sectionDataFunction(){
 
   var indexToRemove = []
   listaPizzas = []
+  listaPizzasDoces = []
 
   //pega as pizzas do cardápio e adicionar em listPizzas e criar array de indices q devem ser removidos
   newEstabelecimentoProd.map((item,i)=>{
@@ -78,7 +80,14 @@ sectionDataFunction(){
       listaPizzas.push(newEstabelecimentoProd[i])
       indexToRemove.push(i)
     }
+    else if(item.tipo==="Pizzas Doces"){
+      listaPizzasDoces.push(newEstabelecimentoProd[i])
+      indexToRemove.push(i)
+    }
+
   })
+  //id para itens da lista
+  var id=0
 
   if(listaPizzas.length>0){
   //Remover Pizzas da lista de produtos
@@ -99,8 +108,7 @@ sectionDataFunction(){
 
 
 //Cria lista baseado na qtde de sabores q um tamanho aceita, tamanho, qtde fatias e o preco mínimo
-  //id para itens da lista
-  var id=0
+
     //mapeia lista de tamanhos
     newListaTamanhosPizzas.map((item,i)=>{
       let preco=""
@@ -137,6 +145,59 @@ sectionDataFunction(){
           }
         }
     })
+}
+
+if (listaPizzasDoces.length>0) {
+  //definir preco minimo de cada tamanho
+    precoMinimo = _.orderBy(listaPizzasDoces,['preco','tamanho'], ['asc','asc'])
+    precoMinimo = _.uniqBy(precoMinimo,'tamanho')
+
+    // organiza por qtde de fatias para definir ordem das pizzas no cardápio
+    newListaTamanhosPizzas = _.orderBy(listaTamanhosPizzas, ['fatias'], ['asc'])
+
+    var ordemPizza = listaPizzasDoces[0].ordem
+    //array de sabores de pizza agrupados por tamanhos
+    listaPizzasDoces = _.groupBy(listaPizzasDoces,'tamanho')
+
+
+  //Cria lista baseado na qtde de sabores q um tamanho aceita, tamanho, qtde fatias e o preco mínimo
+
+      //mapeia lista de tamanhos
+      newListaTamanhosPizzas.map((item,i)=>{
+        let preco=""
+        //mapeia lista com os precos minimos para identificar preco mínimo de cada tamanho
+        precoMinimo.map((item2,i2)=>{
+          if(item.tamanho==item2.tamanho){
+            preco = item2.preco
+          }
+        })
+        //laço para definir item do array de acordo com a quantidade de sabores aceitos para um tamanho
+          for(var j = 1;j < parseInt(item.sabores)+1; j++){
+            if(j==1){
+              newEstabelecimentoProd.push({
+                tamanho: item.tamanho,
+                nomeProduto: _.upperFirst(item.tamanho)+" ("+item.fatias+" fatias)",
+                preco: preco,
+                tipo: "Pizzas Doces",
+                fatias: item.fatias,
+                _id: id++,
+                ordem:ordemPizza,
+                sabores: j
+              })
+            }else{
+              newEstabelecimentoProd.push({
+                tamanho: item.tamanho,
+                nomeProduto: _.upperFirst(item.tamanho)+" ("+item.fatias+" fatias) "+j+" sabores",
+                preco: preco,
+                tipo: "Pizzas Doces",
+                fatias: item.fatias,
+                _id: id++,
+                ordem:ordemPizza,
+                sabores: j
+              })
+            }
+          }
+      })
 }
 //Separa lista por tipo de produto
 
@@ -272,6 +333,10 @@ renderItem = (item) =>{
           return(
               <Text style={styles.textPreco}>A partir de R$ {res}</Text>
           )
+        }else if(item.item.tipo=="Pizzas Doces"){
+          return(
+              <Text style={styles.textPreco}>A partir de R$ {res}</Text>
+          )
         }else{
         return(
             <Text style={[styles.textPreco]}>R$ {res}</Text>
@@ -281,7 +346,7 @@ renderItem = (item) =>{
       navigation={()=>{
 
         let titleHeader= ""
-        if(item.item.tipo=="Pizzas"){
+        if(item.item.tipo=="Pizzas"||item.item.tipo=="Pizzas Doces"){
           //rota para pizzas
           if(item.item.sabores==1){
             titleHeader = "Escolha o sabor da pizza"

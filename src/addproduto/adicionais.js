@@ -73,7 +73,7 @@ export class AdicionaisScreen extends Component{
 
     adicionaisEscolhidos = []
 
-    if(this.tipoProduto=="Pizzas"){
+    if(this.tipoProduto=="Pizzas"||this.tipoProduto=="Pizzas Doces"){
 
       this.state.adicionais.map((item)=>{
         if(this.state.checkBoxChecked==item._id){
@@ -176,7 +176,7 @@ export class AdicionaisScreen extends Component{
             item={item}
             tipoProduto={this.tipoProduto}
             preco={() => {
-              if(this.tipoProduto=="Pizzas"){
+              if(this.tipoProduto=="Pizzas"||this.tipoProduto=="Pizzas Doces"){
                 var str = (item.preco).toFixed(2)
                 var res = str.toString().replace(".",",")
               }else{

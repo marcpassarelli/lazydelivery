@@ -8,13 +8,14 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import StatusBar from '../constants/statusBar'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import ListItemSeparator from '../constants/listItemSeparator'
-import { listaPizzas } from './estabelecimentoProdutos'
+import { listaPizzas, listaPizzasDoces } from './estabelecimentoProdutos'
 import LazyBackButton from '../constants/lazyBackButton'
 
 import _ from 'lodash';
 
 var listaPizzasTamanho = []
 var qtdeSabores = 0
+var tipoProduto=""
 var partePizza = 0
 
 export class PizzaScreen extends Component{
@@ -69,11 +70,16 @@ componentWillMount(){
 
   var estabelecimento = state.params ? state.params.nomeEstabelecimento : ""
   tamanhoPizza = state.params ? state.params.tamanhoPizza : ""
+  this.tipoProduto = state.params ? state.params.tipoProduto : ""
   this.qtdeSabores = state.params ? state.params.sabores : ""
   this.partePizza = state.params ? state.params.partePizza: ""
 
+  if(this.tipoProduto=="Pizzas"){
+    listaPizzasTamanho = listaPizzas[tamanhoPizza]
+  }else if(this.tipoProduto=="Pizzas Doces"){
+    listaPizzasTamanho = listaPizzasDoces[tamanhoPizza]
+  }
 
-  listaPizzasTamanho = listaPizzas[tamanhoPizza]
   listaPizzasTamanho = _.orderBy(listaPizzasTamanho,['preco','nomeProduto'],['asc','asc'])
 
 
@@ -162,7 +168,7 @@ _renderSeparator(){
                 nome: "Pizza "+_.upperFirst(state.params.tamanhoPizza)+" "+state.params.sabores+" "+sabores,
                 preco: preco, precoPizza: precoPizza,
                 detalhes: "Sabores: "+state.params.detalhes+item.nomeProduto+"("+preco+")",
-                imgProduto: "https://firebasestorage.googleapis.com/v0/b/deliveryaltamira.appspot.com/o/produtos%2FCasa%20Nova%2Fdiversos-tamanhos-varios.jpg?alt=media&token=a548a5f5-14a9-47a4-9a30-0fd56e838e0c" , tipoProduto: state.params.tipoProduto ,
+                imgProduto: "https://firebasestorage.googleapis.com/v0/b/deliveryaltamira.appspot.com/o/produtos%2Fcomum%2Fpizzas.jpg?alt=media&token=500e37cb-5655-46e6-87de-ba197ccc7a68" , tipoProduto: state.params.tipoProduto ,
                 tipoEstabelecimento: state.params.tipoEstabelecimento,
                 tipoProduto: state.params.tipoProduto})
               }else{

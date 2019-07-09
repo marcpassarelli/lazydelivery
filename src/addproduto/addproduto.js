@@ -97,7 +97,13 @@ handleBackButtonClick=()=> {
     const {navigation} = this.props
 
     var nome = state.params ? state.params.nome : ""
-    var preco = state.params.tipoProduto=="Pizzas" ? state.params.precoPizza : state.params.preco
+    var preco =""
+    if(state.params.tipoProduto=="Pizzas"||state.params.tipoProduto=="Pizzas Doces"){
+      preco = state.params.precoPizza
+    }else{
+      preco = state.params.preco
+    }
+
     var detalhes = state.params ? state.params.detalhes : ""
 
     var tipoProduto = state.params ? state.params.tipoProduto : ""
@@ -124,7 +130,7 @@ handleBackButtonClick=()=> {
         imgProduto:{uri:imgProduto},
       });
     }
-    else if(tipoProduto=="Pizzas"){
+    else if(tipoProduto=="Pizzas"||tipoProduto=="Pizzas Doces"){
       this.setState({
         imgProduto:imgProduto
       });
@@ -244,11 +250,38 @@ handleBackButtonClick=()=> {
     tag++
   }
 
+  nomePreco(){
+    if(this.state.tipoProduto == "Pizzas"||this.state.tipoProduto == "Pizzas Doces") {
+      this.state.listaAdicionais.map((item,i)=>{
+        return <Text key={i} style={[styles.textAddProduto,{fontSize: wp('3%'),textAlign: 'center'}]}>{item.nome}</Text>
+      })
+    }else{
+    this.state.listaAdicionais.map((item, i, arr)=>{
+        if(arr.length === i + 1 ){
+          return (<View key={i} style={{flexDirection: 'row'}}>
+                    <Text style={[styles.textAddProduto,{fontSize: wp('3%'),textAlign: 'center'}]} >{item.quantidade}x {item.nome} </Text>
+                    <Text style={[styles.textAddProduto,{fontSize: wp('3%'),textAlign: 'center',color:cores.textDetalhes}]}>(R$ {item.preco*item.quantidade})</Text>
+                  </View>)
+        }else{
+          return (
+            <View key={i} style={{flexDirection: 'row'}}>
+              <Text style={[styles.textAddProduto,
+                  {fontSize: wp('3%'),textAlign: 'center'}]} >{item.quantidade}x {item.nome}
+              </Text>
+              <Text  style={[styles.textAddProduto,
+                  {fontSize: wp('3%'),textAlign: 'center',color:cores.textDetalhes}]}>
+                  (R$ {item.preco*item.quantidade}), </Text>
+            </View>)
+        }
+      })
+    }
+  }
+
   checkAdicionais(){
     var total = parseFloat(this.state.total) + parseFloat(this.totalPrecoAd)
 
 
-    if(this.tipoProduto="Pizzas"&&this.totalPrecoAd>0){
+    if(this.totalPrecoAd>0&&(this.tipoProduto=="Pizzas"||this.tipoProduto=="Pizzas Doces")){
       return(
       <View style={{flex:1}}>
         <View style={{flexDirection: 'row',justifyContent: 'center',alignContent: 'center'}}>
@@ -374,31 +407,8 @@ handleBackButtonClick=()=> {
         :
         <View></View>
       }
-        <View style={{marginHorizontal:wp('14.5%'),flexDirection: 'row',flexWrap: 'wrap',justifyContent: 'center',alignContent: 'center'}}>{
-            this.state.tipoProduto == "Pizzas" ?
-              this.state.listaAdicionais.map((item,i)=>{
-                return <Text key={i} style={[styles.textAddProduto,{fontSize: wp('3%'),textAlign: 'center'}]}>{item.nome}</Text>
-              })
-            :
-            this.state.listaAdicionais.map((item, i, arr)=>{
-                if(arr.length === i + 1 ){
-                  return (<View key={i} style={{flexDirection: 'row'}}>
-                            <Text style={[styles.textAddProduto,{fontSize: wp('3%'),textAlign: 'center'}]} >{item.quantidade}x {item.nome} </Text>
-                            <Text style={[styles.textAddProduto,{fontSize: wp('3%'),textAlign: 'center',color:cores.textDetalhes}]}>(R$ {item.preco*item.quantidade})</Text>
-                          </View>)
-                }else{
-                  return (
-                    <View key={i} style={{flexDirection: 'row'}}>
-                      <Text style={[styles.textAddProduto,
-                          {fontSize: wp('3%'),textAlign: 'center'}]} >{item.quantidade}x {item.nome}
-                      </Text>
-                      <Text  style={[styles.textAddProduto,
-                          {fontSize: wp('3%'),textAlign: 'center',color:cores.textDetalhes}]}>
-                          (R$ {item.preco*item.quantidade}), </Text>
-                    </View>)
-                }
-              })
-              }
+        <View style={{marginHorizontal:wp('14.5%'),flexDirection: 'row',flexWrap: 'wrap',justifyContent: 'center',alignContent: 'center'}}>
+          {this.nomePreco()}
         </View>
         <View>
           {this.checkAdicionais()}
