@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 import { ImageBackground, Image, Text, TouchableOpacity, View,BackHandler } from 'react-native';
 import { styles, images} from '../constants/constants'
 import { atualizarUsuario } from '../firebase/database'
-import { Hoshi } from 'react-native-textinput-effects';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import StatusBar from '../constants/statusBar'
 import {db, auth} from '../firebase/firebase'
@@ -35,7 +34,7 @@ export class AtualizaCadastroScreen extends Component {
     var x = text.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
 
     text = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
-    
+
     this.setState({telefone: text})
   }
 

@@ -3,7 +3,6 @@ console.ignoredYellowBox = [
 ]
 import { Text, View, TextInput, Image, Button, TouchableHighlight, TouchableOpacity, ImageBackground  } from 'react-native';
 import { styles, images, cores } from '../constants/constants'
-import { Hideo } from 'react-native-textinput-effects';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import React, { Component } from 'react';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';

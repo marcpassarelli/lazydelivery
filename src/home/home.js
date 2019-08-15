@@ -13,13 +13,13 @@ import Loader from '../loadingModal/loadingModal';
 import ModalEnd from './modalEnd'
 import {auth} from '../firebase/firebase'
 import firebase from 'react-native-firebase';
+import { Notification, NotificationOpen } from 'react-native-firebase';
 import LazyActivity from '../loadingModal/lazyActivity'
 import LazySearchBar from '../constants/lazySearchBar'
 import _ from 'lodash'
 import { atualizarCarrinho} from '../addproduto/addproduto'
 import ListItemSeparator from '../constants/listItemSeparator'
 import { semCadastro } from '../login/loginregister'
-import {registerAppListener} from "../firebase/listeners";
 
 let listener = null
 let user =''
@@ -194,38 +194,36 @@ export class HomeScreen extends Component {
 
   componentWillUnmount(){
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
-    this.onTokenRefreshListener();
-    this.notificationOpenedListener();
-    this.messageListener();
+    this.removeNotificationDisplayedListener();
+    this.removeNotificationListener();
+    this.removeNotificationOpenedListener()
   }
 
   async componentDidMount(){
+    this.removeNotificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification: Notification) => {
+        // Process your notification as required
+        // ANDROID: Remote notifications do not contain the channel ID. You will have to specify this manually if you'd like to re-display the notification.
+    });
+    this.removeNotificationListener = firebase.notifications().onNotification((notification: Notification) => {
+      console.log("notification"+notification);
+      Alert.alert(
+        notification.title,
+        notification.body,
+        [
+          {text: 'OK', onPress: () => {}},
+        ],
+        { cancelable: false }
+      )
+        // Process your notification as required
+    });
+    this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen: NotificationOpen) => {
+        // Get the action triggered by the notification being opened
+        const action = notificationOpen.action;
+        // Get information about the notification that was opened
+        const notification: Notification = notificationOpen.notification;
+    });
 
     // Build a channel
-    const channel = new firebase.notifications.Android.Channel('test-channel', 'Test Channel', firebase.notifications.Android.Importance.Max)
-    .setDescription('My apps test channel');
-
-    // Create the channel
-    firebase.notifications().android.createChannel(channel);
-
-    registerAppListener(this.props.navigation);
-    console.log("notification 123 inside didmount");
-    firebase.notifications().getInitialNotification()
-      .then((notificationOpen: NotificationOpen) => {
-        if (notificationOpen) {
-          // Get information about the notification that was opened
-          const notif: Notification = notificationOpen.notification;
-          console.log("notif"+JSON.stringify(notif));
-          this.setState({
-            initNotif: notif.data
-          })
-          if(notif && notif.targetScreen === 'HistoricoPedidos'){
-            setTimeout(()=>{
-              this.props.navigation.navigate('HistoricoPedidos')
-            }, 500)
-          }
-        }
-      });
 
     this.checkPermission();
 

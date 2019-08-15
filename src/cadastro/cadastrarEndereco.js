@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 import { ActionSheetIOS,ImageBackground, Image, Text, TouchableOpacity, View } from 'react-native';
 import { styles, images,cores} from '../constants/constants'
 import { cadastrarEndereco,getBairros, listaBairros, semEndCadastro } from '../firebase/database'
-import { Hoshi } from 'react-native-textinput-effects';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import StatusBar from '../constants/statusBar'
 import {db, auth } from '../firebase/firebase'

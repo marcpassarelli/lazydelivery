@@ -879,12 +879,13 @@ export function mandarPedido(token,uid,retirarNovo, carrinhoNovo, formaPgtoNovo,
     })
   }
 
-  export function salvarPedidoUser(key,uid,retirarNovo, carrinhoNovo, formaPgtoNovo, formaPgtoDetalheNovo,
+  export function salvarPedidoUser(key,uid,tokenUser,retirarNovo, carrinhoNovo, formaPgtoNovo, formaPgtoDetalheNovo,
     freteNovo, totalNovo,nomeNovo, telefoneNovo, enderecoNovo, bairroNovo, referenciaNovo,
      estabelecimento, statusNovo) {
 
       this.messageRef = db.ref("/user/"+uid+"/details/pedidos/"+key+"/")
       this.messageRef.set({
+        tokenUser: tokenUser,
         retirar: retirarNovo,
         carrinho: carrinhoNovo,
         formaPgto: formaPgtoNovo,

@@ -97,6 +97,7 @@ export class DetalhesPedidoScreen extends Component {
     this.month = (this.month < 10) ? '0' + this.month : this.month;
 
     this.day = (this.day < 10) ? '0' + this.day : this.day;
+    this.hours = (this.hours == 0) ? 24 : this.hours
     this.hours = (this.hours < 10) ? '0' + (this.hours-3) : (this.hours-3);
     this.minutes = (this.minutes < 10) ? '0' + this.minutes : this.minutes;
     this.seconds = (this.seconds < 10) ? '0' + this.seconds: this.seconds;

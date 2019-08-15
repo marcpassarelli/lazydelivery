@@ -5,7 +5,6 @@ import { styles, images, cores} from '../constants/constants'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Text, View, TextInput, Button,Image } from 'react-native';
 import React, { Component } from 'react';
-import { Hoshi } from 'react-native-textinput-effects';
 import LazyTextInput from '../constants/lazyTextInput';
 import Icon from 'react-native-vector-icons/Feather'
 import LazyYellowButton from '../constants/lazyYellowButton'

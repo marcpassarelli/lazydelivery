@@ -174,32 +174,6 @@ _callback(){
   });
 }
 
-checkTimeOut=(key)=>{
-    salvarPedidoPerdido(this.state.nomeEstabelecimento,key,()=>{
-      deleteMessages(this.state.nomeEstabelecimento,key)
-    })
-    Alert.alert(
-      'Erro no Pedido',
-      'Ocorreu algum erro no pedido e não obtivemos resposta do restaurante. Verifique o horário de funcionamento do restaurante ou então tente novamente.',
-       [
-         {text: 'OK', onPress: () => {
-           this.setState({
-             esperandoConfirmacao:false
-           });
-           const { navigate } = this.props.navigation;
-           navigate('Carrinho')
-         }},
-       ],
-       { cancelable: false }
-    )
-
-}
-
-timeoutPedido=(key)=>{
-  var myVar1 = setTimeout(()=> { this.checkTimeOut(key) }, 90000);
-  myVar = myVar1
-}
-
 fazerPedido(){
 
   Alert.alert(
@@ -247,6 +221,46 @@ fazerPedido(){
             this.state.frete,this.totalPrice,
              this.state.nome, this.state.telefone, this.state.endereco, this.state.bairro,
              this.state.referencia, this.state.nomeEstabelecimento, "Aguardando Confirmação",(key)=>{
+               if(semCadastro){
+                 atualizarCarrinho([])
+
+                 Alert.alert(
+                  'Pedido Enviado.',
+                  'Seu pedido foi recebido com sucesso, agora é só aguardar. Em caso de dúvidas entre em contato com o estabelecimento pelo telefone em Informações',
+                  [
+                    {text: 'OK', onPress: () => {
+                      this.setState({
+                        esperandoConfirmacao: false
+                      });
+                      const { navigate } = this.props.navigation;
+                      navigate('Home')
+                    }},
+                  ],
+                  { cancelable: false }
+                )
+
+               }else{
+                 salvarPedidoUser(key.key,uid,fcmToken,this.state.retirar, this.state.produtosCarrinho, this.state.formaPgto, this.state.formaPgtoDetalhe,
+                   this.state.frete,this.totalPrice,
+                    this.state.nome, this.state.telefone, this.state.endereco, this.state.bairro,
+                    this.state.referencia, this.state.nomeEstabelecimento,"Aguardando Confirmação")
+                    Alert.alert(
+                     'Pedido Enviado.',
+                     'Seu pedido foi enviado ao estabelecimento. Você poderá acompanhar o status do pedido pelo seu histórico de pedidos no seu perfil. Em caso de dúvidas entre em contato com o estabelecimento pelo telefone em Informações',
+                     [
+                       {text: 'OK', onPress: () => {
+                         this.setState({
+                           esperandoConfirmacao: false
+                         });
+                         atualizarCarrinho([])
+                         const { navigate } = this.props.navigation;
+                         this.props.navigation.navigate('Home')
+                       }},
+                     ],
+                     { cancelable: false }
+                   )
+
+               }
 
                // ATUALIZAR PEDIDO EM MESSAGES COM A KEY DO PEDIDO
                // SALVAR PEDIDO EM USER
@@ -255,32 +269,6 @@ fazerPedido(){
                // console.log("pedidoKey"+pedidoKey);
 
                //aguardar confirmação do estabelecimento
-                   Alert.alert(
-                    'Pedido Enviado.',
-                    'Seu pedido foi enviado ao estabelecimento. Você poderá acompanhar o status do pedido pelo seu histórico de pedidos no seu perfil. Em caso de dúvidas entre em contato com o estabelecimento pelo telefone em Informações',
-                    [
-                      {text: 'OK', onPress: () => {
-                        this.setState({
-                          esperandoConfirmacao: false
-                        });
-                        if(semCadastro){
-                          atualizarCarrinho([])
-                          const { navigate } = this.props.navigation;
-                          navigate('Home')
-                        }else{
-                          salvarPedidoUser(key.key,uid,this.state.retirar, this.state.produtosCarrinho, this.state.formaPgto, this.state.formaPgtoDetalhe,
-                            this.state.frete,this.totalPrice,
-                             this.state.nome, this.state.telefone, this.state.endereco, this.state.bairro,
-                             this.state.referencia, this.state.nomeEstabelecimento,"Aguardando Confirmação")
-                          atualizarCarrinho([])
-                          const { navigate } = this.props.navigation;
-                          navigate('Home')
-                        }
-
-                      }},
-                    ],
-                    { cancelable: false }
-                  )
 
 
                    // clearTimeout(myVar)

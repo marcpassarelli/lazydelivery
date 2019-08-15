@@ -6,7 +6,6 @@ import { ImageBackground,ActionSheetIOS, Image, Text,View,BackHandler } from 're
 import { styles, images, cores } from '../constants/constants'
 import ComponentsCompletaCadastro from './componentsCompletaCadastro'
 import { cadastrarUsuario, getBairros, listaBairros } from '../firebase/database'
-import { Hoshi } from 'react-native-textinput-effects';
 import StatusBar from '../constants/statusBar'
 import LazyActivity from '../loadingModal/lazyActivity/'
 import {db, auth} from '../firebase/firebase'
@@ -41,7 +40,7 @@ export class CompletaCadastroScreen extends Component {
     var x = text.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
 
     text = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
-    
+
     this.setState({telefone: text})
   }
   updateEndereco = (text) => {
