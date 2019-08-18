@@ -1,8 +1,8 @@
 
 import React, { Component } from 'react';
-import { ImageBackground, Image,TouchableOpacity, Alert, View, Text, BackHandler, Platform, FlatList, Modal, AsyncStorage } from 'react-native'
+import { ImageBackground, Linking, Image,TouchableOpacity, Alert, View, Text, BackHandler, Platform, FlatList, Modal, AsyncStorage } from 'react-native'
 import { styles, cores, images } from '../constants/constants'
-import { abertoFechado, listaEnderecos, getUserListEnd, checkUserDetails,deleteEnd, getUserEndAtual, getNomeEstabelecimentos, nomesEstabelecimentos } from '../firebase/database'
+import { getAppVersion, abertoFechado, listaEnderecos, getUserListEnd, checkUserDetails,deleteEnd, getUserEndAtual, getNomeEstabelecimentos, nomesEstabelecimentos } from '../firebase/database'
 import HomeListItem from './homeListItem'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import StatusBar from '../constants/statusBar'
@@ -20,6 +20,7 @@ import _ from 'lodash'
 import { atualizarCarrinho} from '../addproduto/addproduto'
 import ListItemSeparator from '../constants/listItemSeparator'
 import { semCadastro } from '../login/loginregister'
+import VersionNumber from 'react-native-version-number';
 
 let listener = null
 let user =''
@@ -200,6 +201,32 @@ export class HomeScreen extends Component {
   }
 
   async componentDidMount(){
+
+    getAppVersion((appVersion)=>{
+      if(appVersion.version == VersionNumber.appVersion){
+        console.log("versão atualizada");
+      }else {
+        Alert.alert(
+          "Nova atualização disponível",
+          "É importante sempre manter seu app atualizado para ter todas as correções e novas funcionalidade. Deseja atualizá-lo agora?",
+          [
+            {text: 'Agora não.', onPress: () => {}},
+            {text: 'Me leve para atualizar', onPress: ()=>{
+              if(Platform.OS == "android"){
+                Linking.openURL('https://play.google.com/store/apps/details?id=com.deliverypassa')
+              }else{
+                Linking.openURL('https://itunes.apple.com/br/app/lazy-delivery/id1449359471?mt=8')
+              }
+            }
+            }
+          ],
+          { cancelable: false }
+        )
+      }
+      // Platform.OS == "android"
+      // console.log("version db: "+);
+      // console.log("appVersion"+);
+    })
     this.removeNotificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification: Notification) => {
         // Process your notification as required
         // ANDROID: Remote notifications do not contain the channel ID. You will have to specify this manually if you'd like to re-display the notification.
