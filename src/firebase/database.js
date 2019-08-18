@@ -24,6 +24,12 @@ var todoCounter = 1;
 var weekday = ["domingo","segunda","terca","quarta","quinta","sexta","sabado"]
 var months = ["January","February","March","April","May","June","July","August","September","October","November","December"]
 
+export function getAppVersion(callback){
+
+  db.ref("/appInfo/version/").once('value').then(function(snapshot){
+    callback({version:snapshot.val()})
+  })
+}
 
 export async function login (email, pass, onLogin,onError) {
 

@@ -69,6 +69,8 @@
 		FD3489D7E4A64FEEB179218F /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5CE8DF7EAF94DEA8A43721E /* MaterialIcons.ttf */; };
 		35B33875F3F14278B2AAA62A /* Futura-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F21339C02CEA4140BDA8ECA6 /* Futura-Medium.ttf */; };
 		15AD915922F3484994966AB8 /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A69ACEA0B86145D7A836BB12 /* libRNFirebase.a */; };
+		A3E9AD61E5534AC0BB78C724 /* libRNVersionNumber.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0551D16EF82B4E108FCC8D1F /* libRNVersionNumber.a */; };
+		82EE39E94E4243DCB4086B76 /* libRNVersionNumber-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EBBEDFD933A45EEA0526295 /* libRNVersionNumber-tvOS.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -435,6 +437,9 @@
 		F21339C02CEA4140BDA8ECA6 /* Futura-Medium.ttf */ = {isa = PBXFileReference; name = "Futura-Medium.ttf"; path = "../assets/fonts/Futura-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		E716C38B2142437BB5A74CA9 /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; name = "RNFirebase.xcodeproj"; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		A69ACEA0B86145D7A836BB12 /* libRNFirebase.a */ = {isa = PBXFileReference; name = "libRNFirebase.a"; path = "libRNFirebase.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		022418B977154279BA5B32F0 /* RNVersionNumber.xcodeproj */ = {isa = PBXFileReference; name = "RNVersionNumber.xcodeproj"; path = "../node_modules/react-native-version-number/ios/RNVersionNumber.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		0551D16EF82B4E108FCC8D1F /* libRNVersionNumber.a */ = {isa = PBXFileReference; name = "libRNVersionNumber.a"; path = "libRNVersionNumber.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		3EBBEDFD933A45EEA0526295 /* libRNVersionNumber-tvOS.a */ = {isa = PBXFileReference; name = "libRNVersionNumber-tvOS.a"; path = "libRNVersionNumber-tvOS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -474,6 +479,7 @@
 				12815C9A21E809A700AA67B6 /* FBSDKLoginKit.framework in Frameworks */,
 				98510D62566243ABB2DB8036 /* libRNVectorIcons.a in Frameworks */,
 				15AD915922F3484994966AB8 /* libRNFirebase.a in Frameworks */,
+				A3E9AD61E5534AC0BB78C724 /* libRNVersionNumber.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -490,6 +496,7 @@
 				2D02E4C71E0B4AEC006451C7 /* libRCTText-tvOS.a in Frameworks */,
 				2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */,
 				5F99477D1889495CA5D02E6E /* libRNVersionNumber-tvOS.a in Frameworks */,
+				82EE39E94E4243DCB4086B76 /* libRNVersionNumber-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -732,6 +739,7 @@
 				117DA64D3A074E609F8AD758 /* RNToastNative.xcodeproj */,
 				7169F8CECDB5420CA3896E82 /* RNVectorIcons.xcodeproj */,
 				E716C38B2142437BB5A74CA9 /* RNFirebase.xcodeproj */,
+				022418B977154279BA5B32F0 /* RNVersionNumber.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1423,12 +1431,15 @@
 					"$(SRCROOT)/../node_modules",
 					"react-native-vector-iconsRNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
+					"$(SRCROOT)\..\node_modules\react-native-version-number\ios",
 				);
 				INFOPLIST_FILE = DeliveryPassaTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1459,12 +1470,15 @@
 					"$(SRCROOT)/../node_modules",
 					"react-native-vector-iconsRNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
+					"$(SRCROOT)\..\node_modules\react-native-version-number\ios",
 				);
 				INFOPLIST_FILE = DeliveryPassaTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1501,6 +1515,7 @@
 					"$(SRCROOT)/../node_modules",
 					"react-native-vector-iconsRNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
+					"$(SRCROOT)\..\node_modules\react-native-version-number\ios",
 				);
 				INFOPLIST_FILE = DeliveryPassa/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1541,6 +1556,7 @@
 					"$(SRCROOT)/../node_modules",
 					"react-native-vector-iconsRNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
+					"$(SRCROOT)\..\node_modules\react-native-version-number\ios",
 				);
 				INFOPLIST_FILE = DeliveryPassa/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1576,11 +1592,14 @@
 					"$(SRCROOT)..\node_modules\neact-native-toast-nativeios",
 					"$(SRCROOT)..\node_modules\neact-native-vector-iconsRNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
+					"$(SRCROOT)\..\node_modules\react-native-version-number\ios",
 				);
 				INFOPLIST_FILE = "DeliveryPassa-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1613,11 +1632,14 @@
 					"$(SRCROOT)..\node_modules\neact-native-toast-nativeios",
 					"$(SRCROOT)..\node_modules\neact-native-vector-iconsRNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
+					"$(SRCROOT)\..\node_modules\react-native-version-number\ios",
 				);
 				INFOPLIST_FILE = "DeliveryPassa-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1649,11 +1671,14 @@
 					"$(SRCROOT)..\node_modules\neact-native-toast-nativeios",
 					"$(SRCROOT)..\node_modules\neact-native-vector-iconsRNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
+					"$(SRCROOT)\..\node_modules\react-native-version-number\ios",
 				);
 				INFOPLIST_FILE = "DeliveryPassa-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1685,11 +1710,14 @@
 					"$(SRCROOT)..\node_modules\neact-native-toast-nativeios",
 					"$(SRCROOT)..\node_modules\neact-native-vector-iconsRNVectorIconsManager",
 					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
+					"$(SRCROOT)\..\node_modules\react-native-version-number\ios",
 				);
 				INFOPLIST_FILE = "DeliveryPassa-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
