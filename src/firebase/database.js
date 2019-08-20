@@ -98,7 +98,7 @@ export async function cadastrarUsuario(userId, nome, telefone, endereco,
                                 ['bairro', bairro], ['referencia', referencia]]);
 
   } catch (error) {
-    console.log("error AsyncStorage cadastrarUsuario"+error)
+    //console.log("error AsyncStorage cadastrarUsuario"+error)
   }
 
 }
@@ -119,7 +119,7 @@ export async function semEndCadastro(endereco, bairro, referencia, cadastroEfetu
                                 ['bairro', bairro], ['referencia', referencia]]);
     cadastroEfetuado()
   } catch (error) {
-    console.log("error AsyncStorage cadastrarEndereco"+error)
+    //console.log("error AsyncStorage cadastrarEndereco"+error)
   }
 }
 
@@ -139,7 +139,7 @@ export async function cadastrarEndereco(userId,  endereco,
                                     ['bairro', bairro], ['referencia', referencia]]);
         cadastroEfetuado()
       } catch (error) {
-        console.log("error AsyncStorage cadastrarEndereco"+error)
+        //console.log("error AsyncStorage cadastrarEndereco"+error)
       }
 
   }
@@ -166,7 +166,7 @@ export async function atualizarEndereco(userId, key, endereco, bairro, referenci
                                 ['bairro', bairro], ['referencia', referencia]]);
 
   } catch (error) {
-    console.log("error AsyncStorage atualizarEndereco"+error)
+    //console.log("error AsyncStorage atualizarEndereco"+error)
   }
 
 }
@@ -181,7 +181,7 @@ export async function logout() {
         // Navigate to login view
 
     } catch (error) {
-        console.log(error);
+        //console.log(error);
     }
 
 }
@@ -195,11 +195,11 @@ export async function deleteUser(){
     user.delete().then(function() {
       db.ref(userInformationPath).remove()
     }, function(error) {
-      console.log("user não deletado"+error)// An error happened.
+      //console.log("user não deletado"+error)// An error happened.
     });
 
   } catch (error) {
-      console.log(error);
+      //console.log(error);
   }
 }
 
@@ -243,7 +243,7 @@ export async function getUserEndAtual(callback){
     });
 
   } catch (error) {
-    console.log("error AsyncStorage getUserEndAtual: "+error)
+    //console.log("error AsyncStorage getUserEndAtual: "+error)
   }
 
 }
@@ -311,7 +311,7 @@ export async function checkUserDetails(userExiste, userNaoExiste){
     });
 
   } catch (error) {
-      console.log(error);
+      //console.log(error);
   }
 
 }
@@ -344,18 +344,18 @@ export function getEstabelecimentoProd(nomeEstabelecimento, sectionDataFunction,
       }
     })
   } catch(error){
-    console.log(error)
+    //console.log(error)
   }
 }
 
 export function getTiposItens(nomeEstabelecimento,tipoItem,onListLoad){
-  console.log("nomeEstabelecimento "+nomeEstabelecimento);
-  console.log("tipoItem "+tipoItem);
+  //console.log("nomeEstabelecimento "+nomeEstabelecimento);
+  //console.log("tipoItem "+tipoItem);
   try{
     listaTipoItens = []
     db.ref("/tipoItens/"+nomeEstabelecimento+"/"+tipoItem).once('value').then(function(snapshot){
       var estabelecimentoData = snapshot.val()
-      console.log("snapshotsnapshot "+JSON.stringify(snapshot));
+      //console.log("snapshotsnapshot "+JSON.stringify(snapshot));
       if(estabelecimentoData){
         snapshot.forEach((child) =>{
           listaTipoItens.push({
@@ -369,7 +369,7 @@ export function getTiposItens(nomeEstabelecimento,tipoItem,onListLoad){
       }
     })
   } catch(error){
-    console.log(error)
+    //console.log(error)
   }
 }
 
@@ -391,7 +391,7 @@ export function getTamanhosPizzas(nomeEstabelecimento){
       }
     })
   } catch(error){
-    console.log(error)
+    //console.log(error)
   }
 }
 var aberto=''
@@ -424,10 +424,10 @@ try{
     db.ref("infoEstabelecimentosNovo/"+estabelecimento+"/aberto").once('value').then(function(snap){
 
       this.abertoBool = snap.val()
-      console.log('SNAPCARAI1'+this.abertoBool);
+      //console.log('SNAPCARAI1'+this.abertoBool);
 
-      // console.log(currentDay+" "+month+" "+day+", "+year+" "+snapshot.val().abertura)
-      // console.log('ESTAB'+estabelecimento);
+      // //console.log(currentDay+" "+month+" "+day+", "+year+" "+snapshot.val().abertura)
+      // //console.log('ESTAB'+estabelecimento);
       var abertura = Date.parse(month+" "+day+", "+year+" "+snapshot.val().abertura)
 
       var fechamento = Date.parse(month+" "+day+", "+year+" "+snapshot.val().fechamento)
@@ -441,14 +441,14 @@ try{
         dayAbertura.setDate(dayBefore)
         abertura = Date.parse(dayAbertura)
         if(this.abertoBool==false){
-          console.log("1"+estabelecimento);
+          //console.log("1"+estabelecimento);
           aberto = false
         }else{
           if(atual>abertura&&atual<fechamento){
-            console.log("2"+estabelecimento);
+            //console.log("2"+estabelecimento);
             aberto = true
           }else{
-            console.log("3"+estabelecimento);
+            //console.log("3"+estabelecimento);
             aberto = false
           }
         }
@@ -459,31 +459,31 @@ try{
         dayFechamento.setDate(dayAfter)
         fechamento = Date.parse(dayFechamento)
         if(this.abertoBool==false){
-          console.log("4"+estabelecimento);
+          //console.log("4"+estabelecimento);
           aberto = false
         }else{
-          console.log("atual"+atual);
-          console.log("abertura"+abertura);
-          console.log("fechamento"+fechamento);
+          //console.log("atual"+atual);
+          //console.log("abertura"+abertura);
+          //console.log("fechamento"+fechamento);
           if(atual>abertura&&atual<fechamento){
-            console.log("5"+estabelecimento);
+            //console.log("5"+estabelecimento);
             aberto = true
           }else{
-            console.log("6"+estabelecimento);
+            //console.log("6"+estabelecimento);
             aberto = false
           }
         }
       }
       else{
         if(this.abertoBool==false){
-          console.log("7"+estabelecimento);
+          //console.log("7"+estabelecimento);
           aberto = false
         }else{
           if(atual>abertura&&atual<fechamento){
-            console.log("8"+estabelecimento);
+            //console.log("8"+estabelecimento);
             aberto = true
           }else{
-            console.log("9"+estabelecimento);
+            //console.log("9"+estabelecimento);
             aberto = false
           }
         }
@@ -518,14 +518,14 @@ try{
   })
 
 }catch(error){
-  console.log("ERROR CARALHO"+error);
+  //console.log("ERROR CARALHO"+error);
 }
 }
 
 
 
 export function limparEstabelecimentoProd(){
-  console.log("dentro limparEstabelecimentoProd");
+  //console.log("dentro limparEstabelecimentoProd");
   estabelecimentoProd = []
 }
 export var semEstabelecimentos=''
@@ -562,7 +562,7 @@ export function getListaEstabelecimentos(tipoEstabelecimento, bairro,onListLoad)
 
     })
   } catch(error){
-    console.log("error lista"+error)
+    //console.log("error lista"+error)
   }
 }
 
@@ -592,7 +592,7 @@ export function getNomeEstabelecimentos(bairro,onListLoad){
       }
     })
   } catch(error){
-    console.log("erro nome estabelecimentos"+error)
+    //console.log("erro nome estabelecimentos"+error)
   }
 }
 
@@ -605,7 +605,7 @@ export function getEstabelecimentoInfo(nomeEstabelecimento, callback){
       var cre = []
       var deb = []
       if(estabelecimentoData){
-        console.log("obs"+estabelecimentoData.obs);
+        //console.log("obs"+estabelecimentoData.obs);
             logo = estabelecimentoData.logo
             nome = estabelecimentoData.nome
             precoDelivery = estabelecimentoData.precoDelivery
@@ -695,7 +695,7 @@ export function getEstabelecimentoInfo(nomeEstabelecimento, callback){
 
     })
   } catch(error){
-    console.log(error)
+    //console.log(error)
   }
 }
 
@@ -725,16 +725,16 @@ export function getListaAdicionais(nomeEstabelecimento, tipoProduto, onListLoad)
     })
   } catch(error){
     onListLoad()
-    console.log("error:"+error)
+    //console.log("error:"+error)
   }
   onListLoad()
 
 }
 
 export function loadMessages(estabelecimento, chave, callback){
-  // console.log("dentro loadMessages"+estabelecimento);
+  // //console.log("dentro loadMessages"+estabelecimento);
   this.messageRef = db.ref("/messages/"+estabelecimento+"/"+chave+"/status")
-  console.log("messageRef"+this.messageRef);
+  //console.log("messageRef"+this.messageRef);
   this.messageRef.off();
   this.messageRef.on('value',function(snap){
     callback({status:snap.val()})
@@ -742,9 +742,9 @@ export function loadMessages(estabelecimento, chave, callback){
 }
 
 export function loadMessagesSemItem(estabelecimento, chave, callback){
-  // console.log("dentro loadMessages"+estabelecimento);
+  // //console.log("dentro loadMessages"+estabelecimento);
   this.messageRef = db.ref("/messages/"+estabelecimento+"/"+chave+"/itemIndisponivel")
-  console.log("messageRef"+this.messageRef);
+  //console.log("messageRef"+this.messageRef);
   this.messageRef.off();
   this.messageRef.on('value',function(snap){
     snap.forEach((child)=>{
@@ -766,14 +766,14 @@ export function salvarPedidoPerdido(estabelecimento,chave,onListLoad){
       })
   } catch(error){
     onListLoad()
-    console.log("error:"+error)
+    //console.log("error:"+error)
   }
 
 }
 
 
 export function deleteMessages(estabelecimento, chave){
-  // console.log("dentro loadMessages"+estabelecimento);
+  // //console.log("dentro loadMessages"+estabelecimento);
   this.messageRef = db.ref("/messages/"+estabelecimento+"/"+chave)
 
   this.messageRef.remove()
@@ -874,7 +874,7 @@ export function mandarPedido(token,uid,retirarNovo, carrinhoNovo, formaPgtoNovo,
           callback({retiraLoja: snapshot.val()})
       })
     } catch(error){
-      console.log(error)
+      //console.log(error)
     }
   }
 

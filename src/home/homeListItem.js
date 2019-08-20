@@ -17,7 +17,6 @@ export default class HomeListItem extends Component {
       <TouchableOpacity
         style={[styles.containerListItem,{height: hp('11%')}]}
         onPress = {() => {
-          console.log("props.bairro"+this.props.bairro);
           this.props.navigation.push(
             'ListaEstabelecimentos',
             {tipoEstabelecimento: this.props.tipoEstabelecimento,

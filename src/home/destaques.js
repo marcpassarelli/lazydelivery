@@ -85,7 +85,7 @@ export class DestaquesScreen extends Component {
   }
 
   usuarioCompleto(){
-    console.log('usuario com cadastro completo')
+    //console.log('usuario com cadastro completo')
   }
 
   usuarioNaoCompleto(){
@@ -160,11 +160,11 @@ export class DestaquesScreen extends Component {
   }
 
   loadingTrue(){
-    console.log("dentroLoadingTrue");
+    //console.log("dentroLoadingTrue");
     this.setState({loadingList:true})
   }
   loadingFalse(){
-    console.log("dentroLoadingFalse");
+    //console.log("dentroLoadingFalse");
     this.setState({loadingList:false})
   }
 

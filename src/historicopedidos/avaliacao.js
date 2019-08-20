@@ -63,7 +63,7 @@ export class AvaliacaoScreen extends Component {
 
   }
   ratingCompleted(rating){
-    console.log("rating"+rating);
+    //console.log("rating"+rating);
 
   }
 

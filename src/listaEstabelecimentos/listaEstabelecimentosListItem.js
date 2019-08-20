@@ -42,21 +42,21 @@ export default class ListaEstabelecimentosListItem extends Component {
       <TouchableOpacity
         style={this.props.aberto ? styles.containerListItem : styles.containerListItemDisabled}
         onPress = {() => {
-          console.log("props.delivery"+this.props.valorDelivery);
+          //console.log("props.delivery"+this.props.valorDelivery);
           if(this.props.valorDelivery=='gratis'){
-            console.log("frete 0");
+            //console.log("frete 0");
             atualizarFrete(frete)
           }else{
-            console.log("frete "+this.props.valorDelivery);
+            //console.log("frete "+this.props.valorDelivery);
             atualizarFrete(this.props.valorDelivery)
           }
           atualizarAberto(this.props.aberto,this.props.fechando,this.props.horarioFechamento)
-          console.log("props.aberto"+this.props.aberto);
+          //console.log("props.aberto"+this.props.aberto);
           this.props.navigation.push('Estabelecimento',
           {nomeEstabelecimento: this.props.estabelecimento,
           tipoEstabelecimento: this.props.tipoEstabelecimento,
            telaAnterior:"listaEstabelecimentos"})
-           console.log("frete ao selecionar restaurante "+frete);
+           //console.log("frete ao selecionar restaurante "+frete);
         }}>
         <View>
         <View style={{flexDirection: 'row', alignContent: 'center',justifyContent:'space-between'}}>

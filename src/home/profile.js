@@ -50,7 +50,7 @@ export class ProfileScreen extends Component {
 
 
       BackHandler.addEventListener("hardwareBackPress", () => {
-        console.log("dentro backhandler");
+        //console.log("dentro backhandler");
         this.props.navigation.navigate('Home')
       })
 
@@ -65,28 +65,28 @@ export class ProfileScreen extends Component {
     }else{
     let user = await auth.currentUser;
     let provider = user.providerData[0].providerId
-    console.log("provider"+provider);
+    //console.log("provider"+provider);
 
           getUserProfile(user.uid, (nomeP,telefoneP,profilePicURLP)=>{
-            console.log("nomePPPP"+nomeP);
+            //console.log("nomePPPP"+nomeP);
             this.setState({
               nome: nomeP,
               telefone: telefoneP,
             },function(){
-              console.log("state.nome"+this.state.nome);
+              //console.log("state.nome"+this.state.nome);
             });
           })
 
         if(provider=="facebook.com"){
-        console.log("AccessToken"+JSON.stringify(AccessToken.getCurrentAccessToken()));
+        //console.log("AccessToken"+JSON.stringify(AccessToken.getCurrentAccessToken()));
         AccessToken.getCurrentAccessToken().then((accessTokenData) => {
-          console.log("AccessTokenData"+JSON.stringify(accessTokenData));
+          //console.log("AccessTokenData"+JSON.stringify(accessTokenData));
           let accessToken = accessTokenData.accessToken
-          console.log("dentroaccesstoken");
+          //console.log("dentroaccesstoken");
           const responseInfoCallback = (error, result) => {
             if (error) {
               error_json = JSON.stringify(error)
-              console.log("error_json"+error_json)
+              //console.log("error_json"+error_json)
               alert('Error fetching data: ' + error.toString());
             } else {
               this.setState({profilePicURL: result.picture.data.url})
@@ -115,7 +115,7 @@ export class ProfileScreen extends Component {
                   loading: false
                 });
         }, (error) => {
-          console.log("Some error occured: " + error)
+          //console.log("Some error occured: " + error)
           this.setState({
                   loading: false
                 });

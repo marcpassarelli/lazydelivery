@@ -58,10 +58,10 @@ export class LoginRegisterScreen extends Component {
     async checkPermission() {
     const enabled = await firebase1.messaging().hasPermission();
     if (enabled) {
-      console.log("gettoken");
+      //console.log("gettoken");
         this.getToken();
     } else {
-      console.log("requestPermission");
+      //console.log("requestPermission");
         this.requestPermission();
     }
     }
@@ -69,12 +69,12 @@ export class LoginRegisterScreen extends Component {
     //3
     async getToken() {
     let fcmToken = await AsyncStorage.getItem('fcmToken');
-    console.log("fcmtoken fora: "+fcmToken);
+    //console.log("fcmtoken fora: "+fcmToken);
     if (!fcmToken) {
         fcmToken = await firebase1.messaging().getToken();
         if (fcmToken) {
             // user has a device token
-            console.log("fcmtoken dentro: "+fcmToken);
+            //console.log("fcmtoken dentro: "+fcmToken);
             await AsyncStorage.setItem('fcmToken', fcmToken);
         }
     }
@@ -88,7 +88,7 @@ export class LoginRegisterScreen extends Component {
         this.getToken();
     } catch (error) {
         // User has rejected permissions
-        console.log('permission rejected');
+        //console.log('permission rejected');
     }
     }
 
@@ -118,7 +118,7 @@ export class LoginRegisterScreen extends Component {
   }
 
   async logintToCadastroFacebook (nomeUsuario, profilePicUrl) {
-    console.log("logintToCadastroFacebook");
+    //console.log("logintToCadastroFacebook");
     semCadastro = false
     this.setState({
       loading: true
@@ -149,7 +149,7 @@ export class LoginRegisterScreen extends Component {
 
 
   async loginToHomeFacebook(){
-    console.log("loginToHomeFacebook");
+    //console.log("loginToHomeFacebook");
     semCadastro = false
     this.setState({
       loading: true
@@ -158,14 +158,14 @@ export class LoginRegisterScreen extends Component {
 
 
     if(isConnected){
-    console.log("dentro if");
+    //console.log("dentro if");
       this.setState({
         loading: false
       })
       this.props.navigation.push('Home')
 
     }else{
-      console.log("dentro else");
+      //console.log("dentro else");
       this.setState({
         loading: false
       })
@@ -201,30 +201,30 @@ export class LoginRegisterScreen extends Component {
 
     var that = this
     LoginManager.logInWithReadPermissions(['public_profile', 'email']).then(function(result){
-      console.log("result 1"+JSON.stringify(result));
+      //console.log("result 1"+JSON.stringify(result));
       if (result.isCancelled){
-        console.log("result 12"+JSON.stringify(result));
-        console.log('Login was cancelled');
+        //console.log("result 12"+JSON.stringify(result));
+        //console.log('Login was cancelled');
       } else {
         this.setState({
           loading: true
         });
         AccessToken.getCurrentAccessToken().then((accessTokenData) => {
           let accessToken = accessTokenData.accessToken
-          console.log("accessToken"+accessToken);
-          console.log("log14");
+          //console.log("accessToken"+accessToken);
+          //console.log("log14");
           const credential = firebase.auth.FacebookAuthProvider.credential(accessToken)
-          console.log("credential"+JSON.stringify(credential));
+          //console.log("credential"+JSON.stringify(credential));
             auth.signInAndRetrieveDataWithCredential(credential).then((result)=> {
-              console.log("log1");
+              //console.log("log1");
             const responseInfoCallback = (error, result) => {
               if (error) {
-                console.log("log12");
+                //console.log("log12");
                 error_json = JSON.stringify(error)
-                console.log(error_json)
+                //console.log(error_json)
                 alert('Error fetching data: ' + error.toString());
               } else {
-                console.log("log3");
+                //console.log("log3");
                 //Se tiver resposta do Graph para o Facebook
                 this.setState({nameUser: result.name});
                 this.setState({profilePicUrl: result.picture.data.url})
@@ -257,14 +257,14 @@ export class LoginRegisterScreen extends Component {
           }, (error) => {
 
             //Promise was rejected
-            console.log("promise rejected"+error)
+            //console.log("promise rejected"+error)
           })
         }, (error) => {
-          console.log("Some error occured: " + error)
+          //console.log("Some error occured: " + error)
         })
       }
     }.bind(this), function(error){
-      console.log(' Login fail with error:  '+error);
+      //console.log(' Login fail with error:  '+error);
     })
   }
   render(){

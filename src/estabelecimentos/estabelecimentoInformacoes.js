@@ -96,7 +96,7 @@ export class EstabelecimentoInformacoesScreen extends Component {
       this.setState({
             loading: false
           },function(){
-            console.log("state.obs"+this.state.obs);
+            //console.log("state.obs"+this.state.obs);
           });
     })
   }

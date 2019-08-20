@@ -113,7 +113,7 @@ export class HomeScreen extends Component {
                                           ['bairro', this.state.bairro], ['referencia', this.state.referencia]]);
 
             } catch (error) {
-              console.log("error AsyncStorage cadastrarEndereco"+error)
+              //console.log("error AsyncStorage cadastrarEndereco"+error)
             }
           })
           // getDay()
@@ -142,7 +142,7 @@ export class HomeScreen extends Component {
     newListaEstabelecimentosOpen=[]
     abertoFechado.map((aberto,index2)=>{
       nomesEstabelecimentos.map((lista,index)=>{
-        // console.log("lista.frete"+lista.frete+"  lista.nome"+lista.nome);
+        // //console.log("lista.frete"+lista.frete+"  lista.nome"+lista.nome);
         if(aberto.nome==lista.nome){
           if(aberto.aberto==true&&lista.frete!='n'){
 
@@ -204,7 +204,7 @@ export class HomeScreen extends Component {
 
     getAppVersion((appVersion)=>{
       if(appVersion.version == VersionNumber.appVersion){
-        console.log("versão atualizada");
+        //console.log("versão atualizada");
       }else {
         Alert.alert(
           "Nova atualização disponível",
@@ -224,15 +224,15 @@ export class HomeScreen extends Component {
         )
       }
       // Platform.OS == "android"
-      // console.log("version db: "+);
-      // console.log("appVersion"+);
+      // //console.log("version db: "+);
+      // //console.log("appVersion"+);
     })
     this.removeNotificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification: Notification) => {
         // Process your notification as required
         // ANDROID: Remote notifications do not contain the channel ID. You will have to specify this manually if you'd like to re-display the notification.
     });
     this.removeNotificationListener = firebase.notifications().onNotification((notification: Notification) => {
-      console.log("notification"+notification);
+      //console.log("notification"+notification);
       Alert.alert(
         notification.title,
         notification.body,
@@ -259,7 +259,7 @@ export class HomeScreen extends Component {
       loadingList:true
     });
     if(semCadastro){
-      console.log("sem cadastro");
+      //console.log("sem cadastro");
       getUserEndAtual((enderecoP,bairroP,referenciaP)=>{
           this.setState({
             endereco: enderecoP,
@@ -273,7 +273,7 @@ export class HomeScreen extends Component {
           })
         })
     }else{
-      console.log("tem cadastro");
+      //console.log("tem cadastro");
       //checar se o usuario já tem o cadastro completo
       checkUserDetails(
         //se já tiver cadastro completo
@@ -288,7 +288,7 @@ export class HomeScreen extends Component {
   async checkPermission() {
   const enabled = await firebase.messaging().hasPermission();
   if (enabled) {
-    console.log("checkPermission"+enabled);
+    //console.log("checkPermission"+enabled);
       this.getToken();
   } else {
       this.requestPermission();
@@ -315,7 +315,7 @@ export class HomeScreen extends Component {
       this.getToken();
   } catch (error) {
       // User has rejected permissions
-      console.log('permission rejected');
+      //console.log('permission rejected');
   }
   }
 
@@ -396,7 +396,7 @@ export class HomeScreen extends Component {
                                           ['bairro', this.state.bairro], ['referencia', this.state.referencia]]);
 
             } catch (error) {
-              console.log("error AsyncStorage cadastrarEndereco"+error)
+              //console.log("error AsyncStorage cadastrarEndereco"+error)
             }
           });
           this.setState({
@@ -442,7 +442,7 @@ export class HomeScreen extends Component {
                      await AsyncStorage.multiSet([['endAtual', listaEnderecos[0].endereco],
                                                  ['bairro', listaEnderecos[0].bairro], ['referencia', listaEnderecos[0].referencia]]);
                    } catch (error) {
-                     console.log("error AsyncStorage"+error)
+                     //console.log("error AsyncStorage"+error)
                    }
                    this.setState({
                      listaModalEnd:listaEnderecos,
@@ -497,7 +497,7 @@ export class HomeScreen extends Component {
        abertoFechado.map((aberto,index2)=>{
          nomesEstabelecimentos.map((lista,index)=>{
 
-           console.log("lista.frete"+lista.frete+"  lista.nome"+lista.nome);
+           //console.log("lista.frete"+lista.frete+"  lista.nome"+lista.nome);
            if(aberto.nome==lista.nome){
              if(aberto.aberto==true&&lista.frete!='n'){
 
@@ -554,7 +554,7 @@ export class HomeScreen extends Component {
        });
 
      } catch (error) {
-       console.log("error AsyncStorage"+error)
+       //console.log("error AsyncStorage"+error)
      }
    }
 

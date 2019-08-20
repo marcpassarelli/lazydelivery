@@ -21,7 +21,7 @@ export class SplashScreen extends Component {
     };
   }
   validateUserName(){
-    console.log("setState:"+this.state.loggedIn)
+    //console.log("setState:"+this.state.loggedIn)
     return this.state.loggedIn+""
   }
 
@@ -31,7 +31,7 @@ export class SplashScreen extends Component {
     this.setState({loggedIn: user}, function(){
       this.validateUserName();
     })
-    console.log("LOGGEDIN:"+this.state.loggedIn);
+    //console.log("LOGGEDIN:"+this.state.loggedIn);
     if(this.state.loggedIn){
       checkUserDetails(
         //se já tiver cadastro completo

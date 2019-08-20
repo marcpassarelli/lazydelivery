@@ -81,8 +81,8 @@ handleBackButtonClick=()=> {
         });
       }else{
       newListaEstabelecimentosOpen=[]
-      console.log("bairor"+this.bairro);
-      console.log("listaEstabelecimentos"+JSON.stringify(listaEstabelecimentos));
+      //console.log("bairor"+this.bairro);
+      //console.log("listaEstabelecimentos"+JSON.stringify(listaEstabelecimentos));
       abertoFechado.map((aberto,index2)=>{
         listaEstabelecimentos.map((lista,index)=>{
           if(aberto.nome==lista.nome){
@@ -121,7 +121,7 @@ handleBackButtonClick=()=> {
         this.setState({
           loadingList: false
         },function(){
-          console.log("estabAbertos"+JSON.stringify(this.state.estabAbertos));
+          //console.log("estabAbertos"+JSON.stringify(this.state.estabAbertos));
         });
       });
     }

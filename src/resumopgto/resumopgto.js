@@ -168,7 +168,7 @@ async componentWillMount(){
 }
 
 _callback(){
-  console.log("");
+  //console.log("");
   this.setState({
     loading: false
   });
@@ -213,10 +213,10 @@ fazerPedido(){
           }
 
 
-          // console.log("timerId"+timerId);
+          // //console.log("timerId"+timerId);
           //mandar informação do pedido para o banco de dados do pedido
-          console.log("stateFazer.formaPgto"+this.state.formaPgto);
-          console.log("stateFazer.formaPgtoDetalhe"+this.state.formaPgtoDetalhe);
+          //console.log("stateFazer.formaPgto"+this.state.formaPgto);
+          //console.log("stateFazer.formaPgtoDetalhe"+this.state.formaPgtoDetalhe);
           mandarPedido(fcmToken, uid,this.state.retirar, this.state.produtosCarrinho, this.state.formaPgto, this.state.formaPgtoDetalhe,
             this.state.frete,this.totalPrice,
              this.state.nome, this.state.telefone, this.state.endereco, this.state.bairro,
@@ -266,7 +266,7 @@ fazerPedido(){
                // SALVAR PEDIDO EM USER
 
 
-               // console.log("pedidoKey"+pedidoKey);
+               // //console.log("pedidoKey"+pedidoKey);
 
                //aguardar confirmação do estabelecimento
 
@@ -298,7 +298,7 @@ fazerPedido(){
                  //   clearTimeout(myVar)
                  //   myVar=0
                  //   loadMessagesSemItem(this.state.nomeEstabelecimento, key.key,(itemIndisponivel)=>{
-                 //     console.log("itemIndisponivel"+JSON.stringify(itemIndisponivel));
+                 //     //console.log("itemIndisponivel"+JSON.stringify(itemIndisponivel));
                  //
                  //       Alert.alert(
                  //         'Falta de Disponibilidade de um dos items.',
@@ -336,7 +336,7 @@ fazerPedido(){
 
       }},
       {text: 'Não', onPress: ()=>{
-        console.log("cancelado");
+        //console.log("cancelado");
       }},
     ],
     {cancelable: false}
@@ -668,26 +668,26 @@ render() {
         styleButton={{width: wp('100%')}}
         styleText={{fontFamily:'FuturaPT-Bold',color:cores.corPrincipal, fontSize: wp('5%')}}
         onPress={()=>{
-          console.log("sem entrou no onpress");
+          //console.log("sem entrou no onpress");
           if(this.state.nome && this.state.telefone && this.state.pgtoEscolhido){
 
             this.fazerPedido()
            }else{
-             console.log("sem entrou no else");
-             console.log("state.nome"+this.state.nome);
-             console.log("state.telefone"+this.state.telefone);
-             console.log("state.formaPgto"+this.state.formaPgto);
-             console.log("state.formaPgtoDetalhe"+this.state.formaPgtoDetalhe);
-             console.log("state.pgtoEscolhido"+this.state.pgtoEscolhido);
+             //console.log("sem entrou no else");
+             //console.log("state.nome"+this.state.nome);
+             //console.log("state.telefone"+this.state.telefone);
+             //console.log("state.formaPgto"+this.state.formaPgto);
+             //console.log("state.formaPgtoDetalhe"+this.state.formaPgtoDetalhe);
+             //console.log("state.pgtoEscolhido"+this.state.pgtoEscolhido);
 
              if(this.state.nome=="" && this.state.telefone==""){
-               console.log("sem nome ou telefone");
+               //console.log("sem nome ou telefone");
                alert('Faltando informar nome ou telefone')
              }else if(this.state.formaPgto=='Dinheiro' && this.state.formaPgtoDetalhe==''){
-               console.log("sem troco");
+               //console.log("sem troco");
                alert('Indique quanto precisa de troco')
              }else if(this.state.formaPgto=="Crédito" && !this.state.pgtoEscolhido){
-               console.log("sem bandeira");
+               //console.log("sem bandeira");
                alert('Indique a bandeira do cartão de crédito')
              }else if(this.state.formaPgto=="Débito" && !this.state.pgtoEscolhido){
                alert('Indique a bandeira do cartão de crédito')

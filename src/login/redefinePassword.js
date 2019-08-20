@@ -40,7 +40,7 @@ export class RedefinePasswordScreen extends Component {
 
   updateEmail = (text) => {
     this.setState({email: text})
-    console.log("this.state.email"+this.state.email);
+    //console.log("this.state.email"+this.state.email);
   }
 
   componentWillUnmount() {
@@ -58,17 +58,17 @@ export class RedefinePasswordScreen extends Component {
 
 
    sendEmailRedefinition= ()=>{
-    console.log("sendEmailRedefinition");
+    //console.log("sendEmailRedefinition");
     const { navigate } = this.props.navigation
     let email = this.state.email
     // let user = await auth.currentUser;
     // let provider = user.providerData[0].providerId
-    console.log("this.state.email"+this.state.email);
+    //console.log("this.state.email"+this.state.email);
     if(this.state.email){
     auth.fetchSignInMethodsForEmail(email).then(function(signInMethods){
       let metodoLogin = signInMethods
       if(metodoLogin==""){
-        console.log("metodoLogin e-mail nao cadastrado"+metodoLogin);
+        //console.log("metodoLogin e-mail nao cadastrado"+metodoLogin);
         Alert.alert(
           "E-mail não cadastrado",
           "Este e-mail não consta em nossa base de dados. Verifique se o e-mail está correto ou volte à tela inicial e faça um cadastro com e-mail ou login com o Facebook.",
@@ -78,7 +78,7 @@ export class RedefinePasswordScreen extends Component {
           { cancelable: false }
         )
       }else if(metodoLogin=="password"){
-        console.log("metodoLogin password"+metodoLogin);
+        //console.log("metodoLogin password"+metodoLogin);
 
         auth.sendPasswordResetEmail(email).then(function() {
           // Email sent.
@@ -92,10 +92,10 @@ export class RedefinePasswordScreen extends Component {
            { cancelable: false }
           )
         }).catch(function(error){
-          console.log("error sendPasswordResetEmail"+error);
+          //console.log("error sendPasswordResetEmail"+error);
         })
       }else if(metodoLogin=="facebook.com"){
-        console.log("metodoLogin facebook"+metodoLogin);
+        //console.log("metodoLogin facebook"+metodoLogin);
         Alert.alert(
           "E-mail já usado por uma conta Facebook",
           "O e-mail informado já é usado por uma conta do Facebook. Faça o login usando o botão Login com o Facebook ou então cadastre um novo e-mail.",
@@ -105,7 +105,7 @@ export class RedefinePasswordScreen extends Component {
           { cancelable: false }
         )
       }else{
-        console.log("metodoLogin email nao cadastrado"+metodoLogin);
+        //console.log("metodoLogin email nao cadastrado"+metodoLogin);
         Alert.alert(
           "E-mail não cadastrado",
           "Este e-mail não consta em nossa base de dados. Verifique se o e-mail está correto ou volte à tela inicial e faça um cadastro com e-mail ou login com o Facebook.",
@@ -116,7 +116,7 @@ export class RedefinePasswordScreen extends Component {
         )
       }
     }).catch(function(error){
-      console.log("error  "+error);
+      //console.log("error  "+error);
       Alert.alert(
         "E-mail incorreto",
         "O e-mail informado está mal formatado. Verifique se o e-mail digitado está correto.",

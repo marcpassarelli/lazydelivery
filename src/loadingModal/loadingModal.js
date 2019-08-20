@@ -19,7 +19,7 @@ export default class Loader extends Component{
         transparent={true}
         animationType={'none'}
         visible={this.props.loading}
-        onRequestClose={() => {console.log('close modal')}}>
+        onRequestClose={() => {}}>
         <View style={stylesLocal.modalBackground}>
           <View style={stylesLocal.activityIndicatorWrapper}>
             <Text style={{marginHorizontal: 5,fontFamily: 'Futura-Book',textAlign: 'center',marginBottom: 5}}>{this.props.message}</Text>

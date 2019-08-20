@@ -86,7 +86,7 @@ componentWillMount(){
   this.setState({
     loadingList: false
   },function(){
-    console.log("listLoadad");
+    //console.log("listLoadad");
   });
 
 }
@@ -148,8 +148,8 @@ _renderSeparator(){
               const {state} = this.props.navigation
 
               let preco = (item.preco/this.qtdeSabores).toFixed(2)
-              // console.log("preco "+preco);
-              // console.log("state.params.preco"+state.params.preco);
+              // //console.log("preco "+preco);
+              // //console.log("state.params.preco"+state.params.preco);
               let precoParams = state.params.precoPizza ? state.params.precoPizza : 0
               precoParams = (parseFloat(precoParams)).toFixed(2)
               let precoPizza = parseFloat(preco) + parseFloat(precoParams)

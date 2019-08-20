@@ -287,7 +287,7 @@ BackHandler.addEventListener('hardwareBackPress', ()=>this.handleBackButtonClick
       // this.setState({
       //         loadingList: false
       // },function(){
-      //   // console.log("sectiondata"+JSON.stringify(sectionData));
+      //   // //console.log("sectiondata"+JSON.stringify(sectionData));
       // })
     })
   }
@@ -375,10 +375,10 @@ renderItem = (item) =>{
           //
           let titleHeader= ""
           if(item.item.paginas.length==1){
-            console.log("uma pagina");
+            //console.log("uma pagina");
             titleHeader = "Escolha o(s) sabor(es)"
           }else{
-            console.log("mais de uma pagina");
+            //console.log("mais de uma pagina");
             titleHeader = "Escolha o 1º sabor"
           }
 

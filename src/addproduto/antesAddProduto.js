@@ -498,8 +498,8 @@ render() {
               }
             })
             if(this.pagAtual==this.qtdePaginas){
-                console.log("params detalhes antes addProduto if "+state.params.detalhes);
-                console.log("detalhes antes addProduto if "+detalhes);
+                //console.log("params detalhes antes addProduto if "+state.params.detalhes);
+                //console.log("detalhes antes addProduto if "+detalhes);
               detalhes = state.params.detalhes+detalhes
               this.props.navigation.push('AddProduto',{
               nomeEstabelecimento: state.params.nomeEstabelecimento,
@@ -509,7 +509,7 @@ render() {
               imgProduto: "" , tipoProduto: state.params.tipoProduto ,
               tipoEstabelecimento: state.params.tipoEstabelecimento})
             }else{
-              console.log("detalhes antes addProduto else "+detalhes);
+              //console.log("detalhes antes addProduto else "+detalhes);
               this.props.navigation.push('AntesAddProduto',{tipoEstabelecimento: state.params.tipoEstabelecimento,
               title:state.params.paginas[this.pagAtual].titulo, preco: state.params.preco,
               paginas: state.params.paginas,

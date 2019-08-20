@@ -136,7 +136,7 @@ export class CarrinhoScreen extends Component{
 
             }},
             {text: 'Não', onPress: ()=>{
-              console.log("cancelado");
+              //console.log("cancelado");
             }},
           ],
           {cancelable: false}
@@ -154,7 +154,7 @@ export class CarrinhoScreen extends Component{
               });
             }},
             {text: 'Não', onPress: ()=>{
-              console.log("cancelado");
+              //console.log("cancelado");
             }},
           ],
           {cancelable: false}

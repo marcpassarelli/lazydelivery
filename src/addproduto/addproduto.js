@@ -154,7 +154,7 @@ handleBackButtonClick=()=> {
       this.setState({
         loading:false
       },function(){
-        console.log("state.detalhes "+this.state.detalhes);
+        //console.log("state.detalhes "+this.state.detalhes);
       });
     });
 
