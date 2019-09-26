@@ -168,7 +168,7 @@ _renderSeparator(){
                 nome: "Pizza "+_.upperFirst(state.params.tamanhoPizza)+" "+state.params.sabores+" "+sabores,
                 preco: preco, precoPizza: precoPizza,
                 detalhes: "Sabores: "+state.params.detalhes+item.nomeProduto+"("+preco+")",
-                imgProduto: "https://firebasestorage.googleapis.com/v0/b/deliveryaltamira.appspot.com/o/produtos%2Fcomum%2Fpizzas.jpg?alt=media&token=500e37cb-5655-46e6-87de-ba197ccc7a68" , tipoProduto: state.params.tipoProduto ,
+                imgProduto: state.params.imgProduto , tipoProduto: state.params.tipoProduto ,
                 tipoEstabelecimento: state.params.tipoEstabelecimento,
                 tipoProduto: state.params.tipoProduto})
               }else{
@@ -177,6 +177,7 @@ _renderSeparator(){
                 title:"Escolha o "+numSabor+"º sabor da pizza", preco: preco, precoPizza: precoPizza,
                 detalhes:state.params.detalhes+item.nomeProduto+"("+preco+"), ",
                 sabores: state.params.sabores, tipoProduto: state.params.tipoProduto,
+                imgProduto: state.params.imgProduto,
                 tamanhoPizza: state.params.tamanhoPizza, partePizza: state.params.partePizza+1,
                 nomeEstabelecimento: state.params.nomeEstabelecimento  })
               }

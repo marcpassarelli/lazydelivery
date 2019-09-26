@@ -125,19 +125,16 @@ handleBackButtonClick=()=> {
     }
 
     if(isNaN(imgProduto)){
-
+      console.log("imgProduto"+imgProduto);
       this.setState({
         imgProduto:{uri:imgProduto},
-      });
-    }
-    else if(tipoProduto=="Pizzas"||tipoProduto=="Pizzas Doces"){
-      this.setState({
-        imgProduto:imgProduto
+      },function(){
+        console.log("1 state.imgProduto"+JSON.stringify(this.state.imgProduto));
       });
     }
     else{
 
-        this.setState({ imgProduto: images.backgroundLazyEscuro})
+        this.setState({ imgProduto: images.backgroundLazyEscuro},function(){console.log("3 state.imgProduto"+this.state.imgProduto);})
         atualizarImgProduto(images.backgroundLazyEscuro)
     }
 

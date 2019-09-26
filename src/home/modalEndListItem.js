@@ -15,6 +15,9 @@ export default class ModalEndListItem extends Component {
       <View>
         <View style={{flex: 1, flexDirection: 'row',justifyContent:'space-between'}}>
           <View style={{alignSelf: 'flex-start',flexDirection: 'column',marginTop:5,flexWrap: 'wrap',width: wp('70%')}}>
+            <TouchableOpacity
+              onPress={()=>{this.props.selecionaEnd(),
+                            this.props.showModal()}}>
             <Text style={[styles.textCarrinho,
                 {alignSelf:'center',
                 marginHorizontal: 10}]}>
@@ -23,13 +26,9 @@ export default class ModalEndListItem extends Component {
             <Text style={{alignSelf: 'center',fontFamily:'Futura-Book',marginVertical: 5}}>
               {item.bairro}
             </Text>
+            </TouchableOpacity>
           </View>
           <View style={{flexDirection: 'column', alignItems: 'flex-end',marginRight: 5,marginTop: 5,width: wp('25%')}}>
-            <TouchableOpacity
-              onPress={()=>{this.props.selecionaEnd(),
-                            this.props.showModal()}}>
-              <Text style={{color: cores.textDetalhes,fontFamily:'Futura-Book',marginVertical: 5}}>Selecionar</Text>
-            </TouchableOpacity>
             <TouchableOpacity
               onPress={()=>{this.props.deleteEnd()}}>
               <Text style={{color: cores.textDetalhes,fontFamily:'Futura-Book'}}>Excluir Endereço</Text>

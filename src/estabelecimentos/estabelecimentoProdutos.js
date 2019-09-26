@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView,BackHandler,ImageBackground, Platform, Image, Alert, View, Text, Button, SectionList, Animated } from 'react-native'
+import { FlatList,ScrollView,BackHandler,ImageBackground, Platform, Image, Alert, View, Text, Button, SectionList, Animated } from 'react-native'
 import { styles, cores, images} from '../constants/constants'
 import {getEstabelecimentoProd, zerarAdicionais,estabelecimentoProd, listaTamanhosPizzas, getTamanhosPizzas, numTamanhos} from '../firebase/database'
 import EstabelecimentoProdutosListItem from './estabelecimentoProdutosListItem'
@@ -13,6 +13,7 @@ import LazySearchBar from '../constants/lazySearchBar'
 import ListItemSeparator from '../constants/listItemSeparator'
 import LazyYellowButton from '../constants/lazyYellowButton'
 import { NavigationActions } from 'react-navigation';
+import Accordion from 'react-native-collapsible/Accordion';
 import _ from 'lodash';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
@@ -44,6 +45,7 @@ constructor(props){
     expandido: false,
     animation: new Animated.Value(),
     text:'',
+    activeSections: [],
   }
 
 }
@@ -123,13 +125,14 @@ sectionDataFunction(){
           if(j==1){
             newEstabelecimentoProd.push({
               tamanho: item.tamanho,
-              nomeProduto: _.upperFirst(item.tamanho)+" ("+item.fatias+" fatias)",
+              nomeProduto: _.upperFirst(item.tamanho)+" ("+item.fatias+" fatias) 1 sabor",
               preco: preco,
               tipo: "Pizzas",
               fatias: item.fatias,
               _id: id++,
               ordem:ordemPizza,
-              sabores: j
+              sabores: j,
+              imgProduto: item.imgProduto
             })
           }else{
             newEstabelecimentoProd.push({
@@ -140,7 +143,8 @@ sectionDataFunction(){
               fatias: item.fatias,
               _id: id++,
               ordem:ordemPizza,
-              sabores: j
+              sabores: j,
+              imgProduto: item.imgProduto
             })
           }
         }
@@ -176,13 +180,14 @@ if (listaPizzasDoces.length>0) {
             if(j==1){
               newEstabelecimentoProd.push({
                 tamanho: item.tamanho,
-                nomeProduto: _.upperFirst(item.tamanho)+" ("+item.fatias+" fatias)",
+                nomeProduto: _.upperFirst(item.tamanho)+" ("+item.fatias+" fatias) 1 sabor",
                 preco: preco,
                 tipo: "Pizzas Doces",
                 fatias: item.fatias,
                 _id: id++,
                 ordem:ordemPizza,
-                sabores: j
+                sabores: j,
+                imgProduto: item.imgProduto
               })
             }else{
               newEstabelecimentoProd.push({
@@ -193,7 +198,8 @@ if (listaPizzasDoces.length>0) {
                 fatias: item.fatias,
                 _id: id++,
                 ordem:ordemPizza,
-                sabores: j
+                sabores: j,
+                imgProduto: item.imgProduto
               })
             }
           }
@@ -221,6 +227,8 @@ if (listaPizzasDoces.length>0) {
 callbackFinishLoading(){
   this.setState({
     loadingList:false
+  },function(){
+    // console.log("sectionData: "+JSON.stringify(sectionData));
   });
 }
 
@@ -314,116 +322,131 @@ BackHandler.addEventListener('hardwareBackPress', ()=>this.handleBackButtonClick
 
 }
 
-renderItem = (item) =>{
+renderItem = item =>{
   const {state} = this.props.navigation;
   var nomeEstabelecimentoUp = state.params ? state.params.nomeEstabelecimento : ""
-
+  // console.log("log item"+JSON.stringify(item));
   // onLayout={this._setMaxHeight.bind(t  his)}
   return (
   <View style={{flex:1}}>
-    <EstabelecimentoProdutosListItem
-      nomeProduto = {item.item.nomeProduto}
-      tipoProduto = {item.item.tipo}
-      preco = {()=>{
+    <FlatList
+      ItemSeparatorComponent={ListItemSeparator}
+      data= {item.data}
+      extraData={this.state}
+      renderItem= {
+        ({item}) =>
+      <EstabelecimentoProdutosListItem
+        nomeProduto = {item.nomeProduto}
+        tipoProduto = {item.tipo}
+        preco = {()=>{
 
-        let str = item.item.preco.toFixed(2)
-        let res = str.toString().replace(".",",")
+          let str = item.preco.toFixed(2)
+          let res = str.toString().replace(".",",")
 
-        if(item.item.tipo=="Pizzas"){
-          return(
-              <Text style={styles.textPreco}>A partir de R$ {res}</Text>
-          )
-        }else if(item.item.tipo=="Pizzas Doces"){
-          return(
-              <Text style={styles.textPreco}>A partir de R$ {res}</Text>
-          )
-        }else{
-        return(
-            <Text style={[styles.textPreco]}>R$ {res}</Text>
-        )}
-      }}
-      detalhes = {item.item.detalhes}
-      navigation={()=>{
-
-        let titleHeader= ""
-        if(item.item.tipo=="Pizzas"||item.item.tipo=="Pizzas Doces"){
-          //rota para pizzas
-          if(item.item.sabores==1){
-            titleHeader = "Escolha o sabor da pizza"
+          if(item.tipo=="Pizzas"){
+            return(
+                <Text style={styles.textPreco}>A partir de R$ {res}</Text>
+            )
+          }else if(item.tipo=="Pizzas Doces"){
+            return(
+                <Text style={styles.textPreco}>A partir de R$ {res}</Text>
+            )
           }else{
-            titleHeader = "Escolha o 1º sabor da pizza"
-          }
-          imgProduto = images.pizzaImg
+          return(
+              <Text style={[styles.textPreco]}>R$ {res}</Text>
+          )}
+        }}
+        detalhes = {item.detalhes}
+        navigation={()=>{
 
-          const navigateAction = NavigationActions.navigate({
-              routeName: 'Pizza',
-              params: {nomeEstabelecimento: nomeEstabelecimentoUp,
-              title:titleHeader, sabores: item.item.sabores,
-              tamanhoPizza: item.item.tamanho, partePizza:1, tipoProduto: item.item.tipo,
-              preco:parseInt(0),detalhes:"",
-            tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento},
-              key:Math.random()*100000
-            });
-          this.props.navigation.dispatch(navigateAction);
-          //se houver quantidade de paginas quer dizer que não é pizza e nem é produto normal
-        }else if (item.item.paginas) {
-          //rota para produtos com mais de uma pagina
-          //qtdePaginas = quantas paginas até chegar no AddProduto
-          //tipoPagina =  o que vai ser cada tipo de pagina
-          //qtdeItens = caso o tipoPagina for quantidade informar o máximo que pode dar a soma
-          //tipoItens = tipo de item que será mostrado em cada página
-          //
           let titleHeader= ""
-          if(item.item.paginas.length==1){
-            //console.log("uma pagina");
-            titleHeader = "Escolha o(s) sabor(es)"
+          if(item.tipo=="Pizzas"||item.tipo=="Pizzas Doces"){
+            //rota para pizzas
+            if(item.sabores==1){
+              titleHeader = "Escolha o sabor da pizza"
+            }else{
+              titleHeader = "Escolha o 1º sabor da pizza"
+            }
+            console.log("nav imgProduto"+JSON.stringify(item));
+            imgProduto = item.imgProduto
+
+            const navigateAction = NavigationActions.navigate({
+                routeName: 'Pizza',
+                params: {nomeEstabelecimento: nomeEstabelecimentoUp,
+                title:titleHeader, sabores: item.sabores,
+                tamanhoPizza: item.tamanho, partePizza:1, tipoProduto: item.tipo,
+                preco:parseInt(0),detalhes:"",imgProduto: item.imgProduto,
+              tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento},
+                key:Math.random()*100000
+              });
+            this.props.navigation.dispatch(navigateAction);
+            //se houver quantidade de paginas quer dizer que não é pizza e nem é produto normal
+          }else if (item.paginas) {
+            //rota para produtos com mais de uma pagina
+            //qtdePaginas = quantas paginas até chegar no AddProduto
+            //tipoPagina =  o que vai ser cada tipo de pagina
+            //qtdeItens = caso o tipoPagina for quantidade informar o máximo que pode dar a soma
+            //tipoItens = tipo de item que será mostrado em cada página
+            //
+            let titleHeader= ""
+            if(item.paginas.length==1){
+              //console.log("uma pagina");
+              titleHeader = "Escolha o(s) sabor(es)"
+            }else{
+              //console.log("mais de uma pagina");
+              titleHeader = "Escolha o 1º sabor"
+            }
+
+
+            imgProduto = item.imgProduto
+            const navigateAction = NavigationActions.navigate({
+                routeName: 'AntesAddProduto',
+                params: {
+                  title:item.paginas[0].titulo,
+                  nomeEstabelecimento: nomeEstabelecimentoUp,
+                  nome: item.nomeProduto,
+                  pagAtual: 1,
+                  paginas: item.paginas,
+                  preco: item.preco,
+                  detalhes: "",
+                  tipoProduto: item.tipo,
+                  tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento},
+                key:Math.random()*100000
+              });
+            this.props.navigation.dispatch(navigateAction);
+
           }else{
-            //console.log("mais de uma pagina");
-            titleHeader = "Escolha o 1º sabor"
+            imgProduto = item.imgProduto
+            const navigateAction = NavigationActions.navigate({
+                routeName: 'AddProduto',
+                params: {
+                  nomeEstabelecimento: nomeEstabelecimentoUp,
+                  nome: item.nomeProduto, preco: item.preco,
+                  detalhes: item.detalhes, tipoProduto: item.tipo,
+                  tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento},
+                key:Math.random()*100000
+              });
+            this.props.navigation.dispatch(navigateAction);
           }
-
-
-          imgProduto = item.item.imgProduto
-          const navigateAction = NavigationActions.navigate({
-              routeName: 'AntesAddProduto',
-              params: {
-                title:item.item.paginas[0].titulo,
-                nomeEstabelecimento: nomeEstabelecimentoUp,
-                nome: item.item.nomeProduto,
-                pagAtual: 1,
-                paginas: item.item.paginas,
-                preco: item.item.preco,
-                detalhes: "",
-                tipoProduto: item.item.tipo,
-                tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento},
-              key:Math.random()*100000
-            });
-          this.props.navigation.dispatch(navigateAction);
-
-        }else{
-          imgProduto = item.item.imgProduto
-          const navigateAction = NavigationActions.navigate({
-              routeName: 'AddProduto',
-              params: {
-                nomeEstabelecimento: nomeEstabelecimentoUp,
-                nome: item.item.nomeProduto, preco: item.item.preco,
-                detalhes: item.item.detalhes, tipoProduto: item.item.tipo,
-                tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento},
-              key:Math.random()*100000
-            });
-          this.props.navigation.dispatch(navigateAction);
-        }
-    }}>
-    </EstabelecimentoProdutosListItem>
+        }}/>
+      }
+      keyExtractor={item => item._id.toString()}
+      />
   </View>
   )
 }
 
 renderHeader = (headerItem) => {
   return  (
-      <View style={{flexDirection: 'row', alignItems: 'center',
-        backgroundColor: cores.corSecundaria}} >
-            <Text style={styles.headerList}>{headerItem.section.key}</Text>
+      <View style={{flexDirection: 'row', alignItems: 'center',height: hp('4.5%'),
+        backgroundColor: cores.corSecundaria,marginBottom: 2}} >
+
+            <Text style={styles.headerList}>{headerItem.key}</Text>
+
+            <Text style={{    fontFamily: 'Futura-Book',
+                color: cores.textDetalhes,
+                fontSize:wp('3.5%'),marginRight:5,
+                }}>(Clique para expandir)</Text>
       </View>
     )
 }
@@ -443,9 +466,9 @@ goToCarrinho(){
 functionButton(){
   if(Platform.OS==='ios'){
     return (
-    <View style={{marginBottom: hp('0%')}}>
+    <View style={{marginBottom: hp('1%')}}>
     <LazyYellowButton
-      styleButton={{width: wp('100%'), }}
+      styleButton={{width: wp('100%'), height: hp('8%')}}
       styleText={{fontFamily:'FuturaPT-Bold',color:cores.corPrincipal,fontSize:wp('5%')}}
       onPress={()=>{this.goToCarrinho()}}
       text={"CARRINHO"}
@@ -453,12 +476,15 @@ functionButton(){
     </View>)
   }else{
     return(
+      <View style={{
+  justifyContent: 'flex-end'}}>
       <LazyYellowButton
-        styleButton={{width: wp('100%'), }}
+        styleButton={{width: wp('100%'), height: hp('8%') }}
         styleText={{fontFamily:'FuturaPT-Bold',color:cores.corPrincipal, fontSize: wp('5%')}}
         onPress={()=>{this.goToCarrinho()}}
         text={"CARRINHO"}
         />
+    </View>
     )
   }
 }
@@ -481,6 +507,12 @@ filterSearch(text){
   });
 }
 
+_updateSections = activeSections => {
+  this.setState({ activeSections },function(){
+    console.log("state.activeSections"+this.state.activeSections);
+  });
+};
+
 
   render() {
 
@@ -496,16 +528,17 @@ filterSearch(text){
 
 
     <View style={{flex:1}}>
-
-      <SectionList
-        ItemSeparatorComponent={this.renderListItemSeparator}
-        SectionSeparatorComponent={this.renderSeparatorSection}
-        renderItem={this.renderItem}
-        renderSectionHeader={this.renderHeader}
-        sections={sectionData}
-        keyExtractor={(item) => item._id.toString()}
+      <ScrollView>
+        <Accordion
+          sections={sectionData}
+          activeSections={this.state.activeSections}
+          renderHeader={this.renderHeader}
+          renderContent={this.renderItem}
+          onChange={this._updateSections}
         />
+      </ScrollView>
       <View>{this.functionButton()}</View>
+
     </View>
 
 
@@ -518,6 +551,31 @@ filterSearch(text){
     );
   }
 }
+
+const SECTIONS = [
+  {
+    title: 'First',
+    content: [
+      {
+      content:'Lorem ipsum 1', price: '10'},
+      {content:'Lorem ipsum 2', price: '8'}
+    ],
+  },
+  {
+    title: 'Second',
+    content: 'Lorem ipsum...',
+  },
+];
+
+// <SectionList
+//   ItemSeparatorComponent={this.renderListItemSeparator}
+//   SectionSeparatorComponent={this.renderSeparatorSection}
+//   renderItem={this.renderItem}
+//   renderSectionHeader={this.renderHeader}
+//   sections={sectionData}
+//   keyExtractor={(item) => item._id.toString()}
+//   />
+
 
 // <View style={{marginBottom: 3,borderWidth: 1.5,borderColor: cores.corSecundaria}}>
 // <LazySearchBar

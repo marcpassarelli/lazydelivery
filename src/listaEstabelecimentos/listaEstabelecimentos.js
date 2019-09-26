@@ -29,11 +29,13 @@ export class ListaEstabelecimentosScreen extends Component{
       <View style={{flex:1}}>
       <LazyBackButton
         goBack={()=>{
-        navigation.push('Home')
+        navigation.push('Home',{
+          telaAnterior: 'listaEstabelecimentos'
+        })
       }}/>
       </View>
     ),
-    headerRight:(<View></View>),
+    headerRight:(<View><Text>Filtrar</Text></View>),
 
   });
 

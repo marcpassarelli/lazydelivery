@@ -384,6 +384,7 @@ export function getTamanhosPizzas(nomeEstabelecimento){
             fatias: child.val().fatias,
             sabores: child.val().sabores,
             tamanho: child.val().tamanho,
+            imgProduto: child.val().imgProduto,
             _id:todoCounter++
           });
         })

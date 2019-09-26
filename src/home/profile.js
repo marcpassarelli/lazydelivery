@@ -207,7 +207,7 @@ export class ProfileScreen extends Component {
       }
         <Image
           source={images.iconYellow}
-          style={{height: 80,width: 80,alignSelf: 'center',marginTop:hp('3.5%')}}/>
+          style={{height: 80,width: 80,alignSelf: 'center',marginTop:hp('5.5%')}}/>
 
    </View>
 

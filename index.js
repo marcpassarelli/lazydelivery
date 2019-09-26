@@ -6,7 +6,8 @@ import {
 import _ from 'lodash';
 import {carrinho, atualizarCarrinho} from './src/addproduto/addproduto'
 import LazyBackButton from './src/constants/lazyBackButton'
-import { createStackNavigator, createBottomTabNavigator,createMaterialTopTabNavigator} from 'react-navigation';
+import { createBottomTabNavigator,createMaterialTopTabNavigator} from 'react-navigation-tabs';
+import { createStackNavigator } from 'react-navigation-stack';
 import { SplashScreen } from './src/splash/splash'
 import { CadastroInicialScreen } from './src/cadastro/cadastroInicial'
 import { CompletaCadastroScreen } from './src/cadastro/completaCadastro'
@@ -135,7 +136,9 @@ TabEstabelecimento.navigationOptions = ({navigation}) =>{
             )
           }else{
 
-              navigation.push('Home')
+              navigation.push('Home',{
+                telaAnterior: 'listaEstabelecimentos'
+              })
             //   if(navigation.state.params.telaAnterior=="home"){
             // }else{
             //   navigation.push('ListaEstabelecimentos',
