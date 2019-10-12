@@ -397,6 +397,7 @@ export function getTamanhosPizzas(nomeEstabelecimento){
 }
 var aberto=''
 var abertoBool=''
+
 export function getDay(estabelecimento,onListLoad){
 
   var d = new Date()
@@ -498,13 +499,17 @@ try{
       }else{
         quaseFechandoSt=false
       }
+      let jaTem = _.some(abertoFechado,{'nome': estabelecimento})
 
+      if(!jaTem){
       abertoFechado.push({
         nome:estabelecimento,
         aberto:aberto,
         fechando:quaseFechandoSt,
         horarioFechamento:snapshot.val().fechamento
-      })
+      })}
+
+
       if(abertoFechado.length==numChildrenLista){
         onListLoad()
       }
@@ -531,6 +536,7 @@ export function limparEstabelecimentoProd(){
 }
 export var semEstabelecimentos=''
 export function getListaEstabelecimentos(tipoEstabelecimento, bairro,onListLoad){
+
   try{
     listaEstabelecimentos = []
     abertoFechado=[]
@@ -538,19 +544,21 @@ export function getListaEstabelecimentos(tipoEstabelecimento, bairro,onListLoad)
     db.ref("/tiposEstabelecimentosNovo/"+tipoEstabelecimento).once('value').then(function(snapshot){
 
       var estabelecimentoData = snapshot.val()
-
       if(estabelecimentoData){
         semEstabelecimentos=false
         numChildrenLista= snapshot.numChildren()
         snapshot.forEach((child) =>{
+          console.log("child"+JSON.stringify(child.val().filtros));
           listaEstabelecimentos.push({
             logo: child.val().Logo,
             nome: child.val().Nome,
             precoDelivery: child.val().PreçoDelivery,
             tempoEntrega: child.val().TempoEntrega,
             frete:child.val().frete[bairro].valor,
+            filtros: child.val().filtros,
             _id:todoCounter++
           })
+
           getDay(child.val().Nome,
         ()=>{onListLoad()})
 
@@ -563,7 +571,7 @@ export function getListaEstabelecimentos(tipoEstabelecimento, bairro,onListLoad)
 
     })
   } catch(error){
-    //console.log("error lista"+error)
+    console.log("error lista"+error)
   }
 }
 
@@ -571,6 +579,7 @@ export function getNomeEstabelecimentos(bairro,onListLoad){
   try{
     nomesEstabelecimentos = []
     abertoFechado=[]
+
     numChildrenLista=0
     db.ref("/nomeEstabelecimentosNovo/").once('value').then(function(snapshot){
       var estabelecimentoTiposProdData = snapshot.val()
@@ -726,16 +735,16 @@ export function getListaAdicionais(nomeEstabelecimento, tipoProduto, onListLoad)
     })
   } catch(error){
     onListLoad()
-    //console.log("error:"+error)
+
   }
   onListLoad()
 
 }
 
 export function loadMessages(estabelecimento, chave, callback){
-  // //console.log("dentro loadMessages"+estabelecimento);
+
   this.messageRef = db.ref("/messages/"+estabelecimento+"/"+chave+"/status")
-  //console.log("messageRef"+this.messageRef);
+
   this.messageRef.off();
   this.messageRef.on('value',function(snap){
     callback({status:snap.val()})
@@ -743,9 +752,9 @@ export function loadMessages(estabelecimento, chave, callback){
 }
 
 export function loadMessagesSemItem(estabelecimento, chave, callback){
-  // //console.log("dentro loadMessages"+estabelecimento);
+
   this.messageRef = db.ref("/messages/"+estabelecimento+"/"+chave+"/itemIndisponivel")
-  //console.log("messageRef"+this.messageRef);
+
   this.messageRef.off();
   this.messageRef.on('value',function(snap){
     snap.forEach((child)=>{
@@ -767,14 +776,14 @@ export function salvarPedidoPerdido(estabelecimento,chave,onListLoad){
       })
   } catch(error){
     onListLoad()
-    //console.log("error:"+error)
+
   }
 
 }
 
 
 export function deleteMessages(estabelecimento, chave){
-  // //console.log("dentro loadMessages"+estabelecimento);
+
   this.messageRef = db.ref("/messages/"+estabelecimento+"/"+chave)
 
   this.messageRef.remove()
@@ -875,7 +884,7 @@ export function mandarPedido(token,uid,retirarNovo, carrinhoNovo, formaPgtoNovo,
           callback({retiraLoja: snapshot.val()})
       })
     } catch(error){
-      //console.log(error)
+
     }
   }
 

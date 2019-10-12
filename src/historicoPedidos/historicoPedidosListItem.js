@@ -15,17 +15,20 @@ export default class HistoricoPedidosListItem extends Component {
 
   functionCarrinhoListItem=(item)=>{
 
-    
-    var year = item.createdAt.getFullYear();
-    var month = item.createdAt.getMonth() + 1; // getMonth() is zero-indexed, so we'll increment to get the correct month number
-    var day = item.createdAt.getDate();
-    var hours = item.createdAt.getHours();
-    var minutes = item.createdAt.getMinutes();
-    var seconds = item.createdAt.getSeconds();
+
+    var year = item.createdAt.getUTCFullYear();
+    var month = item.createdAt.getUTCMonth() + 1; // getMonth() is zero-indexed, so we'll increment to get the correct month number
+    var day = item.createdAt.getUTCDate();
+    var hours = item.createdAt.getUTCHours();
+    console.log("hours"+hours);
+    var minutes = item.createdAt.getUTCMinutes();
+    var seconds = item.createdAt.getUTCSeconds();
 
     month = (month < 10) ? '0' + month : month;
     day = (day < 10) ? '0' + day : day;
-    hours = (hours < 10) ? '0' + (hours) : (hours);
+
+    hours = (hours == 0) ? 24 : hours
+    hours = (hours < 10) ? '0' + hours-3 : hours-3;
     minutes = (minutes < 10) ? '0' + minutes : minutes;
     seconds = (seconds < 10) ? '0' + seconds: seconds;
 

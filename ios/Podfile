@@ -16,6 +16,12 @@ target 'DeliveryPassa' do
 
   pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
 
+  pod 'RNScreens', :path => '../node_modules/react-native-screens'
+
+  pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
+
+  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+
   post_install do |installer|
     installer.pods_project.targets.each do |target|
       if target.name == "React"

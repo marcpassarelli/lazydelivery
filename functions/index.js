@@ -14,6 +14,7 @@ const admin = require('firebase-admin');
 exports.sendMessageNotificationNewOrder = functions.database.ref('messages/{estab}/{messageID}').onCreate((snap,context) => {
     var estab = context.params.estab
     var token = ""
+    var listaTokens = []
     var payload = {
       notification: {
         title: "Novo Pedido",
@@ -22,14 +23,19 @@ exports.sendMessageNotificationNewOrder = functions.database.ref('messages/{esta
     };
     return admin.database().ref('infoEstabelecimentosNovo/'+estab+'/token').once('value').then((snapshot)=>{
         token = snapshot.val().token
-        return admin.messaging().sendToDevice(token, payload)
-            .then((response)=> {
-              return null
-            })
-            .catch((error)=>{
-              return null
-            });
-    });
+        listaTokens = snapshot.val().token.lista
+        const promises = []
+        listaTokens.forEach((child)=>{
+          const promise = return admin.messaging().sendToDevice(child.val().token, payload)
+          promises.push(promise)
+        })
+        return Promise.all(promises)
+    }).then((response)=> {
+          return null
+        })
+        .catch((error)=>{
+          return null
+        });
 });
 
 exports.sendMessageNotificationUpdateStatus = functions.database.ref('messages/{estab}/{messageID}').onUpdate((snap,context) => {

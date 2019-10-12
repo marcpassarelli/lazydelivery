@@ -38,63 +38,58 @@ export default class ListaEstabelecimentosListItem extends Component {
     ]
 
     return (
-      <View style={{flexDirection: 'row'}}>
-      <TouchableOpacity
-        style={this.props.aberto ? styles.containerListItem : styles.containerListItemDisabled}
-        onPress = {() => {
-          //console.log("props.delivery"+this.props.valorDelivery);
-          if(this.props.valorDelivery=='gratis'){
-            //console.log("frete 0");
-            atualizarFrete(frete)
-          }else{
-            //console.log("frete "+this.props.valorDelivery);
-            atualizarFrete(this.props.valorDelivery)
-          }
-          atualizarAberto(this.props.aberto,this.props.fechando,this.props.horarioFechamento)
-          //console.log("props.aberto"+this.props.aberto);
-          this.props.navigation.push('Estabelecimento',
-          {nomeEstabelecimento: this.props.estabelecimento,
-          tipoEstabelecimento: this.props.tipoEstabelecimento,
-           telaAnterior:"listaEstabelecimentos"})
-           //console.log("frete ao selecionar restaurante "+frete);
-        }}>
-        <View>
-        <View style={{flexDirection: 'row', alignContent: 'center',justifyContent:'space-between'}}>
-        <View>
-          <View style={styles.viewIcon}>
-            <Image
-              source={{uri:this.props.imglogoEstabelecimento}}
-              style={styles.imagemListaEstabelecimento}
-              />
-          </View>
-        </View>
-        <View>
-          <Text style={styles.textEstabelecimento}>{this.props.estabelecimento}</Text>
-          {this.functionValorFrete(this.props.valorDelivery)}
-          <Text style={styles.textDetalhesEstabelecimento}>Tempo estimado: {this.props.tempoEntrega}</Text>
-            {this.props.aberto?
-            <View></View>:
-            <View style={{alignContent: 'center',alignItems:'center',justifyContent: 'center'}}>
-              {
-                this.props.aberto?
-                <View></View> :
-                  <View style={{alignContent: 'center', justifyContent:'center'}}>
-                    <Text style={[styles.textDetalhesEstabelecimento,{marginVertical: 0,marginLeft: 0,
-                        alignSelf: 'center',color: 'red',fontSize:wp('4%')}]}>FECHADO</Text>
-                  </View>
-              }
-              </View>
+        <View style={{flexDirection: 'row'}}>
+        <TouchableOpacity
+          style={this.props.aberto ? styles.containerListItem : styles.containerListItemDisabled}
+          onPress = {() => {
+            //console.log("props.delivery"+this.props.valorDelivery);
+            if(this.props.valorDelivery=='gratis'){
+              //console.log("frete 0");
+              atualizarFrete(frete)
+            }else{
+              //console.log("frete "+this.props.valorDelivery);
+              atualizarFrete(this.props.valorDelivery)
             }
+            atualizarAberto(this.props.aberto,this.props.fechando,this.props.horarioFechamento)
+            //console.log("props.aberto"+this.props.aberto);
+            this.props.navigation.push('Estabelecimento',
+            {nomeEstabelecimento: this.props.estabelecimento,
+            tipoEstabelecimento: this.props.tipoEstabelecimento,
+             telaAnterior:"listaEstabelecimentos"})
+             //console.log("frete ao selecionar restaurante "+frete);
+          }}>
+          <View>
+          <View style={{flexDirection: 'row', alignContent: 'center',justifyContent:'space-between'}}>
+          <View>
+            <View style={styles.viewIcon}>
+              <Image
+                source={{uri:this.props.imglogoEstabelecimento}}
+                style={styles.imagemListaEstabelecimento}
+                />
+            </View>
+          </View>
+          <View>
+            <Text style={styles.textEstabelecimento}>{this.props.estabelecimento}</Text>
+            {this.functionValorFrete(this.props.valorDelivery)}
+            <Text style={styles.textDetalhesEstabelecimento}>Tempo estimado: {this.props.tempoEntrega}</Text>
+              {this.props.aberto?
+              <View></View>:
+              <View style={{alignContent: 'center',alignItems:'center',justifyContent: 'center'}}>
+                {
+                  this.props.aberto?
+                  <View></View> :
+                    <View style={{alignContent: 'center', justifyContent:'center'}}>
+                      <Text style={[styles.textDetalhesEstabelecimento,{marginVertical: 0,marginLeft: 0,
+                          alignSelf: 'center',color: 'red',fontSize:wp('4%')}]}>FECHADO</Text>
+                    </View>
+                }
+                </View>
+              }
+          </View>
+          </View>
+          </View>
+        </TouchableOpacity>
         </View>
-        </View>
-        <View>
-
-        </View>
-        </View>
-      </TouchableOpacity>
-
-      </View>
-
   )
 }
 

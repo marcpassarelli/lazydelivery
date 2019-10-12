@@ -12,7 +12,7 @@ import StatusBar from '../constants/statusBar'
 import LazySearchBar from '../constants/lazySearchBar'
 import ListItemSeparator from '../constants/listItemSeparator'
 import LazyYellowButton from '../constants/lazyYellowButton'
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions, StackActions  } from 'react-navigation';
 import Accordion from 'react-native-collapsible/Accordion';
 import _ from 'lodash';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -358,7 +358,7 @@ renderItem = item =>{
         }}
         detalhes = {item.detalhes}
         navigation={()=>{
-
+          console.log("navigation.state"+JSON.stringify(this.props.navigation.state));
           let titleHeader= ""
           if(item.tipo=="Pizzas"||item.tipo=="Pizzas Doces"){
             //rota para pizzas
@@ -370,15 +370,16 @@ renderItem = item =>{
             console.log("nav imgProduto"+JSON.stringify(item));
             imgProduto = item.imgProduto
 
-            const navigateAction = NavigationActions.navigate({
+            const navigateAction = StackActions.push({
                 routeName: 'Pizza',
                 params: {nomeEstabelecimento: nomeEstabelecimentoUp,
                 title:titleHeader, sabores: item.sabores,
                 tamanhoPizza: item.tamanho, partePizza:1, tipoProduto: item.tipo,
                 preco:parseInt(0),detalhes:"",imgProduto: item.imgProduto,
-              tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento},
-                key:Math.random()*100000
+              tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento}
               });
+              // ,
+              //   key:Math.random()*100000
             this.props.navigation.dispatch(navigateAction);
             //se houver quantidade de paginas quer dizer que não é pizza e nem é produto normal
           }else if (item.paginas) {
@@ -399,7 +400,7 @@ renderItem = item =>{
 
 
             imgProduto = item.imgProduto
-            const navigateAction = NavigationActions.navigate({
+            const navigateAction = StackActions.push({
                 routeName: 'AntesAddProduto',
                 params: {
                   title:item.paginas[0].titulo,
@@ -410,21 +411,20 @@ renderItem = item =>{
                   preco: item.preco,
                   detalhes: "",
                   tipoProduto: item.tipo,
-                  tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento},
-                key:Math.random()*100000
+                  tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento}
               });
             this.props.navigation.dispatch(navigateAction);
 
           }else{
             imgProduto = item.imgProduto
-            const navigateAction = NavigationActions.navigate({
+                      console.log("this.props.navigation.state.params.tipoEstabelecimento"+this.props.navigation.state.params.tipoEstabelecimento);
+            const navigateAction = StackActions.push({
                 routeName: 'AddProduto',
                 params: {
                   nomeEstabelecimento: nomeEstabelecimentoUp,
                   nome: item.nomeProduto, preco: item.preco,
                   detalhes: item.detalhes, tipoProduto: item.tipo,
-                  tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento},
-                key:Math.random()*100000
+                  tipoEstabelecimento: this.props.navigation.state.params.tipoEstabelecimento}
               });
             this.props.navigation.dispatch(navigateAction);
           }
@@ -438,7 +438,7 @@ renderItem = item =>{
 
 renderHeader = (headerItem) => {
   return  (
-      <View style={{flexDirection: 'row', alignItems: 'center',height: hp('4.5%'),
+      <View style={{flexDirection: 'row', alignItems: 'center',height: hp('5.5%'),
         backgroundColor: cores.corSecundaria,marginBottom: 2}} >
 
             <Text style={styles.headerList}>{headerItem.key}</Text>

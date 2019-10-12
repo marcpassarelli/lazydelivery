@@ -96,6 +96,7 @@ export class HomeScreen extends Component {
             bairro:bairroP,
             referencia:referenciaP
           },function(){
+            console.log("getNomeEstabelecimentos");
             getNomeEstabelecimentos(this.state.bairro,
             ()=>{
               this.getEstabComFrete()
@@ -107,7 +108,6 @@ export class HomeScreen extends Component {
             bairro:listaEnderecos[0].bairro,
             referencia:listaEnderecos[0].referencia
           },async function(){
-            // getNomeEstabelecimentos(this.state.bairro)
             try {
               await AsyncStorage.multiSet([['endAtual', this.state.endereco],
                                           ['bairro', this.state.bairro], ['referencia', this.state.referencia]]);
@@ -182,7 +182,7 @@ export class HomeScreen extends Component {
           const {state} = this.props.navigation
           var telaAnterior = state.params ? state.params.telaAnterior : ""
           console.log("telaAnterior home"+telaAnterior);
-          if (telaAnterior!="listaEstabelecimentos") {
+          if (telaAnterior!="listaEstabelecimentos" & !semCadastro) {
             this.setState({
               modalEnd:true
             });
@@ -647,7 +647,6 @@ export class HomeScreen extends Component {
         <Loader
           loading = {this.state.loading}/>
         <ModalEnd
-          endAtual
           listaEnderecos={this.state.listaModalEnd}
           deleteEnd = {this.deleteEnd}
           loading = {this.state.modalEnd}

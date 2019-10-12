@@ -12,7 +12,7 @@ import { AndroidBackHandler } from 'react-navigation-backhandler';
 import LazyActivity from '../loadingModal/lazyActivity'
 import LazyBackButton from '../constants/lazyBackButton'
 import LazyYellowButton from '../constants/lazyYellowButton'
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions,StackActions } from 'react-navigation';
 import {imgProduto,atualizarImgProduto}from '../estabelecimentos/estabelecimentoProdutos'
 import _ from 'lodash'
 import Icon from 'react-native-vector-icons/Feather';
@@ -86,7 +86,7 @@ handleBackButtonClick=()=> {
 }
 
 
-  componentWillMount(){
+  componentDidMount(){
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick)
     // window.removeEventListener('scroll', this.handleScroll);
 
@@ -94,25 +94,33 @@ handleBackButtonClick=()=> {
       loading: true
     });
     const {state} = this.props.navigation
-    const {navigation} = this.props
 
+
+    console.log("state.params.nome"+state.params.nome);
     var nome = state.params ? state.params.nome : ""
+
     var preco =""
-    if(state.params.tipoProduto=="Pizzas"||state.params.tipoProduto=="Pizzas Doces"){
-      preco = state.params.precoPizza
-    }else{
-      preco = state.params.preco
-    }
-
-    var detalhes = state.params ? state.params.detalhes : ""
-
+    console.log("state.params.tipoProduto"+state.params.tipoProduto);
     var tipoProduto = state.params ? state.params.tipoProduto : ""
 
-    estabelecimento = state.params ? state.params.nomeEstabelecimento : ""
+    if(state.params.tipoProduto=="Pizzas"||state.params.tipoProduto=="Pizzas Doces"){
+      console.log("state.params.precoPizza"+state.params.precoPizza);
+      preco = state.params.precoPizza
+    }else{
+      console.log("state.params.preco"+state.params.preco);
+      preco = state.params.preco
+    }
+    console.log("state.params.detalhes"+state.params.detalhes)
+    var detalhes = state.params ? state.params.detalhes : ""
 
-    var telaAdicionais = state.params ? state.params.telaAdicionais : ""
+
+    console.log("state.params.nomeEstabelecimento"+state.params.nomeEstabelecimento)
+    estabelecimento = state.params ? state.params.nomeEstabelecimento : ""
+    // console.log("state.params.telaAdicionais"+state.params.telaAdicionais)
+    var telaAdicionais = state.params.telaAdicionais ? state.params.telaAdicionais : ""
+    console.log("state.params.tipoEstabelecimento"+state.params.tipoEstabelecimento)
     var tipoEstabelecimento = state.params ? state.params.tipoEstabelecimento : ""
-    this.totalPrecoAd = navigation.getParam('totalPreco','')
+    this.totalPrecoAd = this.props.navigation.getParam('totalPreco','')
 
 
     //Se tiver vindo da lista de produtos zerará os adicionais
@@ -133,7 +141,6 @@ handleBackButtonClick=()=> {
       });
     }
     else{
-
         this.setState({ imgProduto: images.backgroundLazyEscuro},function(){console.log("3 state.imgProduto"+this.state.imgProduto);})
         atualizarImgProduto(images.backgroundLazyEscuro)
     }
@@ -237,10 +244,17 @@ handleBackButtonClick=()=> {
     })
 
     const { navigate } = this.props.navigation;
-    navigate({routeName:'Estabelecimento',
+    const navigateAction = StackActions.push({routeName:'Estabelecimento',
       params:{toast:this.state.nome, nomeEstabelecimento: estabelecimento,
-      tipoEstabelecimento: state.params.tipoEstabelecimento },
-      key:Math.random () * 10000})
+      tipoEstabelecimento: state.params.tipoEstabelecimento }});
+      // ,
+      //   key:Math.random()*100000
+    this.props.navigation.dispatch(navigateAction);
+
+    // navigate({routeName:'Estabelecimento',
+    //   params:{toast:this.state.nome, nomeEstabelecimento: estabelecimento,
+    //   tipoEstabelecimento: state.params.tipoEstabelecimento },
+    //   key:Math.random () * 10000})
   this.setState({
     loadingAfter:false
   })

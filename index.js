@@ -8,6 +8,7 @@ import {carrinho, atualizarCarrinho} from './src/addproduto/addproduto'
 import LazyBackButton from './src/constants/lazyBackButton'
 import { createBottomTabNavigator,createMaterialTopTabNavigator} from 'react-navigation-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
+import { createAppContainer } from 'react-navigation'
 import { SplashScreen } from './src/splash/splash'
 import { CadastroInicialScreen } from './src/cadastro/cadastroInicial'
 import { CompletaCadastroScreen } from './src/cadastro/completaCadastro'
@@ -180,4 +181,5 @@ const DeliveryPassa = createStackNavigator({
 console.ignoredYellowBox = ['Warning: BackAndroid']
 
 
-AppRegistry.registerComponent('DeliveryPassa', () => DeliveryPassa);
+const App = createAppContainer(DeliveryPassa);
+AppRegistry.registerComponent('DeliveryPassa', () => App);
