@@ -42,8 +42,11 @@
     "babel-jest": "21.0.2",
     "babel-polyfill": "^6.26.0",
     "babel-preset-react-native": "2.1.0",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.1",
     "jest": "21.0.2",
     "jetifier": "^1.6.4",
+    "react-dom": "^16.10.2",
     "react-test-renderer": "16.0.0-alpha.12"
   },
   "jest": {

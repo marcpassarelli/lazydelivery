@@ -262,61 +262,6 @@ fazerPedido(){
 
                }
 
-               // ATUALIZAR PEDIDO EM MESSAGES COM A KEY DO PEDIDO
-               // SALVAR PEDIDO EM USER
-
-
-               // //console.log("pedidoKey"+pedidoKey);
-
-               //aguardar confirmação do estabelecimento
-
-
-                   // clearTimeout(myVar)
-                   // myVar=0
-                     //caso pedido seja confirmado
-
-                // if(message.status=="Confirmado Recebimento"){
-                //  }
-                 // else if(message.status=="estabFechado"){
-                 //   clearTimeout(myVar)
-                 //   myVar=0
-                 //     Alert.alert(
-                 //       'Estabelecimento Fechado.',
-                 //       'Sinto muito mas o estabelecimento fechou e não está aceitando mais pedidos.',
-                 //       [
-                 //         {text: 'OK', onPress: () => {
-                 //           this.setState({
-                 //             esperandoConfirmacao:false
-                 //           });
-                 //           const { navigate } = this.props.navigation;
-                 //           this.props.navigation.push('Home')
-                 //         }},
-                 //       ],
-                 //       { cancelable: false }
-                 //     )
-                 // }else if(message.status=="semItem"){
-                 //   clearTimeout(myVar)
-                 //   myVar=0
-                 //   loadMessagesSemItem(this.state.nomeEstabelecimento, key.key,(itemIndisponivel)=>{
-                 //     //console.log("itemIndisponivel"+JSON.stringify(itemIndisponivel));
-                 //
-                 //       Alert.alert(
-                 //         'Falta de Disponibilidade de um dos items.',
-                 //         'Devido a falta de disponibilidade do item '+itemIndisponivel.nome.nome+', seu pedido não foi aceito. Sentimos muito pelo incomodo.',
-                 //         [
-                 //           {text: 'OK', onPress: () => {
-                 //             this.setState({
-                 //               esperandoConfirmacao:false
-                 //             });
-                 //             const { navigate } = this.props.navigation;
-                 //             navigate('Carrinho')
-                 //           }},
-                 //         ],
-                 //         { cancelable: false }
-                 //       )
-                 //
-                 //   })
-                 // }
 
              })
       }else{
