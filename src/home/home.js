@@ -210,6 +210,7 @@ export class HomeScreen extends Component {
 
     getAppVersion((appVersion)=>{
       if(appVersion.version == VersionNumber.appVersion){
+        //IOS if(appVersion.version == DeviceInfo.getVersion())
         //console.log("versão atualizada");
       }else {
         Alert.alert(
