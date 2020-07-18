@@ -12,7 +12,7 @@
     "firebase": "^5.7.2",
     "grpc": "^1.17.0",
     "jsc-android": "236355.x.x",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "react": "^16.8.3",
     "react-native": "^0.59.10",
     "react-native-collapsible": "^1.5.1",
