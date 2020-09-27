@@ -2,17 +2,31 @@
 
 Repositório React Native para o app Lazy Delivery do lado do cliente
 
-![Splash](/Splash.png)
-Format: ![Splash Screen](url)
+<table> 
+  <tr>
+    <td>
+      <img src="/Splash.png" alt="splash"
+	    title="Splash" width="320" height="568" />
+    </td>
+    <td>
+      <img src="/Login Page.png" alt="LoginPage"
+      title="LoginPage" width="320" height="568" />
+    </td>
+    <td>
+      <img src="/Home.png" alt="home"
+      title="Home" width="320" height="568" />
+    </td>
+  </tr>
+  
+  <tr>
+    <td>
+      <img src="/Carrinho.png" alt="carrinho"
+      title="Carrinho" width="320" height="568" />
+    </td>
+    <td>
+      <img src="/VerProduto.png" alt="verProduto"
+      title="VerProduto" width="320" height="568" />
+    </td>
+  </tr>
 
-![Login Page](/Login Page.png)
-Format: ![Login Page](url)
-
-![Home](/Home.png)
-Format: ![Home](url)
-
-![Carrinho](/Carrinho.png)
-Format: ![Carrinho](url)
-
-![Ver Produto](/VerProduto.png)
-Format: ![Ver Produto](url)
+</table>
