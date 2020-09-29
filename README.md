@@ -1,6 +1,6 @@
 # lazydelivery
 
-Repositório React Native para o app Lazy Delivery do lado do cliente
+Aplicativo React Native (com Firebase) de delivery de tudo
 
 <table> 
   <tr>
