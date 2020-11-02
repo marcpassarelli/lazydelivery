@@ -15,7 +15,7 @@ Aplicativo React Native (com Firebase) de delivery de tudo
   </tr>
   <tr>
     <td>
-      <img src="/Register.png" alt="home"
+      <img src="/RegisterPage.png" alt="register"
       title="Register" width="320" height="568" />
     </td>	  
     <td>
@@ -29,7 +29,7 @@ Aplicativo React Native (com Firebase) de delivery de tudo
       title="VerProduto" width="320" height="568" />
     </td>
     <td>
-      <img src="/ListaProdutos.png" alt="carrinho"
+      <img src="/ListaProdutos.png" alt="lista-produtos"
       title="ListaProdutos" width="320" height="568" />
     </td>	  
   </tr>
